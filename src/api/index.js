@@ -1,9 +1,11 @@
 import axios from "axios";
+import { api } from "../constant";
 import { jwtManager } from "../helpers/jwtManager";
 
 // Add a request interceptor
 export default function configAxios() {
-   axios.defaults.baseURL = process.env.REACT_APP_API;
+   // axios.defaults.baseURL = process.env.REACT_APP_API;
+   axios.defaults.baseURL = api;
 
    axios.interceptors.request.use(
       (config) => {

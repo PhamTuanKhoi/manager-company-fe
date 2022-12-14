@@ -10,6 +10,8 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { alphaNumericPattern, emailrgx } from "../constant";
+import { toast, ToastContainer } from "react-toastify";
+import { authAPI } from "../api/auth.js";
 
 const schema = yup
    .object({
@@ -29,13 +31,11 @@ const Registrationpage = (props) => {
     * On User Login
     */
    const [eye, seteye] = useState(true);
-   const [emailerror, setEmailError] = useState("");
-   const [nameerror, setNameError] = useState("");
-   const [passworderror, setPasswordError] = useState("");
-   const [formgroup, setFormGroup] = useState("");
-   const [inputValues, setInputValues] = useState({
-      email: "admin@dreamguys.co.in",
-      password: "123456",
+
+   const [signup, setSignup] = useState({
+      email: "",
+      password: "",
+      repeatPassword: "",
    });
 
    const {
@@ -48,37 +48,31 @@ const Registrationpage = (props) => {
       resolver: yupResolver(schema),
    });
 
-   const onSubmit = (data) => {
+   const onRegister = async () => {
       try {
-         console.log("data", data);
-
-         if (data.password !== repeatPassword) {
-            setError("password", {
-               message: "password is mismatch",
-            });
+         if (signup.password !== signup.repeatPassword) {
+            toast.error("Mật khẩu không chính xác");
             return;
          }
+
+         await authAPI.register(signup);
+
+         toast.success("Đăng ký thành công");
          clearErrors("password");
          props.history.push("login");
       } catch (error) {
          console.log(error);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
       }
    };
    const onEyeClick = () => {
       seteye(!eye);
-   };
-   const onUserLogin = (e) => {
-      e.preventDefault();
-
-      if (this.state.email !== "" && this.state.password !== "") {
-         this.props.signinUserInFirebase(this.state, this.props.history);
-      }
-   };
-
-   const onApplyJob = (e) => {
-      e.preventDefault();
-      localStorage.removeItem("jobview");
-      this.props.history.push("/applyjob/joblist");
    };
 
    const { loading } = props;
@@ -92,6 +86,7 @@ const Registrationpage = (props) => {
             <Link to="/applyjob/joblist" className="btn btn-primary apply-btn">
                Apply Job
             </Link>
+
             <div className="container">
                {/* Account Logo */}
                <div className="account-logo">
@@ -106,79 +101,67 @@ const Registrationpage = (props) => {
                      <p className="account-subtitle">Access to our dashboard</p>
                      {/* Account Form */}
                      <div>
-                        <form onSubmit={handleSubmit(onSubmit)}>
+                        <form>
                            <div className="form-group">
                               <label>Email</label>
-                              <Controller
-                                 name="email"
-                                 control={control}
-                                 render={({ field: { value, onChange } }) => (
-                                    <input
-                                       className={`form-control  ${
-                                          errors?.email ? "error-input" : ""
-                                       }`}
-                                       type="text"
-                                       value={value}
-                                       onChange={onChange}
-                                       autoComplete="false"
-                                    />
-                                 )}
-                                 defaultValue="admin@dreamguys.co.in"
+                              <input
+                                 className={`form-control `}
+                                 type="email"
+                                 autoComplete="false"
+                                 value={signup.email}
+                                 onChange={(e) => setSignup({ ...signup, email: e.target.value })}
                               />
-
-                              <small>{errors?.email?.message}</small>
+                              {/* <small>{errors?.email?.message}</small> */}
                            </div>
                            <div className="form-group">
-                              <label>Password</label>
-                              <Controller
-                                 name="password"
-                                 control={control}
-                                 render={({ field: { value, onChange } }) => (
-                                    <div className="pass-group">
-                                       <input
-                                          type={eye ? "password" : "text"}
-                                          className={`form-control  ${
-                                             errors?.password ? "error-input" : ""
-                                          }`}
-                                          value={value}
-                                          onChange={onChange}
-                                          autoComplete="false"
-                                       />
-                                       <span
-                                          onClick={onEyeClick}
-                                          className={`fa toggle-password" ${
-                                             eye ? "fa-eye-slash" : "fa-eye"
-                                          }`}
-                                       />
-                                    </div>
-                                 )}
-                                 defaultValue="123456"
-                              />
+                              <label>Mật khẩu</label>
+                              <div className="pass-group">
+                                 <input
+                                    type={eye ? "password" : "text"}
+                                    className={`form-control `}
+                                    autoComplete="false"
+                                    value={signup.password}
+                                    onChange={(e) =>
+                                       setSignup({ ...signup, password: e.target.value })
+                                    }
+                                 />
+                                 <span
+                                    onClick={onEyeClick}
+                                    className={`fa toggle-password" ${
+                                       eye ? "fa-eye-slash" : "fa-eye"
+                                    }`}
+                                 />
+                              </div>
 
-                              <small>{errors?.password?.message}</small>
+                              {/* <small>{errors?.password?.message}</small> */}
                            </div>
                            <div className="form-group">
-                              <label>Repeat Password</label>
-                              <Controller
-                                 name="repeatPassword"
-                                 control={control}
-                                 render={({ field: { value, onChange } }) => (
-                                    <input
-                                       className={`form-control  ${
-                                          errors?.repeatPassword ? "error-input" : ""
-                                       }`}
-                                       type="text"
-                                       value={value}
-                                       onChange={onChange}
-                                       autoComplete="false"
-                                    />
-                                 )}
-                                 defaultValue=""
-                              />
-                              <small>{errors?.repeatPassword?.message}</small>
+                              <label>Nhập lại mật khẩu</label>
+                              <div className="pass-group">
+                                 <input
+                                    type={eye ? "password" : "text"}
+                                    className={`form-control`}
+                                    autoComplete="false"
+                                    value={signup.repeatPassword}
+                                    onChange={(e) =>
+                                       setSignup({ ...signup, repeatPassword: e.target.value })
+                                    }
+                                 />
+                                 <span
+                                    onClick={onEyeClick}
+                                    className={`fa toggle-password" ${
+                                       eye ? "fa-eye-slash" : "fa-eye"
+                                    }`}
+                                 />
+                              </div>
+                              {/* <small>{errors?.repeatPassword?.message}</small> */}
                            </div>
                            <div className="form-group text-center">
-                              <button className="btn btn-primary account-btn" type="submit">
+                              <button
+                                 className="btn btn-primary account-btn"
+                                 type="button"
+                                 onClick={onRegister}
+                              >
                                  Register
                               </button>
                            </div>
