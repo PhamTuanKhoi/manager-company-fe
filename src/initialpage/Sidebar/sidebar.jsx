@@ -12,7 +12,7 @@ const Sidebar = (props) => {
    const [level3Menu, setLevel3Menu] = useState("");
 
    const toggleSidebar = (value) => {
-      console.log(value);
+      // console.log(value);
       setSideMenu(value);
    };
 
