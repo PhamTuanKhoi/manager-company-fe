@@ -7,6 +7,8 @@ import configAxios from "./api";
 import { Web3Provider } from "./context/useUser";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+//bootrap
+import "bootstrap/dist/css/bootstrap.min.css";
 
 window.Popper = require("popper.js").default;
 

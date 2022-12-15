@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { clientAPI } from "../../api/user";
 import { useWeb3 } from "../../context/useUser";
 import {
    Avatar_19,
@@ -13,7 +16,10 @@ import {
    Avatar_28,
    Avatar_13,
 } from "../../Entryfile/imagepath";
+import clientSclice from "../../redux/feature/clientSclice";
 import Editclient from "../../_components/modelbox/Editclient";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 const Clients = () => {
    useEffect(() => {
@@ -26,6 +32,10 @@ const Clients = () => {
    });
 
    //use
+   const [show, setShow] = useState(false);
+
+   const handleClose = () => setShow(false);
+   const handleShow = () => setShow(true);
    const { user } = useWeb3();
    const [client, setClient] = useState({
       name: "",
@@ -35,9 +45,16 @@ const Clients = () => {
       field: "",
    });
 
+   const dispatch = useDispatch();
+
    async function handleSave() {
       try {
-         console.log(client, user._id);
+         // console.log(client, user._id);
+         if (user?._id) {
+            const { data } = await clientAPI.create({ ...client, creator: user._id });
+            dispatch(clientSclice.actions.create(data));
+            toast.success("Them khach hang moi thanh cong");
+         }
       } catch (error) {
          console.log(error);
          if (typeof error?.response?.data?.message === "string") {
@@ -70,12 +87,7 @@ const Clients = () => {
                      </ul>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                     <a
-                        href="#"
-                        className="btn add-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#add_client"
-                     >
+                     <a href="#" className="btn add-btn" onClick={handleShow}>
                         <i className="fa fa-plus" /> Add Client
                      </a>
                      <div className="view-icons">
@@ -559,17 +571,20 @@ const Clients = () => {
          </div>
          {/* /Page Content */}
          {/* Add Client Modal */}
-         <div id="add_client" className="modal custom-modal fade" role="dialog">
+         <Modal
+            show={show}
+            onHide={handleClose}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+            className="modal custom-modal fade"
+            role="dialog"
+         >
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
                <div className="modal-content">
                   <div className="modal-header">
                      <h5 className="modal-title">Khách hàng mới</h5>
-                     <button
-                        type="button"
-                        className="close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                     >
+                     <button type="button" className="close" onClick={() => handleClose()}>
                         <span aria-hidden="true">×</span>
                      </button>
                   </div>
@@ -793,7 +808,7 @@ const Clients = () => {
                   </div>
                </div>
             </div>
-         </div>
+         </Modal>
          {/* /Add Client Modal */}
          {/* Edit Client Modal */}
          <Editclient />

@@ -1,7 +1,7 @@
 import axios from "axios";
-const path = "auth/";
+const path = "user/";
 
-export const authAPI = {
+export const clientAPI = {
    async create(payload) {
       return await axios.post(path + "client", payload);
    },

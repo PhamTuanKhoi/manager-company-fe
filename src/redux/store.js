@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import clientSclice from "./sclice/clientSclice";
+import clientSclice from "./feature/clientSclice";
 
 const store = configureStore({
    reducer: {
