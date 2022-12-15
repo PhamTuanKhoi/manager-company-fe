@@ -24,7 +24,6 @@ function Web3Provider(props) {
    async function currentuser() {
       try {
          const { data } = await authAPI.me();
-         console.log({ data });
          setUser(data);
       } catch (error) {
          console.log(error);
