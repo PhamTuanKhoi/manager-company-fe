@@ -5,13 +5,18 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import configAxios from "./api";
 import { Web3Provider } from "./context/useUser";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+
 window.Popper = require("popper.js").default;
 
 configAxios();
 ReactDOM.render(
    <Web3Provider>
-      <ToastContainer />
-      <Main />
+      <Provider store={store}>
+         <ToastContainer />
+         <Main />
+      </Provider>
    </Web3Provider>,
    document.getElementById("app")
 );
