@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { clientAPI } from "../../api/user";
+import { userAPI } from "../../api/user";
 import { useWeb3 } from "../../context/useUser";
 import {
    Avatar_19,
@@ -51,7 +51,7 @@ const Clients = () => {
       try {
          // console.log(client, user._id);
          if (user?._id) {
-            const { data } = await clientAPI.create({ ...client, creator: user._id });
+            const { data } = await userAPI.create({ ...client, creator: user._id });
             dispatch(clientSclice.actions.create(data));
             toast.success("Them khach hang moi thanh cong");
          }
@@ -66,6 +66,19 @@ const Clients = () => {
          }
       }
    }
+
+   useEffect(() => {
+      fetchClient();
+   }, []);
+
+   async function fetchClient() {
+      const { data } = await userAPI.list();
+      console.log(data);
+      dispatch(clientSclice.actions.list(data));
+   }
+
+   const data = useSelector((state) => state.client);
+   console.log(data, "okay");
    return (
       <div className="page-wrapper">
          <Helmet>
