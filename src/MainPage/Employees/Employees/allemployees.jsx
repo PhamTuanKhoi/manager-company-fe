@@ -19,11 +19,15 @@ import Addemployee from "../../../_components/modelbox/Addemployee";
 import Editemployee from "../../../_components/modelbox/Editemployee";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import Header from "../../../initialpage/Sidebar/header";
+import { useDispatch } from "react-redux";
+import { listEmployees } from "../../../redux/feature/employeesSclice";
+import { useSelector } from "react-redux";
+import { EmployeeDepartmentType } from "../../../constant";
 
 const AllEmployees = () => {
    const [menu, setMenu] = useState(false);
    const [modalShow, setModalShow] = useState(false);
-
+   const dispatch = useDispatch();
    const toggleMobileMenu = () => {
       setMenu(!menu);
    };
@@ -36,6 +40,16 @@ const AllEmployees = () => {
          });
       }
    });
+
+   useEffect(() => {
+      fetchEmployees();
+   }, []);
+
+   function fetchEmployees() {
+      dispatch(listEmployees());
+   }
+
+   const { employees } = useSelector((state) => state.employees);
 
    return (
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -117,47 +131,59 @@ const AllEmployees = () => {
                </div>
                {/* Search Filter */}
                <div className="row staff-grid-row">
-                  <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                     <div className="profile-widget">
-                        <div className="profile-img">
-                           <Link to="/app/profile/employee-profile" className="avatar">
-                              <img src={Avatar_02} alt="" />
-                           </Link>
-                        </div>
-                        <div className="dropdown profile-action">
-                           <a
-                              href="#"
-                              className="action-icon dropdown-toggle"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                           >
-                              <i className="material-icons">more_vert</i>
-                           </a>
-                           <div className="dropdown-menu dropdown-menu-right">
+                  {employees.map((item) => (
+                     <div key={item?._id} className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
+                        <div className="profile-widget">
+                           <div className="profile-img">
+                              <Link to="/app/profile/employee-profile" className="avatar">
+                                 <img src={item?.avartar || Avatar_02} alt="" />
+                              </Link>
+                           </div>
+                           <div className="dropdown profile-action">
                               <a
-                                 className="dropdown-item"
                                  href="#"
-                                 data-bs-toggle="modal"
-                                 data-bs-target="#edit_employee"
+                                 className="action-icon dropdown-toggle"
+                                 data-bs-toggle="dropdown"
+                                 aria-expanded="false"
                               >
-                                 <i className="fa fa-pencil m-r-5" /> Edit
+                                 <i className="material-icons">more_vert</i>
                               </a>
-                              <a
-                                 className="dropdown-item"
-                                 href="#"
-                                 data-bs-toggle="modal"
-                                 data-bs-target="#delete_employee"
-                              >
-                                 <i className="fa fa-trash-o m-r-5" /> Delete
-                              </a>
+                              <div className="dropdown-menu dropdown-menu-right">
+                                 <a
+                                    className="dropdown-item"
+                                    href="#"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#edit_employee"
+                                 >
+                                    <i className="fa fa-pencil m-r-5" /> Edit
+                                 </a>
+                                 <a
+                                    className="dropdown-item"
+                                    href="#"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#delete_employee"
+                                 >
+                                    <i className="fa fa-trash-o m-r-5" /> Delete
+                                 </a>
+                              </div>
+                           </div>
+                           <h4 className="user-name m-t-10 mb-0 text-ellipsis">
+                              <Link to="/app/profile/employee-profile">{item?.name}</Link>
+                           </h4>
+                           <div className="small text-muted">
+                              {item?.department === EmployeeDepartmentType.BUSSINESS
+                                 ? "Kinh doanh"
+                                 : item.department === EmployeeDepartmentType.ACCOUNTANT
+                                 ? "Kế toán"
+                                 : item.department === EmployeeDepartmentType.RECRUIT
+                                 ? "Tuyen Dung"
+                                 : item.department === EmployeeDepartmentType.MARKETING
+                                 ? "Maketing"
+                                 : ""}
                            </div>
                         </div>
-                        <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                           <Link to="/app/profile/employee-profile">John Doe</Link>
-                        </h4>
-                        <div className="small text-muted">Web Designer</div>
                      </div>
-                  </div>
+                  ))}
                   <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
                      <div className="profile-widget">
                         <div className="profile-img">

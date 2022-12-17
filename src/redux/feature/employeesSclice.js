@@ -22,14 +22,17 @@ export const createEmployees = createAsyncThunk(
    }
 );
 
-// export const listClient = createAsyncThunk("client/listClient", async (_, { rejectWithValue }) => {
-//    try {
-//       const { data } = await userAPI.listClient();
-//       return data;
-//    } catch (error) {
-//       return rejectWithValue(error.response.data);
-//    }
-// });
+export const listEmployees = createAsyncThunk(
+   "employees/listEmployees",
+   async (_, { rejectWithValue }) => {
+      try {
+         const { data } = await userAPI.listEmployees();
+         return data;
+      } catch (error) {
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
 
 const employeesSclice = createSlice({
    name: "employees",
@@ -55,18 +58,18 @@ const employeesSclice = createSlice({
          state.error = action.payload.message;
       },
 
-      //list
-      // [listClient.pending]: (state, action) => {
-      //    state.loading = true;
-      // },
-      // [listClient.fulfilled]: (state, action) => {
-      //    state.loading = false;
-      //    state.clients = action.payload;
-      // },
-      // [listClient.rejected]: (state, action) => {
-      //    state.loading = false;
-      //    state.error = action.payload.message;
-      // },
+      // list
+      [listEmployees.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listEmployees.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.employees = action.payload;
+      },
+      [listEmployees.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
    },
 });
 

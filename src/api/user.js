@@ -6,6 +6,10 @@ export const userAPI = {
       return axios.get(path + "client");
    },
 
+   listEmployees() {
+      return axios.get(path + "employees");
+   },
+
    async createClient(payload) {
       return await axios.post(path + "client", payload);
    },

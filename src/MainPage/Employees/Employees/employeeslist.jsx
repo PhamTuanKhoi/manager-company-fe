@@ -18,6 +18,9 @@ import Editemployee from "../../../_components/modelbox/Editemployee";
 import Addemployee from "../../../_components/modelbox/Addemployee";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
+import { useSelector } from "react-redux";
+import { EmployeeDepartmentType } from "../../../constant";
+import moment from "moment";
 
 const Employeeslist = () => {
    const [menu, setMenu] = useState(false);
@@ -25,78 +28,6 @@ const Employeeslist = () => {
    const toggleMobileMenu = () => {
       setMenu(!menu);
    };
-   const [data, setData] = useState([
-      {
-         id: 1,
-         image: Avatar_02,
-         name: "John Doe",
-         role: "Web Designer",
-         employee_id: "FT-0001",
-         email: "johndoe@example.com",
-         mobile: "9876543210",
-         joindate: "1 Jan 2013",
-      },
-      {
-         id: 2,
-         image: Avatar_05,
-         name: "Richard Miles",
-         role: "Web Developer",
-         employee_id: "FT-0002",
-         email: "richardmiles@example.com",
-         mobile: "9876543210",
-         joindate: "18 Mar 2014",
-      },
-      {
-         id: 3,
-         image: Avatar_11,
-         name: "John Smith",
-         role: "Android Developer",
-         employee_id: "FT-0003",
-         email: "johnsmith@example.com	",
-         mobile: "9876543210",
-         joindate: "1 Apr 2014",
-      },
-      {
-         id: 4,
-         image: Avatar_12,
-         name: "Mike Litorus",
-         role: "IOS Developer",
-         employee_id: "FT-0004",
-         email: "mikelitorus@example.com",
-         mobile: "9876543210",
-         joindate: "1 Apr 2014",
-      },
-      {
-         id: 5,
-         image: Avatar_09,
-         name: "Wilmer Deluna",
-         role: "Team Leader",
-         employee_id: "FT-0005",
-         email: "wilmerdeluna@example.com",
-         mobile: "9876543210",
-         joindate: "22 May 2014",
-      },
-      {
-         id: 6,
-         image: Avatar_10,
-         name: "Jeffrey Warden",
-         role: "Web Developer",
-         employee_id: "FT-0006",
-         email: "jeffreywarden@example.com",
-         mobile: "9876543210",
-         joindate: "16 Jun 2013",
-      },
-      {
-         id: 7,
-         image: Avatar_13,
-         name: "Bernardo Galaviz",
-         role: "Web Developer",
-         employee_id: "FT-0007",
-         email: "bernardogalaviz@example.com",
-         mobile: "9876543210",
-         joindate: "1 Jan 2013",
-      },
-   ]);
 
    useEffect(() => {
       if ($(".select").length > 0) {
@@ -107,26 +38,39 @@ const Employeeslist = () => {
       }
    });
 
+   const { employees } = useSelector((state) => state.employees);
+
    const columns = [
       {
-         title: "Name",
+         title: "Họ và tên",
          dataIndex: "name",
          render: (text, record) => (
             <h2 className="table-avatar">
                <Link to="/app/profile/employee-profile" className="avatar">
-                  <img alt="" src={record.image} />
+                  <img alt="" src={record.avartar || record.image} />
                </Link>
                <Link to="/app/profile/employee-profile">
-                  {text} <span>{record.role}</span>
+                  {text}{" "}
+                  <span>
+                     {record?.department === EmployeeDepartmentType.BUSSINESS
+                        ? "Kinh doanh"
+                        : record.department === EmployeeDepartmentType.ACCOUNTANT
+                        ? "Kế toán"
+                        : record.department === EmployeeDepartmentType.RECRUIT
+                        ? "Tuyen Dung"
+                        : record.department === EmployeeDepartmentType.MARKETING
+                        ? "Maketing"
+                        : ""}
+                  </span>
                </Link>
             </h2>
          ),
          sorter: (a, b) => a.name.length - b.name.length,
       },
       {
-         title: "Employee ID",
-         dataIndex: "employee_id",
-         sorter: (a, b) => a.employee_id.length - b.employee_id.length,
+         title: "Phòng ban",
+         dataIndex: "department",
+         sorter: (a, b) => a.department.length - b.department.length,
       },
 
       {
@@ -136,15 +80,22 @@ const Employeeslist = () => {
       },
 
       {
-         title: "Mobile",
+         title: "Số điện thoại",
          dataIndex: "mobile",
-         sorter: (a, b) => a.mobile.length - b.mobile.length,
+         sorter: (a, b) => a.mobile - b.mobile,
       },
 
       {
-         title: "Join Date",
-         dataIndex: "joindate",
-         sorter: (a, b) => a.joindate.length - b.joindate.length,
+         title: "Ngày tham gia",
+         dataIndex: "createdAt",
+         render: (text, record) => moment(record.createdAt).format("DD/MM/YYYY"),
+         sorter: (a, b) => a.createdAt - b.createdAt,
+      },
+
+      {
+         title: "Căn cước công dân",
+         dataIndex: "cccd",
+         sorter: (a, b) => a.cccd - b.cccd,
       },
       {
          title: "Role",
@@ -296,7 +247,7 @@ const Employeeslist = () => {
                         <Table
                            className="table-striped"
                            pagination={{
-                              total: data.length,
+                              total: employees.length,
                               showTotal: (total, range) =>
                                  `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                               showSizeChanger: true,
@@ -306,8 +257,8 @@ const Employeeslist = () => {
                            style={{ overflowX: "auto" }}
                            columns={columns}
                            // bordered
-                           dataSource={data}
-                           rowKey={(record) => record.id}
+                           dataSource={employees}
+                           rowKey={(record) => record._id}
                            // onChange={console.log("change")}
                         />
                      </div>
