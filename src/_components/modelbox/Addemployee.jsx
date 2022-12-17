@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import { useDispatch } from "react-redux";
 import { EmployeeDepartmentType } from "../../constant/index";
+import { createEmployees } from "../../redux/feature/employeesSclice";
+import { toast } from "react-toastify";
+import { useWeb3 } from "../../context/useUser";
 
 const Addemployee = ({ show, onHide }) => {
    const [employees, setEmployees] = useState({
@@ -13,8 +17,23 @@ const Addemployee = ({ show, onHide }) => {
       address: "",
    });
 
+   const dispatch = useDispatch();
+   const { user } = useWeb3();
+
    async function handleSave() {
-      console.log(employees);
+      if (user._id) {
+         dispatch(
+            createEmployees({
+               payload: {
+                  ...employees,
+                  date: new Date(employees.date).getTime(),
+                  creator: user._id,
+               },
+               toast,
+               onHide,
+            })
+         );
+      }
    }
 
    return (
@@ -97,7 +116,7 @@ const Addemployee = ({ show, onHide }) => {
                                     }
                                  >
                                     <option>Chọn vị trí</option>
-                                    <option value="{EmployeeDepartmentType.ACCOUNTANT}">
+                                    <option value={EmployeeDepartmentType.ACCOUNTANT}>
                                        Kế toán
                                     </option>
                                     <option value={EmployeeDepartmentType.BUSSINESS}>
