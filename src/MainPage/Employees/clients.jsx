@@ -16,7 +16,7 @@ import {
    Avatar_28,
    Avatar_13,
 } from "../../Entryfile/imagepath";
-import clientSclice from "../../redux/feature/clientSclice";
+import clientSclice, { createClient, listClient } from "../../redux/feature/clientSclice";
 import Editclient from "../../_components/modelbox/Editclient";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -48,22 +48,9 @@ const Clients = () => {
    const dispatch = useDispatch();
 
    async function handleSave() {
-      try {
-         // console.log(client, user._id);
-         if (user?._id) {
-            const { data } = await userAPI.create({ ...client, creator: user._id });
-            dispatch(clientSclice.actions.create(data));
-            toast.success("Them khach hang moi thanh cong");
-         }
-      } catch (error) {
-         console.log(error);
-         if (typeof error?.response?.data?.message === "string") {
-            toast.error(error?.response?.data?.message);
-         } else {
-            error?.response?.data?.message?.forEach((item) => {
-               toast.error(item);
-            });
-         }
+      // console.log(client, user._id);
+      if (user?._id) {
+         dispatch(createClient({ payload: { ...client, creator: user._id }, toast, handleClose }));
       }
    }
 
@@ -72,13 +59,10 @@ const Clients = () => {
    }, []);
 
    async function fetchClient() {
-      const { data } = await userAPI.list();
-      console.log(data);
-      dispatch(clientSclice.actions.list(data));
+      dispatch(listClient());
    }
 
-   const data = useSelector((state) => state.client);
-   console.log(data, "okay");
+   const { clients } = useSelector((state) => state.client);
    return (
       <div className="page-wrapper">
          <Helmet>
@@ -148,60 +132,65 @@ const Clients = () => {
             </div>
             {/* Search Filter */}
             <div className="row staff-grid-row">
-               <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                  <div className="profile-widget">
-                     <div className="profile-img">
-                        <Link to="/app/profile/client-profile" className="avatar">
-                           <img alt="" src={Avatar_19} />
+               {clients.map((item) => (
+                  <div key={item?._id} className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
+                     <div className="profile-widget">
+                        <div className="profile-img">
+                           <Link to="/app/profile/client-profile" className="avatar">
+                              <img alt="" src={Avatar_19} />
+                           </Link>
+                        </div>
+                        <div className="dropdown profile-action">
+                           <a
+                              href="#"
+                              className="action-icon dropdown-toggle"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                           >
+                              <i className="material-icons">more_vert</i>
+                           </a>
+                           <div className="dropdown-menu dropdown-menu-right">
+                              <a
+                                 className="dropdown-item"
+                                 href="#"
+                                 data-bs-toggle="modal"
+                                 data-bs-target="#edit_client"
+                              >
+                                 <i className="fa fa-pencil m-r-5" /> Edit
+                              </a>
+                              <a
+                                 className="dropdown-item"
+                                 href="#"
+                                 data-bs-toggle="modal"
+                                 data-bs-target="#delete_client"
+                              >
+                                 <i className="fa fa-trash-o m-r-5" /> Delete
+                              </a>
+                           </div>
+                        </div>
+                        <h4 className="user-name m-t-10 mb-0 text-ellipsis">
+                           <Link to="/app/profile/client-profile">{item?.company}</Link>
+                        </h4>
+                        <h5 className="user-name m-t-10 mb-0 text-ellipsis">
+                           <Link to="/app/profile/client-profile">{item?.name}</Link>
+                        </h5>
+                        <div className="small text-muted">{item?.filed}</div>
+                        <Link
+                           onClick={() => localStorage.setItem("minheight", "true")}
+                           to="/conversation/chat"
+                           className="btn btn-white btn-sm m-t-10 mr-1"
+                        >
+                           Message
+                        </Link>
+                        <Link
+                           to="/app/profile/client-profile"
+                           className="btn btn-white btn-sm m-t-10"
+                        >
+                           View Profile
                         </Link>
                      </div>
-                     <div className="dropdown profile-action">
-                        <a
-                           href="#"
-                           className="action-icon dropdown-toggle"
-                           data-bs-toggle="dropdown"
-                           aria-expanded="false"
-                        >
-                           <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#edit_client"
-                           >
-                              <i className="fa fa-pencil m-r-5" /> Edit
-                           </a>
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#delete_client"
-                           >
-                              <i className="fa fa-trash-o m-r-5" /> Delete
-                           </a>
-                        </div>
-                     </div>
-                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">Global Technologies</Link>
-                     </h4>
-                     <h5 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">Barry Cuda</Link>
-                     </h5>
-                     <div className="small text-muted">CEO</div>
-                     <Link
-                        onClick={() => localStorage.setItem("minheight", "true")}
-                        to="/conversation/chat"
-                        className="btn btn-white btn-sm m-t-10 mr-1"
-                     >
-                        Message
-                     </Link>
-                     <Link to="/app/profile/client-profile" className="btn btn-white btn-sm m-t-10">
-                        View Profile
-                     </Link>
                   </div>
-               </div>
+               ))}
                <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
                   <div className="profile-widget">
                      <div className="profile-img">
@@ -244,330 +233,6 @@ const Clients = () => {
                         <Link to="/app/profile/client-profile">Tressa Wexler</Link>
                      </h5>
                      <div className="small text-muted">Manager</div>
-                     <Link
-                        onClick={() => localStorage.setItem("minheight", "true")}
-                        to="/conversation/chat"
-                        className="btn btn-white btn-sm m-t-10 mr-1"
-                     >
-                        Message
-                     </Link>
-                     <Link to="/app/profile/client-profile" className="btn btn-white btn-sm m-t-10">
-                        View Profile
-                     </Link>
-                  </div>
-               </div>
-               <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                  <div className="profile-widget">
-                     <div className="profile-img">
-                        <Link to="/app/profile/client-profile" className="avatar">
-                           <img src={Avatar_07} alt="" />
-                        </Link>
-                     </div>
-                     <div className="dropdown profile-action">
-                        <a
-                           href="#"
-                           className="action-icon dropdown-toggle"
-                           data-bs-toggle="dropdown"
-                           aria-expanded="false"
-                        >
-                           <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#edit_client"
-                           >
-                              <i className="fa fa-pencil m-r-5" /> Edit
-                           </a>
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#delete_client"
-                           >
-                              <i className="fa fa-trash-o m-r-5" /> Delete
-                           </a>
-                        </div>
-                     </div>
-                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">Cream Inc</Link>
-                     </h4>
-                     <h5 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">Ruby Bartlett</Link>
-                     </h5>
-                     <div className="small text-muted">CEO</div>
-                     <Link
-                        onClick={() => localStorage.setItem("minheight", "true")}
-                        to="/conversation/chat"
-                        className="btn btn-white btn-sm m-t-10 mr-1"
-                     >
-                        Message
-                     </Link>
-                     <Link to="/app/profile/client-profile" className="btn btn-white btn-sm m-t-10">
-                        View Profile
-                     </Link>
-                  </div>
-               </div>
-               <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                  <div className="profile-widget">
-                     <div className="profile-img">
-                        <Link to="/app/profile/client-profile" className="avatar">
-                           <img src={Avatar_06} alt="" />
-                        </Link>
-                     </div>
-                     <div className="dropdown profile-action">
-                        <a
-                           href="#"
-                           className="action-icon dropdown-toggle"
-                           data-bs-toggle="dropdown"
-                           aria-expanded="false"
-                        >
-                           <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#edit_client"
-                           >
-                              <i className="fa fa-pencil m-r-5" /> Edit
-                           </a>
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#delete_client"
-                           >
-                              <i className="fa fa-trash-o m-r-5" /> Delete
-                           </a>
-                        </div>
-                     </div>
-                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">Wellware Company</Link>
-                     </h4>
-                     <h5 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">Misty Tison</Link>
-                     </h5>
-                     <div className="small text-muted">CEO</div>
-                     <Link
-                        onClick={() => localStorage.setItem("minheight", "true")}
-                        to="/conversation/chat"
-                        className="btn btn-white btn-sm m-t-10 mr-1"
-                     >
-                        Message
-                     </Link>
-                     <Link to="/app/profile/client-profile" className="btn btn-white btn-sm m-t-10">
-                        View Profile
-                     </Link>
-                  </div>
-               </div>
-               <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                  <div className="profile-widget">
-                     <div className="profile-img">
-                        <Link to="/app/profile/client-profile" className="avatar">
-                           <img alt="" src={Avatar_14} />
-                        </Link>
-                     </div>
-                     <div className="dropdown profile-action">
-                        <a
-                           href="#"
-                           className="action-icon dropdown-toggle"
-                           data-bs-toggle="dropdown"
-                           aria-expanded="false"
-                        >
-                           <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#edit_client"
-                           >
-                              <i className="fa fa-pencil m-r-5" /> Edit
-                           </a>
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#delete_client"
-                           >
-                              <i className="fa fa-trash-o m-r-5" /> Delete
-                           </a>
-                        </div>
-                     </div>
-                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">Mustang Technologies</Link>
-                     </h4>
-                     <h5 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">Daniel Deacon</Link>
-                     </h5>
-                     <div className="small text-muted">CEO</div>
-                     <Link
-                        onClick={() => localStorage.setItem("minheight", "true")}
-                        to="/conversation/chat"
-                        className="btn btn-white btn-sm m-t-10 mr-1"
-                     >
-                        Message
-                     </Link>
-                     <Link to="/app/profile/client-profile" className="btn btn-white btn-sm m-t-10">
-                        View Profile
-                     </Link>
-                  </div>
-               </div>
-               <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                  <div className="profile-widget">
-                     <div className="profile-img">
-                        <Link to="/app/profile/client-profile" className="avatar">
-                           <img alt="" src={Avatar_18} />
-                        </Link>
-                     </div>
-                     <div className="dropdown profile-action">
-                        <a
-                           href="#"
-                           className="action-icon dropdown-toggle"
-                           data-bs-toggle="dropdown"
-                           aria-expanded="false"
-                        >
-                           <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#edit_client"
-                           >
-                              <i className="fa fa-pencil m-r-5" /> Edit
-                           </a>
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#delete_client"
-                           >
-                              <i className="fa fa-trash-o m-r-5" /> Delete
-                           </a>
-                        </div>
-                     </div>
-                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">International Software Inc</Link>
-                     </h4>
-                     <h5 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">Walter Weaver</Link>
-                     </h5>
-                     <div className="small text-muted">CEO</div>
-                     <Link
-                        onClick={() => localStorage.setItem("minheight", "true")}
-                        to="/conversation/chat"
-                        className="btn btn-white btn-sm m-t-10 mr-1"
-                     >
-                        Message
-                     </Link>
-                     <Link to="/app/profile/client-profile" className="btn btn-white btn-sm m-t-10">
-                        View Profile
-                     </Link>
-                  </div>
-               </div>
-               <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                  <div className="profile-widget">
-                     <div className="profile-img">
-                        <Link to="/app/profile/client-profile" className="avatar">
-                           <img alt="" src={Avatar_28} />
-                        </Link>
-                     </div>
-                     <div className="dropdown profile-action">
-                        <a
-                           href="#"
-                           className="action-icon dropdown-toggle"
-                           data-bs-toggle="dropdown"
-                           aria-expanded="false"
-                        >
-                           <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#edit_client"
-                           >
-                              <i className="fa fa-pencil m-r-5" /> Edit
-                           </a>
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#delete_client"
-                           >
-                              <i className="fa fa-trash-o m-r-5" /> Delete
-                           </a>
-                        </div>
-                     </div>
-                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">Mercury Software Inc</Link>
-                     </h4>
-                     <h5 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">Amanda Warren</Link>
-                     </h5>
-                     <div className="small text-muted">CEO</div>
-                     <Link
-                        onClick={() => localStorage.setItem("minheight", "true")}
-                        to="/conversation/chat"
-                        className="btn btn-white btn-sm m-t-10 mr-1"
-                     >
-                        Message
-                     </Link>
-                     <Link to="/app/profile/client-profile" className="btn btn-white btn-sm m-t-10">
-                        View Profile
-                     </Link>
-                  </div>
-               </div>
-               <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                  <div className="profile-widget">
-                     <div className="profile-img">
-                        <Link to="/app/profile/client-profile" className="avatar">
-                           <img alt="" src={Avatar_13} />
-                        </Link>
-                     </div>
-                     <div className="dropdown profile-action">
-                        <a
-                           href="#"
-                           className="action-icon dropdown-toggle"
-                           data-bs-toggle="dropdown"
-                           aria-expanded="false"
-                        >
-                           <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#edit_client"
-                           >
-                              <i className="fa fa-pencil m-r-5" /> Edit
-                           </a>
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#delete_client"
-                           >
-                              <i className="fa fa-trash-o m-r-5" /> Delete
-                           </a>
-                        </div>
-                     </div>
-                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">Carlson Tech</Link>
-                     </h4>
-                     <h5 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">Betty Carlson</Link>
-                     </h5>
-                     <div className="small text-muted">CEO</div>
                      <Link
                         onClick={() => localStorage.setItem("minheight", "true")}
                         to="/conversation/chat"
@@ -669,149 +334,6 @@ const Clients = () => {
                               </div>
                            </div>
                         </div>
-                        {/* <div className="table-responsive m-t-15">
-                           <table className="table table-striped custom-table">
-                              <thead>
-                                 <tr>
-                                    <th>Module Permission</th>
-                                    <th className="text-center">Read</th>
-                                    <th className="text-center">Write</th>
-                                    <th className="text-center">Create</th>
-                                    <th className="text-center">Delete</th>
-                                    <th className="text-center">Import</th>
-                                    <th className="text-center">Export</th>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 <tr>
-                                    <td>Projects</td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>Tasks</td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>Chat</td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>Estimates</td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>Invoices</td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>Timing Sheets</td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                 </tr>
-                              </tbody>
-                           </table>
-                        </div> */}
                         <div className="submit-section">
                            <button className="btn btn-primary submit-btn" onClick={handleSave}>
                               Lưu

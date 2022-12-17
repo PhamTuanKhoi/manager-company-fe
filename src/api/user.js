@@ -2,11 +2,11 @@ import axios from "axios";
 const path = "user/";
 
 export const userAPI = {
-   async create(payload) {
+   async createClient(payload) {
       return await axios.post(path + "client", payload);
    },
 
-   list() {
+   listClient() {
       return axios.get(path + "client");
    },
 };
