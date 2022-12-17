@@ -77,7 +77,7 @@ const Sidebar = (props) => {
                            ""
                         )}
                      </li>
-                     <li
+                     {/* <li
                         className={
                            pathname.includes("project_dashboard")
                               ? "active"
@@ -88,6 +88,59 @@ const Sidebar = (props) => {
                      >
                         <Link to="/app/projects/project_dashboard">
                            <i className="la la-rocket" /> <span>Dự án</span>
+                        </Link>
+                     </li> */}
+                     <li className="submenu">
+                        <a
+                           href="#"
+                           className={isSideMenu == "projects" ? "subdrop" : ""}
+                           onClick={() => toggleSidebar(isSideMenu == "projects" ? "" : "projects")}
+                        >
+                           <i className="la la-rocket" /> <span> Projects</span>{" "}
+                           <span className="menu-arrow" />
+                        </a>
+                        {isSideMenu == "projects" ? (
+                           <ul>
+                              <li>
+                                 <Link
+                                    className={
+                                       pathname.includes("t_dashboard")
+                                          ? "active"
+                                          : pathname.includes("projects-list")
+                                          ? "active"
+                                          : pathname.includes("cts-view")
+                                          ? "active"
+                                          : ""
+                                    }
+                                    to="/app/projects/project_dashboard"
+                                 >
+                                    Projects
+                                 </Link>
+                              </li>
+                              <li>
+                                 <Link
+                                    onClick={() => localStorage.setItem("minheight", "true")}
+                                    to="/tasks/tasks"
+                                 >
+                                    Tasks
+                                 </Link>
+                              </li>
+                              <li>
+                                 <Link
+                                    className={pathname.includes("task-board") ? "active" : ""}
+                                    to="/app/projects/task-board"
+                                 >
+                                    Task Board
+                                 </Link>
+                              </li>
+                           </ul>
+                        ) : (
+                           ""
+                        )}
+                     </li>
+                     <li className={pathname.includes("leads") ? "active" : ""}>
+                        <Link to="/app/employees/leads">
+                           <i className="la la-user-secret" /> <span>Leads</span>
                         </Link>
                      </li>
                      <li className={pathname.includes("clients") ? "active" : ""}>
@@ -398,65 +451,6 @@ const Sidebar = (props) => {
                         ) : (
                            ""
                         )}
-                     </li>
-
-                     <li className={pathname.includes("clients") ? "active" : ""}>
-                        <Link to="/app/employees/clients">
-                           <i className="la la-users" /> <span>Clients</span>
-                        </Link>
-                     </li>
-                     <li className="submenu">
-                        <a
-                           href="#"
-                           className={isSideMenu == "projects" ? "subdrop" : ""}
-                           onClick={() => toggleSidebar(isSideMenu == "projects" ? "" : "projects")}
-                        >
-                           <i className="la la-rocket" /> <span> Projects</span>{" "}
-                           <span className="menu-arrow" />
-                        </a>
-                        {isSideMenu == "projects" ? (
-                           <ul>
-                              <li>
-                                 <Link
-                                    className={
-                                       pathname.includes("t_dashboard")
-                                          ? "active"
-                                          : pathname.includes("projects-list")
-                                          ? "active"
-                                          : pathname.includes("cts-view")
-                                          ? "active"
-                                          : ""
-                                    }
-                                    to="/app/projects/project_dashboard"
-                                 >
-                                    Projects
-                                 </Link>
-                              </li>
-                              <li>
-                                 <Link
-                                    onClick={() => localStorage.setItem("minheight", "true")}
-                                    to="/tasks/tasks"
-                                 >
-                                    Tasks
-                                 </Link>
-                              </li>
-                              <li>
-                                 <Link
-                                    className={pathname.includes("task-board") ? "active" : ""}
-                                    to="/app/projects/task-board"
-                                 >
-                                    Task Board
-                                 </Link>
-                              </li>
-                           </ul>
-                        ) : (
-                           ""
-                        )}
-                     </li>
-                     <li className={pathname.includes("leads") ? "active" : ""}>
-                        <Link to="/app/employees/leads">
-                           <i className="la la-user-secret" /> <span>Leads</span>
-                        </Link>
                      </li>
 
                      <li className="menu-title">
