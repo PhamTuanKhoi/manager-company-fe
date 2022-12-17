@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import { authAPI } from "../api/auth";
 import { jwtManager } from "../helpers/jwtManager";
+// import { useNavigate } from "react-router-dom";
 
 const defaultState = {
    user: undefined,
@@ -17,6 +17,7 @@ function Web3Provider(props) {
       if (token) {
          currentuser();
       } else {
+         // navigate("/login");
          console.log('navigate("/blue/login");');
       }
    }, []);
