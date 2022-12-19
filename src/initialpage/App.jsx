@@ -52,13 +52,14 @@ export default function App(props) {
 
    const { user } = useSelector((state) => state.auth);
 
-   if (!user._id && location.pathname !== "/login") {
-      return <Redirect to={"/login"} />;
-   }
+   // if (!user._id && location.pathname !== "/login") {
+   //    return <Redirect to={"/login"} />;
+   // }
 
-   if (user._id && location.pathname === "/login") {
-      return <Redirect to={"/app/main/dashboard"} />;
-   }
+   // if (user._id && location.pathname === "/login") {
+   //    console.log("next", location.pathname);
+   //    return <Redirect to={"/app/main/dashboard"} />;
+   // }
 
    if (location.pathname === "/") {
       return <Redirect to={"/app/main/dashboard"} />;

@@ -9,3 +9,29 @@ export const EmployeeDepartmentType = {
    BUSSINESS: "bussiness",
    ACCOUNTANT: "accountant",
 };
+
+export const ProjectPriorityEnum = {
+   LOW: 0,
+   MEDIUM: 1,
+   HIGH: 2,
+};
+
+export const ProjectStatusEnum = {
+   CANCEL: 0,
+   NEWPROJECTS: 1,
+   RUNNING: 2,
+   ONHOLD: 3,
+   FINISHED: 4,
+};
+
+export const prioritys = [
+   { value: 0, label: "Thấp" },
+   { value: 1, label: "Trung bình" },
+   { value: 2, label: "Cao" },
+];
+
+export const statusProject = [
+   { value: 1, label: "Dự án mới" },
+   { value: 2, label: "Đang chạy" },
+   { value: 4, label: "Hoàn thành" },
+];
