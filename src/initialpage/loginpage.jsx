@@ -12,6 +12,7 @@ import * as yup from "yup";
 import { alphaNumericPattern, emailrgx } from "../constant";
 import { authAPI } from "../api/auth.js";
 import { jwtManager } from "../helpers/jwtManager.js";
+// import { login } from "../redux/feature/authSclice";
 
 const schema = yup.object({
    email: yup.string().matches(emailrgx, "Email is required").required("Email is required").trim(),

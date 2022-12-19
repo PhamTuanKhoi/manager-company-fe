@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 // We will create these two pages in a moment
 //Authendication
@@ -20,53 +20,67 @@ import uicomponents from "../MainPage/UIinterface/components";
 //Error Page
 import Error404 from "../MainPage/Pages/ErrorPage/error404";
 import Error500 from "../MainPage/Pages/ErrorPage/error500";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { currentUser } from "../redux/feature/authSclice";
 
-export default class App extends Component {
-   componentDidMount() {
-      if (
-         location.pathname.includes("login") ||
-         location.pathname.includes("register") ||
-         location.pathname.includes("forgotpassword") ||
-         location.pathname.includes("otp") ||
-         location.pathname.includes("lockscreen")
-      ) {
-         // $('body').addClass('account-page');
-      } else if (
-         location.pathname.includes("error-404") ||
-         location.pathname.includes("error-500")
-      ) {
-         $("body").addClass("error-page");
-      }
+export default function App(props) {
+   // componentDidMount() {
+   //    if (
+   //       location.pathname.includes("login") ||
+   //       location.pathname.includes("register") ||
+   //       location.pathname.includes("forgotpassword") ||
+   //       location.pathname.includes("otp") ||
+   //       location.pathname.includes("lockscreen")
+   //    ) {
+   //       // $('body').addClass('account-page');
+   //    } else if (
+   //       location.pathname.includes("error-404") ||
+   //       location.pathname.includes("error-500")
+   //    ) {
+   //       $("body").addClass("error-page");
+   //    }
+   // }
+
+   const { location, match } = props;
+
+   let dispatch = useDispatch();
+
+   useEffect(() => {
+      dispatch(currentUser());
+   }, []);
+
+   const { user } = useSelector((state) => state.auth);
+
+   if (!user._id && location.pathname !== "/login") {
+      return <Redirect to={"/login"} />;
    }
-   render() {
-      const { location, match, user } = this.props;
 
-      if (location.pathname === "/") {
-         //  this.props.history.push({
-         //     pathname: `/target-path`,
-         //     state: param,
-         //  });
-         return <Redirect to={"/app/main/dashboard"} />;
-      }
-      return (
-         <Switch>
-            <Route path="/login" component={LoginPage} />
-            <Route path="/forgotpassword" component={ForgotPassword} />
-            <Route path="/register" component={RegistrationPage} />
-            <Route path="/otp" component={OTP} />
-            <Route path="/lockscreen" component={LockScreen} />
-            <Route path="/applyjob" component={ApplyJobs} />
-
-            <Route path="/app" component={DefaultLayout} />
-            <Route path="/settings" component={Settinglayout} />
-            <Route path="/tasks" component={Tasklayout} />
-            <Route path="/email" component={Emaillayout} />
-            <Route path="/conversation" component={chatlayout} />
-
-            <Route path="/ui-components" component={uicomponents} />
-            <Route path="/error-404" component={Error404} />
-            <Route path="/error-500" component={Error500} />
-         </Switch>
-      );
+   if (user._id && location.pathname === "/login") {
+      return <Redirect to={"/app/main/dashboard"} />;
    }
+
+   if (location.pathname === "/") {
+      return <Redirect to={"/app/main/dashboard"} />;
+   }
+   return (
+      <Switch>
+         <Route path="/login" component={LoginPage} />
+         <Route path="/forgotpassword" component={ForgotPassword} />
+         <Route path="/register" component={RegistrationPage} />
+         <Route path="/otp" component={OTP} />
+         <Route path="/lockscreen" component={LockScreen} />
+         <Route path="/applyjob" component={ApplyJobs} />
+
+         <Route path="/app" component={DefaultLayout} />
+         <Route path="/settings" component={Settinglayout} />
+         <Route path="/tasks" component={Tasklayout} />
+         <Route path="/email" component={Emaillayout} />
+         <Route path="/conversation" component={chatlayout} />
+
+         <Route path="/ui-components" component={uicomponents} />
+         <Route path="/error-404" component={Error404} />
+         <Route path="/error-500" component={Error500} />
+      </Switch>
+   );
 }
