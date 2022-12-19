@@ -11,18 +11,7 @@ import { useSelector } from "react-redux";
 
 const Clients = () => {
    const { clients } = useSelector((state) => state.client);
-   //  const [data, setData] = useState([
-   //     {
-   //        id: 1,
-   //        image: Avatar_07,
-   //        name: "John Doe",
-   //        client_id: "CLT-0001",
-   //        contactperson: "Barry Cuda",
-   //        email: "barrycuda@example.com",
-   //        mobile: "9876543210",
-   //        status: "Active",
-   //     },
-   //  ]);
+
    useEffect(() => {
       if ($(".select").length > 0) {
          $(".select").select2({
