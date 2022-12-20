@@ -38,9 +38,14 @@ const projectSclice = createSlice({
    name: "project",
    initialState: {
       project: {},
-      Projects: [],
+      projects: [],
       error: "",
       loading: false,
+   },
+   reducers: {
+      projectDetail: (state, action) => {
+         state.project = state.projects.find((item) => item._id === action.payload);
+      },
    },
    extraReducers: {
       [createProject.pending]: (state, action) => {

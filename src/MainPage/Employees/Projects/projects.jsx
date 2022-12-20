@@ -24,14 +24,6 @@ import { listProject } from "../../../redux/feature/projectSclice";
 import { useSelector } from "react-redux";
 import moment from "moment";
 const Projects = () => {
-   //  useEffect(() => {
-   //     if ($(".select").length > 0) {
-   //        $(".select").select2({
-   //           minimumResultsForSearch: -1,
-   //           width: "100%",
-   //        });
-   //     }
-   //  });
    const [modalShow, setModalShow] = useState(false);
    const onImageUpload = (fileList) => {
       const reader = new FileReader();
@@ -157,7 +149,9 @@ const Projects = () => {
                               </div>
                            </div>
                            <h4 className="project-title">
-                              <Link to="/app/projects/projects-view">{item?.name}</Link>
+                              <Link to={"/app/projects/projects-view/" + item?._id}>
+                                 {item?.name}
+                              </Link>
                            </h4>
                            <small className="block text-ellipsis m-b-15">
                               <span className="text-xs">1</span>{" "}
