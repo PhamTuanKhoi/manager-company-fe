@@ -10,6 +10,10 @@ export const userAPI = {
       return axios.get(path + "employees");
    },
 
+   listWorker() {
+      return axios.get(path + "worker");
+   },
+
    async createClient(payload) {
       return await axios.post(path + "client", payload);
    },

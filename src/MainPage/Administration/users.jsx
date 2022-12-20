@@ -25,6 +25,9 @@ import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../paginationfunction";
 import "../antdstyle.css";
 import Adduser from "../../_components/modelbox/Adduser";
+import { useDispatch } from "react-redux";
+import { listWorker } from "../../redux/feature/workerSclice";
+import { useSelector } from "react-redux";
 
 const Users = () => {
    const [data, setData] = useState([
@@ -139,6 +142,7 @@ const Users = () => {
    ]);
 
    const [modalShow, setModalShow] = useState(false);
+   const dispatch = useDispatch();
 
    useEffect(() => {
       if ($(".select").length > 0) {
@@ -148,6 +152,12 @@ const Users = () => {
          });
       }
    });
+
+   useEffect(() => {
+      dispatch(listWorker());
+   }, []);
+
+   const { workers } = useSelector((state) => state.worker);
 
    const columns = [
       {
@@ -300,7 +310,7 @@ const Users = () => {
                      <Table
                         className="table-striped"
                         pagination={{
-                           total: data.length,
+                           total: workers.length,
                            showTotal: (total, range) =>
                               `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                            showSizeChanger: true,
@@ -310,7 +320,7 @@ const Users = () => {
                         style={{ overflowX: "auto" }}
                         columns={columns}
                         // bordered
-                        dataSource={data}
+                        dataSource={workers}
                         rowKey={(record) => record.id}
                         // onChange={this.handleTableChange}
                      />
