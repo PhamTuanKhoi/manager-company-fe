@@ -17,4 +17,8 @@ export const userAPI = {
    async createEmployees(payload) {
       return await axios.post(path + "employees", payload);
    },
+
+   async createWorker(payload) {
+      return await axios.post(path + "worker", payload);
+   },
 };

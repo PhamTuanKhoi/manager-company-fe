@@ -5,6 +5,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authSclice from "./feature/authSclice";
 import projectSclice from "./feature/projectSclice";
+import workerSclice from "./feature/workerSclice";
 
 const persistConfig = {
    key: "root",
@@ -16,6 +17,7 @@ const reducer = combineReducers({
    client: clientSclice.reducer,
    employees: employeesSclice.reducer,
    project: projectSclice.reducer,
+   worker: workerSclice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

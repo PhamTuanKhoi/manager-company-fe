@@ -137,6 +137,9 @@ const Users = () => {
          role: "Employee",
       },
    ]);
+
+   const [modalShow, setModalShow] = useState(false);
+
    useEffect(() => {
       if ($(".select").length > 0) {
          $(".select").select2({
@@ -246,12 +249,7 @@ const Users = () => {
                      </ul>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                     <a
-                        href="#"
-                        className="btn add-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#add_user"
-                     >
+                     <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
                         <i className="fa fa-plus" /> Add User
                      </a>
                   </div>
@@ -323,7 +321,7 @@ const Users = () => {
          {/* /Page Content */}
          {/* Add User Modal */}
 
-         <Adduser />
+         <Adduser show={modalShow} onHide={() => setModalShow(false)} />
 
          {/* /Add User Modal */}
          {/* Edit User Modal */}

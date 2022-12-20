@@ -1,203 +1,132 @@
-  
-  import React from 'react';
+import React, { useState } from "react";
+import Modal from "react-bootstrap/Modal";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { createWorker } from "../../redux/feature/workerSclice";
 
-  const Adduser = () => {
-    
-    return ( 
-  <>
-            {/* Add User Modal */}
-            <div id="add_user" className="modal custom-modal fade" role="dialog">
-                <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title">Add User</h5>
-                      <button type="button" className="close" data-bs-dismiss="modal" aria-label="Close">
+const Adduser = ({ show, onHide }) => {
+   const [worker, setWorker] = useState({
+      name: "",
+      email: "",
+      cccd: 0,
+      mobile: "",
+      date: "",
+   });
+
+   const dispatch = useDispatch();
+   const { user } = useSelector((state) => state.auth);
+
+   function handleSave() {
+      if (user._id) {
+         dispatch(
+            createWorker({
+               payload: {
+                  ...worker,
+                  date: new Date(worker.date).getTime(),
+                  creator: user._id,
+               },
+               toast,
+               onHide,
+            })
+         );
+      }
+   }
+   return (
+      <>
+         {/* Add User Modal */}
+         <Modal show={show} onHide={onHide} className="modal custom-modal fade" role="dialog">
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+               <div className="modal-content">
+                  <div className="modal-header">
+                     <h5 className="modal-title">Add Employee</h5>
+                     <button type="button" className="close" onClick={onHide}>
                         <span aria-hidden="true">×</span>
-                      </button>
-                    </div>
-                    <div className="modal-body">
-                      <form>
-                        <div className="row">
-                          <div className="col-sm-6">
-                            <div className="form-group">
-                              <label>First Name <span className="text-danger">*</span></label>
-                              <input className="form-control" type="text" />
-                            </div>
-                          </div>
-                          <div className="col-sm-6">
-                            <div className="form-group">
-                              <label>Last Name</label>
-                              <input className="form-control" type="text" />
-                            </div>
-                          </div>
-                          <div className="col-sm-6">
-                            <div className="form-group">
-                              <label>Username <span className="text-danger">*</span></label>
-                              <input className="form-control" type="text" />
-                            </div>
-                          </div>
-                          <div className="col-sm-6">
-                            <div className="form-group">
-                              <label>Email <span className="text-danger">*</span></label>
-                              <input className="form-control" type="email" />
-                            </div>
-                          </div>
-                          <div className="col-sm-6">
-                            <div className="form-group">
-                              <label>Password</label>
-                              <input className="form-control" type="password" />
-                            </div>
-                          </div>
-                          <div className="col-sm-6">
-                            <div className="form-group">
-                              <label>Confirm Password</label>
-                              <input className="form-control" type="password" />
-                            </div>
-                          </div>
-                          <div className="col-sm-6">
-                            <div className="form-group">
-                              <label>Phone </label>
-                              <input className="form-control" type="text" />
-                            </div>
-                          </div>
-                          <div className="col-sm-6">
-                            <div className="form-group">
-                              <label>Role</label>
-                              <select className="select">
-                                <option>Admin</option>
-                                <option>Client</option>
-                                <option>Employee</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-sm-6">
-                            <div className="form-group">
-                              <label>Company</label>
-                              <select className="select">
-                                <option>Global Technologies</option>
-                                <option>Delta Infotech</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-sm-6">  
-                            <div className="form-group">
-                              <label>Employee ID <span className="text-danger">*</span></label>
-                              <input type="text" className="form-control floating" />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="table-responsive m-t-15">
-                          <table className="table table-striped custom-table">
-                            <thead>
-                              <tr>
-                                <th>Module Permission</th>
-                                <th className="text-center">Read</th>
-                                <th className="text-center">Write</th>
-                                <th className="text-center">Create</th>
-                                <th className="text-center">Delete</th>
-                                <th className="text-center">Import</th>
-                                <th className="text-center">Export</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>Employee</td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Holidays</td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Leaves</td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Events</td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                                <td className="text-center">
-                                  <input defaultChecked type="checkbox" />
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div className="submit-section">
-                          <button className="btn btn-primary submit-btn">Submit</button>
-                        </div>
-                      </form>
-                    </div>
+                     </button>
                   </div>
-                </div>
-              </div>
-              {/* /Add User Modal */}
-</>
-)
-}
+                  <div className="modal-body">
+                     <form>
+                        <div className="row">
+                           <div className="col-sm-6">
+                              <div className="form-group">
+                                 <label className="col-form-label">
+                                    Họ và tên <span className="text-danger">*</span>
+                                 </label>
+                                 <input
+                                    className="form-control"
+                                    type="text"
+                                    onChange={(e) => setWorker({ ...worker, name: e.target.value })}
+                                 />
+                              </div>
+                           </div>
+                           <div className="col-sm-6">
+                              <div className="form-group">
+                                 <label className="col-form-label">
+                                    Email <span className="text-danger">*</span>
+                                 </label>
+                                 <input
+                                    className="form-control"
+                                    type="email"
+                                    onChange={(e) =>
+                                       setWorker({ ...worker, email: e.target.value })
+                                    }
+                                 />
+                              </div>
+                           </div>
+                           <div className="col-sm-6">
+                              <div className="form-group">
+                                 <label className="col-form-label">
+                                    Căn cước công dân <span className="text-danger">*</span>
+                                 </label>
+                                 <input
+                                    className="form-control"
+                                    type="number"
+                                    onChange={(e) => setWorker({ ...worker, cccd: e.target.value })}
+                                 />
+                              </div>
+                           </div>
 
-export default Adduser
+                           <div className="col-sm-6">
+                              <div className="form-group">
+                                 <label className="col-form-label">
+                                    {" "}
+                                    Số điện thoại <span className="text-danger">*</span>
+                                 </label>
+                                 <input
+                                    className="form-control"
+                                    type="number"
+                                    onChange={(e) =>
+                                       setWorker({ ...worker, mobile: e.target.value })
+                                    }
+                                 />
+                              </div>
+                           </div>
+                           <div className="col-sm-6">
+                              <div className="form-group">
+                                 <label className="col-form-label">
+                                    Ngày sinh <span className="text-danger">*</span>
+                                 </label>
+                                 <input
+                                    className="form-control"
+                                    type="date"
+                                    onChange={(e) => setWorker({ ...worker, date: e.target.value })}
+                                 />
+                              </div>
+                           </div>
+                        </div>
+
+                        <div className="submit-section">
+                           <button className="btn btn-primary submit-btn" onClick={handleSave}>
+                              Lưu
+                           </button>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </Modal>
+         {/* /Add User Modal */}
+      </>
+   );
+};
+
+export default Adduser;
