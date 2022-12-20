@@ -104,7 +104,7 @@ const Sidebar = (props) => {
                            className={isSideMenu == "projects" ? "subdrop" : ""}
                            onClick={() => toggleSidebar(isSideMenu == "projects" ? "" : "projects")}
                         >
-                           <i className="la la-rocket" /> <span> Projects</span>{" "}
+                           <i className="la la-rocket" /> <span>Dự án</span>{" "}
                            <span className="menu-arrow" />
                         </a>
                         {isSideMenu == "projects" ? (
@@ -122,7 +122,15 @@ const Sidebar = (props) => {
                                     }
                                     to="/app/projects/project_dashboard"
                                  >
-                                    Projects
+                                    Tất cả dự án
+                                 </Link>
+                              </li>
+                              <li>
+                                 <Link
+                                    onClick={() => localStorage.setItem("minheight", "true")}
+                                    to="/app/projects/phieu-luong"
+                                 >
+                                    Phiếu lương
                                  </Link>
                               </li>
                               <li>
@@ -130,7 +138,7 @@ const Sidebar = (props) => {
                                     onClick={() => localStorage.setItem("minheight", "true")}
                                     to="/tasks/tasks"
                                  >
-                                    Tasks
+                                    Nhiệm vụ
                                  </Link>
                               </li>
                               <li>

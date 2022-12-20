@@ -9,6 +9,7 @@ import Projects from "./projects";
 import ProjectView from "./projectview";
 import ProjectList from "./projectlist";
 import Taskboard from "./taskboard";
+import Payslip from "./payslip";
 
 const ProjectRoute = ({ match }) => (
    <Switch>
@@ -17,6 +18,7 @@ const ProjectRoute = ({ match }) => (
       <Route path={`${match.url}/projects-list`} component={ProjectList} />
       <Route path={`${match.url}/projects-view/:id`} component={ProjectView} />
       <Route path={`${match.url}/task-board`} component={Taskboard} />
+      <Route path={`${match.url}/phieu-luong`} component={Payslip} />
    </Switch>
 );
 
