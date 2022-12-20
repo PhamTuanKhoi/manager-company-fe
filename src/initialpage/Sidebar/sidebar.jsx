@@ -72,6 +72,14 @@ const Sidebar = (props) => {
                                     Employee Dashboard
                                  </Link>
                               </li>
+                              <li>
+                                 <Link
+                                    className={pathname.includes("main/client-") ? "active" : ""}
+                                    to="/app/main/client-dashboard"
+                                 >
+                                    Client Dashboard
+                                 </Link>
+                              </li>
                            </ul>
                         ) : (
                            ""
