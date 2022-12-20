@@ -138,6 +138,49 @@ const Sidebar = (props) => {
                            ""
                         )}
                      </li>
+                     <li className="submenu">
+                        <a
+                           href="#"
+                           className={isSideMenu == "payroll" ? "subdrop" : ""}
+                           onClick={() => toggleSidebar(isSideMenu == "payroll" ? "" : "payroll")}
+                        >
+                           <i className="la la-money" /> <span> Thanh toán </span>{" "}
+                           <span className="menu-arrow" />
+                        </a>
+                        {isSideMenu == "payroll" ? (
+                           <ul>
+                              <li>
+                                 <Link
+                                    className={pathname.includes("_salary") ? "active" : ""}
+                                    to="/app/payroll/_salary"
+                                 >
+                                    {" "}
+                                    Lương{" "}
+                                 </Link>
+                              </li>
+                              <li>
+                                 <Link
+                                    className={pathname.includes("y-view") ? "active" : ""}
+                                    to="/app/payroll/salary-view"
+                                 >
+                                    {" "}
+                                    Bảng báo giá{" "}
+                                 </Link>
+                              </li>
+                              <li>
+                                 <Link
+                                    className={pathname.includes("payroll-items") ? "active" : ""}
+                                    to="/app/payroll/payroll-items"
+                                 >
+                                    {" "}
+                                    Payroll Items{" "}
+                                 </Link>
+                              </li>
+                           </ul>
+                        ) : (
+                           ""
+                        )}
+                     </li>
                      <li className={pathname.includes("leads") ? "active" : ""}>
                         <Link to="/app/employees/leads">
                            <i className="la la-user-secret" /> <span>Leads</span>
