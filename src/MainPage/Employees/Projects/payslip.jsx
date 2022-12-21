@@ -224,15 +224,20 @@ const Payslip = () => {
          <div className="content container-fluid">
             {/* Page Header */}
             <div className="page-header">
-               <div className="row">
-                  <div className="col-sm-12">
-                     <h3 className="page-title">Leads</h3>
+               <div className="row align-items-center">
+                  <div className="col">
+                     <h3 className="page-title">Phiếu lương</h3>
                      <ul className="breadcrumb">
                         <li className="breadcrumb-item">
-                           <Link to="/app/main/dashboard">Dashboard</Link>
+                           <Link to="/app/main/dashboard">Trang chủ</Link>
                         </li>
-                        <li className="breadcrumb-item active">Leads</li>
+                        <li className="breadcrumb-item active">Phiếu lương</li>
                      </ul>
+                  </div>
+                  <div className="col-auto float-end ml-auto">
+                     <a href="/app/projects/them-phieu-luong" className="btn add-btn">
+                        <i className="fa fa-plus" /> Add Client
+                     </a>
                   </div>
                </div>
             </div>

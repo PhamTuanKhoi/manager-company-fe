@@ -73,7 +73,7 @@ Version      : 3.6
 64. Responsive
 
 ========================================*/
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
 @font-face {
 	font-family: 'Material Icons';
 	font-style: normal;
@@ -86,49 +86,49 @@ Version      : 3.6
 	url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
 }
 @font-face {
-	font-family: 'CircularStd';
+	font-family: 'Roboto', sans-serif;
 	font-style: normal;
 	font-weight: 400;
 	src: local('Circular Std Book'), url('../fonts/CircularStd-Book.woff') format('woff');
 }
 @font-face {
-	font-family: 'CircularStd';
+	font-family: 'Roboto', sans-serif;
 	font-style: italic;
 	font-weight: 400;
 	src: local('Circular Std Book Italic'), url('../fonts/CircularStd-BookItalic.woff') format('woff');
 }
 @font-face {
-	font-family: 'CircularStd';
+	font-family: 'Roboto', sans-serif;
 	font-style: normal;
 	font-weight: 500;
 	src: local('Circular Std Medium'), url('../fonts/CircularStd-Medium.woff') format('woff');
 }
 @font-face {
-	font-family: 'CircularStd';
+	font-family: 'Roboto', sans-serif;
 	font-style: italic;
 	font-weight: 500;
 	src: local('Circular Std Medium Italic'), url('../fonts/CircularStd-MediumItalic.woff') format('woff');
 }
 @font-face {
-	font-family: 'CircularStd';
+	font-family: 'Roboto', sans-serif;
 	font-style: normal;
 	font-weight: 600;
 	src: local('Circular Std Bold'), url('../fonts/CircularStd-Bold.woff') format('woff');
 }
 @font-face {
-	font-family: 'CircularStd';
+	font-family: 'Roboto', sans-serif;
 	font-style: italic;
 	font-weight: 600;
 	src: local('Circular Std Bold Italic'), url('../fonts/CircularStd-BoldItalic.woff') format('woff');
 }
 @font-face {
-	font-family: 'CircularStd';
+	font-family: 'Roboto', sans-serif;
 	font-style: normal;
 	font-weight: 800;
 	src: local('Circular Std Black'), url('../fonts/CircularStd-Black.woff') format('woff');
 }
 @font-face {
-	font-family: 'CircularStd';
+	font-family: 'Roboto', sans-serif;
 	font-style: italic;
 	font-weight: 800;
 	src: local('Circular Std Black Italic'), url('../fonts/CircularStd-BlackItalic.woff') format('woff');
@@ -142,13 +142,13 @@ html {
 	height: 100%;
 }
 body {
-	font-family: 'CircularStd', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	font-size: .9375rem;
 	color: #1f1f1f;
 	background-color: #f7f7f7;
 	min-height: 100%;
 	overflow-x: hidden;
-	word-spacing: -5px;
+	/* word-spacing: 5px; */
 }
 h1,
 h2,
@@ -156,7 +156,7 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: CircularStd;
+	font-family: 'Roboto', sans-serif;
 	margin-top: 0;
 	font-weight: 500;
 }
@@ -3379,12 +3379,12 @@ span#close-task-panel {
 .fc-toolbar h2 {
 	font-size: 18px;
 	font-weight: 600;
-	font-family: 'CircularStd', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	line-height: 30px;
 	text-transform: uppercase;
 }
 .fc-day-grid-event .fc-time {
-	font-family: 'CircularStd', sans-serif;
+	font-family: 'Roboto', sans-serif;
 }
 .fc-day {
 	background: #fff;
@@ -3507,12 +3507,12 @@ span#close-task-panel {
 .fc-basic-view td.fc-week-number span {
 	padding-right: 8px;
 	font-weight: 700;
-	font-family: 'CircularStd', sans-serif;
+	font-family: 'Roboto', sans-serif;
 }
 .fc-basic-view td.fc-day-number {
 	padding-right: 8px;
 	font-weight: 700;
-	font-family: 'CircularStd', sans-serif;
+	font-family: 'Roboto', sans-serif;
 }
 .event-form .input-group .form-control {
 	height: 40px;
