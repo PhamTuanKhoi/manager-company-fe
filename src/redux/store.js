@@ -6,6 +6,7 @@ import storage from "redux-persist/lib/storage";
 import authSclice from "./feature/authSclice";
 import projectSclice from "./feature/projectSclice";
 import workerSclice from "./feature/workerSclice";
+import payslipSclice from "./feature/payslipSclice";
 
 const persistConfig = {
    key: "root",
@@ -18,6 +19,7 @@ const reducer = combineReducers({
    employees: employeesSclice.reducer,
    project: projectSclice.reducer,
    worker: workerSclice.reducer,
+   payslip: payslipSclice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

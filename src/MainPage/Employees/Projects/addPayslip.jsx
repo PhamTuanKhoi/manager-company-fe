@@ -4,6 +4,8 @@
 
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import {
    Avatar_02,
    Avatar_04,
@@ -14,6 +16,7 @@ import {
 } from "../../../Entryfile/imagepath.jsx";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
+import { createPayslip } from "../../../redux/feature/payslipSclice.js";
 
 const AddPayslip = () => {
    const [menu, setMenu] = useState(false);
@@ -44,12 +47,17 @@ const AddPayslip = () => {
       health: "",
    });
 
+   const dispatch = useDispatch();
+   const { user } = useSelector((state) => state.auth);
+
    const toggleMobileMenu = () => {
       setMenu(!menu);
    };
 
    const handleSave = async () => {
-      console.log(paysplip);
+      if (user._id) {
+         dispatch(createPayslip({ payload: { ...paysplip, creator: user._id }, toast }));
+      }
    };
 
    return (
