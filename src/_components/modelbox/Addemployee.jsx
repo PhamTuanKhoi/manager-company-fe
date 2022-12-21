@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { EmployeeDepartmentType } from "../../constant/index";
 import { createEmployees } from "../../redux/feature/employeesSclice";
 import { toast } from "react-toastify";
-import { useWeb3 } from "../../context/useUser";
+import { useSelector } from "react-redux";
 
 const Addemployee = ({ show, onHide }) => {
    const [employees, setEmployees] = useState({
@@ -18,7 +18,7 @@ const Addemployee = ({ show, onHide }) => {
    });
 
    const dispatch = useDispatch();
-   const { user } = useWeb3();
+   const { user } = useSelector((state) => state.auth);
 
    async function handleSave() {
       if (user._id) {
@@ -57,7 +57,7 @@ const Addemployee = ({ show, onHide }) => {
                      </button>
                   </div>
                   <div className="modal-body">
-                     <form>
+                     <div>
                         <div className="row">
                            <div className="col-sm-6">
                               <div className="form-group">
@@ -181,7 +181,7 @@ const Addemployee = ({ show, onHide }) => {
                               Lưu
                            </button>
                         </div>
-                     </form>
+                     </div>
                   </div>
                </div>
             </div>

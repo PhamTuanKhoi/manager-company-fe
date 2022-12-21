@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { userAPI } from "../../api/user";
-import { useWeb3 } from "../../context/useUser";
 import {
    Avatar_19,
    Avatar_29,
@@ -36,7 +35,8 @@ const Clients = () => {
 
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
-   const { user } = useWeb3();
+   const { user } = useSelector((state) => state.auth);
+   console.log(user);
    const [client, setClient] = useState({
       name: "",
       email: "",
@@ -267,7 +267,7 @@ const Clients = () => {
                      </button>
                   </div>
                   <div className="modal-body">
-                     <form>
+                     <div>
                         <div className="row">
                            <div className="col-md-6">
                               <div className="form-group">
@@ -339,7 +339,7 @@ const Clients = () => {
                               Lưu
                            </button>
                         </div>
-                     </form>
+                     </div>
                   </div>
                </div>
             </div>
