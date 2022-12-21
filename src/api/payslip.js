@@ -6,6 +6,10 @@ export const payslipAPI = {
       return await axios.get(path);
    },
 
+   async ListByUser(id) {
+      return await axios.get(path + "user/" + id);
+   },
+
    async createPayslip(payload) {
       return await axios.post(path, payload);
    },
