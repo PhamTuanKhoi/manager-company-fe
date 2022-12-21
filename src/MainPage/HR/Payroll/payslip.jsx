@@ -1,9 +1,22 @@
 import React from "react";
+import { useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 import { Applogo } from "../../../Entryfile/imagepath";
+import payslipSclice from "../../../redux/feature/payslipSclice";
 
 const Payslip = () => {
+   const { id } = useParams();
+   const dispatch = useDispatch();
+
+   const { payslip } = useSelector((state) => state.payslip);
+
+   useEffect(() => {
+      dispatch(payslipSclice.actions.payslipDetail(id));
+   }, []);
+
    return (
       <div className="page-wrapper">
          <Helmet>
@@ -41,135 +54,177 @@ const Payslip = () => {
                <div className="col-md-12">
                   <div className="card">
                      <div className="card-body">
-                        <h4 className="payslip-title">Payslip for the month of Feb 2019</h4>
+                        <a href="/app/projects/phieu-luong">
+                           <div className="back">{"<Back"}</div>
+                        </a>
+                        <h4 className="payslip-title">{payslip.name}</h4>
+
                         <div className="row">
-                           <div className="col-sm-6 m-b-20">
-                              <img src={Applogo} className="inv-logo" alt="" />
-                              <ul className="list-unstyled mb-0">
-                                 <li>Dreamguy's Technologies</li>
-                                 <li>3864 Quiet Valley Lane,</li>
-                                 <li>Sherman Oaks, CA, 91403</li>
-                              </ul>
-                           </div>
-                           <div className="col-sm-6 m-b-20">
-                              <div className="invoice-details">
-                                 <h3 className="text-uppercase">Payslip #49029</h3>
-                                 <ul className="list-unstyled">
-                                    <li>
-                                       Salary Month: <span>March, 2019</span>
-                                    </li>
-                                 </ul>
-                              </div>
-                           </div>
-                        </div>
-                        <div className="row">
-                           <div className="col-lg-12 m-b-20">
-                              <ul className="list-unstyled">
-                                 <li>
-                                    <h5 className="mb-0">
-                                       <strong>John Doe</strong>
-                                    </h5>
-                                 </li>
-                                 <li>
-                                    <span>Web Designer</span>
-                                 </li>
-                                 <li>Employee ID: FT-0009</li>
-                                 <li>Joining Date: 1 Jan 2013</li>
-                              </ul>
-                           </div>
-                        </div>
-                        <div className="row">
-                           <div className="col-sm-6">
-                              <div>
-                                 <h4 className="m-b-10">
-                                    <strong>Earnings</strong>
-                                 </h4>
-                                 <table className="table table-bordered">
-                                    <tbody>
-                                       <tr>
-                                          <td>
-                                             <strong>Basic Salary</strong>{" "}
-                                             <span className="float-end">$6500</span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <strong>House Rent Allowance (H.R.A.)</strong>{" "}
-                                             <span className="float-end">$55</span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <strong>Conveyance</strong>{" "}
-                                             <span className="float-end">$55</span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <strong>Other Allowance</strong>{" "}
-                                             <span className="float-end">$55</span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <strong>Total Earnings</strong>{" "}
-                                             <span className="float-end">
-                                                <strong>$55</strong>
-                                             </span>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div>
-                           <div className="col-sm-6">
-                              <div>
-                                 <h4 className="m-b-10">
-                                    <strong>Deductions</strong>
-                                 </h4>
-                                 <table className="table table-bordered">
-                                    <tbody>
-                                       <tr>
-                                          <td>
-                                             <strong>Tax Deducted at Source (T.D.S.)</strong>{" "}
-                                             <span className="float-end">$0</span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <strong>Provident Fund</strong>{" "}
-                                             <span className="float-end">$0</span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <strong>ESI</strong>{" "}
-                                             <span className="float-end">$0</span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <strong>Loan</strong>{" "}
-                                             <span className="float-end">$300</span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <strong>Total Deductions</strong>{" "}
-                                             <span className="float-end">
-                                                <strong>$59698</strong>
-                                             </span>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div>
                            <div className="col-sm-12">
-                              <p>
-                                 <strong>Net Salary: $59698</strong> (Fifty nine thousand six
-                                 hundred and ninety eight only.)
-                              </p>
+                              <div>
+                                 <h4 className="m-b-10">
+                                    <strong>Phúc lợi</strong>
+                                 </h4>
+                                 <table className="table table-bordered">
+                                    <tbody>
+                                       <tr>
+                                          <td>
+                                             <span>Nghỉ phép</span>{" "}
+                                             <span className="float-end">
+                                                {payslip?.leave} ngày/năm
+                                             </span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Thưởng lể/tết</span>{" "}
+                                             <span className="float-end">
+                                                {payslip?.reward} VND
+                                             </span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Cơm ca</span>{" "}
+                                             <span className="float-end">{payslip?.rice} VND</span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Lương tháng 13</span>{" "}
+                                             <span className="float-end">
+                                                {payslip?.bonus} tháng/năm
+                                             </span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Làm ngoài giờ</span>{" "}
+                                             <span className="float-end">{payslip?.overtime}%</span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Làm chủ nhật</span>{" "}
+                                             <span className="float-end">{payslip?.sunday}%</span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Làm lể tết</span>{" "}
+                                             <span className="float-end">{payslip?.holiday}%</span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Phí dịch vụ</span>{" "}
+                                             <span className="float-end">{payslip?.service}%</span>
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                           <div className="col-sm-6">
+                              <div>
+                                 <h4 className="m-b-10">
+                                    <strong>Phụ cấp</strong>
+                                 </h4>
+                                 <table className="table table-bordered">
+                                    <tbody>
+                                       <tr>
+                                          <td>
+                                             <span>Phụ cấp đi lại</span>{" "}
+                                             <span className="float-end">{payslip?.go} VND</span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Phụ cấp nhà ở</span>{" "}
+                                             <span className="float-end">{payslip?.home} VND</span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Phụ cấp nặng nhọc/ độc hại</span>{" "}
+                                             <span className="float-end">{payslip?.toxic} VND</span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Chuyên cần</span>{" "}
+                                             <span className="float-end">
+                                                {payslip?.diligence} VND
+                                             </span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Hiệu quả công việc</span>{" "}
+                                             <span className="float-end">
+                                                {payslip?.effectively} VND
+                                             </span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Phụ cấp ăn uống</span>{" "}
+                                             <span className="float-end">{payslip?.eat} VND</span>
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+
+                           <div className="col-sm-6">
+                              <div>
+                                 <h4 className="m-b-10">
+                                    <strong>Bảo hiểm</strong>
+                                 </h4>
+                                 <table className="table table-bordered">
+                                    <tbody>
+                                       <tr>
+                                          <td>
+                                             <span>Bảo Hiểm Y Tế</span>{" "}
+                                             <span className="float-end">{payslip?.medican}%</span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Bảo Hiểm Xã Hội</span>{" "}
+                                             <span className="float-end">{payslip?.society}%</span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Bảo Hiểm Thất Nghiệp</span>{" "}
+                                             <span className="float-end">
+                                                {payslip?.unemployment}%
+                                             </span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Công Đoàn</span>{" "}
+                                             <span className="float-end">{payslip?.union}%</span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Bảo Hiểm Tai Nạn</span>{" "}
+                                             <span className="float-end">{payslip?.accident}%</span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Khám Sức Khỏe Định Kỳ</span>{" "}
+                                             <span className="float-end">{payslip?.health}%</span>
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
                            </div>
                         </div>
                      </div>

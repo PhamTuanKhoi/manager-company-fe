@@ -5,6 +5,7 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
    Avatar_02,
@@ -48,6 +49,7 @@ const AddPayslip = () => {
    });
 
    const dispatch = useDispatch();
+   const history = useHistory();
    const { user } = useSelector((state) => state.auth);
 
    const toggleMobileMenu = () => {
@@ -56,7 +58,7 @@ const AddPayslip = () => {
 
    const handleSave = async () => {
       if (user._id) {
-         dispatch(createPayslip({ payload: { ...paysplip, creator: user._id }, toast }));
+         dispatch(createPayslip({ payload: { ...paysplip, creator: user._id }, toast, history }));
       }
    };
 
@@ -70,12 +72,16 @@ const AddPayslip = () => {
                <meta name="description" content="Dashboard" />
             </Helmet>
             {/* Page Content */}
+
             <div className="content container-fluid">
                <div className="row">
                   <div className="col-md-12">
                      <div className="card">
                         <div className="card-body">
                            {" "}
+                           <a href="/app/projects/phieu-luong">
+                              <div className="back">{"<Back"}</div>
+                           </a>
                            <h2 className="payslip-title">Thêm phiếu lương</h2>
                            <div>
                               <div className="row">

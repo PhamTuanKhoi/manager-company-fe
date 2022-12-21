@@ -4,10 +4,11 @@ import { userAPI } from "../../api/user";
 
 export const createPayslip = createAsyncThunk(
    "paySlip/createPayslip",
-   async ({ payload, toast }, { rejectWithValue }) => {
+   async ({ payload, toast, history }, { rejectWithValue }) => {
       try {
          const { data } = await payslipAPI.createPayslip(payload);
          toast.success("Thêm dự án thành công");
+         history.push("/app/projects/phieu-luong");
          return data;
       } catch (error) {
          if (typeof error?.response?.data?.message === "string") {
@@ -22,6 +23,18 @@ export const createPayslip = createAsyncThunk(
    }
 );
 
+export const listPayslip = createAsyncThunk(
+   "paySlip/listPayslip",
+   async (_, { rejectWithValue }) => {
+      try {
+         const { data } = await payslipAPI.list();
+         return data;
+      } catch (error) {
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const payslipSclice = createSlice({
    name: "payslip",
    initialState: {
@@ -29,6 +42,11 @@ const payslipSclice = createSlice({
       payslips: [],
       error: "",
       loading: false,
+   },
+   reducers: {
+      payslipDetail: (state, action) => {
+         state.payslip = state.payslips.find((i) => i._id === action.payload);
+      },
    },
    extraReducers: {
       [createPayslip.pending]: (state, action) => {
@@ -46,6 +64,17 @@ const payslipSclice = createSlice({
       },
 
       // list
+      [listPayslip.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listPayslip.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.payslips = action.payload;
+      },
+      [listPayslip.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
    },
 });
 

@@ -16,179 +16,58 @@ import { Table } from "antd";
 import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { listPayslip } from "../../../redux/feature/payslipSclice";
+import moment from "moment";
 
 const Payslip = () => {
-   const [data, setData] = useState([
-      {
-         id: 1,
-         image: Avatar_11,
-         name: "John Doe",
-         email: "barrycuda@example.com",
-         mobile: "9876543210",
-         project: "Hospital Administration",
-         status: "Working",
-         created: "10 hours ago",
-      },
-      {
-         id: 1,
-         image: Avatar_11,
-         name: "John Doezzz",
-         email: "barrycuda@example.com",
-         mobile: "9876543210",
-         project: "Hospital Administration",
-         status: "Working",
-         created: "10 hours ago",
-      },
-      {
-         id: 1,
-         image: Avatar_11,
-         name: "John Doeâ",
-         email: "barrycuda@example.com",
-         mobile: "98765432110",
-         project: "Hospital Administration",
-         status: "Working",
-         created: "10 hours ago",
-      },
-   ]);
+   const dispatch = useDispatch();
+
+   useEffect(() => {
+      dispatch(listPayslip());
+   }, []);
+
+   const { payslips } = useSelector((state) => state.payslip);
 
    const columns = [
       {
          title: "#",
-         dataIndex: "id",
-         sorter: (a, b) => a.id.length - b.id.length,
+         dataIndex: "_id",
+         render: (text, record) => {
+            let i = 1;
+            return i++;
+         },
+         sorter: (a, b) => a._id.length - b._id.length,
       },
       {
-         title: "Lead Name",
+         title: "Tên phiếu lương",
          dataIndex: "name",
          render: (text, record) => (
             <h2 className="table-avatar">
-               <Link to="/app/profile/employee-profile" className="avatar">
-                  <img alt="" src={record.image} />
-               </Link>
-               <Link to="/app/profile/employee-profile">{text}</Link>
+               <Link to={`/app/payroll/salary-view/${record?._id}`}>{text}</Link>
             </h2>
          ),
          sorter: (a, b) => a.name.length - b.name.length,
       },
-      {
-         title: "Email",
-         dataIndex: "email",
-         sorter: (a, b) => a.email.length - b.email.length,
-      },
 
       {
-         title: "Mobile",
-         dataIndex: "mobile",
-         sorter: (a, b) => a.mobile.length - b.mobile.length,
+         title: "Ngày tạo",
+         dataIndex: "createdAt",
+         render: (text) => moment(text).format("DD/MM/YYYY  -- hh:mm"),
+         sorter: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
       },
-
       {
-         title: "Project",
-         dataIndex: "project",
-         render: (text, record) => <Link to="/app/projects/projects-view">{text}</Link>,
-         sorter: (a, b) => a.project.length - b.project.length,
-      },
-
-      {
-         title: "Assigned Staff",
-         dataIndex: "assignedstaff",
+         title: "Kết nối dự án",
+         dataIndex: "name",
          render: (text, record) => (
-            <ul className="team-members">
-               <li>
-                  <a href="#" title="John Doe" data-bs-toggle="tooltip">
-                     <img alt="" src={Avatar_02} />
-                  </a>
-               </li>
-               <li>
-                  <a href="#" title="Richard Miles" data-bs-toggle="tooltip">
-                     <img alt="" src={Avatar_09} />
-                  </a>
-               </li>
-               <li className="dropdown avatar-dropdown">
-                  <a
-                     href="#"
-                     className="all-users dropdown-toggle"
-                     data-bs-toggle="dropdown"
-                     aria-expanded="false"
-                  >
-                     +15
-                  </a>
-                  <div className="dropdown-menu dropdown-menu-right">
-                     <div className="avatar-group">
-                        <a className="avatar avatar-xs" href="#">
-                           <img alt="" src={Avatar_02} />
-                        </a>
-                        <a className="avatar avatar-xs" href="#">
-                           <img alt="" src={Avatar_09} />
-                        </a>
-                        <a className="avatar avatar-xs" href="#">
-                           <img alt="" src={Avatar_10} />
-                        </a>
-                        <a className="avatar avatar-xs" href="#">
-                           <img alt="" src={Avatar_05} />
-                        </a>
-                        <a className="avatar avatar-xs" href="#">
-                           <img alt="" src={Avatar_11} />
-                        </a>
-                        <a className="avatar avatar-xs" href="#">
-                           <img alt="" src={Avatar_12} />
-                        </a>
-                        <a className="avatar avatar-xs" href="#">
-                           <img alt="" src={Avatar_13} />
-                        </a>
-                        <a className="avatar avatar-xs" href="#">
-                           <img alt="" src={Avatar_01} />
-                        </a>
-                        <a className="avatar avatar-xs" href="#">
-                           <img alt="" src={Avatar_16} />
-                        </a>
-                     </div>
-                     <div className="avatar-pagination">
-                        <ul className="pagination">
-                           <li className="page-item">
-                              <a className="page-link" href="#" aria-label="Previous">
-                                 <span aria-hidden="true">«</span>
-                                 <span className="sr-only">Previous</span>
-                              </a>
-                           </li>
-                           <li className="page-item">
-                              <a className="page-link" href="#">
-                                 1
-                              </a>
-                           </li>
-                           <li className="page-item">
-                              <a className="page-link" href="#">
-                                 2
-                              </a>
-                           </li>
-                           <li className="page-item">
-                              <a className="page-link" href="#" aria-label="Next">
-                                 <span aria-hidden="true">»</span>
-                                 <span className="sr-only">Next</span>
-                              </a>
-                           </li>
-                        </ul>
-                     </div>
-                  </div>
-               </li>
-            </ul>
+            <h2 className="table-avatar">
+               <a href="/app/projects/phieu-luong">
+                  <div className="back">{"<Back"}</div>
+               </a>
+            </h2>
          ),
-      },
-      {
-         title: "Status",
-         dataIndex: "status",
-         render: (text, record) => (
-            <span
-               className={text === "Working" ? "badge bg-inverse-success" : "badge bg-inverse-info"}
-            >
-               {text}
-            </span>
-         ),
-      },
-      {
-         title: "Created",
-         dataIndex: "created",
-         sorter: (a, b) => a.created.length - b.created.length,
+         sorter: (a, b) => a.name.length - b.name.length,
       },
       {
          title: "Action",
@@ -248,7 +127,7 @@ const Payslip = () => {
                      <Table
                         className="table-striped"
                         pagination={{
-                           total: data.length,
+                           total: payslips.length,
                            showTotal: (total, range) =>
                               `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                            showSizeChanger: true,
@@ -258,8 +137,8 @@ const Payslip = () => {
                         style={{ overflowX: "auto" }}
                         columns={columns}
                         // bordered
-                        dataSource={data}
-                        rowKey={(record) => record.id}
+                        dataSource={payslips}
+                        rowKey={(record) => record._id}
                         onChange={console.log("change value")}
                      />
                   </div>
