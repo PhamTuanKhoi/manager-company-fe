@@ -586,6 +586,20 @@ const ProjectView = () => {
                   <div className="card project-user">
                      <div className="card-body">
                         <h6 className="card-title m-b-20">
+                           <button
+                              type="button"
+                              className="float-end btn btn-primary btn-sm"
+                              data-bs-toggle="modal"
+                              data-bs-target="#assign_leader"
+                           >
+                              <i className="fa fa-plus" /> Liên kết phiếu lương
+                           </button>
+                        </h6>
+                     </div>
+                  </div>
+                  <div className="card project-user">
+                     <div className="card-body">
+                        <h6 className="card-title m-b-20">
                            Khách hàng{" "}
                            <button
                               type="button"
