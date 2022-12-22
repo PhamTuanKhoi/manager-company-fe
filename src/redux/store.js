@@ -7,6 +7,7 @@ import authSclice from "./feature/authSclice";
 import projectSclice from "./feature/projectSclice";
 import workerSclice from "./feature/workerSclice";
 import payslipSclice from "./feature/payslipSclice";
+import workerProjectSclice from "./feature/workerProjectSclice";
 
 const persistConfig = {
    key: "root",
@@ -20,6 +21,7 @@ const reducer = combineReducers({
    project: projectSclice.reducer,
    worker: workerSclice.reducer,
    payslip: payslipSclice.reducer,
+   workerProject: workerProjectSclice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

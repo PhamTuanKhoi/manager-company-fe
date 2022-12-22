@@ -1,14 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { userAPI } from "../../api/user";
+import { workerProjectAPI } from "../../api/workerproject";
 
-export const createWorker = createAsyncThunk(
-   "worker/createWorker",
+export const createWorkerProject = createAsyncThunk(
+   "workerProject/createWorkerProject",
    async ({ payload, toast, onHide, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await userAPI.createWorker(payload);
+         const { data } = await workerProjectAPI.create(payload);
          toast.success("Thêm người lao động thành công");
-         onHide();
+
          setLoading(false);
          return data;
       } catch (error) {
@@ -25,12 +26,12 @@ export const createWorker = createAsyncThunk(
    }
 );
 
-export const listWorker = createAsyncThunk(
-   "worker/listWorker",
-   async ({ setLoading }, { rejectWithValue }) => {
+export const listWorkerProjectByProject = createAsyncThunk(
+   "workerProject/listWorkerProjectByProject",
+   async ({ id, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await userAPI.listWorker();
+         const { data } = await workerProjectAPI.listByProject(id);
          setLoading(false);
          return data;
       } catch (error) {
@@ -40,37 +41,39 @@ export const listWorker = createAsyncThunk(
    }
 );
 
-const workerSclice = createSlice({
-   name: "worker",
+const workerProjectSclice = createSlice({
+   name: "workerProject",
    initialState: {
-      worker: {},
-      workers: [],
+      workerProject: {},
+      workerProjects: [],
+      listWPByProject: [],
       error: "",
       loading: false,
    },
    extraReducers: {
-      [createWorker.pending]: (state, action) => {
+      [createWorkerProject.pending]: (state, action) => {
          state.loading = true;
       },
-      [createWorker.fulfilled]: (state, action) => {
+      [createWorkerProject.fulfilled]: (state, action) => {
          state.loading = false;
-         state.worker = action.payload;
-         state.workers.push(action.payload);
+         state.workerProject = action.payload;
+         state.workerProjects.push(action.payload);
+         state.listWPByProject.push(action.payload);
       },
-      [createWorker.rejected]: (state, action) => {
+      [createWorkerProject.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
 
-      // list
-      [listWorker.pending]: (state, action) => {
+      // list by id project
+      [listWorkerProjectByProject.pending]: (state, action) => {
          state.loading = true;
       },
-      [listWorker.fulfilled]: (state, action) => {
+      [listWorkerProjectByProject.fulfilled]: (state, action) => {
          state.loading = false;
-         state.workers = action.payload;
+         state.listWPByProject = action.payload;
       },
-      [listWorker.rejected]: (state, action) => {
+      [listWorkerProjectByProject.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
@@ -78,4 +81,4 @@ const workerSclice = createSlice({
 });
 
 // export
-export default workerSclice;
+export default workerProjectSclice;

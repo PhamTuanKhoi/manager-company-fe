@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { EmployeeDepartmentType } from "../../../constant";
 import {
    Avatar_16,
    Avatar_02,
@@ -14,8 +15,11 @@ import {
    Avatar_01,
    PlaceHolder,
 } from "../../../Entryfile/imagepath";
+import { useLoading } from "../../../hook/useLoading";
 import { listPayslipByUser } from "../../../redux/feature/payslipSclice";
 import projectSclice from "../../../redux/feature/projectSclice";
+import { listWorkerProjectByProject } from "../../../redux/feature/workerProjectSclice";
+import AssignUser from "../../../_components/modelbox/assignUser";
 import Editproject from "../../../_components/modelbox/Editproject";
 import LinkProject from "../../../_components/modelbox/linkProject";
 
@@ -29,18 +33,26 @@ const ProjectView = () => {
       }
    });
    const [modalShow, setModalShow] = useState(false);
+   const [modalAssign, setModalAssign] = useState(false);
    const dispatch = useDispatch();
+   const { setLoading } = useLoading();
 
    const { id } = useParams();
    const { user } = useSelector((state) => state.auth);
 
    useEffect(() => {
+      //project detail {}
       dispatch(projectSclice.actions.projectDetail(id));
 
       if (user._id) {
          listByUser();
       }
-   }, []);
+   }, [id]);
+
+   useEffect(() => {
+      // worker-project by id project
+      dispatch(listWorkerProjectByProject({ id, setLoading }));
+   }, [id]);
 
    function listByUser() {
       dispatch(listPayslipByUser({ id: user?._id }));
@@ -617,26 +629,47 @@ const ProjectView = () => {
                               data-bs-toggle="modal"
                               data-bs-target="#assign_leader"
                            >
-                              <i className="fa fa-plus" /> Add
+                              <i className="fa fa-plus" /> Thêm
                            </button>
                         </h6>
                         <ul className="list-box">
-                           <li>
-                              <Link to="/app/profile/employee-profile">
-                                 <div className="list-item">
-                                    <div className="list-left">
-                                       <span className="avatar">
-                                          <img alt="" src={Avatar_11} />
-                                       </span>
+                           {project?.client?.map((item) => (
+                              <li key={item?._id}>
+                                 <Link to="/app/profile/employee-profile">
+                                    <div className="list-item">
+                                       <div className="list-left">
+                                          <span className="avatar">
+                                             <img alt="" src={Avatar_01} />
+                                          </span>
+                                       </div>
+                                       <div className="list-body">
+                                          <span className="message-author">{item?.name}</span>
+                                          <div className="clearfix" />
+                                          <span className="message-content">{item?.company}</span>
+                                       </div>
                                     </div>
-                                    <div className="list-body">
-                                       <span className="message-author">Wilmer Deluna</span>
-                                       <div className="clearfix" />
-                                       <span className="message-content">Team Leader</span>
-                                    </div>
-                                 </div>
-                              </Link>
-                           </li>
+                                 </Link>
+                              </li>
+                           ))}
+                        </ul>
+                     </div>
+                  </div>
+
+                  {/* lead */}
+                  <div className="card project-user">
+                     <div className="card-body">
+                        <h6 className="card-title m-b-20">
+                           Leader{" "}
+                           <button
+                              type="button"
+                              className="float-end btn btn-primary btn-sm"
+                              data-bs-toggle="modal"
+                              data-bs-target="#assign_leader"
+                           >
+                              <i className="fa fa-plus" /> Thay đổi
+                           </button>
+                        </h6>
+                        <ul className="list-box">
                            <li>
                               <Link to="/app/profile/employee-profile">
                                  <div className="list-item">
@@ -646,9 +679,13 @@ const ProjectView = () => {
                                        </span>
                                     </div>
                                     <div className="list-body">
-                                       <span className="message-author">Lesley Grauer</span>
+                                       <span className="message-author">
+                                          {project?.leader?.name}
+                                       </span>
                                        <div className="clearfix" />
-                                       <span className="message-content">Team Leader</span>
+                                       <span className="message-content">
+                                          {project?.leader?.department}
+                                       </span>
                                     </div>
                                  </div>
                               </Link>
@@ -656,6 +693,7 @@ const ProjectView = () => {
                         </ul>
                      </div>
                   </div>
+                  {/* nhan vien */}
                   <div className="card project-user">
                      <div className="card-body">
                         <h6 className="card-title m-b-20">
@@ -666,56 +704,54 @@ const ProjectView = () => {
                               data-bs-toggle="modal"
                               data-bs-target="#assign_leader"
                            >
-                              <i className="fa fa-plus" /> Add
+                              <i className="fa fa-plus" /> Thêm
                            </button>
                         </h6>
                         <ul className="list-box">
-                           <li>
-                              <Link to="/app/profile/employee-profile">
-                                 <div className="list-item">
-                                    <div className="list-left">
-                                       <span className="avatar">
-                                          <img alt="" src={Avatar_11} />
-                                       </span>
+                           {project?.team?.map((item) => (
+                              <li key={item?._id}>
+                                 <Link to="/app/profile/employee-profile">
+                                    <div className="list-item">
+                                       <div className="list-left">
+                                          <span className="avatar">
+                                             <img alt="" src={item?.avartar || Avatar_11} />
+                                          </span>
+                                       </div>
+                                       <div className="list-body">
+                                          <span className="message-author">{item?.name}</span>
+                                          <div className="clearfix" />
+                                          <span className="message-content">
+                                             {item?.department === EmployeeDepartmentType.BUSSINESS
+                                                ? "Kinh doanh"
+                                                : item?.department ===
+                                                  EmployeeDepartmentType.MARKETING
+                                                ? "Marketing"
+                                                : item?.department ===
+                                                  EmployeeDepartmentType.ACCOUNTANT
+                                                ? "Kế toán"
+                                                : item?.department ===
+                                                  EmployeeDepartmentType.RECRUIT
+                                                ? "Tuyển dụng"
+                                                : ""}
+                                          </span>
+                                       </div>
                                     </div>
-                                    <div className="list-body">
-                                       <span className="message-author">Wilmer Deluna</span>
-                                       <div className="clearfix" />
-                                       <span className="message-content">Team Leader</span>
-                                    </div>
-                                 </div>
-                              </Link>
-                           </li>
-                           <li>
-                              <Link to="/app/profile/employee-profile">
-                                 <div className="list-item">
-                                    <div className="list-left">
-                                       <span className="avatar">
-                                          <img alt="" src={Avatar_01} />
-                                       </span>
-                                    </div>
-                                    <div className="list-body">
-                                       <span className="message-author">Lesley Grauer</span>
-                                       <div className="clearfix" />
-                                       <span className="message-content">Team Leader</span>
-                                    </div>
-                                 </div>
-                              </Link>
-                           </li>
+                                 </Link>
+                              </li>
+                           ))}
                         </ul>
                      </div>
                   </div>
                   <div className="card project-user">
                      <div className="card-body">
-                        <h6 className="card-title m-b-20">
+                        <h6 className="card-title m-b-20 worker-name">
                            Người lao động
                            <button
                               type="button"
                               className="float-end btn btn-primary btn-sm"
-                              data-bs-toggle="modal"
-                              data-bs-target="#assign_user"
+                              onClick={() => setModalAssign(true)}
                            >
-                              <i className="fa fa-plus" /> Add
+                              Thêm
                            </button>
                         </h6>
                         <ul className="list-box">
@@ -735,22 +771,6 @@ const ProjectView = () => {
                                  </div>
                               </Link>
                            </li>
-                           <li>
-                              <Link to="/app/profile/employee-profile">
-                                 <div className="list-item">
-                                    <div className="list-left">
-                                       <span className="avatar">
-                                          <img alt="" src={Avatar_09} />
-                                       </span>
-                                    </div>
-                                    <div className="list-body">
-                                       <span className="message-author">Richard Miles</span>
-                                       <div className="clearfix" />
-                                       <span className="message-content">Web Developer</span>
-                                    </div>
-                                 </div>
-                              </Link>
-                           </li>
                         </ul>
                      </div>
                   </div>
@@ -762,81 +782,7 @@ const ProjectView = () => {
          <LinkProject show={modalShow} onHide={() => setModalShow(false)} />
          {/* /Assign Leader Modal */}
          {/* Assign User Modal */}
-         <div id="assign_user" className="modal custom-modal fade" role="dialog">
-            <div className="modal-dialog modal-dialog-centered" role="document">
-               <div className="modal-content">
-                  <div className="modal-header">
-                     <h5 className="modal-title">Assign the user to this project</h5>
-                     <button
-                        type="button"
-                        className="close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                     >
-                        <span aria-hidden="true">×</span>
-                     </button>
-                  </div>
-                  <div className="modal-body">
-                     <div className="input-group m-b-30">
-                        <input
-                           placeholder="Search a user to assign"
-                           className="form-control search-input"
-                           type="text"
-                        />
-                        <span className="input-group-append">
-                           <button className="btn btn-primary">Search</button>
-                        </span>
-                     </div>
-                     <div>
-                        <ul className="chat-user-list">
-                           <li>
-                              <a href="#">
-                                 <div className="media">
-                                    <span className="avatar">
-                                       <img alt="" src={Avatar_09} />
-                                    </span>
-                                    <div className="media-body align-self-center text-nowrap">
-                                       <div className="user-name">Richard Miles</div>
-                                       <span className="designation">Web Developer</span>
-                                    </div>
-                                 </div>
-                              </a>
-                           </li>
-                           <li>
-                              <a href="#">
-                                 <div className="media">
-                                    <span className="avatar">
-                                       <img alt="" src={Avatar_10} />
-                                    </span>
-                                    <div className="media-body align-self-center text-nowrap">
-                                       <div className="user-name">John Smith</div>
-                                       <span className="designation">Android Developer</span>
-                                    </div>
-                                 </div>
-                              </a>
-                           </li>
-                           <li>
-                              <a href="#">
-                                 <div className="media">
-                                    <span className="avatar">
-                                       <img alt="" src={Avatar_16} />
-                                    </span>
-                                    <div className="media-body align-self-center text-nowrap">
-                                       <div className="user-name">Jeffery Lalor</div>
-                                       <span className="designation">Team Leader</span>
-                                    </div>
-                                 </div>
-                              </a>
-                           </li>
-                        </ul>
-                     </div>
-                     <div className="submit-section">
-                        <button className="btn btn-primary submit-btn">Submit</button>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
+         <AssignUser show={modalAssign} onHide={() => setModalAssign(false)} />
          {/* /Assign User Modal */}
          {/* Edit Project Modal */}
          <Editproject />

@@ -29,10 +29,12 @@ import { useDispatch } from "react-redux";
 import { listWorker } from "../../redux/feature/workerSclice";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import { useLoading } from "../../hook/useLoading";
 
 const Users = () => {
    const [modalShow, setModalShow] = useState(false);
    const dispatch = useDispatch();
+   const { setLoading } = useLoading();
 
    useEffect(() => {
       if ($(".select").length > 0) {
@@ -44,7 +46,7 @@ const Users = () => {
    });
 
    useEffect(() => {
-      dispatch(listWorker());
+      dispatch(listWorker({ setLoading }));
    }, []);
 
    const { workers } = useSelector((state) => state.worker);
