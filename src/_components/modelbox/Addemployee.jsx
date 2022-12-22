@@ -5,6 +5,7 @@ import { EmployeeDepartmentType } from "../../constant/index";
 import { createEmployees } from "../../redux/feature/employeesSclice";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { useLoading } from "../../hook/useLoading";
 
 const Addemployee = ({ show, onHide }) => {
    const [employees, setEmployees] = useState({
@@ -17,6 +18,7 @@ const Addemployee = ({ show, onHide }) => {
       address: "",
    });
 
+   const { setLoading } = useLoading();
    const dispatch = useDispatch();
    const { user } = useSelector((state) => state.auth);
 
@@ -31,6 +33,7 @@ const Addemployee = ({ show, onHide }) => {
                },
                toast,
                onHide,
+               setLoading,
             })
          );
       }

@@ -9,16 +9,19 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 //bootrap
 import "bootstrap/dist/css/bootstrap.min.css";
+import Spinner from "./_components/spinner";
 
 window.Popper = require("popper.js").default;
 
 configAxios();
 ReactDOM.render(
    <Web3Provider>
-      <Provider store={store}>
-         <ToastContainer />
-         <Main />
-      </Provider>
+      <Spinner>
+         <Provider store={store}>
+            <ToastContainer />
+            <Main />
+         </Provider>
+      </Spinner>
    </Web3Provider>,
    document.getElementById("app")
 );

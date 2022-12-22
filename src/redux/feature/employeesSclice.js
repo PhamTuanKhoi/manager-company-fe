@@ -3,13 +3,15 @@ import { userAPI } from "../../api/user";
 
 export const createEmployees = createAsyncThunk(
    "employees/createEmployees",
-   async ({ payload, toast, onHide }, { rejectWithValue }) => {
+   async ({ payload, toast, onHide, setLoading }, { rejectWithValue }) => {
       try {
+         setLoading(true);
          const { data } = await userAPI.createEmployees(payload);
          toast.success("Thêm nhân viên thành công");
          onHide();
          return data;
       } catch (error) {
+         setLoading(false);
          if (typeof error?.response?.data?.message === "string") {
             toast.error(error?.response?.data?.message);
          } else {

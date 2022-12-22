@@ -36,7 +36,6 @@ const Clients = () => {
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
    const { user } = useSelector((state) => state.auth);
-   console.log(user);
    const [client, setClient] = useState({
       name: "",
       email: "",
