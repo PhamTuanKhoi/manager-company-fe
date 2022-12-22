@@ -22,6 +22,31 @@ export const createProject = createAsyncThunk(
    }
 );
 
+export const updateProject = createAsyncThunk(
+   "project/updateProject",
+   async ({ id, payload, toast, onHide, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await projectAPI.updateProject(id, payload);
+         toast.success("Cập nhật dự án thành công");
+         onHide();
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 export const listProject = createAsyncThunk(
    "project/listProject",
    async (_, { rejectWithValue }) => {
@@ -70,6 +95,19 @@ const projectSclice = createSlice({
          state.projects = action.payload;
       },
       [listProject.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // update
+      [updateProject.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [updateProject.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.project = action.payload;
+      },
+      [updateProject.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

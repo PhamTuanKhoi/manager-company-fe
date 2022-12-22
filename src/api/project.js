@@ -9,4 +9,8 @@ export const projectAPI = {
    async createProject(payload) {
       return await axios.post(path, payload);
    },
+
+   async updateProject(id, payload) {
+      return await axios.patch(path + id, payload);
+   },
 };

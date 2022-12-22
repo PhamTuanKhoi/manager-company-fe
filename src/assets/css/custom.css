@@ -33,6 +33,54 @@
     border-radius: 5px;
     text-align: center;
     color: #fff;
+    cursor: pointer;
+  }
+
+  /* import page project */
+  .import-content {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .import{
+    background-color: #b5ba36;
+    width: 70px; 
+    border-radius: 5px;
+    text-align: center;
+    color: #fff; 
+  }
+
+  .import-name{
+    color: #03c5fb;
+    font-weight: 600;
+  }
+
+  .page-payslip {
+    padding: 10px;
+    text-decoration: underline;
+    color: #0d6efd; 
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    cursor: pointer;
+  }
+
+  .close-x {
+    /* background-color: #03c5fb;   */
+    border: none;
+    border-radius: 50%;
+    color: rgb(200, 42, 42);
+    font-size: 20px;
+    height: 20px;
+    line-height: 20px;
+    margin: 0;
+    opacity: 1;
+    padding: 0;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 20px;
+    z-index: 99;
   }
   
  

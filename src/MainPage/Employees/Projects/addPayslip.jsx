@@ -79,9 +79,9 @@ const AddPayslip = () => {
                      <div className="card">
                         <div className="card-body">
                            {" "}
-                           <a href="/app/projects/phieu-luong">
-                              <div className="back">{"<Back"}</div>
-                           </a>
+                           <div className="back" onClick={() => history.goBack()}>
+                              {"<Back"}
+                           </div>
                            <h2 className="payslip-title">Thêm phiếu lương</h2>
                            <div>
                               <div className="row">

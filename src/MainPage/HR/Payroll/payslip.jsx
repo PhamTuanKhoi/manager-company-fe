@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { Applogo } from "../../../Entryfile/imagepath";
 import payslipSclice from "../../../redux/feature/payslipSclice";
 
@@ -12,6 +12,7 @@ const Payslip = () => {
    const dispatch = useDispatch();
 
    const { payslip } = useSelector((state) => state.payslip);
+   const history = useHistory();
 
    useEffect(() => {
       dispatch(payslipSclice.actions.payslipDetail(id));
@@ -54,10 +55,10 @@ const Payslip = () => {
                <div className="col-md-12">
                   <div className="card">
                      <div className="card-body">
-                        <a href="/app/projects/phieu-luong">
-                           <div className="back">{"<Back"}</div>
-                        </a>
-                        <h4 className="payslip-title">{payslip.name}</h4>
+                        <div onClick={() => history.goBack()} className="back">
+                           {"<Back"}
+                        </div>
+                        <h4 className="payslip-title">{payslip?.name}</h4>
 
                         <div className="row">
                            <div className="col-sm-12">
