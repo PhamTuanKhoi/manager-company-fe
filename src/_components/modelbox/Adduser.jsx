@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { createWorker } from "../../redux/feature/workerSclice";
+import { useLoading } from "../../hook/useLoading";
 
 const Adduser = ({ show, onHide }) => {
    const [worker, setWorker] = useState({
@@ -15,6 +16,7 @@ const Adduser = ({ show, onHide }) => {
 
    const dispatch = useDispatch();
    const { user } = useSelector((state) => state.auth);
+   const { setLoading } = useLoading();
 
    function handleSave() {
       if (user._id) {
@@ -27,24 +29,28 @@ const Adduser = ({ show, onHide }) => {
                },
                toast,
                onHide,
+               setLoading,
             })
          );
       }
    }
+
    return (
       <>
          {/* Add User Modal */}
-         <Modal show={show} onHide={onHide} className="modal custom-modal fade" role="dialog">
-            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+         <Modal show={show} onHide={onHide}>
+            <div role="document">
                <div className="modal-content">
                   <div className="modal-header">
-                     <h5 className="modal-title">Add Employee</h5>
-                     <button type="button" className="close" onClick={onHide}>
-                        <span aria-hidden="true">×</span>
+                     <h5 className="modal-title">Thêm người lao động</h5>
+                     <button type="button" className="close-x">
+                        <span aria-hidden="true" onClick={onHide}>
+                           ×
+                        </span>
                      </button>
                   </div>
                   <div className="modal-body">
-                     <form>
+                     <div>
                         <div className="row">
                            <div className="col-sm-6">
                               <div className="form-group">
@@ -119,7 +125,7 @@ const Adduser = ({ show, onHide }) => {
                               Lưu
                            </button>
                         </div>
-                     </form>
+                     </div>
                   </div>
                </div>
             </div>

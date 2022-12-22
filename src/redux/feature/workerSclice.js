@@ -3,13 +3,16 @@ import { userAPI } from "../../api/user";
 
 export const createWorker = createAsyncThunk(
    "worker/createWorker",
-   async ({ payload, toast, onHide }, { rejectWithValue }) => {
+   async ({ payload, toast, onHide, setLoading }, { rejectWithValue }) => {
       try {
+         setLoading(true);
          const { data } = await userAPI.createWorker(payload);
-         toast.success("Thêm dự án thành công");
+         toast.success("Thêm người lao động thành công");
          onHide();
+         setLoading(false);
          return data;
       } catch (error) {
+         setLoading(false);
          if (typeof error?.response?.data?.message === "string") {
             toast.error(error?.response?.data?.message);
          } else {

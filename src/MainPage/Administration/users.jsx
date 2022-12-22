@@ -28,119 +28,9 @@ import Adduser from "../../_components/modelbox/Adduser";
 import { useDispatch } from "react-redux";
 import { listWorker } from "../../redux/feature/workerSclice";
 import { useSelector } from "react-redux";
+import moment from "moment";
 
 const Users = () => {
-   const [data, setData] = useState([
-      {
-         id: 1,
-         name: "Bernardo Galaviz",
-         image: Avatar_01,
-         email: "bernardogalaviz@example.com",
-         company: "Global Technologies",
-         created_date: "5 Jan 2019",
-         role: "Client",
-      },
-      {
-         id: 2,
-         name: "Catherine Manseau",
-         image: Avatar_02,
-         email: "catherinemanseau@example.com",
-         company: "Dreamguy's Technologies",
-         created_date: "5 Jan 2019",
-         role: "Admin",
-      },
-      {
-         id: 3,
-         name: "Jeffery Lalor",
-         image: Avatar_03,
-         email: "jefferrylalorr@example.com",
-         company: "Dreamguy's Technologies",
-         created_date: "5 Jan 2019",
-         role: "Employee",
-      },
-      {
-         id: 4,
-         name: "Jeffrey Warden",
-         image: Avatar_04,
-         email: "jeffreywarden@example.com",
-         company: "Global Technologies",
-         created_date: "5 Jan 2019",
-         role: "Client",
-      },
-      {
-         id: 5,
-         name: "John Due",
-         image: Avatar_05,
-         email: "johndue@example.com",
-         company: "Dreamguy's Technologies",
-         created_date: "14 Jan 2019",
-         role: "Employee",
-      },
-      {
-         id: 6,
-         name: "John Smith",
-         image: Avatar_06,
-         email: "johnsmith@example.com",
-         company: "Dreamguy's Technologies",
-         created_date: "14 Jan 2019",
-         role: "Employee",
-      },
-      {
-         id: 7,
-         name: "Lesley Grauer",
-         image: Avatar_07,
-         email: "lesleygrauer@example.com",
-         company: "Dreamguy's Technologies",
-         created_date: "14 Jan 2019",
-         role: "Employee",
-      },
-      {
-         id: 8,
-         name: "Loren Gatlin",
-         image: Avatar_08,
-         email: "lorengatlin@example.com",
-         company: "Dreamguy's Technologies",
-         created_date: "14 Jan 2019",
-         role: "Employee",
-      },
-      {
-         id: 9,
-         name: "Mike Litorus",
-         image: Avatar_09,
-         email: "mikelitorus@example.com",
-         company: "Dreamguy's Technologies",
-         created_date: "14 Jan 2019",
-         role: "Employee",
-      },
-      {
-         id: 10,
-         name: "Richard Miles",
-         image: Avatar_10,
-         email: "richardmiles@example.com",
-         company: "Dreamguy's Technologies",
-         created_date: "14 Jan 2019",
-         role: "Employee",
-      },
-      {
-         id: 11,
-         name: "Tarah Shropshire",
-         image: Avatar_11,
-         email: "tarahshropshire@example.com",
-         company: "Dreamguy's Technologies",
-         created_date: "14 Jan 2019",
-         role: "Employee",
-      },
-      {
-         id: 12,
-         name: "Wilmer Deluna",
-         image: Avatar_12,
-         email: "wilmerdeluna@example.com",
-         company: "Dreamguy's Technologies",
-         created_date: "14 Jan 2019",
-         role: "Employee",
-      },
-   ]);
-
    const [modalShow, setModalShow] = useState(false);
    const dispatch = useDispatch();
 
@@ -161,7 +51,7 @@ const Users = () => {
 
    const columns = [
       {
-         title: "Name",
+         title: "Họ và tên",
          dataIndex: "name",
          render: (text, record) => (
             <h2 className="table-avatar">
@@ -182,16 +72,25 @@ const Users = () => {
       },
 
       {
-         title: "Company",
-         dataIndex: "company",
-         sorter: (a, b) => a.company.length - b.company.length,
+         title: "Số điện thoại",
+         dataIndex: "mobile",
+         render: (text) => "0" + text,
+         sorter: (a, b) => a.mobile - b.mobile,
       },
 
       {
-         title: "Created Date",
-         dataIndex: "created_date",
-         sorter: (a, b) => a.created_date.length - b.created_date.length,
+         title: "Căn cước công dân",
+         dataIndex: "cccd",
+         sorter: (a, b) => a.cccd - b.cccd,
       },
+
+      {
+         title: "Ngày sinh",
+         dataIndex: "date",
+         render: (text) => moment(text).format("DD/MM/YYYY"),
+         sorter: (a, b) => a.date - b.date,
+      },
+
       {
          title: "Role",
          dataIndex: "role",
@@ -260,7 +159,7 @@ const Users = () => {
                   </div>
                   <div className="col-auto float-end ml-auto">
                      <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
-                        <i className="fa fa-plus" /> Add User
+                        <i className="fa fa-plus" /> Thêm người lao đồng
                      </a>
                   </div>
                </div>
