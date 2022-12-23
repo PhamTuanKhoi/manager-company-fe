@@ -4,21 +4,11 @@ import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { userAPI } from "../../api/user";
-import {
-   Avatar_19,
-   Avatar_29,
-   Avatar_07,
-   Avatar_06,
-   Avatar_14,
-   Avatar_18,
-   Avatar_28,
-   Avatar_13,
-} from "../../Entryfile/imagepath";
-import clientSclice, { createClient, listClient } from "../../redux/feature/clientSclice";
+import { Avatar_19, Avatar_29 } from "../../Entryfile/imagepath";
+import { createClient, listClient } from "../../redux/feature/clientSclice";
 import Editclient from "../../_components/modelbox/Editclient";
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { useLoading } from "../../hook/useLoading";
 
 const Clients = () => {
    useEffect(() => {
@@ -32,6 +22,7 @@ const Clients = () => {
 
    //use
    const [show, setShow] = useState(false);
+   const { setLoading } = useLoading();
 
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
@@ -47,9 +38,15 @@ const Clients = () => {
    const dispatch = useDispatch();
 
    async function handleSave() {
-      // console.log(client, user._id);
       if (user?._id) {
-         dispatch(createClient({ payload: { ...client, creator: user._id }, toast, handleClose }));
+         dispatch(
+            createClient({
+               payload: { ...client, creator: user._id },
+               toast,
+               handleClose,
+               setLoading,
+            })
+         );
       }
    }
 
@@ -58,7 +55,7 @@ const Clients = () => {
    }, []);
 
    async function fetchClient() {
-      dispatch(listClient());
+      dispatch(listClient({ setLoading }));
    }
 
    const { clients } = useSelector((state) => state.client);
@@ -168,12 +165,13 @@ const Clients = () => {
                            </div>
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                           <Link to="/app/profile/client-profile">{item?.company}</Link>
+                           <Link to="/app/profile/client-profile">{item?.name}</Link>
                         </h4>
                         <h5 className="user-name m-t-10 mb-0 text-ellipsis">
-                           <Link to="/app/profile/client-profile">{item?.name}</Link>
+                           <Link to="/app/profile/client-profile">{item?.company}</Link>
                         </h5>
-                        <div className="small text-muted">{item?.filed}</div>
+
+                        <div className="small text-muted">{item?.field}</div>
                         <Link
                            onClick={() => localStorage.setItem("minheight", "true")}
                            to="/conversation/chat"
@@ -190,60 +188,6 @@ const Clients = () => {
                      </div>
                   </div>
                ))}
-               <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                  <div className="profile-widget">
-                     <div className="profile-img">
-                        <Link to="/app/profile/client-profile" className="avatar">
-                           <img alt="" src={Avatar_29} />
-                        </Link>
-                     </div>
-                     <div className="dropdown profile-action">
-                        <a
-                           href="#"
-                           className="action-icon dropdown-toggle"
-                           data-bs-toggle="dropdown"
-                           aria-expanded="false"
-                        >
-                           <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#edit_client"
-                           >
-                              <i className="fa fa-pencil m-r-5" /> Edit
-                           </a>
-                           <a
-                              className="dropdown-item"
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#delete_client"
-                           >
-                              <i className="fa fa-trash-o m-r-5" /> Delete
-                           </a>
-                        </div>
-                     </div>
-                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">Delta Infotech</Link>
-                     </h4>
-                     <h5 className="user-name m-t-10 mb-0 text-ellipsis">
-                        <Link to="/app/profile/client-profile">Tressa Wexler</Link>
-                     </h5>
-                     <div className="small text-muted">Manager</div>
-                     <Link
-                        onClick={() => localStorage.setItem("minheight", "true")}
-                        to="/conversation/chat"
-                        className="btn btn-white btn-sm m-t-10 mr-1"
-                     >
-                        Message
-                     </Link>
-                     <Link to="/app/profile/client-profile" className="btn btn-white btn-sm m-t-10">
-                        View Profile
-                     </Link>
-                  </div>
-               </div>
             </div>
          </div>
          {/* /Page Content */}
@@ -257,87 +201,79 @@ const Clients = () => {
             className="modal custom-modal fade"
             role="dialog"
          >
-            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
-               <div className="modal-content">
-                  <div className="modal-header">
-                     <h5 className="modal-title">Khách hàng mới</h5>
-                     <button type="button" className="close" onClick={() => handleClose()}>
-                        <span aria-hidden="true">×</span>
-                     </button>
-                  </div>
-                  <div className="modal-body">
-                     <div>
-                        <div className="row">
-                           <div className="col-md-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">
-                                    Họ tên <span className="text-danger">*</span>
-                                 </label>
-                                 <input
-                                    className="form-control"
-                                    type="text"
-                                    onChange={(e) => setClient({ ...client, name: e.target.value })}
-                                 />
-                              </div>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">Email</label>
-                                 <input
-                                    className="form-control"
-                                    type="email"
-                                    onChange={(e) =>
-                                       setClient({ ...client, email: e.target.value })
-                                    }
-                                 />
-                              </div>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">
-                                    Số điện thoại <span className="text-danger">*</span>
-                                 </label>
-                                 <input
-                                    className="form-control"
-                                    type="text"
-                                    onChange={(e) =>
-                                       setClient({ ...client, mobile: e.target.value })
-                                    }
-                                 />
-                              </div>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">
-                                    Công ty <span className="text-danger">*</span>
-                                 </label>
-                                 <input
-                                    className="form-control floating"
-                                    type="text"
-                                    onChange={(e) =>
-                                       setClient({ ...client, company: e.target.value })
-                                    }
-                                 />
-                              </div>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">Lĩnh vực</label>
-                                 <input
-                                    className="form-control"
-                                    type="text"
-                                    onChange={(e) =>
-                                       setClient({ ...client, field: e.target.value })
-                                    }
-                                 />
-                              </div>
+            <div className="modal-content">
+               <div className="modal-header">
+                  <h5 className="modal-title">Khách hàng mới</h5>
+                  <button type="button" className="close-x">
+                     <span aria-hidden="true" onClick={handleClose}>
+                        ×
+                     </span>
+                  </button>
+               </div>
+               <div className="modal-body">
+                  <div>
+                     <div className="row">
+                        <div className="col-md-6">
+                           <div className="form-group">
+                              <label className="col-form-label">
+                                 Họ tên <span className="text-danger">*</span>
+                              </label>
+                              <input
+                                 className="form-control"
+                                 type="text"
+                                 onChange={(e) => setClient({ ...client, name: e.target.value })}
+                              />
                            </div>
                         </div>
-                        <div className="submit-section">
-                           <button className="btn btn-primary submit-btn" onClick={handleSave}>
-                              Lưu
-                           </button>
+                        <div className="col-md-6">
+                           <div className="form-group">
+                              <label className="col-form-label">Email</label>
+                              <input
+                                 className="form-control"
+                                 type="email"
+                                 onChange={(e) => setClient({ ...client, email: e.target.value })}
+                              />
+                           </div>
                         </div>
+                        <div className="col-md-6">
+                           <div className="form-group">
+                              <label className="col-form-label">
+                                 Số điện thoại <span className="text-danger">*</span>
+                              </label>
+                              <input
+                                 className="form-control"
+                                 type="text"
+                                 onChange={(e) => setClient({ ...client, mobile: e.target.value })}
+                              />
+                           </div>
+                        </div>
+                        <div className="col-md-6">
+                           <div className="form-group">
+                              <label className="col-form-label">
+                                 Công ty <span className="text-danger">*</span>
+                              </label>
+                              <input
+                                 className="form-control floating"
+                                 type="text"
+                                 onChange={(e) => setClient({ ...client, company: e.target.value })}
+                              />
+                           </div>
+                        </div>
+                        <div className="col-md-6">
+                           <div className="form-group">
+                              <label className="col-form-label">Lĩnh vực</label>
+                              <input
+                                 className="form-control"
+                                 type="text"
+                                 onChange={(e) => setClient({ ...client, field: e.target.value })}
+                              />
+                           </div>
+                        </div>
+                     </div>
+                     <div className="submit-section">
+                        <button className="btn btn-primary submit-btn" onClick={handleSave}>
+                           Lưu
+                        </button>
                      </div>
                   </div>
                </div>

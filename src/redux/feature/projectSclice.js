@@ -3,13 +3,16 @@ import { projectAPI } from "../../api/project";
 
 export const createProject = createAsyncThunk(
    "project/createProject",
-   async ({ payload, toast, onHide }, { rejectWithValue }) => {
+   async ({ payload, toast, onHide, setLoading }, { rejectWithValue }) => {
       try {
+         setLoading(true);
          const { data } = await projectAPI.createProject(payload);
          toast.success("Thêm dự án thành công");
          onHide();
+         setLoading(false);
          return data;
       } catch (error) {
+         setLoading(false);
          if (typeof error?.response?.data?.message === "string") {
             toast.error(error?.response?.data?.message);
          } else {

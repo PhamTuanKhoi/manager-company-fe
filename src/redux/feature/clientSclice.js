@@ -3,13 +3,16 @@ import { userAPI } from "../../api/user";
 
 export const createClient = createAsyncThunk(
    "client/createClient",
-   async ({ payload, toast, handleClose }, { rejectWithValue }) => {
+   async ({ payload, toast, handleClose, setLoading }, { rejectWithValue }) => {
       try {
+         setLoading(true);
          const { data } = await userAPI.createClient(payload);
-         toast.success("Client Added Successfully");
+         toast.success("Thêm khách hàng thành công");
          handleClose();
+         setLoading(false);
          return data;
       } catch (error) {
+         setLoading(false);
          if (typeof error?.response?.data?.message === "string") {
             toast.error(error?.response?.data?.message);
          } else {
@@ -22,14 +25,20 @@ export const createClient = createAsyncThunk(
    }
 );
 
-export const listClient = createAsyncThunk("client/listClient", async (_, { rejectWithValue }) => {
-   try {
-      const { data } = await userAPI.listClient();
-      return data;
-   } catch (error) {
-      return rejectWithValue(error.response.data);
+export const listClient = createAsyncThunk(
+   "client/listClient",
+   async ({ setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.listClient();
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
    }
-});
+);
 
 const clientSclice = createSlice({
    name: "client",

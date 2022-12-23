@@ -1,17 +1,7 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import {
-   Avatar_11,
-   Avatar_09,
-   Avatar_02,
-   Avatar_10,
-   Avatar_05,
-   Avatar_12,
-   Avatar_01,
-   Avatar_13,
-   Avatar_16,
-} from "../../../Entryfile/imagepath";
+
 import { Table } from "antd";
 import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
