@@ -5,16 +5,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { EmployeeDepartmentType } from "../../../constant";
-import {
-   Avatar_16,
-   Avatar_02,
-   Avatar_05,
-   Avatar_09,
-   Avatar_10,
-   Avatar_11,
-   Avatar_01,
-   PlaceHolder,
-} from "../../../Entryfile/imagepath";
+import { Avatar_02, Avatar_11, Avatar_01, PlaceHolder } from "../../../Entryfile/imagepath";
 import { useLoading } from "../../../hook/useLoading";
 import { listPayslipByUser } from "../../../redux/feature/payslipSclice";
 import projectSclice from "../../../redux/feature/projectSclice";
@@ -22,12 +13,10 @@ import { listWorkerProjectByProject } from "../../../redux/feature/workerProject
 import AssignUser from "../../../_components/modelbox/assignUser";
 import Editproject from "../../../_components/modelbox/Editproject";
 import LinkProject from "../../../_components/modelbox/linkProject";
-import Button from "react-bootstrap/Button";
-import { PlusOutlined } from "@ant-design/icons";
 import { Collapse, Select } from "antd";
 import AssignUserTask from "../../../_components/modelbox/assignUserTask";
+import { listTaskByProject } from "../../../redux/feature/taskSclice";
 const { Panel } = Collapse;
-const { Option } = Select;
 
 const text = `
   A dog is a type of domesticated animal.
@@ -65,6 +54,9 @@ const ProjectView = () => {
    useEffect(() => {
       // worker-project by id project
       dispatch(listWorkerProjectByProject({ id, setLoading }));
+
+      // task by id project
+      dispatch(listTaskByProject({ id, setLoading }));
    }, [id]);
 
    function listByUser() {
@@ -73,6 +65,7 @@ const ProjectView = () => {
 
    const { project } = useSelector((state) => state.project);
    const { listWPByProject } = useSelector((state) => state.workerProject);
+   const { tasks } = useSelector((state) => state.task);
 
    const onChange = (key) => {
       console.log(key);
@@ -358,22 +351,15 @@ const ProjectView = () => {
                                              onChange={onChange}
                                              expandIconPosition="start"
                                           >
-                                             <Panel
-                                                header="Private chat module"
-                                                key="2"
-                                                extra={genExtra()}
-                                             >
-                                                <span className="task-label">
-                                                   Private chat module
-                                                </span>
-                                             </Panel>
-                                             <Panel
-                                                header="Patient and Doctor video conferencing"
-                                                key="3"
-                                                extra={genExtra()}
-                                             >
-                                                <div>{text}</div>
-                                             </Panel>
+                                             {tasks?.map((item) => (
+                                                <Panel
+                                                   key={item?._id}
+                                                   header={item?.name}
+                                                   extra={genExtra()}
+                                                >
+                                                   <div>{item?.content}</div>
+                                                </Panel>
+                                             ))}
                                           </Collapse>
                                        </li>
                                     </ul>

@@ -27,6 +27,21 @@ export const createTask = createAsyncThunk(
    }
 );
 
+export const listTaskByProject = createAsyncThunk(
+   "task/listTaskByProject",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await taskAPI.listByProject(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const taskSclice = createSlice({
    name: "task",
    initialState: {
@@ -45,6 +60,20 @@ const taskSclice = createSlice({
          state.tasks.push(action.payload);
       },
       [createTask.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      //list
+
+      [listTaskByProject.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listTaskByProject.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.tasks = action.payload;
+      },
+      [listTaskByProject.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
