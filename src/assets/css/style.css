@@ -4229,7 +4229,8 @@ span#close-task-panel {
 }
 .action-circle {
 	background-color: #fff;
-	border: 1px solid #ccc;
+	/* border icon assign user page project detail => editor by HO */
+	/* border: 1px solid #ccc; */
 	border-radius: 100%;
 	height: 20px;
 	width: 20px;

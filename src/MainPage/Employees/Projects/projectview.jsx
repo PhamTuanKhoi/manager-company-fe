@@ -22,6 +22,18 @@ import { listWorkerProjectByProject } from "../../../redux/feature/workerProject
 import AssignUser from "../../../_components/modelbox/assignUser";
 import Editproject from "../../../_components/modelbox/Editproject";
 import LinkProject from "../../../_components/modelbox/linkProject";
+import Button from "react-bootstrap/Button";
+import { PlusOutlined } from "@ant-design/icons";
+import { Collapse, Select } from "antd";
+import AssignUserTask from "../../../_components/modelbox/assignUserTask";
+const { Panel } = Collapse;
+const { Option } = Select;
+
+const text = `
+  A dog is a type of domesticated animal.
+  Known for its loyalty and faithfulness,
+  it can be found as a welcome guest in many households across the world.
+`;
 
 const ProjectView = () => {
    useEffect(() => {
@@ -33,6 +45,7 @@ const ProjectView = () => {
       }
    });
    const [modalShow, setModalShow] = useState(false);
+   const [addWorker, setAddWorker] = useState(false);
    const [modalAssign, setModalAssign] = useState(false);
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
@@ -59,6 +72,11 @@ const ProjectView = () => {
    }
 
    const { project } = useSelector((state) => state.project);
+   const { listWPByProject } = useSelector((state) => state.workerProject);
+
+   const onChange = (key) => {
+      console.log(key);
+   };
 
    return (
       <div className="page-wrapper">
@@ -300,7 +318,7 @@ const ProjectView = () => {
                               <div className="task-list-container">
                                  <div className="task-list-body">
                                     <ul id="task-list">
-                                       <li className="task">
+                                       {/* <li className="task">
                                           <div className="task-container">
                                              <span className="task-action-btn task-check">
                                                 <span
@@ -332,167 +350,31 @@ const ProjectView = () => {
                                                 </span>
                                              </span>
                                           </div>
-                                       </li>
+                                       </li> */}
+
                                        <li className="task">
-                                          <div className="task-container">
-                                             <span className="task-action-btn task-check">
-                                                <span
-                                                   className="action-circle large complete-btn"
-                                                   title="Mark Complete"
-                                                >
-                                                   <i className="material-icons">check</i>
-                                                </span>
-                                             </span>
-                                             <span
-                                                className="task-label"
-                                                contentEditable="true"
-                                                suppressContentEditableWarning={true}
+                                          <Collapse
+                                             defaultActiveKey={["1"]}
+                                             onChange={onChange}
+                                             expandIconPosition="start"
+                                          >
+                                             <Panel
+                                                header="Private chat module"
+                                                key="2"
+                                                extra={genExtra()}
                                              >
-                                                Appointment booking with payment gateway
-                                             </span>
-                                             <span className="task-action-btn task-btn-right">
-                                                <span
-                                                   className="action-circle large"
-                                                   title="Assign"
-                                                >
-                                                   <i className="material-icons">person_add</i>
+                                                <span className="task-label">
+                                                   Private chat module
                                                 </span>
-                                                <span
-                                                   className="action-circle large delete-btn"
-                                                   title="Delete Task"
-                                                >
-                                                   <i className="material-icons">delete</i>
-                                                </span>
-                                             </span>
-                                          </div>
-                                       </li>
-                                       <li className="completed task">
-                                          <div className="task-container">
-                                             <span className="task-action-btn task-check">
-                                                <span
-                                                   className="action-circle large complete-btn"
-                                                   title="Mark Complete"
-                                                >
-                                                   <i className="material-icons">check</i>
-                                                </span>
-                                             </span>
-                                             <span className="task-label">
-                                                Doctor available module
-                                             </span>
-                                             <span className="task-action-btn task-btn-right">
-                                                <span
-                                                   className="action-circle large"
-                                                   title="Assign"
-                                                >
-                                                   <i className="material-icons">person_add</i>
-                                                </span>
-                                                <span
-                                                   className="action-circle large delete-btn"
-                                                   title="Delete Task"
-                                                >
-                                                   <i className="material-icons">delete</i>
-                                                </span>
-                                             </span>
-                                          </div>
-                                       </li>
-                                       <li className="task">
-                                          <div className="task-container">
-                                             <span className="task-action-btn task-check">
-                                                <span
-                                                   className="action-circle large complete-btn"
-                                                   title="Mark Complete"
-                                                >
-                                                   <i className="material-icons">check</i>
-                                                </span>
-                                             </span>
-                                             <span
-                                                className="task-label"
-                                                contentEditable="true"
-                                                suppressContentEditableWarning={true}
+                                             </Panel>
+                                             <Panel
+                                                header="Patient and Doctor video conferencing"
+                                                key="3"
+                                                extra={genExtra()}
                                              >
-                                                Patient and Doctor video conferencing
-                                             </span>
-                                             <span className="task-action-btn task-btn-right">
-                                                <span
-                                                   className="action-circle large"
-                                                   title="Assign"
-                                                >
-                                                   <i className="material-icons">person_add</i>
-                                                </span>
-                                                <span
-                                                   className="action-circle large delete-btn"
-                                                   title="Delete Task"
-                                                >
-                                                   <i className="material-icons">delete</i>
-                                                </span>
-                                             </span>
-                                          </div>
-                                       </li>
-                                       <li className="task">
-                                          <div className="task-container">
-                                             <span className="task-action-btn task-check">
-                                                <span
-                                                   className="action-circle large complete-btn"
-                                                   title="Mark Complete"
-                                                >
-                                                   <i className="material-icons">check</i>
-                                                </span>
-                                             </span>
-                                             <span
-                                                className="task-label"
-                                                contentEditable="true"
-                                                suppressContentEditableWarning={true}
-                                             >
-                                                Private chat module
-                                             </span>
-                                             <span className="task-action-btn task-btn-right">
-                                                <span
-                                                   className="action-circle large"
-                                                   title="Assign"
-                                                >
-                                                   <i className="material-icons">person_add</i>
-                                                </span>
-                                                <span
-                                                   className="action-circle large delete-btn"
-                                                   title="Delete Task"
-                                                >
-                                                   <i className="material-icons">delete</i>
-                                                </span>
-                                             </span>
-                                          </div>
-                                       </li>
-                                       <li className="task">
-                                          <div className="task-container">
-                                             <span className="task-action-btn task-check">
-                                                <span
-                                                   className="action-circle large complete-btn"
-                                                   title="Mark Complete"
-                                                >
-                                                   <i className="material-icons">check</i>
-                                                </span>
-                                             </span>
-                                             <span
-                                                className="task-label"
-                                                contentEditable="true"
-                                                suppressContentEditableWarning={true}
-                                             >
-                                                Patient Profile add
-                                             </span>
-                                             <span className="task-action-btn task-btn-right">
-                                                <span
-                                                   className="action-circle large"
-                                                   title="Assign"
-                                                >
-                                                   <i className="material-icons">person_add</i>
-                                                </span>
-                                                <span
-                                                   className="action-circle large delete-btn"
-                                                   title="Delete Task"
-                                                >
-                                                   <i className="material-icons">delete</i>
-                                                </span>
-                                             </span>
-                                          </div>
+                                                <div>{text}</div>
+                                             </Panel>
+                                          </Collapse>
                                        </li>
                                     </ul>
                                  </div>
@@ -513,6 +395,15 @@ const ProjectView = () => {
                                           Close
                                        </span>
                                     </div>
+                                 </div>
+
+                                 <div
+                                    className="assign-button"
+                                    onClick={() => setModalAssign(true)}
+                                 >
+                                    <span className="button-circle">
+                                       <span className="plus-assign">Thêm công việc</span>
+                                    </span>
                                  </div>
                               </div>
                            </div>
@@ -749,28 +640,30 @@ const ProjectView = () => {
                            <button
                               type="button"
                               className="float-end btn btn-primary btn-sm"
-                              onClick={() => setModalAssign(true)}
+                              onClick={() => setAddWorker(true)}
                            >
                               Thêm
                            </button>
                         </h6>
                         <ul className="list-box">
-                           <li>
-                              <Link to="/app/profile/employee-profile">
-                                 <div className="list-item">
-                                    <div className="list-left">
-                                       <span className="avatar">
-                                          <img alt="" src={Avatar_02} />
-                                       </span>
+                           {listWPByProject?.map((item, index) => (
+                              <li key={index}>
+                                 <Link to="/app/profile/employee-profile">
+                                    <div className="list-item">
+                                       <div className="list-left">
+                                          <span className="avatar">
+                                             <img alt="" src={Avatar_02} />
+                                          </span>
+                                       </div>
+                                       <div className="list-body">
+                                          <span className="message-author">{item?.user?.name}</span>
+                                          <div className="clearfix" />
+                                          {/* <span className="message-content">Web Designer</span> */}
+                                       </div>
                                     </div>
-                                    <div className="list-body">
-                                       <span className="message-author">John Doe</span>
-                                       <div className="clearfix" />
-                                       <span className="message-content">Web Designer</span>
-                                    </div>
-                                 </div>
-                              </Link>
-                           </li>
+                                 </Link>
+                              </li>
+                           ))}
                         </ul>
                      </div>
                   </div>
@@ -782,13 +675,34 @@ const ProjectView = () => {
          <LinkProject show={modalShow} onHide={() => setModalShow(false)} />
          {/* /Assign Leader Modal */}
          {/* Assign User Modal */}
-         <AssignUser show={modalAssign} onHide={() => setModalAssign(false)} />
+         <AssignUser show={addWorker} onHide={() => setAddWorker(false)} />
          {/* /Assign User Modal */}
+         <AssignUserTask show={modalAssign} onHide={() => setModalAssign(false)} />
          {/* Edit Project Modal */}
          <Editproject />
          {/* /Edit Project Modal */}
       </div>
    );
 };
+
+const genExtra = () => (
+   <>
+      <span className="action-circle large" title="Assign">
+         <i className="material-icons" onClick={(e) => e.stopPropagation()}>
+            edit
+         </i>
+      </span>
+      <span className="action-circle large" title="Assign">
+         <i className="material-icons" onClick={(e) => e.stopPropagation()}>
+            person_add
+         </i>
+      </span>
+      <span className="action-circle large delete-btn" title="Delete Task">
+         <i className="material-icons" onClick={(e) => e.stopPropagation()}>
+            delete
+         </i>
+      </span>
+   </>
+);
 
 export default ProjectView;

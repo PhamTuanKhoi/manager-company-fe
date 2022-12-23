@@ -101,5 +101,37 @@
   .content-media {
     display: flex;
   }
+
+  .assign-button { 
+    text-align: center;
+    background-color: #1f688c;
+    cursor: pointer; 
+    /* background-color: #ddd; */
+  }
+
+  .button-circle {
+    margin-top: 20px;
+  }
+  
+  .plus-assign {
+    color: #fff;
+    font-size: 20px;  
+  }
+
+
+  /* dialog */
+  .button-dialog {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .primary {
+    background-color: #0d6efd;
+    border: 6px solid #0d6efd;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 5px;
+  }
   
  
