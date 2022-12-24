@@ -15,7 +15,7 @@ import Editproject from "../../../_components/modelbox/Editproject";
 import LinkProject from "../../../_components/modelbox/linkProject";
 import { Collapse } from "antd";
 import { listTaskByProject } from "../../../redux/feature/taskSclice";
-import ActionTask from "../../../_components/modelbox/ActionTask";
+import ActionTask from "../../../_components/modelbox/actionTask/ActionTask";
 import CreateTask from "../../../_components/modelbox/assignUserTask";
 const { Panel } = Collapse;
 
@@ -66,6 +66,8 @@ const ProjectView = () => {
    const onChange = (key) => {
       console.log(key);
    };
+
+   const Action = ({ item }) => <ActionTask item={item} />;
 
    return (
       <div className="page-wrapper">
@@ -351,7 +353,7 @@ const ProjectView = () => {
                                                 <Panel
                                                    key={item?._id}
                                                    header={item?.name}
-                                                   extra={ActionTask()}
+                                                   extra={Action({ item })}
                                                 >
                                                    <div>{item?.content}</div>
                                                 </Panel>
@@ -676,25 +678,5 @@ const ProjectView = () => {
       </div>
    );
 };
-
-// const genExtra = () => (
-//    <>
-//       <span className="action-circle large" title="Assign">
-//          <i className="material-icons" onClick={(e) => e.stopPropagation()}>
-//             edit
-//          </i>
-//       </span>
-//       <span className="action-circle large" title="Assign">
-//          <i className="material-icons" onClick={(e) => e.stopPropagation()}>
-//             person_add
-//          </i>
-//       </span>
-//       <span className="action-circle large delete-btn" title="Delete Task">
-//          <i className="material-icons" onClick={(e) => e.stopPropagation()}>
-//             delete
-//          </i>
-//       </span>
-//    </>
-// );
 
 export default ProjectView;
