@@ -62,6 +62,21 @@ export const listProject = createAsyncThunk(
    }
 );
 
+export const projectDetail = createAsyncThunk(
+   "project/projectDetail",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await projectAPI.detail(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const projectSclice = createSlice({
    name: "project",
    initialState: {
@@ -111,6 +126,19 @@ const projectSclice = createSlice({
          state.project = action.payload;
       },
       [updateProject.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // get by id
+      [projectDetail.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [projectDetail.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.project = action.payload;
+      },
+      [projectDetail.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

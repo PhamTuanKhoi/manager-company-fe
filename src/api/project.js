@@ -6,6 +6,10 @@ export const projectAPI = {
       return await axios.get(path);
    },
 
+   async detail(id) {
+      return await axios.get(path + id);
+   },
+
    async createProject(payload) {
       return await axios.post(path, payload);
    },

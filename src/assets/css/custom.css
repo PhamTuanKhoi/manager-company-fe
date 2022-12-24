@@ -133,5 +133,18 @@
     font-weight: 600;
     border-radius: 5px;
   }
+
+  .content-center {
+    display: flex;
+    justify-content: center;
+  }
+
+  .payslip-link {
+    width: 100%;
+    text-align: center;
+    color: #00c5fb;
+    font-size: 12px;
+    text-decoration: underline;
+  }
   
  

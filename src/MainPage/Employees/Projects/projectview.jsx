@@ -478,17 +478,25 @@ const ProjectView = () => {
                      </div>
                   </div>
                   <div className="card project-user">
-                     <div className="card-body">
-                        <h6 className="card-title m-b-20">
-                           <button
-                              type="button"
-                              className="float-end btn btn-primary btn-sm"
-                              onClick={() => setModalShow(true)}
-                           >
-                              <i className="fa fa-plus" /> Liên kết phiếu lương
-                           </button>
-                        </h6>
+                     <div className="card-body content-center">
+                        <button
+                           type="button"
+                           className="float-end btn btn-primary btn-sm"
+                           onClick={() => setModalShow(true)}
+                        >
+                           {project?.payslip?.length > 0
+                              ? "Thay đổi phiếu lương"
+                              : "Liên kết phiếu lương"}
+                        </button>
                      </div>
+                     {project?.payslip && (
+                        <a
+                           href={`/app/payroll/salary-view/${project?.payslip[0]?._id}`}
+                           className="payslip-link"
+                        >
+                           {project?.payslip[0]?.name}
+                        </a>
+                     )}
                   </div>
                   <div className="card project-user">
                      <div className="card-body">
@@ -568,7 +576,7 @@ const ProjectView = () => {
                   <div className="card project-user">
                      <div className="card-body">
                         <h6 className="card-title m-b-20">
-                           Nhân viên{" "}
+                           Nhân viên
                            <button
                               type="button"
                               className="float-end btn btn-primary btn-sm"
