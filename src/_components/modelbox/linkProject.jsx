@@ -14,8 +14,17 @@ const LinkProject = ({ show, onHide }) => {
    const { payslips } = useSelector((state) => state.payslip);
    const { project } = useSelector((state) => state.project);
 
-   const handleLink = (payslipId) => {
-      dispatch(updateProject({ id, payload: { payslip: payslipId }, toast, onHide, setLoading }));
+   const handleLink = (payslip) => {
+      dispatch(
+         updateProject({
+            id,
+            payload: { payslip: payslip._id },
+            toast,
+            onHide,
+            setLoading,
+            payslip,
+         })
+      );
    };
 
    return (
@@ -48,23 +57,18 @@ const LinkProject = ({ show, onHide }) => {
                   <ul className="chat-user-list">
                      {payslips.map(
                         (item) =>
-                           project.payslip !== item._id && (
+                           project?.payslip[0]?._id !== item._id && (
                               <li key={item?._id}>
-                                 <a href="#">
-                                    <div className="media import-content">
-                                       <div className="media-body align-self-center text-nowrap">
-                                          <a href={"/app/payroll/salary-view/" + item?._id}>
-                                             <div className="import-name">{item?.name}</div>
-                                          </a>
-                                       </div>
-                                       <div
-                                          className="import"
-                                          onClick={() => handleLink(item?._id)}
-                                       >
-                                          Liên kết
-                                       </div>
+                                 <div className="media import-content">
+                                    <div className="media-body align-self-center text-nowrap">
+                                       <a href={"/app/payroll/salary-view/" + item?._id}>
+                                          <div className="import-name">{item?.name}</div>
+                                       </a>
                                     </div>
-                                 </a>
+                                    <div className="import" onClick={() => handleLink(item)}>
+                                       Liên kết
+                                    </div>
+                                 </div>
                               </li>
                            )
                      )}

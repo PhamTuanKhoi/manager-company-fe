@@ -27,14 +27,14 @@ export const createProject = createAsyncThunk(
 
 export const updateProject = createAsyncThunk(
    "project/updateProject",
-   async ({ id, payload, toast, onHide, setLoading }, { rejectWithValue }) => {
+   async ({ id, payload, toast, onHide, setLoading, payslip }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await projectAPI.updateProject(id, payload);
-         toast.success("Cập nhật dự án thành công");
+         toast.success("Liên kết phiếu lương thành công");
          onHide();
          setLoading(false);
-         return data;
+         return { data, payslip };
       } catch (error) {
          setLoading(false);
          console.log(error);
@@ -125,7 +125,7 @@ const projectSclice = createSlice({
       },
       [updateProject.fulfilled]: (state, action) => {
          state.loading = false;
-         state.project = action.payload;
+         state.project.payslip = [action.payload.payslip];
       },
       [updateProject.rejected]: (state, action) => {
          state.loading = false;
@@ -138,7 +138,7 @@ const projectSclice = createSlice({
       },
       [projectDetail.fulfilled]: (state, action) => {
          state.loading = false;
-         state.project = action.payload;
+         state.project = action.payload[0];
       },
       [projectDetail.rejected]: (state, action) => {
          state.loading = false;

@@ -4,16 +4,16 @@ import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { EmployeeDepartmentType } from "../../../constant";
+import { EmployeeDepartmentType, UserRoleType } from "../../../constant";
 import { Avatar_02, Avatar_11, Avatar_01, PlaceHolder } from "../../../Entryfile/imagepath";
 import { useLoading } from "../../../hook/useLoading";
 import { listPayslipByUser } from "../../../redux/feature/payslipSclice";
-import projectSclice from "../../../redux/feature/projectSclice";
+import { projectDetail } from "../../../redux/feature/projectSclice";
 import { listWorkerProjectByProject } from "../../../redux/feature/workerProjectSclice";
 import AssignUser from "../../../_components/modelbox/assignUser";
 import Editproject from "../../../_components/modelbox/Editproject";
 import LinkProject from "../../../_components/modelbox/linkProject";
-import { Collapse, Select } from "antd";
+import { Collapse } from "antd";
 import AssignUserTask from "../../../_components/modelbox/assignUserTask";
 import { listTaskByProject } from "../../../redux/feature/taskSclice";
 const { Panel } = Collapse;
@@ -38,7 +38,8 @@ const ProjectView = () => {
 
    useEffect(() => {
       //project detail {}
-      dispatch(projectSclice.actions.projectDetail(id));
+      // dispatch(projectSclice.actions.projectDetail(id));
+      dispatch(projectDetail({ id, setLoading }));
 
       if (user._id) {
          listByUser();
@@ -275,7 +276,7 @@ const ProjectView = () => {
                               data-bs-toggle="tab"
                               aria-expanded="true"
                            >
-                              All Tasks
+                              Công việc
                            </a>
                         </li>
                         <li className="nav-item">
@@ -285,7 +286,7 @@ const ProjectView = () => {
                               data-bs-toggle="tab"
                               aria-expanded="false"
                            >
-                              Pending Tasks
+                              Đang thực hiện
                            </a>
                         </li>
                         <li className="nav-item">
@@ -295,7 +296,7 @@ const ProjectView = () => {
                               data-bs-toggle="tab"
                               aria-expanded="false"
                            >
-                              Completed Tasks
+                              Hoàn thành
                            </a>
                         </li>
                      </ul>
@@ -477,27 +478,29 @@ const ProjectView = () => {
                         </div>
                      </div>
                   </div>
-                  <div className="card project-user">
-                     <div className="card-body content-center">
-                        <button
-                           type="button"
-                           className="float-end btn btn-primary btn-sm"
-                           onClick={() => setModalShow(true)}
-                        >
-                           {project?.payslip?.length > 0
-                              ? "Thay đổi phiếu lương"
-                              : "Liên kết phiếu lương"}
-                        </button>
+                  {user?.role === UserRoleType.CLIENT && (
+                     <div className="card project-user">
+                        <div className="card-body content-center">
+                           <button
+                              type="button"
+                              className="float-end btn btn-primary btn-sm"
+                              onClick={() => setModalShow(true)}
+                           >
+                              {project?.payslip?.length > 0
+                                 ? "Thay đổi phiếu lương"
+                                 : "Liên kết phiếu lương"}
+                           </button>
+                        </div>
+                        {project?.payslip?.length > 0 && (
+                           <a
+                              href={`/app/payroll/salary-view/${project?.payslip[0]?._id}`}
+                              className="payslip-link"
+                           >
+                              {project?.payslip[0]?.name}
+                           </a>
+                        )}
                      </div>
-                     {project?.payslip && (
-                        <a
-                           href={`/app/payroll/salary-view/${project?.payslip[0]?._id}`}
-                           className="payslip-link"
-                        >
-                           {project?.payslip[0]?.name}
-                        </a>
-                     )}
-                  </div>
+                  )}
                   <div className="card project-user">
                      <div className="card-body">
                         <h6 className="card-title m-b-20">
