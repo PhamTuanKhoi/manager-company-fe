@@ -62,6 +62,21 @@ export const listProject = createAsyncThunk(
    }
 );
 
+export const listProjectByClient = createAsyncThunk(
+   "project/listProjectByClient",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await projectAPI.listByClient(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 export const projectDetail = createAsyncThunk(
    "project/projectDetail",
    async ({ id, setLoading }, { rejectWithValue }) => {
@@ -104,19 +119,6 @@ const projectSclice = createSlice({
          state.error = action.payload.message;
       },
 
-      // list
-      [listProject.pending]: (state, action) => {
-         state.loading = true;
-      },
-      [listProject.fulfilled]: (state, action) => {
-         state.loading = false;
-         state.projects = action.payload;
-      },
-      [listProject.rejected]: (state, action) => {
-         state.loading = false;
-         state.error = action.payload.message;
-      },
-
       // update
       [updateProject.pending]: (state, action) => {
          state.loading = true;
@@ -139,6 +141,32 @@ const projectSclice = createSlice({
          state.project = action.payload;
       },
       [projectDetail.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // list
+      [listProject.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listProject.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.projects = action.payload;
+      },
+      [listProject.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // list by client
+      [listProjectByClient.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listProjectByClient.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.projects = action.payload;
+      },
+      [listProjectByClient.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

@@ -35,3 +35,10 @@ export const statusProject = [
    { value: 2, label: "Đang chạy" },
    { value: 4, label: "Hoàn thành" },
 ];
+
+export const UserRoleType = {
+   ADMIN: "Admin",
+   CLIENT: "Client",
+   EMPLOYEE: "Employee",
+   WORKER: "Worker",
+};

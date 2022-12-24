@@ -20,9 +20,11 @@ import {
 
 import Addproject from "../../../_components/modelbox/Addproject";
 import { useDispatch } from "react-redux";
-import { listProject } from "../../../redux/feature/projectSclice";
+import { listProject, listProjectByClient } from "../../../redux/feature/projectSclice";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import { useLoading } from "../../../hook/useLoading";
+import { UserRoleType } from "../../../constant";
 const Projects = () => {
    const [modalShow, setModalShow] = useState(false);
    const onImageUpload = (fileList) => {
@@ -33,13 +35,21 @@ const Projects = () => {
       reader.readAsDataURL(fileList[0]);
    };
 
+   const { setLoading } = useLoading();
    const dispatch = useDispatch();
 
-   useEffect(() => {
-      dispatch(listProject());
-   }, []);
-
    const { projects } = useSelector((state) => state.project);
+   const { user } = useSelector((state) => state.auth);
+
+   useEffect(() => {
+      fetchProject();
+   }, [user._id]);
+
+   const fetchProject = () => {
+      if (user.role === UserRoleType.CLIENT) {
+         dispatch(listProjectByClient({ id: user._id, setLoading }));
+      }
+   };
 
    return (
       <div className="page-wrapper">
