@@ -4,14 +4,14 @@ import { workerProjectAPI } from "../../api/workerproject";
 
 export const createWorkerProject = createAsyncThunk(
    "workerProject/createWorkerProject",
-   async ({ payload, toast, onHide, setLoading }, { rejectWithValue }) => {
+   async ({ payload, toast, onHide, setLoading, worker }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await workerProjectAPI.create(payload);
          toast.success("Thêm người lao động thành công");
 
          setLoading(false);
-         return data;
+         return { ...data, user: worker };
       } catch (error) {
          setLoading(false);
          if (typeof error?.response?.data?.message === "string") {

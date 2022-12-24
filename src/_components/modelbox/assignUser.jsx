@@ -17,13 +17,14 @@ function AssignUser({ show, onHide }) {
    const { setLoading } = useLoading();
    const [isExitArray, setIsExitArray] = useState([]);
 
-   function handleAdd(workerId) {
+   function handleAdd(worker) {
       dispatch(
          createWorkerProject({
-            payload: { worker: workerId, project: id },
+            payload: { worker: worker._id, project: id },
             toast,
             onHide,
             setLoading,
+            worker,
          })
       );
    }
@@ -91,7 +92,7 @@ function AssignUser({ show, onHide }) {
                                              {/* <span className="designation">{item?.department}</span> */}
                                           </div>
                                        </div>
-                                       <div className="import" onClick={() => handleAdd(item._id)}>
+                                       <div className="import" onClick={() => handleAdd(item)}>
                                           Thêm
                                        </div>
                                     </div>

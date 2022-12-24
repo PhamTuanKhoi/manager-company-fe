@@ -16,6 +16,7 @@ import LinkProject from "../../../_components/modelbox/linkProject";
 import { Collapse } from "antd";
 import AssignUserTask from "../../../_components/modelbox/assignUserTask";
 import { listTaskByProject } from "../../../redux/feature/taskSclice";
+import ActionTask from "../../../_components/modelbox/ActionTask";
 const { Panel } = Collapse;
 
 const ProjectView = () => {
@@ -350,7 +351,7 @@ const ProjectView = () => {
                                                 <Panel
                                                    key={item?._id}
                                                    header={item?.name}
-                                                   extra={genExtra()}
+                                                   extra={ActionTask()}
                                                 >
                                                    <div>{item?.content}</div>
                                                 </Panel>
@@ -590,7 +591,7 @@ const ProjectView = () => {
                            </button>
                         </h6>
                         <ul className="list-box">
-                           {project?.team?.map((item) => (
+                           {project?.team?.map((item, index) => (
                               <li key={item?._id}>
                                  <Link to="/app/profile/employee-profile">
                                     <div className="list-item">
@@ -676,24 +677,24 @@ const ProjectView = () => {
    );
 };
 
-const genExtra = () => (
-   <>
-      <span className="action-circle large" title="Assign">
-         <i className="material-icons" onClick={(e) => e.stopPropagation()}>
-            edit
-         </i>
-      </span>
-      <span className="action-circle large" title="Assign">
-         <i className="material-icons" onClick={(e) => e.stopPropagation()}>
-            person_add
-         </i>
-      </span>
-      <span className="action-circle large delete-btn" title="Delete Task">
-         <i className="material-icons" onClick={(e) => e.stopPropagation()}>
-            delete
-         </i>
-      </span>
-   </>
-);
+// const genExtra = () => (
+//    <>
+//       <span className="action-circle large" title="Assign">
+//          <i className="material-icons" onClick={(e) => e.stopPropagation()}>
+//             edit
+//          </i>
+//       </span>
+//       <span className="action-circle large" title="Assign">
+//          <i className="material-icons" onClick={(e) => e.stopPropagation()}>
+//             person_add
+//          </i>
+//       </span>
+//       <span className="action-circle large delete-btn" title="Delete Task">
+//          <i className="material-icons" onClick={(e) => e.stopPropagation()}>
+//             delete
+//          </i>
+//       </span>
+//    </>
+// );
 
 export default ProjectView;
