@@ -9,7 +9,7 @@ import TextArea from "antd/lib/input/TextArea";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { createTask } from "../../redux/feature/taskSclice";
-function AssignUserTask({ show, onHide }) {
+function CreateTask({ show, onHide }) {
    const [assign, setAssign] = useState({
       name: "",
       content: "",
@@ -70,4 +70,4 @@ function AssignUserTask({ show, onHide }) {
    );
 }
 
-export default AssignUserTask;
+export default CreateTask;

@@ -14,9 +14,9 @@ import AssignUser from "../../../_components/modelbox/assignUser";
 import Editproject from "../../../_components/modelbox/Editproject";
 import LinkProject from "../../../_components/modelbox/linkProject";
 import { Collapse } from "antd";
-import AssignUserTask from "../../../_components/modelbox/assignUserTask";
 import { listTaskByProject } from "../../../redux/feature/taskSclice";
 import ActionTask from "../../../_components/modelbox/ActionTask";
+import CreateTask from "../../../_components/modelbox/assignUserTask";
 const { Panel } = Collapse;
 
 const ProjectView = () => {
@@ -669,7 +669,7 @@ const ProjectView = () => {
          {/* Assign User Modal */}
          <AssignUser show={addWorker} onHide={() => setAddWorker(false)} />
          {/* /Assign User Modal */}
-         <AssignUserTask show={modalAssign} onHide={() => setModalAssign(false)} />
+         <CreateTask show={modalAssign} onHide={() => setModalAssign(false)} />
          {/* Edit Project Modal */}
          <Editproject />
          {/* /Edit Project Modal */}
