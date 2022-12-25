@@ -2,6 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { authAPI } from "../../api/auth";
 import { jwtManager } from "../../helpers/jwtManager";
 
+// fix regeneratorRuntime is not defined
+import "regenerator-runtime"; // no delete
+
 export const login = createAsyncThunk(
    "auth/login",
    async ({ payload, toast, props }, { rejectWithValue }) => {
@@ -54,7 +57,7 @@ const authSclice = createSlice({
    reducers: {
       logout: (state, action) => {
          jwtManager.clear();
-         state.user = "";
+         state.user = {};
       },
    },
    extraReducers: {

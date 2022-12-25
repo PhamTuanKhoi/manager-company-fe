@@ -12,7 +12,7 @@ import * as yup from "yup";
 import { alphaNumericPattern, emailrgx } from "../constant";
 import { authAPI } from "../api/auth.js";
 import { jwtManager } from "../helpers/jwtManager.js";
-// import { login } from "../redux/feature/authSclice";
+import { login } from "../redux/feature/authSclice";
 
 const schema = yup.object({
    email: yup.string().matches(emailrgx, "Email is required").required("Email is required").trim(),
@@ -22,19 +22,10 @@ const schema = yup.object({
 
 const Loginpage = (props) => {
    const [eye, seteye] = useState(true);
-   const [emailerror, setEmailError] = useState("");
-   const [nameerror, setNameError] = useState("");
-   const [passworderror, setPasswordError] = useState("");
-   const [formgroup, setFormGroup] = useState("");
-   const [inputValues, setInputValues] = useState({
-      email: "admin@dreamguys.co.in",
-      password: "123456",
-   });
 
    const {
       handleSubmit,
       control,
-      setError,
       clearErrors,
       formState: { errors },
    } = useForm({
