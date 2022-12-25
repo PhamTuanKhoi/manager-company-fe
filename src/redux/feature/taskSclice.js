@@ -42,6 +42,30 @@ export const listTaskByProject = createAsyncThunk(
    }
 );
 
+export const assignPersonTask = createAsyncThunk(
+   "task/assignPersonTask",
+   async ({ id, payload, toast, onHide, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await taskAPI.assignPerson(id, payload);
+         toast.success("Giao công việc thành công");
+         setLoading(false);
+         onHide();
+         return data;
+      } catch (error) {
+         setLoading(false);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const taskSclice = createSlice({
    name: "task",
    initialState: {
@@ -65,7 +89,6 @@ const taskSclice = createSlice({
       },
 
       //list
-
       [listTaskByProject.pending]: (state, action) => {
          state.loading = true;
       },
@@ -74,6 +97,19 @@ const taskSclice = createSlice({
          state.tasks = action.payload;
       },
       [listTaskByProject.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      //assign
+      [assignPersonTask.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [assignPersonTask.fulfilled]: (state, action) => {
+         state.loading = false;
+         // state.tasks = action.payload;
+      },
+      [assignPersonTask.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
