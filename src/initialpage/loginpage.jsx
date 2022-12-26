@@ -148,6 +148,10 @@ const Loginpage = (props) => {
                            <p>
                               Don't have an account yet? <Link to="/register">Register</Link>
                            </p>
+                           <p>
+                              Don't have an account yet?{" "}
+                              <Link to="/register-user">Register user</Link>
+                           </p>
                         </div>
                      </div>
                      {/* /Account Form */}

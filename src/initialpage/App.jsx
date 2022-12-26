@@ -23,6 +23,7 @@ import Error500 from "../MainPage/Pages/ErrorPage/error500";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { currentUser } from "../redux/feature/authSclice";
+import RegisterUser from "./RegisterUser";
 
 export default function App(props) {
    // componentDidMount() {
@@ -67,6 +68,7 @@ export default function App(props) {
    return (
       <Switch>
          <Route path="/login" component={LoginPage} />
+         <Route path="/register-user" component={RegisterUser} />
          <Route path="/forgotpassword" component={ForgotPassword} />
          <Route path="/register" component={RegistrationPage} />
          <Route path="/otp" component={OTP} />
