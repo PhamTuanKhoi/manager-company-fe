@@ -2,10 +2,10 @@
  * App Header
  */
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {
-   headerlogo,
    lnEnglish,
    lnFrench,
    lnSpanish,
@@ -20,6 +20,7 @@ import {
    Avatar_17,
    Avatar_21,
 } from "../../Entryfile/imagepath";
+import authSclice from "../../redux/feature/authSclice";
 
 const Header = (props) => {
    const handlesidebar = () => {
@@ -31,12 +32,24 @@ const Header = (props) => {
 
    let pathname = location.pathname;
 
+   const dispatch = useDispatch();
+
+   const handleLogout = () => {
+      dispatch(authSclice.actions.logout());
+   };
+
    return (
       <div className="header" style={{ right: "0px" }}>
          {/* Logo */}
          <div className="header-left">
             <Link to="/app/main/dashboard" className="logo">
-               <img src={headerlogo} width={40} height={40} alt="" />
+               {/* <img src={headerlogo} width={40} height={40} alt="" /> */}
+               <img
+                  width={40}
+                  height={30}
+                  src="https://fce.com.vn/wp-content/uploads/2022/08/logo_fce_trong_suot-1024x614.png"
+                  alt="Dreamguy's Technologies"
+               />
             </Link>
          </div>
          {/* /Logo */}
@@ -60,7 +73,7 @@ const Header = (props) => {
          </a>
          {/* Header Title */}
          <div className="page-title-box">
-            <h3>Dreamguy's Technologies</h3>
+            <h3>Giải pháp nguồn nhân lực</h3>
          </div>
          {/* /Header Title */}
          <a id="mobile_btn" className="mobile_btn" href="#" onClick={() => onMenuClik()}>
@@ -406,7 +419,7 @@ const Header = (props) => {
                   <Link className="dropdown-item" to="/settings/companysetting">
                      Settings
                   </Link>
-                  <Link className="dropdown-item" to="/login">
+                  <Link className="dropdown-item" to="/login" onClick={handleLogout}>
                      Logout
                   </Link>
                </div>
@@ -430,7 +443,7 @@ const Header = (props) => {
                <Link className="dropdown-item" to="/settings/companysetting">
                   Settings
                </Link>
-               <Link className="dropdown-item" to="/login">
+               <Link className="dropdown-item" to="/login" onClick={handleLogout}>
                   Logout
                </Link>
             </div>

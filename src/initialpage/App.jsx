@@ -1,5 +1,5 @@
 import React, { Component, useEffect } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 // We will create these two pages in a moment
 //Authendication
 import LoginPage from "./loginpage";
@@ -24,6 +24,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { currentUser } from "../redux/feature/authSclice";
 import RegisterUser from "./RegisterUser";
+import { jwtManager } from "../helpers/jwtManager";
+import { useLoading } from "../hook/useLoading";
 
 export default function App(props) {
    // componentDidMount() {
@@ -44,23 +46,25 @@ export default function App(props) {
    // }
 
    const { location, match } = props;
+   const history = useHistory();
+   const { setLoading } = useLoading();
+   const token = jwtManager.get();
 
    let dispatch = useDispatch();
 
    useEffect(() => {
-      dispatch(currentUser());
-   }, []);
+      if (token) {
+         fetchUser();
+      }
+   }, [token]);
 
-   const { user } = useSelector((state) => state.auth);
+   const fetchUser = () => {
+      dispatch(currentUser({ setLoading, history }));
+   };
 
-   // if (!user._id && location.pathname !== "/login") {
-   //    return <Redirect to={"/login"} />;
-   // }
-
-   // if (user._id && location.pathname === "/login") {
-   //    console.log("next", location.pathname);
-   //    return <Redirect to={"/app/main/dashboard"} />;
-   // }
+   if (!token && location.pathname !== "/login") {
+      history.push("/login");
+   }
 
    if (location.pathname === "/") {
       return <Redirect to={"/app/main/dashboard"} />;

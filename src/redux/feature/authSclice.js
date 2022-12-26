@@ -52,15 +52,25 @@ export const registerUser = createAsyncThunk(
    }
 );
 
-export const currentUser = createAsyncThunk("auth/currentUser", async (_, { rejectWithValue }) => {
-   try {
-      const { data } = await authAPI.me();
-      return data;
-   } catch (error) {
-      console.log(error);
-      return rejectWithValue(error.response.data);
+export const currentUser = createAsyncThunk(
+   "auth/currentUser",
+   async ({ setLoading, history }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await authAPI.me();
+         console.log(data);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         if (location.pathname !== "/login") {
+            history.push("/login");
+         }
+         console.log(error);
+         return rejectWithValue(error.response.data);
+      }
    }
-});
+);
 
 // export const listClient = createAsyncThunk("client/listClient", async (_, { rejectWithValue }) => {
 //    try {
