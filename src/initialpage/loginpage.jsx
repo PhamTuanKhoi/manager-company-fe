@@ -13,6 +13,9 @@ import { alphaNumericPattern, emailrgx } from "../constant";
 import { authAPI } from "../api/auth.js";
 import { jwtManager } from "../helpers/jwtManager.js";
 import { login } from "../redux/feature/authSclice";
+import { useDispatch } from "react-redux";
+import { useLoading } from "../hook/useLoading";
+import { toast } from "react-toastify";
 
 const schema = yup.object({
    email: yup.string().matches(emailrgx, "Email is required").required("Email is required").trim(),
@@ -32,15 +35,15 @@ const Loginpage = (props) => {
       resolver: yupResolver(schema),
    });
 
+   const dispatch = useDispatch();
+   const { setLoading } = useLoading();
+
    const onSubmit = async (payload) => {
       try {
-         console.log("payload", payload);
-
-         const { data } = await authAPI.login({ ...payload, username: payload.email });
-
-         jwtManager.set(data.access_token);
+         dispatch(
+            login({ payload: { ...payload, username: payload.email }, toast, props, setLoading })
+         );
          clearErrors("password");
-         props.history.push("/app/main/dashboard");
       } catch (error) {
          console.log(error);
          if (typeof error?.response?.data?.message === "string") {

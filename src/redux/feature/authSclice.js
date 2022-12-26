@@ -10,6 +10,7 @@ export const login = createAsyncThunk(
    async ({ payload, toast, props }, { rejectWithValue }) => {
       try {
          const { data } = await authAPI.login(payload);
+         jwtManager.set(data.access_token);
          toast.success("Đăng nhập thành công");
          props.history.push("/app/main/dashboard");
          return data;
@@ -101,7 +102,6 @@ const authSclice = createSlice({
       },
       [login.fulfilled]: (state, action) => {
          state.loading = false;
-         jwtManager.set(action.payload.access_token);
          state.user = action.payload.user;
          state.token = action.payload.access_token;
       },
