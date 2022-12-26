@@ -62,7 +62,12 @@ export default function App(props) {
       dispatch(currentUser({ setLoading, history }));
    };
 
-   if (!token && location.pathname !== "/login") {
+   if (
+      !token &&
+      location.pathname !== "/login" &&
+      location.pathname !== "/register-user" &&
+      location.pathname !== "/register"
+   ) {
       history.push("/login");
    }
 

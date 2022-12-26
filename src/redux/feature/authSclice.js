@@ -65,7 +65,7 @@ export const currentUser = createAsyncThunk(
       } catch (error) {
          console.log(error);
          setLoading(false);
-         if (location.pathname !== "/login") {
+         if (location.pathname !== "/login" && location.pathname !== "/register-user") {
             history.push("/login");
          }
          return rejectWithValue(error.response.data);
