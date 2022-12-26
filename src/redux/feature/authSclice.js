@@ -62,11 +62,11 @@ export const currentUser = createAsyncThunk(
          setLoading(false);
          return data;
       } catch (error) {
+         console.log(error);
          setLoading(false);
          if (location.pathname !== "/login") {
             history.push("/login");
          }
-         console.log(error);
          return rejectWithValue(error.response.data);
       }
    }
