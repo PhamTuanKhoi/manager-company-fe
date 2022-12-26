@@ -26,7 +26,7 @@ const ActionTask = ({ item }) => {
             </i>
          </span>
 
-         <AssignPerson show={modalPerson} onHide={() => setModalPerson(false)} />
+         <AssignPerson show={modalPerson} onHide={() => setModalPerson(false)} task={item} />
       </>
    );
 };

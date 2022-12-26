@@ -32,7 +32,6 @@ export const listWorkerProjectByProject = createAsyncThunk(
       try {
          setLoading(true);
          const { data } = await workerProjectAPI.listByProject(id);
-         console.log({ data });
          setLoading(false);
          return data;
       } catch (error) {

@@ -1,35 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createWorkerProject } from "../../../redux/feature/workerProjectSclice";
 import { useLoading } from "../../../hook/useLoading";
 
 import { listWorker } from "../../../redux/feature/workerSclice";
-function AssignPerson({ show, onHide }) {
+import { createAssignTask } from "../../../redux/feature/assignTaskSclice";
+function AssignPerson({ show, onHide, task }) {
    const { workers } = useSelector((state) => state.worker);
    const dispatch = useDispatch();
    const { id } = useParams();
    const { setLoading } = useLoading();
    const [isExitArray, setIsExitArray] = useState([]);
+   const { user } = useSelector((state) => state.auth);
 
-   function handleAdd(worker) {
+   function handleAdd(worker, task) {
+      console.log(worker.worker, task, { creator: user._id });
+
+      if (!user._id) toast.warn(`Vui lòng đăng nhập vào hệ thống`);
+
       dispatch(
-         createWorkerProject({
-            payload: { worker: worker._id, project: id },
+         createAssignTask({
+            payload: { worker: worker.worker, task: task._id, creator: user._id },
             toast,
-            onHide,
             setLoading,
-            worker,
          })
       );
    }
 
    const { listWPByProject } = useSelector((state) => state.workerProject);
-
-   console.log(listWPByProject);
 
    useEffect(() => {
       exit();
@@ -92,7 +93,7 @@ function AssignPerson({ show, onHide }) {
                                           {/* <span className="designation">{item?.department}</span> */}
                                        </div>
                                     </div>
-                                    <div className="import" onClick={() => handleAdd(item)}>
+                                    <div className="import" onClick={() => handleAdd(item, task)}>
                                        Thêm
                                     </div>
                                  </div>

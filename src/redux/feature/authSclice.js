@@ -59,7 +59,6 @@ export const currentUser = createAsyncThunk(
       try {
          setLoading(true);
          const { data } = await authAPI.me();
-         console.log(data);
          setLoading(false);
          return data;
       } catch (error) {
