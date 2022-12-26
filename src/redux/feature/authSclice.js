@@ -27,6 +27,31 @@ export const login = createAsyncThunk(
    }
 );
 
+export const registerUser = createAsyncThunk(
+   "auth/registerUser",
+   async ({ payload, toast, history, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await authAPI.registerUser(payload);
+         toast.success("Đăng ký tài khoản thành công");
+         history.push("/login");
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 export const currentUser = createAsyncThunk("auth/currentUser", async (_, { rejectWithValue }) => {
    try {
       const { data } = await authAPI.me();
@@ -84,6 +109,19 @@ const authSclice = createSlice({
          state.user = action.payload;
       },
       [currentUser.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      //register user
+      [registerUser.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [registerUser.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.user = action.payload;
+      },
+      [registerUser.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

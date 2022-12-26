@@ -66,19 +66,19 @@ const Loginpage = (props) => {
             <Link to="/applyjob/joblist" className="btn btn-primary apply-btn">
                Apply Job
             </Link>
+            <Link to="/app/main/dashboard">
+               <img
+                  style={{ width: "100px", marginLeft: "50px" }}
+                  src="https://fce.com.vn/wp-content/uploads/2022/08/logo_fce_trong_suot-1024x614.png"
+                  alt="Dreamguy's Technologies"
+               />
+            </Link>
             <div className="container">
-               {/* Account Logo */}
-               <div className="account-logo">
-                  <Link to="/app/main/dashboard">
-                     <img src={Applogo} alt="Dreamguy's Technologies" />
-                  </Link>
-               </div>
-               {/* /Account Logo */}
                <div className="account-box">
                   <div className="account-wrapper">
                      <h3 className="account-title">Login</h3>
-                     <p className="account-subtitle">Access to our dashboard</p>
-                     {/* Account Form */}
+                     <p className="account-subtitle"></p>
+
                      <div>
                         <form onSubmit={handleSubmit(onSubmit)}>
                            <div className="form-group">

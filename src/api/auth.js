@@ -10,6 +10,10 @@ export const authAPI = {
       return await axios.post(path + "register", payload);
    },
 
+   async registerUser(payload) {
+      return await axios.post(path + "register-user", payload);
+   },
+
    async me() {
       return await axios.post(path + "me");
    },

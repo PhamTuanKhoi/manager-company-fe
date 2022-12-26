@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import Modal from "react-bootstrap/Modal";
 import { Helmet } from "react-helmet";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Applogo } from "../Entryfile/imagepath";
-const RegisterUser = ({ show, onHide }) => {
+import { registerUser } from "../redux/feature/authSclice";
+import { useLoading } from "../hook/useLoading";
+
+const RegisterUser = () => {
    const [register, setRegister] = useState({
       name: "",
       email: "",
@@ -17,8 +19,19 @@ const RegisterUser = ({ show, onHide }) => {
       confirmPasword: "",
    });
 
+   const { setLoading } = useLoading();
+   const history = useHistory();
+   const dispatch = useDispatch();
+
    function handleSave() {
-      console.log(register);
+      dispatch(
+         registerUser({
+            payload: { ...register, date: new Date(register.date).getTime() },
+            toast,
+            history,
+            setLoading,
+         })
+      );
    }
 
    return (
@@ -41,8 +54,6 @@ const RegisterUser = ({ show, onHide }) => {
             </Link>
 
             <div className="container">
-               {/* Account Logo */}
-               {/* /Account Logo */}
                <div className="account-box-12">
                   <div className="account-wrapper">
                      <h3 className="account-title">Đăng ký tài khoản</h3>
