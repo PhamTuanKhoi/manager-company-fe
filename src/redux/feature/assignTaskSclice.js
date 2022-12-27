@@ -24,11 +24,44 @@ export const createAssignTask = createAsyncThunk(
    }
 );
 
+export const listAssignTask = createAsyncThunk(
+   "assignTask/listAssignTask",
+   async ({ setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await assignTaskAPI.list();
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const listAssignByTask = createAsyncThunk(
+   "assignTask/listAssignByTask",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await assignTaskAPI.listByTask(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const assignTaskSclice = createSlice({
    name: "assignTask",
    initialState: {
       assignTask: {},
       assignTasks: [],
+      assignTaskByTask: [],
       error: "",
       loading: false,
    },
@@ -41,8 +74,35 @@ const assignTaskSclice = createSlice({
          state.loading = false;
          state.assignTask = action.payload;
          state.assignTasks.push(action.payload);
+         state.assignTaskByTask.push(action.payload);
       },
       [createAssignTask.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      //list
+      [listAssignTask.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listAssignTask.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.assignTasks = action.payload;
+      },
+      [listAssignTask.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      //list by task
+      [listAssignByTask.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listAssignByTask.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.assignTaskByTask = action.payload;
+      },
+      [listAssignByTask.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

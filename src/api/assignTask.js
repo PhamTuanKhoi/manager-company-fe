@@ -9,4 +9,8 @@ export const assignTaskAPI = {
    async list() {
       return await axios.get(path);
    },
+
+   async listByTask(id) {
+      return await axios.get(path + "task/" + id);
+   },
 };

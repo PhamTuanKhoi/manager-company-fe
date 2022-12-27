@@ -1,23 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { createWorkerProject } from "../../../redux/feature/workerProjectSclice";
 import { useLoading } from "../../../hook/useLoading";
 
-import { listWorker } from "../../../redux/feature/workerSclice";
-import { createAssignTask } from "../../../redux/feature/assignTaskSclice";
-function AssignPerson({ show, onHide, task }) {
-   const { workers } = useSelector((state) => state.worker);
+import {
+   createAssignTask,
+   listAssignByTask,
+   listAssignTask,
+} from "../../../redux/feature/assignTaskSclice";
+function AssignPerson({ show, onHide, task, load }) {
    const dispatch = useDispatch();
-   const { id } = useParams();
    const { setLoading } = useLoading();
-   const [isExitArray, setIsExitArray] = useState([]);
    const { user } = useSelector((state) => state.auth);
+   const { assignTasks } = useSelector((state) => state.assignTask);
+   const { assignTaskByTask } = useSelector((state) => state.assignTask);
+
+   // console.log(assignTasks);
+
+   useEffect(() => {
+      dispatch(listAssignByTask({ id: task._id, setLoading }));
+   }, [load]);
+
+   // console.log(load);
 
    function handleAdd(worker, task) {
-      console.log(worker.worker, task, { creator: user._id });
+      // console.log(worker.worker, task, { creator: user._id });
 
       if (!user._id) toast.warn(`Vui lòng đăng nhập vào hệ thống`);
 
@@ -32,19 +40,9 @@ function AssignPerson({ show, onHide, task }) {
 
    const { listWPByProject } = useSelector((state) => state.workerProject);
 
-   useEffect(() => {
-      exit();
-      fetchWorker();
-   }, [listWPByProject]);
-
-   function exit() {
-      let arrWorkerId = listWPByProject.map((item) => item.worker);
-      setIsExitArray(arrWorkerId);
-   }
-
-   function fetchWorker() {
-      dispatch(listWorker({ setLoading }));
-   }
+   // console.log(listWPByProject);
+   // console.log(task);
+   // console.log(assignTaskByTask, "okay");
 
    return (
       <Modal
@@ -80,26 +78,40 @@ function AssignPerson({ show, onHide, task }) {
                   </div>
                   <div className="body-dialog">
                      <ul className="chat-user-list">
-                        {listWPByProject?.map((item, index) => (
-                           <li key={index}>
-                              <a href="#">
-                                 <div className="media import-content">
-                                    <div className="content-media">
-                                       <span className="avatar">
-                                          {/* <img alt="" src={Avatar_09} /> */}
-                                       </span>
-                                       <div className="media-body align-self-center text-nowrap">
-                                          <div className="user-name">{item?.user?.name}</div>
-                                          {/* <span className="designation">{item?.department}</span> */}
-                                       </div>
-                                    </div>
-                                    <div className="import" onClick={() => handleAdd(item, task)}>
-                                       Thêm
-                                    </div>
-                                 </div>
-                              </a>
-                           </li>
-                        ))}
+                        {listWPByProject?.map((item, index) => {
+                           assignTaskByTask?.map((ele) => {
+                              // console.log(item?.user?._id, "user");
+                              // console.log(ele.worker, "worker");
+                              if (item?.user?._id !== ele?.worker) {
+                                 // console.log("next", item);
+                                 return (
+                                    <li key={index}>
+                                       <a href="#">
+                                          <div className="media import-content">
+                                             <div className="content-media">
+                                                <span className="avatar">
+                                                   {/* <img alt="" src={Avatar_09} /> */}
+                                                </span>
+                                                <div className="media-body align-self-center text-nowrap">
+                                                   <div className="user-name">
+                                                      {item?.user?.name}
+                                                   </div>
+                                                   {/* <span className="designation">{item?.department}</span> */}
+                                                </div>
+                                             </div>
+                                             <div
+                                                className="import"
+                                                onClick={() => handleAdd(item, task)}
+                                             >
+                                                Thêm
+                                             </div>
+                                          </div>
+                                       </a>
+                                    </li>
+                                 );
+                              }
+                           });
+                        })}
                      </ul>
                   </div>
                </div>

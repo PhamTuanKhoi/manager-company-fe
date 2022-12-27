@@ -74,6 +74,7 @@ export default function App(props) {
    if (location.pathname === "/") {
       return <Redirect to={"/app/main/dashboard"} />;
    }
+
    return (
       <Switch>
          <Route path="/login" component={LoginPage} />

@@ -3,10 +3,12 @@ import AssignPerson from "./assignPerson";
 
 const ActionTask = ({ item }) => {
    const [modalPerson, setModalPerson] = useState(false);
+   const [load, setLoad] = useState(0);
 
    const handlePerson = (e) => {
       e.stopPropagation();
       setModalPerson(true);
+      setLoad((prev) => prev + 1);
    };
    return (
       <>
@@ -26,7 +28,12 @@ const ActionTask = ({ item }) => {
             </i>
          </span>
 
-         <AssignPerson show={modalPerson} onHide={() => setModalPerson(false)} task={item} />
+         <AssignPerson
+            show={modalPerson}
+            onHide={() => setModalPerson(false)}
+            task={item}
+            load={load}
+         />
       </>
    );
 };
