@@ -55,7 +55,7 @@ function AssignPerson({ show, onHide, task, load }) {
          <div ole="document">
             <div className="modal-content">
                <div className="modal-header">
-                  <h5 className="modal-title">Thêm người lao dộng</h5>
+                  <h5 className="modal-title">Giao công việc</h5>
                   <button type="button" className="close-x">
                      <span
                         aria-hidden="true"
@@ -79,38 +79,33 @@ function AssignPerson({ show, onHide, task, load }) {
                   <div className="body-dialog">
                      <ul className="chat-user-list">
                         {listWPByProject?.map((item, index) => {
-                           assignTaskByTask?.map((ele) => {
-                              // console.log(item?.user?._id, "user");
-                              // console.log(ele.worker, "worker");
-                              if (item?.user?._id !== ele?.worker) {
-                                 // console.log("next", item);
-                                 return (
-                                    <li key={index}>
-                                       <a href="#">
-                                          <div className="media import-content">
-                                             <div className="content-media">
-                                                <span className="avatar">
-                                                   {/* <img alt="" src={Avatar_09} /> */}
-                                                </span>
-                                                <div className="media-body align-self-center text-nowrap">
-                                                   <div className="user-name">
-                                                      {item?.user?.name}
-                                                   </div>
-                                                   {/* <span className="designation">{item?.department}</span> */}
-                                                </div>
-                                             </div>
-                                             <div
-                                                className="import"
-                                                onClick={() => handleAdd(item, task)}
-                                             >
-                                                Thêm
-                                             </div>
+                           // console.log(item?.user?._id, "user");
+                           // console.log(ele.worker, "worker");
+
+                           // console.log("next", item);
+                           return (
+                              <li key={index}>
+                                 <a href="#">
+                                    <div className="media import-content">
+                                       <div className="content-media">
+                                          <span className="avatar">
+                                             {/* <img alt="" src={Avatar_09} /> */}
+                                          </span>
+                                          <div className="media-body align-self-center text-nowrap">
+                                             <div className="user-name">{item?.user?.name}</div>
+                                             {/* <span className="designation">{item?.department}</span> */}
                                           </div>
-                                       </a>
-                                    </li>
-                                 );
-                              }
-                           });
+                                       </div>
+                                       <div
+                                          className="import"
+                                          onClick={() => handleAdd(item, task)}
+                                       >
+                                          Thêm
+                                       </div>
+                                    </div>
+                                 </a>
+                              </li>
+                           );
                         })}
                      </ul>
                   </div>

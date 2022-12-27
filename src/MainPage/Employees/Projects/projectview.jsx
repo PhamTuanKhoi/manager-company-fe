@@ -4,7 +4,13 @@ import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { EmployeeDepartmentType, UserRoleType } from "../../../constant";
+import {
+   EmployeeDepartmentType,
+   ProjectPriorityEnum,
+   ProjectStatusEnum,
+   TaskStatusType,
+   UserRoleType,
+} from "../../../constant";
 import { Avatar_02, Avatar_11, Avatar_01, PlaceHolder } from "../../../Entryfile/imagepath";
 import { useLoading } from "../../../hook/useLoading";
 import { listPayslipByUser } from "../../../redux/feature/payslipSclice";
@@ -81,23 +87,24 @@ const ProjectView = () => {
             <div className="page-header">
                <div className="row align-items-center">
                   <div className="col">
-                     <h3 className="page-title">Hospital Admin</h3>
+                     <h3 className="page-title">Dự Án</h3>
                      <ul className="breadcrumb">
                         <li className="breadcrumb-item">
-                           <Link to="/app/main/dashboard">Dashboard</Link>
+                           <Link to="/app/main/dashboard">Trang chủ</Link>
                         </li>
-                        <li className="breadcrumb-item active">Project</li>
+                        <li className="breadcrumb-item active">Dự án</li>
                      </ul>
                   </div>
                   <div className="col-auto float-end ml-auto">
                      <a
                         href="#"
-                        className="btn add-btn"
+                        className="btn btn-warning"
                         data-bs-toggle="modal"
                         data-bs-target="#edit_project"
                      >
-                        <i className="fa fa-plus" /> Edit Project
+                        Chỉnh sửa
                      </a>
+
                      <Link
                         to="/app/projects/task-board"
                         className="btn btn-white float-end m-r-10"
@@ -117,23 +124,39 @@ const ProjectView = () => {
                         <div className="project-title">
                            <h5 className="card-title">{project?.name}</h5>
                            <small className="block text-ellipsis m-b-15">
-                              <span className="text-xs">2</span>{" "}
-                              <span className="text-muted">open tasks, </span>
-                              <span className="text-xs">5</span>{" "}
-                              <span className="text-muted">tasks completed</span>
+                              <span className="text-xs">
+                                 {
+                                    tasks?.filter((item) => item?.status === TaskStatusType.START)
+                                       .length
+                                 }
+                              </span>{" "}
+                              <span className="text-muted">công việc </span>
+                              <span className="text-xs">
+                                 {
+                                    tasks?.filter(
+                                       (item) => item?.status === TaskStatusType.COMPLETED
+                                    ).length
+                                 }
+                              </span>{" "}
+                              <span className="text-muted">hoàn thành</span>
                            </small>
                         </div>
                         <p>{project?.content}</p>
                      </div>
                   </div>
+
                   <div className="card">
                      <div className="card-body">
-                        <h5 className="card-title m-b-20">Uploaded image files</h5>
+                        <h5 className="card-title m-b-20">Hình ảnh</h5>
                         <div className="row">
                            <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
                               <div className="uploaded-box">
                                  <div className="uploaded-img">
-                                    <img src={PlaceHolder} className="img-fluid" alt="" />
+                                    <img
+                                       src="https://fce.com.vn/wp-content/uploads/2022/07/cowomen-ZKHksse8tUU-unsplash-1-600x400-1.jpg"
+                                       className="img-fluid"
+                                       alt=""
+                                    />
                                  </div>
                                  <div className="uploaded-img-name">demo.png</div>
                               </div>
@@ -141,7 +164,11 @@ const ProjectView = () => {
                            <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
                               <div className="uploaded-box">
                                  <div className="uploaded-img">
-                                    <img src={PlaceHolder} className="img-fluid" alt="" />
+                                    <img
+                                       src="https://fce.com.vn/wp-content/uploads/2022/07/cowomen-ZKHksse8tUU-unsplash-1-600x400-1.jpg"
+                                       className="img-fluid"
+                                       alt=""
+                                    />
                                  </div>
                                  <div className="uploaded-img-name">demo.png</div>
                               </div>
@@ -149,7 +176,11 @@ const ProjectView = () => {
                            <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
                               <div className="uploaded-box">
                                  <div className="uploaded-img">
-                                    <img src={PlaceHolder} className="img-fluid" alt="" />
+                                    <img
+                                       src="https://fce.com.vn/wp-content/uploads/2022/07/co-huong-di-ro-rang-se-giup-ban-dat-duoc-thanh-cong-khi-quyet-dinh-thanh-lap-cong-ty-900x560-1.jpg"
+                                       className="img-fluid"
+                                       alt=""
+                                    />
                                  </div>
                                  <div className="uploaded-img-name">demo.png</div>
                               </div>
@@ -157,7 +188,11 @@ const ProjectView = () => {
                            <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
                               <div className="uploaded-box">
                                  <div className="uploaded-img">
-                                    <img src={PlaceHolder} className="img-fluid" alt="" />
+                                    <img
+                                       src="https://fce.com.vn/wp-content/uploads/2022/07/cowomen-ZKHksse8tUU-unsplash-1-600x400-1.jpg"
+                                       className="img-fluid"
+                                       alt=""
+                                    />
                                  </div>
                                  <div className="uploaded-img-name">demo.png</div>
                               </div>
@@ -165,6 +200,7 @@ const ProjectView = () => {
                         </div>
                      </div>
                   </div>
+                  {/* 
                   <div className="card">
                      <div className="card-body">
                         <h5 className="card-title m-b-20">Uploaded files</h5>
@@ -269,7 +305,7 @@ const ProjectView = () => {
                            </li>
                         </ul>
                      </div>
-                  </div>
+                  </div> */}
                   <div className="project-task">
                      <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
                         <li className="nav-item">
@@ -400,7 +436,7 @@ const ProjectView = () => {
                <div className="col-lg-4 col-xl-3">
                   <div className="card">
                      <div className="card-body">
-                        <h6 className="card-title m-b-15">Project details</h6>
+                        <h6 className="card-title m-b-15">Chi tiết dự án</h6>
                         <table className="table table-striped table-border">
                            <tbody>
                               <tr>
@@ -408,31 +444,53 @@ const ProjectView = () => {
                                  <td className="text-end">${project?.price}</td>
                               </tr>
                               <tr>
-                                 <td>Total Hours:</td>
-                                 <td className="text-end">100 Hours</td>
+                                 <td>Phiếu lương:</td>
+                                 <td className="text-end">
+                                    {project?.payslip?.length > 0 && (
+                                       <a
+                                          href={`/app/payroll/salary-view/${project?.payslip[0]?._id}`}
+                                       >
+                                          {project?.payslip[0]?.name}
+                                       </a>
+                                    )}
+                                 </td>
                               </tr>
                               <tr>
-                                 <td>Created:</td>
+                                 <td>Bắt đầu:</td>
                                  <td className="text-end">
                                     {moment(project?.start).format("DD/MM/YYYY")}
                                  </td>
                               </tr>
                               <tr>
-                                 <td>Deadline:</td>
+                                 <td>Kết thúc:</td>
                                  <td className="text-end">
                                     {moment(project?.end).format("DD/MM/YYYY")}
                                  </td>
                               </tr>
                               <tr>
-                                 <td>Priority:</td>
+                                 <td>Ưu tiên:</td>
                                  <td className="text-end">
                                     <div className="btn-group">
                                        <a
                                           href="#"
-                                          className="badge badge-danger dropdown-toggle"
+                                          className={
+                                             project?.priority === ProjectPriorityEnum.HIGH
+                                                ? "badge badge-danger dropdown-toggle"
+                                                : project?.priority === ProjectPriorityEnum.LOW
+                                                ? "badge badge-primary dropdown-toggle"
+                                                : project?.priority === ProjectPriorityEnum.MEDIUM
+                                                ? "badge badge-warning dropdown-toggle"
+                                                : ""
+                                          }
                                           data-bs-toggle="dropdown"
                                        >
-                                          Highest{" "}
+                                          {project?.priority === ProjectPriorityEnum.HIGH
+                                             ? "Cao"
+                                             : project?.priority === ProjectPriorityEnum.LOW
+                                             ? "Thấp"
+                                             : project?.priority === ProjectPriorityEnum.MEDIUM
+                                             ? "Trung bình"
+                                             : ""}
                                        </a>
                                        <div className="dropdown-menu dropdown-menu-right">
                                           <a className="dropdown-item" href="#">
@@ -456,19 +514,33 @@ const ProjectView = () => {
                                  </td>
                               </tr>
                               <tr>
-                                 <td>Created by:</td>
+                                 <td>Người tạo:</td>
                                  <td className="text-end">
-                                    <Link to="/app/profile/employee-profile">Barry Cuda</Link>
+                                    <Link to="/app/profile/employee-profile">
+                                       {project?.creator?.name || "Admin"}
+                                    </Link>
                                  </td>
                               </tr>
                               <tr>
-                                 <td>Status:</td>
-                                 <td className="text-end">Working</td>
+                                 <td>Trạng thái:</td>
+                                 <td className="text-end">
+                                    {project?.status === ProjectStatusEnum.CANCEL
+                                       ? "Hủy"
+                                       : project?.status === ProjectStatusEnum.NEWPROJECTS
+                                       ? "Bắt đầu"
+                                       : project?.status === ProjectStatusEnum.RUNNING
+                                       ? "Đang chạy"
+                                       : project?.status === ProjectStatusEnum.ONHOLD
+                                       ? "Tạm dừng"
+                                       : project?.status === ProjectStatusEnum.FINISHED
+                                       ? "Hoàn thành"
+                                       : ""}
+                                 </td>
                               </tr>
                            </tbody>
                         </table>
                         <p className="m-b-5">
-                           Progress <span className="text-success float-end">40%</span>
+                           Tiến độ <span className="text-success float-end">40%</span>
                         </p>
                         <div className="progress progress-xs mb-0">
                            <div

@@ -42,3 +42,9 @@ export const UserRoleType = {
    EMPLOYEE: "Employee",
    WORKER: "Worker",
 };
+
+export const TaskStatusType = {
+   START: 0,
+   INPROGRESS: 1,
+   COMPLETED: 2,
+};
