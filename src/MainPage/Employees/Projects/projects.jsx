@@ -169,7 +169,19 @@ const Projects = () => {
                               <span className="text-xs">9</span>{" "}
                               <span className="text-muted">tasks completed</span>
                            </small>
-                           <p className="text-muted">{item?.content}</p>
+                           {/* <p className="text-muted">{item?.content}</p> */}
+                           <div className="pro-deadline m-b-15">
+                              <div className="sub-title">Tổng số:</div>
+                              <div className="text-muted">70 Người</div>
+                           </div>
+                           <div className="pro-deadline m-b-15">
+                              <div className="sub-title">Số lượng làm:</div>
+                              <div className="text-muted">50 Người</div>
+                           </div>
+                           <div className="pro-deadline m-b-15">
+                              <div className="sub-title">Số lượng nghỉ:</div>
+                              <div className="text-muted">2 Người</div>
+                           </div>
                            <div className="pro-deadline m-b-15">
                               <div className="sub-title">Deadline:</div>
                               <div className="text-muted">

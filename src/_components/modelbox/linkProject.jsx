@@ -55,7 +55,7 @@ const LinkProject = ({ show, onHide }) => {
                </div>
                <div>
                   <ul className="chat-user-list">
-                     {payslips.map(
+                     {payslips?.map(
                         (item) =>
                            project?.payslip[0]?._id !== item._id && (
                               <li key={item?._id}>

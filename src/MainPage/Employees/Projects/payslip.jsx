@@ -8,15 +8,31 @@ import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { listPayslip } from "../../../redux/feature/payslipSclice";
+import { listPayslip, listPayslipByEmployees } from "../../../redux/feature/payslipSclice";
 import moment from "moment";
+import { UserRoleType } from "../../../constant";
+import { useLoading } from "../../../hook/useLoading";
 
 const Payslip = () => {
    const dispatch = useDispatch();
+   const { setLoading } = useLoading();
+   const { user } = useSelector((state) => state.auth);
 
    useEffect(() => {
-      dispatch(listPayslip());
-   }, []);
+      fetchPayslip();
+   }, [user?.role]);
+
+   function fetchPayslip() {
+      if (user._id) {
+         if (user?.role === UserRoleType.ADMIN) {
+            dispatch(listPayslip());
+         }
+
+         if (user?.role === UserRoleType.EMPLOYEE) {
+            dispatch(listPayslipByEmployees({ id: user._id, setLoading }));
+         }
+      }
+   }
 
    const { payslips } = useSelector((state) => state.payslip);
 
