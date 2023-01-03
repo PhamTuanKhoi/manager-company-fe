@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Scrollbars } from "react-custom-scrollbars";
+import { useSelector } from "react-redux";
+import { UserRoleType } from "../../constant";
 
 const Sidebar = (props) => {
    const [isSideMenu, setSideMenu] = useState("");
@@ -24,6 +26,8 @@ const Sidebar = (props) => {
    };
 
    let pathname = props.location.pathname;
+
+   const { user } = useSelector((state) => state.auth);
    return (
       <div className="sidebar" id="sidebar">
          <Scrollbars
@@ -40,24 +44,28 @@ const Sidebar = (props) => {
             <div className="sidebar-inner slimscroll">
                <div id="sidebar-menu" className="sidebar-menu">
                   <ul>
-                     {/* <li className="menu-title">
-                        <span>Main</span>
-                     </li> */}
-                     <li className={pathname.includes("main/dashboard") ? "active" : ""}>
-                        <Link to="/app/main/dashboard">
-                           <i className="la la-user-secret" /> <span>Trang chủ</span>
-                        </Link>
-                     </li>
-                     <li className={pathname.includes("employee-dashboard") ? "active" : ""}>
-                        <Link to="/app/main/employee-dashboard">
-                           <i className="la la-user-secret" /> <span>Trang chủ</span>
-                        </Link>
-                     </li>
-                     <li className={pathname.includes("client-dashboard") ? "active" : ""}>
-                        <Link to="/app/main/client-dashboard">
-                           <i className="la la-user-secret" /> <span>Trang chủ</span>
-                        </Link>
-                     </li>
+                     <li className="menu-title">{/* <span>Main</span> */}</li>
+                     {user?.role === UserRoleType.ADMIN && (
+                        <li className={pathname.includes("main/dashboard") ? "active" : ""}>
+                           <Link to="/app/main/dashboard">
+                              <i className="la la-user-secret" /> <span>Trang chủ</span>
+                           </Link>
+                        </li>
+                     )}
+                     {user?.role === UserRoleType.EMPLOYEE && (
+                        <li className={pathname.includes("employee-dashboard") ? "active" : ""}>
+                           <Link to="/app/main/employee-dashboard">
+                              <i className="la la-user-secret" /> <span>Trang chủ</span>
+                           </Link>
+                        </li>
+                     )}
+                     {user?.role === UserRoleType.CLIENT && (
+                        <li className={pathname.includes("client-dashboard") ? "active" : ""}>
+                           <Link to="/app/main/client-dashboard">
+                              <i className="la la-user-secret" /> <span>Trang chủ</span>
+                           </Link>
+                        </li>
+                     )}
                      {/* <li className="submenu">
                         <a
                            href="#"
@@ -415,7 +423,7 @@ const Sidebar = (props) => {
                            <i className="la la-ticket" /> <span>Yêu cầu</span>
                         </Link>
                      </li>
-                     <p>====================================</p>
+                     {/* <p>====================================</p> */}
                      {/* <li className="submenu">
                         <a
                            href="#"
