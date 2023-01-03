@@ -40,10 +40,25 @@ const Sidebar = (props) => {
             <div className="sidebar-inner slimscroll">
                <div id="sidebar-menu" className="sidebar-menu">
                   <ul>
-                     <li className="menu-title">
+                     {/* <li className="menu-title">
                         <span>Main</span>
+                     </li> */}
+                     <li className={pathname.includes("main/dashboard") ? "active" : ""}>
+                        <Link to="/app/main/dashboard">
+                           <i className="la la-user-secret" /> <span>Trang chủ</span>
+                        </Link>
                      </li>
-                     <li className="submenu">
+                     <li className={pathname.includes("employee-dashboard") ? "active" : ""}>
+                        <Link to="/app/main/employee-dashboard">
+                           <i className="la la-user-secret" /> <span>Trang chủ</span>
+                        </Link>
+                     </li>
+                     <li className={pathname.includes("client-dashboard") ? "active" : ""}>
+                        <Link to="/app/main/client-dashboard">
+                           <i className="la la-user-secret" /> <span>Trang chủ</span>
+                        </Link>
+                     </li>
+                     {/* <li className="submenu">
                         <a
                            href="#"
                            className={isSideMenu == "dashboard" ? "subdrop" : ""}
@@ -84,20 +99,8 @@ const Sidebar = (props) => {
                         ) : (
                            ""
                         )}
-                     </li>
-                     {/* <li
-                        className={
-                           pathname.includes("project_dashboard")
-                              ? "active"
-                              : pathname.includes("ticket-view")
-                              ? "active"
-                              : ""
-                        }
-                     >
-                        <Link to="/app/projects/project_dashboard">
-                           <i className="la la-rocket" /> <span>Dự án</span>
-                        </Link>
                      </li> */}
+
                      <li className="submenu">
                         <a
                            href="#"
@@ -163,7 +166,8 @@ const Sidebar = (props) => {
                            <i className="la la-money" /> <span> Thanh toán </span>{" "}
                            <span className="menu-arrow" />
                         </a>
-                        {isSideMenu == "payroll" ? (
+                        {/* {isSideMenu == "payroll" ? ( */}
+                        {isSideMenu == "lay o tren" ? (
                            <ul>
                               <li>
                                  <Link
@@ -207,7 +211,17 @@ const Sidebar = (props) => {
                            <i className="la la-users" /> <span>Khách hàng</span>
                         </Link>
                      </li>
-                     <li className="submenu">
+                     <li className={pathname.includes("allemployees") ? "active" : ""}>
+                        <Link to="/app/employee/allemployees">
+                           <i className="la la-users" /> <span>Nhân viên</span>
+                        </Link>
+                     </li>
+                     <li className={pathname.includes("users") ? "active" : ""}>
+                        <Link to="/app/administrator/users">
+                           <i className="la la-users" /> <span>Người lao động</span>
+                        </Link>
+                     </li>
+                     {/* <li className="submenu">
                         <a
                            href="#"
                            className={isSideMenu == "employee" ? "subdrop" : ""}
@@ -330,9 +344,9 @@ const Sidebar = (props) => {
                         ) : (
                            ""
                         )}
-                     </li>
+                     </li> */}
 
-                     <li className="submenu">
+                     {/* <li className="submenu">
                         <a
                            href="#"
                            className={isSideMenu == "sales" ? "subdrop" : ""}
@@ -387,7 +401,7 @@ const Sidebar = (props) => {
                         ) : (
                            ""
                         )}
-                     </li>
+                     </li> */}
                      <li
                         className={
                            pathname.includes("tickets")
@@ -402,7 +416,7 @@ const Sidebar = (props) => {
                         </Link>
                      </li>
                      <p>====================================</p>
-                     <li className="submenu">
+                     {/* <li className="submenu">
                         <a
                            href="#"
                            className={isSideMenu == "apps" ? "subdrop" : ""}
@@ -1513,7 +1527,7 @@ const Sidebar = (props) => {
                         ) : (
                            ""
                         )}
-                     </li>
+                     </li> */}
                   </ul>
                </div>
             </div>
