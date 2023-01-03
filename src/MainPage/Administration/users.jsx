@@ -5,20 +5,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import {
-   Avatar_01,
-   Avatar_02,
-   Avatar_03,
-   Avatar_04,
-   Avatar_05,
-   Avatar_06,
-   Avatar_07,
-   Avatar_08,
-   Avatar_09,
-   Avatar_10,
-   Avatar_11,
-   Avatar_12,
-} from "../../Entryfile/imagepath";
 
 import { Table } from "antd";
 import "antd/dist/antd.css";
@@ -30,6 +16,7 @@ import { listWorker } from "../../redux/feature/workerSclice";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { useLoading } from "../../hook/useLoading";
+import { avartarFAKE } from "../../constant/index";
 
 const Users = () => {
    const [modalShow, setModalShow] = useState(false);
@@ -57,11 +44,11 @@ const Users = () => {
          dataIndex: "name",
          render: (text, record) => (
             <h2 className="table-avatar">
-               <Link to="/app/profile/employee-profile" className="avatar">
-                  <img alt="" src={record.image} />
+               <Link to={`/app/profile/worker-profile/${record?._id}`} className="avatar">
+                  <img alt={record?.name} src={record?.image || avartarFAKE} />
                </Link>
-               <Link to="/app/profile/employee-profile">
-                  {text} <span>{record.role}</span>
+               <Link to={`/app/profile/worker-profile/${record?._id}`}>
+                  {text} <span>{record?.role}</span>
                </Link>
             </h2>
          ),
@@ -222,7 +209,7 @@ const Users = () => {
                         columns={columns}
                         // bordered
                         dataSource={workers}
-                        rowKey={(record) => record.id}
+                        rowKey={(record) => record._id}
                         // onChange={this.handleTableChange}
                      />
                   </div>
