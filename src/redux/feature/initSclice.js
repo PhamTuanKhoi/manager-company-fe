@@ -20,7 +20,7 @@ export const initUser = createAsyncThunk(
 const initSclice = createSlice({
    name: "init",
    initialState: {
-      user: {},
+      initUser: {},
       error: "",
       loading: false,
    },
@@ -31,7 +31,7 @@ const initSclice = createSlice({
       },
       [initUser.fulfilled]: (state, action) => {
          state.loading = false;
-         state.user = action.payload;
+         state.initUser = action.payload;
       },
       [initUser.rejected]: (state, action) => {
          state.loading = false;

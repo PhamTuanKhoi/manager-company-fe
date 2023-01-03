@@ -17,6 +17,9 @@ import {
 } from "../../../Entryfile/imagepath";
 import { useLoading } from "../../../hook/useLoading";
 import { initUser } from "../../../redux/feature/initSclice";
+import { io } from "socket.io-client";
+import { api } from "../../../constant";
+import { toast } from "react-toastify";
 
 const Chat = () => {
    useEffect(() => {
@@ -28,15 +31,48 @@ const Chat = () => {
          }, 1000);
       }
    });
+
+   //use
    const { id } = useParams();
    const { setLoading } = useLoading();
    const dispatch = useDispatch();
+   const [text, setText] = useState("");
+   const [message, setMessage] = useState("");
 
    useEffect(() => {
       dispatch(initUser({ id, setLoading }));
    }, [id]);
 
-   const { user } = useSelector((state) => state.init);
+   // init user
+   const init = useSelector((state) => state.init);
+   // current user
+   const { user } = useSelector((state) => state.auth);
+
+   const socket = io(api);
+
+   const sendMessage = () => {
+      if (!user._id) {
+         toast.warn(`Làm ơn đăng nhập vào hệ thống`);
+         return;
+      }
+
+      if (!init.initUser._id) {
+         toast.warn(`Người nhận không tồn tại`);
+         return;
+      }
+
+      socket.emit("createMessage", {
+         userEmit: user?._id,
+         userOn: init?.initUser?._id,
+         message: text,
+      });
+   };
+
+   useEffect(() => {
+      socket.on(`chat-persional`, (message) => {
+         setMessage(message);
+      });
+   }, []);
 
    return (
       <div className="page-wrapper">
@@ -257,6 +293,40 @@ const Chat = () => {
                                           </div>
                                        </div>
                                     </div>
+                                    {/* constent */}
+                                    <div className="chat chat-right">
+                                       <div className="chat-body">
+                                          <div className="chat-bubble">
+                                             <div className="chat-content">
+                                                <p>{message}</p>
+                                                <span className="chat-time">8:30 am</span>
+                                             </div>
+                                             <div className="chat-action-btns">
+                                                <ul>
+                                                   <li>
+                                                      <a
+                                                         href="#"
+                                                         className="share-msg"
+                                                         title="Share"
+                                                      >
+                                                         <i className="fa fa-share-alt" />
+                                                      </a>
+                                                   </li>
+                                                   <li>
+                                                      <a href="#" className="edit-msg">
+                                                         <i className="fa fa-pencil" />
+                                                      </a>
+                                                   </li>
+                                                   <li>
+                                                      <a href="#" className="del-msg">
+                                                         <i className="fa fa-trash-o" />
+                                                      </a>
+                                                   </li>
+                                                </ul>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
                                  </div>
                               </div>
                            </div>
@@ -279,9 +349,14 @@ const Chat = () => {
                                        className="form-control"
                                        placeholder="Type message..."
                                        defaultValue={""}
+                                       onChange={(e) => setText(e.target.value)}
                                     />
                                     <span className="input-group-append">
-                                       <button className="btn btn-custom" type="button">
+                                       <button
+                                          className="btn btn-custom"
+                                          type="button"
+                                          onClick={sendMessage}
+                                       >
                                           <i className="fa fa-send" />
                                        </button>
                                     </span>
@@ -460,7 +535,9 @@ const Chat = () => {
                                              <img src={Avatar_02} alt="" />
                                              <span className="change-img">Change Image</span>
                                           </div>
-                                          <h3 className="user-name m-t-10 mb-0">{user?.name}</h3>
+                                          <h3 className="user-name m-t-10 mb-0">
+                                             {init?.initUser?.name}
+                                          </h3>
                                           <small className="text-muted">Web Designer</small>
                                           <a href="" className="btn btn-primary edit-btn">
                                              <i className="fa fa-pencil" />
@@ -471,7 +548,7 @@ const Chat = () => {
                                              <li>
                                                 <span>Họ tên:</span>
                                                 <span className="float-end text-muted">
-                                                   {user?.name}
+                                                   {init?.initUser?.name}
                                                 </span>
                                              </li>
                                              <li>
@@ -483,13 +560,13 @@ const Chat = () => {
                                              <li>
                                                 <span>Email:</span>
                                                 <span className="float-end text-muted">
-                                                   {user?.email}
+                                                   {init?.initUser?.email}
                                                 </span>
                                              </li>
                                              <li>
                                                 <span>Điện thoại:</span>
                                                 <span className="float-end text-muted">
-                                                   {user?.mobile}
+                                                   {init?.initUser?.mobile}
                                                 </span>
                                              </li>
                                           </ul>
