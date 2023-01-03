@@ -37,7 +37,6 @@ const EmployeeProfile = () => {
    }, [id]);
 
    const { worker } = useSelector((state) => state.worker);
-   console.log(worker);
 
    //  console.log(id);
    return (

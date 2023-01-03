@@ -2,12 +2,12 @@
  * Crm Routes
  */
 /* eslint-disable */
-import React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import Chat from './chat';
-import Calendar from './calendar';
-import Contacts from './contacts';
-import FileManager from './filemanager';
+import React from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
+import Chat from "./chat";
+import Calendar from "./calendar";
+import Contacts from "./contacts";
+import FileManager from "./filemanager";
 
 const AppsRoute = ({ match }) => (
    <Switch>
@@ -16,9 +16,7 @@ const AppsRoute = ({ match }) => (
       <Route path={`${match.url}/calendar`} component={Calendar} />
       <Route path={`${match.url}/contacts`} component={Contacts} />
       <Route path={`${match.url}/file-manager`} component={FileManager} />
-      
    </Switch>
-  
 );
 
 export default AppsRoute;
