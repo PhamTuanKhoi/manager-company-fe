@@ -25,7 +25,7 @@ const Payslip = () => {
    function fetchPayslip() {
       if (user._id) {
          if (user?.role === UserRoleType.ADMIN) {
-            dispatch(listPayslip());
+            dispatch(listPayslip({ setLoading }));
          }
 
          if (user?.role === UserRoleType.EMPLOYEE) {
@@ -112,16 +112,10 @@ const Payslip = () => {
                <div className="row align-items-center">
                   <div className="col">
                      <h3 className="page-title">Phiếu lương</h3>
-                     <ul className="breadcrumb">
-                        <li className="breadcrumb-item">
-                           <Link to="/app/main/dashboard">Trang chủ</Link>
-                        </li>
-                        <li className="breadcrumb-item active">Phiếu lương</li>
-                     </ul>
                   </div>
                   <div className="col-auto float-end ml-auto">
                      <a href="/app/projects/them-phieu-luong" className="btn add-btn">
-                        <i className="fa fa-plus" /> Add Client
+                        <i className="fa fa-plus" /> Thêm phiếu lương
                      </a>
                   </div>
                </div>

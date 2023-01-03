@@ -25,12 +25,14 @@ export const createPayslip = createAsyncThunk(
 
 export const listPayslip = createAsyncThunk(
    "paySlip/listPayslip",
-   async (_, { rejectWithValue }) => {
+   async ({ setLoading }, { rejectWithValue }) => {
       try {
+         setLoading(true);
          const { data } = await payslipAPI.list();
-         console.log(data);
+         setLoading(false);
          return data;
       } catch (error) {
+         setLoading(false);
          return rejectWithValue(error.response.data);
       }
    }

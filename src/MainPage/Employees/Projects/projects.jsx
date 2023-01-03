@@ -29,6 +29,7 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import { useLoading } from "../../../hook/useLoading";
 import { UserRoleType } from "../../../constant";
+import { toast } from "react-toastify";
 const Projects = () => {
    const [modalShow, setModalShow] = useState(false);
    const onImageUpload = (fileList) => {
@@ -50,6 +51,11 @@ const Projects = () => {
    }, [user._id]);
 
    const fetchProject = () => {
+      if (!user.role) {
+         toast.warn("Làm ơn đăng nhập vào hệ thống ");
+         return;
+      }
+
       if (user.role === UserRoleType.CLIENT) {
          dispatch(listProjectByClient({ id: user._id, setLoading }));
       }
