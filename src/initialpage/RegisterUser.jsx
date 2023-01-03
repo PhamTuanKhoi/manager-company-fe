@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { Applogo } from "../Entryfile/imagepath";
 import { registerUser } from "../redux/feature/authSclice";
 import { useLoading } from "../hook/useLoading";
+import TextArea from "antd/lib/input/TextArea";
 
 const RegisterUser = () => {
    const [register, setRegister] = useState({
@@ -14,9 +15,11 @@ const RegisterUser = () => {
       cccd: 0,
       mobile: "",
       date: "",
-      field: "",
       password: "",
       confirmPasword: "",
+      field: "",
+      address: "",
+      fieldContent: "",
    });
 
    const { setLoading } = useLoading();
@@ -135,14 +138,13 @@ const RegisterUser = () => {
                         <div className="col-sm-6">
                            <div className="form-group">
                               <label className="col-form-label">
-                                 Lĩnh vực/ ngành nghề chuyên môn{" "}
-                                 <span className="text-danger">*</span>
+                                 Địa chỉ <span className="text-danger">*</span>
                               </label>
                               <input
                                  className="form-control"
                                  type="text"
                                  onChange={(e) =>
-                                    setRegister({ ...register, field: e.target.value })
+                                    setRegister({ ...register, address: e.target.value })
                                  }
                               />
                            </div>
@@ -174,6 +176,35 @@ const RegisterUser = () => {
                                  onChange={(e) =>
                                     setRegister({ ...register, confirmPasword: e.target.value })
                                  }
+                              />
+                           </div>
+                        </div>
+
+                        <div className="col-sm-6">
+                           <div className="form-group">
+                              <label className="col-form-label">
+                                 Lĩnh vực/ ngành nghề chuyên môn{" "}
+                                 <span className="text-danger">*</span>
+                              </label>
+                              <input
+                                 className="form-control"
+                                 type="text"
+                                 onChange={(e) =>
+                                    setRegister({ ...register, field: e.target.value })
+                                 }
+                              />
+                           </div>
+                        </div>
+
+                        <div className="col-sm-6">
+                           <div className="form-group">
+                              <label className="col-form-label">
+                                 Mô tả chi tiết kinh nghiệm <span className="text-danger">*</span>{" "}
+                                 <br />
+                              </label>
+                              <TextArea
+                                 onChange={(e) => setRegister({ ...register, fieldContent })}
+                                 rows={4}
                               />
                            </div>
                         </div>
