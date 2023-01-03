@@ -10,6 +10,10 @@ export const projectAPI = {
       return await axios.get(path + "client/" + id);
    },
 
+   async listByAdmin(id) {
+      return await axios.get(path + "admin/");
+   },
+
    async detail(id) {
       return await axios.get(path + id);
    },

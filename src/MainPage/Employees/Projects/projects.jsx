@@ -20,7 +20,11 @@ import {
 
 import Addproject from "../../../_components/modelbox/Addproject";
 import { useDispatch } from "react-redux";
-import { listProject, listProjectByClient } from "../../../redux/feature/projectSclice";
+import {
+   listProject,
+   listProjectByAdmin,
+   listProjectByClient,
+} from "../../../redux/feature/projectSclice";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { useLoading } from "../../../hook/useLoading";
@@ -49,6 +53,10 @@ const Projects = () => {
       if (user.role === UserRoleType.CLIENT) {
          dispatch(listProjectByClient({ id: user._id, setLoading }));
       }
+
+      if (user.role === UserRoleType.ADMIN) {
+         dispatch(listProjectByAdmin({ setLoading }));
+      }
    };
 
    return (
@@ -64,19 +72,14 @@ const Projects = () => {
             <div className="page-header">
                <div className="row align-items-center">
                   <div className="col">
-                     <h3 className="page-title">Projects</h3>
-                     <ul className="breadcrumb">
-                        <li className="breadcrumb-item">
-                           <Link to="/app/main/dashboard">Dashboard</Link>
-                        </li>
-                        <li className="breadcrumb-item active">Projects</li>
-                     </ul>
+                     <h3 className="page-title">Dự án</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
                      <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
-                        <i className="fa fa-plus" /> Create Project
+                        <i className="fa fa-plus" /> Thêm dự án
                      </a>
-                     <div className="view-icons">
+                     {/* list project */}
+                     {/* <div className="view-icons">
                         <Link
                            to="/app/projects/project_dashboard"
                            className="grid-view btn btn-link active"
@@ -86,7 +89,7 @@ const Projects = () => {
                         <Link to="/app/projects/projects-list" className="list-view btn btn-link">
                            <i className="fa fa-bars" />
                         </Link>
-                     </div>
+                     </div> */}
                   </div>
                </div>
             </div>
@@ -96,31 +99,20 @@ const Projects = () => {
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus">
                      <input type="text" className="form-control floating" />
-                     <label className="focus-label">Project Name</label>
+                     <label className="focus-label">Tên dự án</label>
                   </div>
                </div>
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus">
                      <input type="text" className="form-control floating" />
-                     <label className="focus-label">Employee Name</label>
+                     <label className="focus-label">Tên nhân viên</label>
                   </div>
                </div>
-               <div className="col-sm-6 col-md-3">
-                  <div className="form-group form-focus select-focus">
-                     <select className="select floating">
-                        <option>Select Roll</option>
-                        <option>Web Developer</option>
-                        <option>Web Designer</option>
-                        <option>Android Developer</option>
-                        <option>Ios Developer</option>
-                     </select>
-                     <label className="focus-label">Designation</label>
-                  </div>
-               </div>
+
                <div className="col-sm-6 col-md-3">
                   <a href="#" className="btn btn-success btn-block w-100">
                      {" "}
-                     Search{" "}
+                     Tìm kiếm{" "}
                   </a>
                </div>
             </div>
@@ -146,7 +138,7 @@ const Projects = () => {
                                     data-bs-toggle="modal"
                                     data-bs-target="#edit_project"
                                  >
-                                    <i className="fa fa-pencil m-r-5" /> Edit
+                                    <i className="fa fa-pencil m-r-5" /> Sửa
                                  </a>
                                  <a
                                     className="dropdown-item"
@@ -154,7 +146,7 @@ const Projects = () => {
                                     data-bs-toggle="modal"
                                     data-bs-target="#delete_project"
                                  >
-                                    <i className="fa fa-trash-o m-r-5" /> Delete
+                                    <i className="fa fa-trash-o m-r-5" /> Xóa
                                  </a>
                               </div>
                            </div>
