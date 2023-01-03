@@ -138,17 +138,11 @@ const Users = () => {
             <div className="page-header">
                <div className="row align-items-center">
                   <div className="col">
-                     <h3 className="page-title">Users</h3>
-                     <ul className="breadcrumb">
-                        <li className="breadcrumb-item">
-                           <Link to="/app/main/dashboard">Dashboard</Link>
-                        </li>
-                        <li className="breadcrumb-item active">Users</li>
-                     </ul>
+                     <h3 className="page-title">Người lao động</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
                      <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
-                        <i className="fa fa-plus" /> Thêm người lao đồng
+                        <i className="fa fa-plus" /> Thêm người lao động
                      </a>
                   </div>
                </div>
@@ -159,35 +153,24 @@ const Users = () => {
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus">
                      <input type="text" className="form-control floating" />
-                     <label className="focus-label">Name</label>
+                     <label className="focus-label"> Họ tên</label>
                   </div>
                </div>
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus select-focus">
                      <select className="select floating">
-                        <option>Select Company</option>
+                        {/* <option>Select Company</option>
                         <option>Global Technologies</option>
-                        <option>Delta Infotech</option>
+                        <option>Delta Infotech</option> */}
                      </select>
-                     <label className="focus-label">Company</label>
+                     <label className="focus-label"> Công ty</label>
                   </div>
                </div>
-               <div className="col-sm-6 col-md-3">
-                  <div className="form-group form-focus select-focus">
-                     <select className="select floating">
-                        <option>Select Roll</option>
-                        <option>Web Developer</option>
-                        <option>Web Designer</option>
-                        <option>Android Developer</option>
-                        <option>Ios Developer</option>
-                     </select>
-                     <label className="focus-label">Role</label>
-                  </div>
-               </div>
+
                <div className="col-sm-6 col-md-3">
                   <a href="#" className="btn btn-success btn-block w-100">
                      {" "}
-                     Search{" "}
+                     Tìm kiếm{" "}
                   </a>
                </div>
             </div>
