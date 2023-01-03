@@ -15,14 +15,13 @@ window.Popper = require("popper.js").default;
 
 configAxios();
 ReactDOM.render(
-   <Web3Provider>
-      <Spinner>
-         <Provider store={store}>
-            <ToastContainer />
-            <Main />
-         </Provider>
-      </Spinner>
-   </Web3Provider>,
+   <Spinner>
+      <Provider store={store}>
+         <ToastContainer />
+         <Main />
+      </Provider>
+   </Spinner>,
+
    document.getElementById("app")
 );
 

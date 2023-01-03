@@ -4,6 +4,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -35,7 +36,8 @@ const Chat = () => {
       dispatch(initUser({ id, setLoading }));
    }, [id]);
 
-   console.log({ id });
+   const { user } = useSelector((state) => state.init);
+
    return (
       <div className="page-wrapper">
          <Helmet>
@@ -1050,7 +1052,7 @@ const Chat = () => {
                                              <img src={Avatar_02} alt="" />
                                              <span className="change-img">Change Image</span>
                                           </div>
-                                          <h3 className="user-name m-t-10 mb-0">John Doe</h3>
+                                          <h3 className="user-name m-t-10 mb-0">{user?.name}</h3>
                                           <small className="text-muted">Web Designer</small>
                                           <a href="" className="btn btn-primary edit-btn">
                                              <i className="fa fa-pencil" />
@@ -1059,9 +1061,9 @@ const Chat = () => {
                                        <div className="chat-profile-info">
                                           <ul className="user-det-list">
                                              <li>
-                                                <span>Username:</span>
+                                                <span>Họ tên:</span>
                                                 <span className="float-end text-muted">
-                                                   johndoe
+                                                   {user?.name}
                                                 </span>
                                              </li>
                                              <li>
@@ -1073,13 +1075,13 @@ const Chat = () => {
                                              <li>
                                                 <span>Email:</span>
                                                 <span className="float-end text-muted">
-                                                   johndoe@example.com
+                                                   {user?.email}
                                                 </span>
                                              </li>
                                              <li>
-                                                <span>Phone:</span>
+                                                <span>Điện thoại:</span>
                                                 <span className="float-end text-muted">
-                                                   9876543210
+                                                   {user?.mobile}
                                                 </span>
                                              </li>
                                           </ul>
