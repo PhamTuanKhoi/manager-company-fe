@@ -175,30 +175,22 @@ const Employeeslist = () => {
                <div className="page-header">
                   <div className="row align-items-center">
                      <div className="col">
-                        <h3 className="page-title">Employee</h3>
-                        <ul className="breadcrumb">
-                           <li className="breadcrumb-item">
-                              <Link to="/app/main/dashboard">Dashboard</Link>
-                           </li>
-                           <li className="breadcrumb-item active">Employee</li>
-                        </ul>
+                        <h3 className="page-title"> Nhân viên</h3>
                      </div>
                      <div className="col-auto float-end ml-auto">
-                        <a
-                           href="#"
-                           className="btn add-btn"
-                           data-bs-toggle="modal"
-                           data-bs-target="#add_employee"
-                        >
-                           <i className="fa fa-plus" /> Add Employee
+                        <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
+                           <i className="fa fa-plus" /> Thêm nhân viên
                         </a>
                         <div className="view-icons">
-                           <Link to="/app/employee/allemployees" className="grid-view btn btn-link">
+                           <Link
+                              to="/app/employee/allemployees"
+                              className="grid-view btn btn-link active"
+                           >
                               <i className="fa fa-th" />
                            </Link>
                            <Link
                               to="/app/employee/employees-list"
-                              className="list-view btn btn-link active"
+                              className="list-view btn btn-link"
                            >
                               <i className="fa fa-bars" />
                            </Link>
@@ -212,31 +204,31 @@ const Employeeslist = () => {
                   <div className="col-sm-6 col-md-3">
                      <div className="form-group form-focus">
                         <input type="text" className="form-control floating" />
-                        <label className="focus-label">Employee ID</label>
+                        <label className="focus-label">ID nhân viên</label>
                      </div>
                   </div>
                   <div className="col-sm-6 col-md-3">
                      <div className="form-group form-focus">
                         <input type="text" className="form-control floating" />
-                        <label className="focus-label">Employee Name</label>
+                        <label className="focus-label">Tên nhân viên</label>
                      </div>
                   </div>
                   <div className="col-sm-6 col-md-3">
                      <div className="form-group form-focus select-focus">
                         <select className="select floating">
-                           <option>Select Designation</option>
+                           {/* <option>Select Designation</option>
                            <option>Web Developer</option>
                            <option>Web Designer</option>
                            <option>Android Developer</option>
-                           <option>Ios Developer</option>
+                           <option>Ios Developer</option> */}
                         </select>
-                        <label className="focus-label">Designation</label>
+                        <label className="focus-label">Vị trí</label>
                      </div>
                   </div>
                   <div className="col-sm-6 col-md-3">
                      <a href="#" className="btn btn-success btn-block w-100">
                         {" "}
-                        Search{" "}
+                        Tìm kiếm{" "}
                      </a>
                   </div>
                </div>

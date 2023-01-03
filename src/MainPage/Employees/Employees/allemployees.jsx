@@ -23,11 +23,13 @@ import { useDispatch } from "react-redux";
 import { listEmployees } from "../../../redux/feature/employeesSclice";
 import { useSelector } from "react-redux";
 import { EmployeeDepartmentType } from "../../../constant";
+import { useLoading } from "../../../hook/useLoading";
 
 const AllEmployees = () => {
    const [menu, setMenu] = useState(false);
    const [modalShow, setModalShow] = useState(false);
    const dispatch = useDispatch();
+   const { setLoading } = useLoading();
    const toggleMobileMenu = () => {
       setMenu(!menu);
    };
@@ -46,7 +48,7 @@ const AllEmployees = () => {
    }, []);
 
    function fetchEmployees() {
-      dispatch(listEmployees());
+      dispatch(listEmployees({ setLoading }));
    }
 
    const { employees } = useSelector((state) => state.employees);
@@ -66,17 +68,11 @@ const AllEmployees = () => {
                <div className="page-header">
                   <div className="row align-items-center">
                      <div className="col">
-                        <h3 className="page-title">Employee</h3>
-                        <ul className="breadcrumb">
-                           <li className="breadcrumb-item">
-                              <Link to="/app/main/dashboard">Dashboard</Link>
-                           </li>
-                           <li className="breadcrumb-item active">Employee</li>
-                        </ul>
+                        <h3 className="page-title"> Nhân viên</h3>
                      </div>
                      <div className="col-auto float-end ml-auto">
                         <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
-                           <i className="fa fa-plus" /> Add Employee
+                           <i className="fa fa-plus" /> Thêm nhân viên
                         </a>
                         <div className="view-icons">
                            <Link
@@ -101,31 +97,31 @@ const AllEmployees = () => {
                   <div className="col-sm-6 col-md-3">
                      <div className="form-group form-focus">
                         <input type="text" className="form-control floating" />
-                        <label className="focus-label">Employee ID</label>
+                        <label className="focus-label">ID nhân viên</label>
                      </div>
                   </div>
                   <div className="col-sm-6 col-md-3">
                      <div className="form-group form-focus">
                         <input type="text" className="form-control floating" />
-                        <label className="focus-label">Employee Name</label>
+                        <label className="focus-label">Tên nhân viên</label>
                      </div>
                   </div>
                   <div className="col-sm-6 col-md-3">
                      <div className="form-group form-focus select-focus">
                         <select className="select floating">
-                           <option>Select Designation</option>
+                           {/* <option>Select Designation</option>
                            <option>Web Developer</option>
                            <option>Web Designer</option>
                            <option>Android Developer</option>
-                           <option>Ios Developer</option>
+                           <option>Ios Developer</option> */}
                         </select>
-                        <label className="focus-label">Designation</label>
+                        <label className="focus-label">Vị trí</label>
                      </div>
                   </div>
                   <div className="col-sm-6 col-md-3">
                      <a href="#" className="btn btn-success btn-block w-100">
                         {" "}
-                        Search{" "}
+                        Tìm kiếm{" "}
                      </a>
                   </div>
                </div>
@@ -184,47 +180,6 @@ const AllEmployees = () => {
                         </div>
                      </div>
                   ))}
-                  <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                     <div className="profile-widget">
-                        <div className="profile-img">
-                           <Link to="/app/profile/employee-profile" className="avatar">
-                              <img src={Avatar_09} alt="" />
-                           </Link>
-                        </div>
-                        <div className="dropdown profile-action">
-                           <a
-                              href="#"
-                              className="action-icon dropdown-toggle"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                           >
-                              <i className="material-icons">more_vert</i>
-                           </a>
-                           <div className="dropdown-menu dropdown-menu-right">
-                              <a
-                                 className="dropdown-item"
-                                 href="#"
-                                 data-bs-toggle="modal"
-                                 data-bs-target="#edit_employee"
-                              >
-                                 <i className="fa fa-pencil m-r-5" /> Edit
-                              </a>
-                              <a
-                                 className="dropdown-item"
-                                 href="#"
-                                 data-bs-toggle="modal"
-                                 data-bs-target="#delete_employee"
-                              >
-                                 <i className="fa fa-trash-o m-r-5" /> Delete
-                              </a>
-                           </div>
-                        </div>
-                        <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                           <Link to="/app/profile/employee-profile">Richard Miles</Link>
-                        </h4>
-                        <div className="small text-muted">Web Developer</div>
-                     </div>
-                  </div>
                </div>
             </div>
             {/* /Page Content */}

@@ -26,11 +26,14 @@ export const createEmployees = createAsyncThunk(
 
 export const listEmployees = createAsyncThunk(
    "employees/listEmployees",
-   async (_, { rejectWithValue }) => {
+   async ({ setLoading }, { rejectWithValue }) => {
       try {
+         setLoading(true);
          const { data } = await userAPI.listEmployees();
+         setLoading(false);
          return data;
       } catch (error) {
+         setLoading(false);
          return rejectWithValue(error.response.data);
       }
    }
