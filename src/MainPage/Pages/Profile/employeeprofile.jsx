@@ -3,6 +3,7 @@
  */
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
+import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import {
    Avatar_02,
@@ -11,6 +12,10 @@ import {
    Avatar_10,
    Avatar_16,
 } from "../../../Entryfile/imagepath";
+import { profileWorker } from "../../../redux/feature/workerSclice";
+import { useLoading } from "../../../hook/useLoading";
+import { useSelector } from "react-redux";
+import moment from "moment";
 
 const EmployeeProfile = () => {
    useEffect(() => {
@@ -23,6 +28,16 @@ const EmployeeProfile = () => {
    });
 
    const { id } = useParams();
+   const dispatch = useDispatch();
+   const { setLoading } = useLoading();
+
+   useEffect(() => {
+      // fetch profile
+      dispatch(profileWorker({ id, setLoading }));
+   }, [id]);
+
+   const { worker } = useSelector((state) => state.worker);
+   console.log(worker);
 
    //  console.log(id);
    return (
@@ -37,13 +52,7 @@ const EmployeeProfile = () => {
             <div className="page-header">
                <div className="row">
                   <div className="col-sm-12">
-                     <h3 className="page-title">Profile</h3>
-                     <ul className="breadcrumb">
-                        <li className="breadcrumb-item">
-                           <Link to="/app/main/dashboard">Dashboard</Link>
-                        </li>
-                        <li className="breadcrumb-item active">Profile</li>
-                     </ul>
+                     <h3 className="page-title">Trang cá nhân</h3>
                   </div>
                </div>
             </div>
@@ -64,12 +73,14 @@ const EmployeeProfile = () => {
                               <div className="row">
                                  <div className="col-md-5">
                                     <div className="profile-info-left">
-                                       <h3 className="user-name m-t-0 mb-0">John Doe</h3>
-                                       <h6 className="text-muted">UI/UX Design Team</h6>
-                                       <small className="text-muted">Web Designer</small>
+                                       <h3 className="user-name m-t-0 mb-0">{worker?.name}</h3>
+                                       <h6 className="text-muted">{worker?.field}</h6>
+                                       <small className="text-muted">Người lao động</small>
+                                       {/* <small className="text-muted">Web Designer</small> */}
                                        <div className="staff-id">Employee ID : FT-0001</div>
                                        <div className="small doj text-muted">
-                                          Date of Join : 1st Jan 2013
+                                          Ngày tham gia :{" "}
+                                          {moment(worker?.createdAt).format("DD/MM/YYYY")}
                                        </div>
                                        <div className="staff-msg">
                                           <Link
@@ -77,9 +88,9 @@ const EmployeeProfile = () => {
                                                 localStorage.setItem("minheight", "true")
                                              }
                                              className="btn btn-custom"
-                                             to="/conversation/chat"
+                                             to={`/conversation/chat/${id}`}
                                           >
-                                             Send Message
+                                             Gửi tin nhắn
                                           </Link>
                                        </div>
                                     </div>
@@ -87,42 +98,39 @@ const EmployeeProfile = () => {
                                  <div className="col-md-7">
                                     <ul className="personal-info">
                                        <li>
-                                          <div className="title">Phone:</div>
+                                          <div className="title">Điện thoại:</div>
                                           <div className="text">
-                                             <a href="">9876543210</a>
+                                             <a href="">{worker?.mobile}</a>
                                           </div>
                                        </li>
                                        <li>
                                           <div className="title">Email:</div>
                                           <div className="text">
-                                             <a href="">johndoe@example.com</a>
+                                             <a href="">{worker?.email}</a>
                                           </div>
                                        </li>
                                        <li>
-                                          <div className="title">Birthday:</div>
-                                          <div className="text">24th July</div>
-                                       </li>
-                                       <li>
-                                          <div className="title">Address:</div>
+                                          <div className="title">Ngày sinh:</div>
                                           <div className="text">
-                                             1861 Bayonne Ave, Manchester Township, NJ, 08759
+                                             {moment(worker?.date).format("DD/MM/YYYY")}
                                           </div>
                                        </li>
                                        <li>
-                                          <div className="title">Gender:</div>
-                                          <div className="text">Male</div>
+                                          <div className="title">Địa chỉ:</div>
+                                          <div className="text">
+                                             {worker?.address || "chưa có thông tin"}
+                                          </div>
                                        </li>
                                        <li>
-                                          <div className="title">Reports to:</div>
+                                          <div className="title">Giới tính:</div>
                                           <div className="text">
-                                             <div className="avatar-box">
-                                                <div className="avatar avatar-xs">
-                                                   <img src={Avatar_16} alt="" />
-                                                </div>
-                                             </div>
-                                             <Link to="/app/profile/employee-profile">
-                                                Jeffery Lalor
-                                             </Link>
+                                             {worker?.gender || "chưa có thông tin"}
+                                          </div>
+                                       </li>
+                                       <li>
+                                          <div className="title">Căn cước công dân:</div>
+                                          <div className="text">
+                                             {worker?.cccd || "chưa có thông tin"}
                                           </div>
                                        </li>
                                     </ul>
@@ -150,12 +158,12 @@ const EmployeeProfile = () => {
                      <ul className="nav nav-tabs nav-tabs-bottom">
                         <li className="nav-item">
                            <a href="#emp_profile" data-bs-toggle="tab" className="nav-link active">
-                              Profile
+                              Thông tin
                            </a>
                         </li>
                         <li className="nav-item">
                            <a href="#emp_projects" data-bs-toggle="tab" className="nav-link">
-                              Projects
+                              Dự án
                            </a>
                         </li>
                         <li className="nav-item">

@@ -14,6 +14,10 @@ export const userAPI = {
       return axios.get(path + "worker");
    },
 
+   profile(id) {
+      return axios.get(path + id);
+   },
+
    async createClient(payload) {
       return await axios.post(path + "client", payload);
    },

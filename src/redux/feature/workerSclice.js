@@ -40,6 +40,21 @@ export const listWorker = createAsyncThunk(
    }
 );
 
+export const profileWorker = createAsyncThunk(
+   "worker/profileWorker",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.profile(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const workerSclice = createSlice({
    name: "worker",
    initialState: {
@@ -71,6 +86,19 @@ const workerSclice = createSlice({
          state.workers = action.payload;
       },
       [listWorker.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // list
+      [profileWorker.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [profileWorker.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.worker = action.payload;
+      },
+      [profileWorker.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
