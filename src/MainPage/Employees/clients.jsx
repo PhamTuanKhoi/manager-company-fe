@@ -9,6 +9,7 @@ import { createClient, listClient } from "../../redux/feature/clientSclice";
 import Editclient from "../../_components/modelbox/Editclient";
 import Modal from "react-bootstrap/Modal";
 import { useLoading } from "../../hook/useLoading";
+import { UserRoleType } from "../../constant";
 
 const Clients = () => {
    useEffect(() => {
@@ -55,7 +56,9 @@ const Clients = () => {
    }, []);
 
    async function fetchClient() {
-      dispatch(listClient({ setLoading }));
+      if (user.role === UserRoleType.ADMIN) {
+         dispatch(listClient({ setLoading }));
+      }
    }
 
    const { clients } = useSelector((state) => state.client);
@@ -71,17 +74,11 @@ const Clients = () => {
             <div className="page-header">
                <div className="row align-items-center">
                   <div className="col">
-                     <h3 className="page-title">Clients</h3>
-                     <ul className="breadcrumb">
-                        <li className="breadcrumb-item">
-                           <Link to="/app/main/dashboard">Dashboard</Link>
-                        </li>
-                        <li className="breadcrumb-item active">Clients</li>
-                     </ul>
+                     <h3 className="page-title">Khách hàng</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
                      <a href="#" className="btn add-btn" onClick={handleShow}>
-                        <i className="fa fa-plus" /> Add Client
+                        <i className="fa fa-plus" /> Thêm khách hàng
                      </a>
                      <div className="view-icons">
                         <Link to="/app/employees/clients" className="grid-view btn btn-link active">
@@ -100,29 +97,29 @@ const Clients = () => {
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus">
                      <input type="text" className="form-control floating" />
-                     <label className="focus-label">Client ID</label>
+                     <label className="focus-label">ID khách hàng</label>
                   </div>
                </div>
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus">
                      <input type="text" className="form-control floating" />
-                     <label className="focus-label">Client Name</label>
+                     <label className="focus-label">Tên khách hàng</label>
                   </div>
                </div>
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus select-focus">
                      <select className="select floating">
-                        <option>Select Company</option>
+                        {/* <option>Select Company</option>
                         <option>Global Technologies</option>
-                        <option>Delta Infotech</option>
+                        <option>Delta Infotech</option> */}
                      </select>
-                     <label className="focus-label">Company</label>
+                     <label className="focus-label"> Công ty</label>
                   </div>
                </div>
                <div className="col-sm-6 col-md-3">
                   <a href="#" className="btn btn-success btn-block w-100">
                      {" "}
-                     Search{" "}
+                     Tìm kiếm{" "}
                   </a>
                </div>
             </div>

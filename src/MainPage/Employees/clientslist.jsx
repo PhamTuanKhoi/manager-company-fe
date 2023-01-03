@@ -53,12 +53,12 @@ const Clients = () => {
       },
 
       {
-         title: "Mobile",
+         title: "Điện thoại",
          dataIndex: "mobile",
          sorter: (a, b) => a.mobile - b.mobile,
       },
       {
-         title: "Status",
+         title: "Trạng thái",
          dataIndex: "status",
          render: (text, record) => (
             <div className="dropdown">
@@ -107,7 +107,7 @@ const Clients = () => {
                      data-bs-toggle="modal"
                      data-bs-target="#edit_client"
                   >
-                     <i className="fa fa-pencil m-r-5" /> Edit
+                     <i className="fa fa-pencil m-r-5" /> Sửa
                   </a>
                   <a
                      className="dropdown-item"
@@ -115,7 +115,7 @@ const Clients = () => {
                      data-bs-toggle="modal"
                      data-bs-target="#delete_client"
                   >
-                     <i className="fa fa-trash-o m-r-5" /> Delete
+                     <i className="fa fa-trash-o m-r-5" /> Xóa
                   </a>
                </div>
             </div>
@@ -135,13 +135,7 @@ const Clients = () => {
             <div className="page-header">
                <div className="row align-items-center">
                   <div className="col">
-                     <h3 className="page-title">Clients</h3>
-                     <ul className="breadcrumb">
-                        <li className="breadcrumb-item">
-                           <Link to="/app/main/dashboard">Dashboard</Link>
-                        </li>
-                        <li className="breadcrumb-item active">Clients</li>
-                     </ul>
+                     <h3 className="page-title">Khách hàng</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
                      <a
@@ -150,7 +144,7 @@ const Clients = () => {
                         data-bs-toggle="modal"
                         data-bs-target="#add_client"
                      >
-                        <i className="fa fa-plus" /> Add Client
+                        <i className="fa fa-plus" /> Thêm khách hàng
                      </a>
                      <div className="view-icons">
                         <Link to="/app/employees/clients" className="grid-view btn btn-link">
@@ -172,29 +166,29 @@ const Clients = () => {
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus">
                      <input type="text" className="form-control floating" />
-                     <label className="focus-label">Client ID</label>
+                     <label className="focus-label">ID khách hàng</label>
                   </div>
                </div>
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus">
                      <input type="text" className="form-control floating" />
-                     <label className="focus-label">Client Name</label>
+                     <label className="focus-label">Tên khách hàng</label>
                   </div>
                </div>
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus select-focus">
                      <select className="select floating">
-                        <option>Select Company</option>
+                        {/* <option>Select Company</option>
                         <option>Global Technologies</option>
-                        <option>Delta Infotech</option>
+                        <option>Delta Infotech</option> */}
                      </select>
-                     <label className="focus-label">Company</label>
+                     <label className="focus-label"> Công ty</label>
                   </div>
                </div>
                <div className="col-sm-6 col-md-3">
                   <a href="#" className="btn btn-success btn-block w-100">
                      {" "}
-                     Search{" "}
+                     Tìm kiếm{" "}
                   </a>
                </div>
             </div>
