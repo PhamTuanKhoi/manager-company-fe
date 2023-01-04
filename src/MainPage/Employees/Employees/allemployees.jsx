@@ -28,6 +28,8 @@ import { useLoading } from "../../../hook/useLoading";
 const AllEmployees = () => {
    const [menu, setMenu] = useState(false);
    const [modalShow, setModalShow] = useState(false);
+   const [employee, setEmployee] = useState({});
+   const [render, setRender] = useState(0);
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
    const toggleMobileMenu = () => {
@@ -55,7 +57,7 @@ const AllEmployees = () => {
 
    return (
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
-         <Header onMenuClick={(value) => toggleMobileMenu()} />
+         <Header onMenuClick={() => toggleMobileMenu()} />
          <Sidebar />
          <div className="page-wrapper">
             <Helmet>
@@ -148,8 +150,11 @@ const AllEmployees = () => {
                                  <a
                                     className="dropdown-item"
                                     href="#"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#edit_employee"
+                                    onClick={() => {
+                                       setRender((prev) => prev + 1);
+                                       setEmployee(item);
+                                       setModalShow(true);
+                                    }}
                                  >
                                     <i className="fa fa-pencil m-r-5" /> Sửa
                                  </a>
@@ -184,7 +189,12 @@ const AllEmployees = () => {
             </div>
             {/* /Page Content */}
             {/* Add Employee Modal */}
-            <Addemployee show={modalShow} onHide={() => setModalShow(false)} />
+            <Addemployee
+               show={modalShow}
+               onHide={() => setModalShow(false)}
+               employee={employee}
+               render={render}
+            />
             {/* /Add Employee Modal */}
             {/* Edit Employee Modal */}
             <Editemployee />

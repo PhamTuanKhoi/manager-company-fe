@@ -40,6 +40,21 @@ export const listEmployees = createAsyncThunk(
    }
 );
 
+export const employeesProfile = createAsyncThunk(
+   "employees/employeesProfile",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.profile(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const employeesSclice = createSlice({
    name: "employees",
    initialState: {
@@ -73,6 +88,19 @@ const employeesSclice = createSlice({
          state.employees = action.payload;
       },
       [listEmployees.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // employees profile
+      [employeesProfile.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [employeesProfile.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.employee = action.payload;
+      },
+      [employeesProfile.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

@@ -2,27 +2,42 @@ import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch } from "react-redux";
 import { EmployeeDepartmentType } from "../../constant/index";
-import { createEmployees } from "../../redux/feature/employeesSclice";
+import { createEmployees, employeesProfile } from "../../redux/feature/employeesSclice";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useLoading } from "../../hook/useLoading";
+import { useEffect } from "react";
+import moment from "moment";
 
-const Addemployee = ({ show, onHide }) => {
+const Addemployee = ({ show, onHide, employee, render }) => {
    const [employees, setEmployees] = useState({
       name: "",
       email: "",
-      cccd: 0,
+      cccd: "",
       department: "",
       mobile: "",
       date: "",
       address: "",
    });
 
+   const handleClose = () => {
+      setEmployees({
+         name: "",
+         email: "",
+         cccd: "",
+         department: "",
+         mobile: "",
+         date: "",
+         address: "",
+      });
+      onHide();
+   };
+
    const { setLoading } = useLoading();
    const dispatch = useDispatch();
    const { user } = useSelector((state) => state.auth);
 
-   async function handleSave() {
+   const handleSave = () => {
       if (user._id) {
          dispatch(
             createEmployees({
@@ -37,7 +52,15 @@ const Addemployee = ({ show, onHide }) => {
             })
          );
       }
-   }
+   };
+
+   const handleUpdate = () => {
+      console.log(employees);
+   };
+
+   useEffect(() => {
+      setEmployees(employee);
+   }, [render]);
 
    return (
       <>
@@ -47,13 +70,15 @@ const Addemployee = ({ show, onHide }) => {
             aria-labelledby="contained-modal-title-vcenter"
             centered
             show={show}
-            onHide={onHide}
+            onHide={handleClose}
          >
             <div className="modal-content">
                <div className="modal-header">
-                  <h5 className="modal-title">Thêm nhân viên</h5>
+                  <h5 className="modal-title">
+                     {employees.email ? "Sửa nhân viên" : "Thêm nhân viên"}
+                  </h5>
                   <button type="button" className="close-x">
-                     <span aria-hidden="true" onClick={onHide}>
+                     <span aria-hidden="true" onClick={handleClose}>
                         ×
                      </span>
                   </button>
@@ -69,6 +94,7 @@ const Addemployee = ({ show, onHide }) => {
                               <input
                                  className="form-control"
                                  type="text"
+                                 defaultValue={employees.name}
                                  onChange={(e) =>
                                     setEmployees({ ...employees, name: e.target.value })
                                  }
@@ -83,6 +109,7 @@ const Addemployee = ({ show, onHide }) => {
                               <input
                                  className="form-control"
                                  type="email"
+                                 defaultValue={employees.email}
                                  onChange={(e) =>
                                     setEmployees({ ...employees, email: e.target.value })
                                  }
@@ -97,6 +124,7 @@ const Addemployee = ({ show, onHide }) => {
                               <input
                                  className="form-control"
                                  type="number"
+                                 defaultValue={employees.cccd}
                                  onChange={(e) =>
                                     setEmployees({ ...employees, cccd: e.target.value })
                                  }
@@ -113,6 +141,7 @@ const Addemployee = ({ show, onHide }) => {
                               <select
                                  className="form-control"
                                  // className="select"   class tam linh
+                                 value={employees.department}
                                  onChange={(e) =>
                                     setEmployees({ ...employees, department: e.target.value })
                                  }
@@ -136,6 +165,7 @@ const Addemployee = ({ show, onHide }) => {
                               <input
                                  className="form-control"
                                  type="number"
+                                 defaultValue={employees.mobile}
                                  onChange={(e) =>
                                     setEmployees({ ...employees, mobile: e.target.value })
                                  }
@@ -150,6 +180,7 @@ const Addemployee = ({ show, onHide }) => {
                               <input
                                  className="form-control"
                                  type="date"
+                                 value={moment(employees.date).format("YYYY-MM-DD")}
                                  onChange={(e) =>
                                     setEmployees({ ...employees, date: e.target.value })
                                  }
@@ -164,6 +195,7 @@ const Addemployee = ({ show, onHide }) => {
                               <input
                                  type="text"
                                  className="form-control"
+                                 defaultValue={employees.address}
                                  onChange={(e) =>
                                     setEmployees({ ...employees, address: e.target.value })
                                  }
@@ -172,11 +204,19 @@ const Addemployee = ({ show, onHide }) => {
                         </div>
                      </div>
 
-                     <div className="submit-section">
-                        <button className="btn btn-primary submit-btn" onClick={handleSave}>
-                           Lưu
-                        </button>
-                     </div>
+                     {!employees.email ? (
+                        <div className="submit-section">
+                           <button className="btn btn-primary submit-btn" onClick={handleSave}>
+                              Lưu
+                           </button>
+                        </div>
+                     ) : (
+                        <div className="submit-section">
+                           <button className="btn btn-primary submit-btn" onClick={handleUpdate}>
+                              Cập nhật
+                           </button>
+                        </div>
+                     )}
                   </div>
                </div>
             </div>
