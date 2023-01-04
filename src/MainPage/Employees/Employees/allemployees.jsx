@@ -151,7 +151,7 @@ const AllEmployees = () => {
                                     data-bs-toggle="modal"
                                     data-bs-target="#edit_employee"
                                  >
-                                    <i className="fa fa-pencil m-r-5" /> Edit
+                                    <i className="fa fa-pencil m-r-5" /> Sửa
                                  </a>
                                  <a
                                     className="dropdown-item"
@@ -159,7 +159,7 @@ const AllEmployees = () => {
                                     data-bs-toggle="modal"
                                     data-bs-target="#delete_employee"
                                  >
-                                    <i className="fa fa-trash-o m-r-5" /> Delete
+                                    <i className="fa fa-trash-o m-r-5" /> Xóa
                                  </a>
                               </div>
                            </div>

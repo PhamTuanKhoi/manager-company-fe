@@ -24,6 +24,7 @@ import moment from "moment";
 
 const Employeeslist = () => {
    const [menu, setMenu] = useState(false);
+   const [modalShow, setModalShow] = useState(false);
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -97,35 +98,7 @@ const Employeeslist = () => {
          dataIndex: "cccd",
          sorter: (a, b) => a.cccd - b.cccd,
       },
-      {
-         title: "Role",
-         render: (text, record) => (
-            <div className="dropdown">
-               <a
-                  href=""
-                  className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-               >
-                  Web Developer{" "}
-               </a>
-               <div className="dropdown-menu">
-                  <a className="dropdown-item" href="#">
-                     Software Engineer
-                  </a>
-                  <a className="dropdown-item" href="#">
-                     Software Tester
-                  </a>
-                  <a className="dropdown-item" href="#">
-                     Frontend Developer
-                  </a>
-                  <a className="dropdown-item" href="#">
-                     UI/UX Developer
-                  </a>
-               </div>
-            </div>
-         ),
-      },
+
       {
          title: "Action",
          render: (text, record) => (
@@ -259,7 +232,7 @@ const Employeeslist = () => {
             </div>
             {/* /Page Content */}
             {/* Add Employee Modal */}
-            <Addemployee />
+            <Addemployee show={modalShow} onHide={() => setModalShow(false)} />
             {/* /Add Employee Modal */}
             {/* Edit Employee Modal */}
             <Editemployee />

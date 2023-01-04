@@ -9,6 +9,7 @@ export const createEmployees = createAsyncThunk(
          const { data } = await userAPI.createEmployees(payload);
          toast.success("Thêm nhân viên thành công");
          onHide();
+         setLoading(false);
          return data;
       } catch (error) {
          setLoading(false);
