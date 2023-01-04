@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useLoading } from "../../hook/useLoading";
-import { createClient } from "../../redux/feature/clientSclice";
+import { createClient, updateClient } from "../../redux/feature/clientSclice";
 
-const AddClient = ({ show, handleClose }) => {
+const AddClient = ({ show, handleClose, editClient, render }) => {
+   const [isEdit, setIsEdit] = useState("");
    const [client, setClient] = useState({
       name: "",
       email: "",
@@ -19,7 +20,31 @@ const AddClient = ({ show, handleClose }) => {
    const { user } = useSelector((state) => state.auth);
    const dispatch = useDispatch();
 
-   async function handleSave() {
+   const empty = () => {
+      setClient({
+         name: "",
+         email: "",
+         mobile: "",
+         company: "",
+         field: "",
+         tax: "",
+      });
+
+      setIsEdit("");
+   };
+
+   const handleClosed = () => {
+      empty();
+      handleClose();
+   };
+
+   // set data
+   useEffect(() => {
+      setClient(editClient);
+      setIsEdit(editClient._id);
+   }, [render]);
+
+   const handleSave = () => {
       if (!user._id) {
          toast.warn(`Làm ơn đăng nhập vào hệ thống`);
          return;
@@ -33,20 +58,42 @@ const AddClient = ({ show, handleClose }) => {
             setLoading,
          })
       );
-   }
+
+      empty();
+   };
+
+   const handleUpdate = () => {
+      if (!user._id) {
+         toast.warn(`Làm ơn đăng nhập vào hệ thống`);
+         return;
+      }
+      // api
+      dispatch(
+         updateClient({
+            id: editClient._id,
+            payload: { ...client, creator: user._id, oldEmail: editClient.email },
+            toast,
+            handleClose,
+            setLoading,
+         })
+      );
+
+      empty();
+   };
+
    return (
       <Modal
          show={show}
-         onHide={handleClose}
+         onHide={handleClosed}
          size="lg"
          aria-labelledby="contained-modal-title-vcenter"
          centered
       >
          <div className="modal-content">
             <div className="modal-header">
-               <h5 className="modal-title">Khách hàng mới</h5>
+               <h5 className="modal-title">{isEdit ? "Sửa khách hàng" : "Khách hàng mới"}</h5>
                <button type="button" className="close-x">
-                  <span aria-hidden="true" onClick={handleClose}>
+                  <span aria-hidden="true" onClick={handleClosed}>
                      ×
                   </span>
                </button>
@@ -62,6 +109,7 @@ const AddClient = ({ show, handleClose }) => {
                            <input
                               className="form-control"
                               type="text"
+                              defaultValue={client.name}
                               onChange={(e) => setClient({ ...client, name: e.target.value })}
                            />
                         </div>
@@ -72,6 +120,7 @@ const AddClient = ({ show, handleClose }) => {
                            <input
                               className="form-control"
                               type="email"
+                              defaultValue={client.email}
                               onChange={(e) => setClient({ ...client, email: e.target.value })}
                            />
                         </div>
@@ -84,6 +133,7 @@ const AddClient = ({ show, handleClose }) => {
                            <input
                               className="form-control"
                               type="number"
+                              defaultValue={client.mobile}
                               onChange={(e) => setClient({ ...client, mobile: e.target.value })}
                            />
                         </div>
@@ -96,6 +146,7 @@ const AddClient = ({ show, handleClose }) => {
                            <input
                               className="form-control floating"
                               type="text"
+                              defaultValue={client.company}
                               onChange={(e) => setClient({ ...client, company: e.target.value })}
                            />
                         </div>
@@ -106,6 +157,7 @@ const AddClient = ({ show, handleClose }) => {
                            <input
                               className="form-control"
                               type="text"
+                              defaultValue={client.field}
                               onChange={(e) => setClient({ ...client, field: e.target.value })}
                            />
                         </div>
@@ -116,15 +168,22 @@ const AddClient = ({ show, handleClose }) => {
                            <input
                               className="form-control"
                               type="number"
+                              defaultValue={client.tax}
                               onChange={(e) => setClient({ ...client, tax: e.target.value })}
                            />
                         </div>
                      </div>
                   </div>
                   <div className="submit-section">
-                     <button className="btn btn-primary submit-btn" onClick={handleSave}>
-                        Lưu
-                     </button>
+                     {!isEdit ? (
+                        <button className="btn btn-primary submit-btn" onClick={handleSave}>
+                           Lưu
+                        </button>
+                     ) : (
+                        <button className="btn btn-primary submit-btn" onClick={handleUpdate}>
+                           Cập nhật
+                        </button>
+                     )}
                   </div>
                </div>
             </div>

@@ -15,6 +15,8 @@ const Clients = () => {
    const [show, setShow] = useState(false);
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
+   const [render, setRender] = useState(0);
+   const [EditClient, setEditClient] = useState({});
 
    useEffect(() => {
       if ($(".select").length > 0) {
@@ -63,34 +65,8 @@ const Clients = () => {
       },
       {
          title: "Trạng thái",
-         dataIndex: "status",
-         render: (text, record) => (
-            <div className="dropdown">
-               <a
-                  href="#"
-                  className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-               >
-                  <i
-                     className={
-                        text === "Active"
-                           ? "fa fa-dot-circle-o text-success"
-                           : "fa fa-dot-circle-o text-danger"
-                     }
-                  />{" "}
-                  {text}{" "}
-               </a>
-               <div className="dropdown-menu">
-                  <a className="dropdown-item" href="#">
-                     <i className="fa fa-dot-circle-o text-success" /> Active
-                  </a>
-                  <a className="dropdown-item" href="#">
-                     <i className="fa fa-dot-circle-o text-danger" /> Inactive
-                  </a>
-               </div>
-            </div>
-         ),
+         dataIndex: "tax",
+         sorter: (a, b) => a.tax - b.tax,
       },
       {
          title: "Action",
@@ -108,8 +84,11 @@ const Clients = () => {
                   <a
                      className="dropdown-item"
                      href="#"
-                     data-bs-toggle="modal"
-                     data-bs-target="#edit_client"
+                     onClick={() => {
+                        setRender((prev) => prev + 1);
+                        setEditClient(record);
+                        handleShow(true);
+                     }}
                   >
                      <i className="fa fa-pencil m-r-5" /> Sửa
                   </a>
@@ -210,7 +189,7 @@ const Clients = () => {
                         // bordered
                         dataSource={clients}
                         rowKey={(record) => record._id}
-                        onChange={console.log("change")}
+                        // onChange={console.log("change")}
                      />
                   </div>
                </div>
@@ -218,7 +197,7 @@ const Clients = () => {
          </div>
          {/* /Page Content */}
          {/* Add Client Modal */}
-         <AddClient show={show} handleClose={handleClose} />
+         <AddClient show={show} handleClose={handleClose} editClient={EditClient} render={render} />
          {/* /Add Client Modal */}
          {/* Edit Client Modal */}
          <Editclient />

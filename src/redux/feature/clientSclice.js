@@ -40,6 +40,30 @@ export const listClient = createAsyncThunk(
    }
 );
 
+export const updateClient = createAsyncThunk(
+   "client/updateClient",
+   async ({ id, payload, toast, handleClose, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.updateClient(id, payload);
+         toast.success("Cập nhật khách hàng thành công");
+         handleClose();
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const clientSclice = createSlice({
    name: "client",
    initialState: {
@@ -71,6 +95,25 @@ const clientSclice = createSlice({
          state.clients = action.payload;
       },
       [listClient.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // update
+      [updateClient.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [updateClient.fulfilled]: (state, action) => {
+         state.loading = false;
+         const {
+            arg: { id },
+         } = action.meta;
+
+         if (id) {
+            state.clients = state.clients.map((item) => (item._id === id ? action.payload : item));
+         }
+      },
+      [updateClient.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
