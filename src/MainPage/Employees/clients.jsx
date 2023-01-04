@@ -10,6 +10,7 @@ import Modal from "react-bootstrap/Modal";
 import { useLoading } from "../../hook/useLoading";
 import { UserRoleType } from "../../constant";
 import AddClient from "../../_components/modelbox/AddClient";
+import DeleteUser from "../../_components/modelbox/DeleteUser";
 
 const Clients = () => {
    useEffect(() => {
@@ -29,6 +30,7 @@ const Clients = () => {
    const [render, setRender] = useState(0);
    const [EditClient, setEditClient] = useState({});
    const { user } = useSelector((state) => state.auth);
+   const [modalDelete, setModalDelete] = useState(false);
 
    const dispatch = useDispatch();
 
@@ -138,8 +140,10 @@ const Clients = () => {
                               <a
                                  className="dropdown-item"
                                  href="#"
-                                 data-bs-toggle="modal"
-                                 data-bs-target="#delete_client"
+                                 onClick={() => {
+                                    setEditClient(item);
+                                    setModalDelete(true);
+                                 }}
                               >
                                  <i className="fa fa-trash-o m-r-5" /> Xóa
                               </a>
@@ -179,36 +183,11 @@ const Clients = () => {
          <Editclient />
          {/* /Edit Client Modal */}
          {/* Delete Client Modal */}
-         <div className="modal custom-modal fade" id="delete_client" role="dialog">
-            <div className="modal-dialog modal-dialog-centered">
-               <div className="modal-content">
-                  <div className="modal-body">
-                     <div className="form-header">
-                        <h3>Delete Client</h3>
-                        <p>Are you sure want to delete?</p>
-                     </div>
-                     <div className="modal-btn delete-action">
-                        <div className="row">
-                           <div className="col-6">
-                              <a href="" className="btn btn-primary continue-btn">
-                                 Delete
-                              </a>
-                           </div>
-                           <div className="col-6">
-                              <a
-                                 href=""
-                                 data-bs-dismiss="modal"
-                                 className="btn btn-primary cancel-btn"
-                              >
-                                 Cancel
-                              </a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
+         <DeleteUser
+            show={modalDelete}
+            onHide={() => setModalDelete(false)}
+            userRemove={EditClient}
+         />
          {/* /Delete Client Modal */}
       </div>
    );

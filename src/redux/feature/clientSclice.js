@@ -64,6 +64,23 @@ export const updateClient = createAsyncThunk(
    }
 );
 
+export const removeClient = createAsyncThunk(
+   "client/removeClient",
+   async ({ id, onHide, setLoading, toast }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.remove(id);
+         setLoading(false);
+         onHide();
+         toast.success(`Xóa khách hàng thành công`);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const clientSclice = createSlice({
    name: "client",
    initialState: {
@@ -114,6 +131,25 @@ const clientSclice = createSlice({
          }
       },
       [updateClient.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // remove
+      [removeClient.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [removeClient.fulfilled]: (state, action) => {
+         state.loading = false;
+         const {
+            arg: { id },
+         } = action.meta;
+
+         if (id) {
+            state.clients = state.clients.filter((item) => item._id !== id);
+         }
+      },
+      [removeClient.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
