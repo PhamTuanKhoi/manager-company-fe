@@ -24,7 +24,7 @@ const Addemployee = ({ show, onHide, employee, render }) => {
       address: "",
    });
 
-   const handleClose = () => {
+   const empty = () => {
       setEmployees({
          name: "",
          email: "",
@@ -34,6 +34,10 @@ const Addemployee = ({ show, onHide, employee, render }) => {
          date: "",
          address: "",
       });
+   };
+
+   const handleClose = () => {
+      empty();
       onHide();
    };
 
@@ -63,6 +67,8 @@ const Addemployee = ({ show, onHide, employee, render }) => {
             setLoading,
          })
       );
+
+      empty();
    };
 
    const handleUpdate = () => {
@@ -90,6 +96,8 @@ const Addemployee = ({ show, onHide, employee, render }) => {
             setLoading,
          })
       );
+
+      empty();
    };
 
    return (
