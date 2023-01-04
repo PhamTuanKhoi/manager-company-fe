@@ -4,14 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { createWorker } from "../../redux/feature/workerSclice";
 import { useLoading } from "../../hook/useLoading";
+import TextArea from "antd/lib/input/TextArea";
 
 const Adduser = ({ show, onHide }) => {
    const [worker, setWorker] = useState({
       name: "",
       email: "",
-      cccd: 0,
+      cccd: "",
       mobile: "",
       date: "",
+      password: "",
+      confirmPasword: "",
+      field: "",
+      address: "",
+      fieldContent: "",
    });
 
    const dispatch = useDispatch();
@@ -38,7 +44,13 @@ const Adduser = ({ show, onHide }) => {
    return (
       <>
          {/* Add User Modal */}
-         <Modal show={show} onHide={onHide}>
+         <Modal
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+            show={show}
+            onHide={onHide}
+         >
             <div role="document">
                <div className="modal-content">
                   <div className="modal-header">
@@ -115,6 +127,82 @@ const Adduser = ({ show, onHide }) => {
                                     className="form-control"
                                     type="date"
                                     onChange={(e) => setWorker({ ...worker, date: e.target.value })}
+                                 />
+                              </div>
+                           </div>
+
+                           <div className="col-sm-6">
+                              <div className="form-group">
+                                 <label className="col-form-label">
+                                    Địa chỉ <span className="text-danger">*</span>
+                                 </label>
+                                 <input
+                                    className="form-control"
+                                    type="text"
+                                    onChange={(e) =>
+                                       setRegister({ ...register, address: e.target.value })
+                                    }
+                                 />
+                              </div>
+                           </div>
+
+                           <div className="col-sm-6">
+                              <div className="form-group">
+                                 <label className="col-form-label">
+                                    Mật khẩu <span className="text-danger">*</span>
+                                 </label>
+                                 <input
+                                    className="form-control"
+                                    type="password"
+                                    onChange={(e) =>
+                                       setWorker({ ...worker, password: e.target.value })
+                                    }
+                                 />
+                              </div>
+                           </div>
+
+                           <div className="col-sm-6">
+                              <div className="form-group">
+                                 <label className="col-form-label">
+                                    Nhập lại mật khẩu <span className="text-danger">*</span>
+                                 </label>
+                                 <input
+                                    className="form-control"
+                                    type="password"
+                                    onChange={(e) =>
+                                       setWorker({ ...worker, confirmPasword: e.target.value })
+                                    }
+                                 />
+                              </div>
+                           </div>
+
+                           <div className="col-sm-6">
+                              <div className="form-group">
+                                 <label className="col-form-label">
+                                    Lĩnh vực/ ngành nghề chuyên môn{" "}
+                                    <span className="text-danger">*</span>
+                                 </label>
+                                 <input
+                                    className="form-control"
+                                    type="text"
+                                    onChange={(e) =>
+                                       setWorker({ ...worker, field: e.target.value })
+                                    }
+                                 />
+                              </div>
+                           </div>
+
+                           <div className="col-sm-6">
+                              <div className="form-group">
+                                 <label className="col-form-label">
+                                    Mô tả chi tiết kinh nghiệm{" "}
+                                    <span className="text-danger">*</span> <br />
+                                 </label>
+                                 <TextArea
+                                    onChange={(e) =>
+                                       setWorker({ ...worker, fieldContent: e.target.value })
+                                    }
+                                    rows={4}
                                  />
                               </div>
                            </div>

@@ -203,7 +203,9 @@ const RegisterUser = () => {
                                  <br />
                               </label>
                               <TextArea
-                                 onChange={(e) => setRegister({ ...register, fieldContent })}
+                                 onChange={(e) =>
+                                    setRegister({ ...register, fieldContent: e.target.value })
+                                 }
                                  rows={4}
                               />
                            </div>

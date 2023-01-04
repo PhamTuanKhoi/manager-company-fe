@@ -140,11 +140,11 @@ const Users = () => {
                   <div className="col">
                      <h3 className="page-title">Người lao động</h3>
                   </div>
-                  {/* <div className="col-auto float-end ml-auto">
+                  <div className="col-auto float-end ml-auto">
                      <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
                         <i className="fa fa-plus" /> Thêm người lao động
                      </a>
-                  </div> */}
+                  </div>
                </div>
             </div>
             {/* /Page Header */}

@@ -70,7 +70,7 @@ const workerSclice = createSlice({
       [createWorker.fulfilled]: (state, action) => {
          state.loading = false;
          state.worker = action.payload;
-         state.workers.push(action.payload);
+         state.workers.unshift(action.payload);
       },
       [createWorker.rejected]: (state, action) => {
          state.loading = false;
