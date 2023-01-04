@@ -165,7 +165,7 @@ const Sidebar = (props) => {
                            ""
                         )}
                      </li>
-                     <li className="submenu">
+                     {/* <li className="submenu">
                         <a
                            href="#"
                            className={isSideMenu == "payroll" ? "subdrop" : ""}
@@ -174,8 +174,7 @@ const Sidebar = (props) => {
                            <i className="la la-money" /> <span> Thanh toán </span>{" "}
                            <span className="menu-arrow" />
                         </a>
-                        {/* {isSideMenu == "payroll" ? ( */}
-                        {isSideMenu == "lay o tren" ? (
+                        {isSideMenu == "payroll" ? (
                            <ul>
                               <li>
                                  <Link
@@ -208,12 +207,12 @@ const Sidebar = (props) => {
                         ) : (
                            ""
                         )}
-                     </li>
-                     <li className={pathname.includes("leads") ? "active" : ""}>
+                     </li> */}
+                     {/* <li className={pathname.includes("leads") ? "active" : ""}>
                         <Link to="/app/employees/leads">
                            <i className="la la-user-secret" /> <span>Leads</span>
                         </Link>
-                     </li>
+                     </li> */}
                      <li className={pathname.includes("clients") ? "active" : ""}>
                         <Link to="/app/employees/clients">
                            <i className="la la-users" /> <span>Khách hàng</span>
@@ -410,7 +409,7 @@ const Sidebar = (props) => {
                            ""
                         )}
                      </li> */}
-                     <li
+                     {/* <li
                         className={
                            pathname.includes("tickets")
                               ? "active"
@@ -422,7 +421,7 @@ const Sidebar = (props) => {
                         <Link to="/app/employees/tickets">
                            <i className="la la-ticket" /> <span>Yêu cầu</span>
                         </Link>
-                     </li>
+                     </li> */}
                      {/* <p>====================================</p> */}
                      {/* <li className="submenu">
                         <a
