@@ -3,13 +3,13 @@ import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import { Avatar_19, Avatar_29 } from "../../Entryfile/imagepath";
-import { createClient, listClient } from "../../redux/feature/clientSclice";
+import { Avatar_19 } from "../../Entryfile/imagepath";
+import { listClient } from "../../redux/feature/clientSclice";
 import Editclient from "../../_components/modelbox/Editclient";
 import Modal from "react-bootstrap/Modal";
 import { useLoading } from "../../hook/useLoading";
 import { UserRoleType } from "../../constant";
+import AddClient from "../../_components/modelbox/AddClient";
 
 const Clients = () => {
    useEffect(() => {
@@ -23,33 +23,12 @@ const Clients = () => {
 
    //use
    const [show, setShow] = useState(false);
-   const { setLoading } = useLoading();
-
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
+   const { setLoading } = useLoading();
    const { user } = useSelector((state) => state.auth);
-   const [client, setClient] = useState({
-      name: "",
-      email: "",
-      mobile: "",
-      company: "",
-      field: "",
-   });
 
    const dispatch = useDispatch();
-
-   async function handleSave() {
-      if (user?._id) {
-         dispatch(
-            createClient({
-               payload: { ...client, creator: user._id },
-               toast,
-               handleClose,
-               setLoading,
-            })
-         );
-      }
-   }
 
    useEffect(() => {
       fetchClient();
@@ -189,93 +168,7 @@ const Clients = () => {
          </div>
          {/* /Page Content */}
          {/* Add Client Modal */}
-         <Modal
-            show={show}
-            onHide={handleClose}
-            size="lg"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-            className="modal custom-modal fade"
-            role="dialog"
-         >
-            <div className="modal-content">
-               <div className="modal-header">
-                  <h5 className="modal-title">Khách hàng mới</h5>
-                  <button type="button" className="close-x">
-                     <span aria-hidden="true" onClick={handleClose}>
-                        ×
-                     </span>
-                  </button>
-               </div>
-               <div className="modal-body">
-                  <div>
-                     <div className="row">
-                        <div className="col-md-6">
-                           <div className="form-group">
-                              <label className="col-form-label">
-                                 Họ tên <span className="text-danger">*</span>
-                              </label>
-                              <input
-                                 className="form-control"
-                                 type="text"
-                                 onChange={(e) => setClient({ ...client, name: e.target.value })}
-                              />
-                           </div>
-                        </div>
-                        <div className="col-md-6">
-                           <div className="form-group">
-                              <label className="col-form-label">Email</label>
-                              <input
-                                 className="form-control"
-                                 type="email"
-                                 onChange={(e) => setClient({ ...client, email: e.target.value })}
-                              />
-                           </div>
-                        </div>
-                        <div className="col-md-6">
-                           <div className="form-group">
-                              <label className="col-form-label">
-                                 Số điện thoại <span className="text-danger">*</span>
-                              </label>
-                              <input
-                                 className="form-control"
-                                 type="text"
-                                 onChange={(e) => setClient({ ...client, mobile: e.target.value })}
-                              />
-                           </div>
-                        </div>
-                        <div className="col-md-6">
-                           <div className="form-group">
-                              <label className="col-form-label">
-                                 Công ty <span className="text-danger">*</span>
-                              </label>
-                              <input
-                                 className="form-control floating"
-                                 type="text"
-                                 onChange={(e) => setClient({ ...client, company: e.target.value })}
-                              />
-                           </div>
-                        </div>
-                        <div className="col-md-6">
-                           <div className="form-group">
-                              <label className="col-form-label">Lĩnh vực</label>
-                              <input
-                                 className="form-control"
-                                 type="text"
-                                 onChange={(e) => setClient({ ...client, field: e.target.value })}
-                              />
-                           </div>
-                        </div>
-                     </div>
-                     <div className="submit-section">
-                        <button className="btn btn-primary submit-btn" onClick={handleSave}>
-                           Lưu
-                        </button>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </Modal>
+         <AddClient show={show} handleClose={handleClose} />
          {/* /Add Client Modal */}
          {/* Edit Client Modal */}
          <Editclient />

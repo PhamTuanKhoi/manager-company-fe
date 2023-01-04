@@ -8,9 +8,13 @@ import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../paginationfunction";
 import "../antdstyle.css";
 import { useSelector } from "react-redux";
+import AddClient from "../../_components/modelbox/AddClient";
 
 const Clients = () => {
    const { clients } = useSelector((state) => state.client);
+   const [show, setShow] = useState(false);
+   const handleClose = () => setShow(false);
+   const handleShow = () => setShow(true);
 
    useEffect(() => {
       if ($(".select").length > 0) {
@@ -138,12 +142,7 @@ const Clients = () => {
                      <h3 className="page-title">Khách hàng</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                     <a
-                        href="#"
-                        className="btn add-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#add_client"
-                     >
+                     <a href="#" className="btn add-btn" onClick={handleShow}>
                         <i className="fa fa-plus" /> Thêm khách hàng
                      </a>
                      <div className="view-icons">
@@ -219,237 +218,7 @@ const Clients = () => {
          </div>
          {/* /Page Content */}
          {/* Add Client Modal */}
-         <div id="add_client" className="modal custom-modal fade" role="dialog">
-            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
-               <div className="modal-content">
-                  <div className="modal-header">
-                     <h5 className="modal-title">Add Client</h5>
-                     <button
-                        type="button"
-                        className="close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                     >
-                        <span aria-hidden="true">×</span>
-                     </button>
-                  </div>
-                  <div className="modal-body">
-                     <form>
-                        <div className="row">
-                           <div className="col-md-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">
-                                    First Name <span className="text-danger">*</span>
-                                 </label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">Last Name</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">
-                                    Username <span className="text-danger">*</span>
-                                 </label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">
-                                    Email <span className="text-danger">*</span>
-                                 </label>
-                                 <input className="form-control floating" type="email" />
-                              </div>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">Password</label>
-                                 <input className="form-control" type="password" />
-                              </div>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">Confirm Password</label>
-                                 <input className="form-control" type="password" />
-                              </div>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">
-                                    Client ID <span className="text-danger">*</span>
-                                 </label>
-                                 <input className="form-control floating" type="text" />
-                              </div>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">Phone </label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">Company Name</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                           </div>
-                        </div>
-                        <div className="table-responsive m-t-15">
-                           <table className="table table-striped custom-table">
-                              <thead>
-                                 <tr>
-                                    <th>Module Permission</th>
-                                    <th className="text-center">Read</th>
-                                    <th className="text-center">Write</th>
-                                    <th className="text-center">Create</th>
-                                    <th className="text-center">Delete</th>
-                                    <th className="text-center">Import</th>
-                                    <th className="text-center">Export</th>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 <tr>
-                                    <td>Projects</td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>Tasks</td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>Chat</td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>Estimates</td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>Invoices</td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>Timing Sheets</td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                    <td className="text-center">
-                                       <input defaultChecked type="checkbox" />
-                                    </td>
-                                 </tr>
-                              </tbody>
-                           </table>
-                        </div>
-                        <div className="submit-section">
-                           <button className="btn btn-primary submit-btn">Submit</button>
-                        </div>
-                     </form>
-                  </div>
-               </div>
-            </div>
-         </div>
+         <AddClient show={show} handleClose={handleClose} />
          {/* /Add Client Modal */}
          {/* Edit Client Modal */}
          <Editclient />
