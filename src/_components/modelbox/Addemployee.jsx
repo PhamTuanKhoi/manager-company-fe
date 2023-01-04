@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch } from "react-redux";
 import { EmployeeDepartmentType } from "../../constant/index";
-import { createEmployees, employeesProfile } from "../../redux/feature/employeesSclice";
+import {
+   createEmployees,
+   employeesProfile,
+   updateEmployees,
+} from "../../redux/feature/employeesSclice";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useLoading } from "../../hook/useLoading";
@@ -37,30 +41,56 @@ const Addemployee = ({ show, onHide, employee, render }) => {
    const dispatch = useDispatch();
    const { user } = useSelector((state) => state.auth);
 
-   const handleSave = () => {
-      if (user._id) {
-         dispatch(
-            createEmployees({
-               payload: {
-                  ...employees,
-                  date: new Date(employees.date).getTime(),
-                  creator: user._id,
-               },
-               toast,
-               onHide,
-               setLoading,
-            })
-         );
-      }
-   };
-
-   const handleUpdate = () => {
-      console.log(employees);
-   };
-
    useEffect(() => {
       setEmployees(employee);
    }, [render]);
+
+   const handleSave = () => {
+      if (!user._id) {
+         toast.warn(`Làm ơn đăng nhập vào hệ thống`);
+         return;
+      }
+
+      dispatch(
+         createEmployees({
+            payload: {
+               ...employees,
+               date: new Date(employees.date).getTime(),
+               creator: user._id,
+            },
+            toast,
+            onHide,
+            setLoading,
+         })
+      );
+   };
+
+   const handleUpdate = () => {
+      if (!user._id) {
+         toast.warn(`Làm ơn đăng nhập vào hệ thống`);
+         return;
+      }
+
+      if (!employee._id) {
+         toast.warn(`Nhân viên không tồn tại`);
+         return;
+      }
+
+      dispatch(
+         updateEmployees({
+            id: employee._id,
+            payload: {
+               ...employees,
+               oldEmail: employee?.email,
+               date: new Date(employees.date).getTime(),
+               creator: user._id,
+            },
+            toast,
+            onHide,
+            setLoading,
+         })
+      );
+   };
 
    return (
       <>

@@ -29,4 +29,8 @@ export const userAPI = {
    async createWorker(payload) {
       return await axios.post(path + "worker", payload);
    },
+
+   async updateEmployees(id, payload) {
+      return await axios.patch(path + "employees/" + id, payload);
+   },
 };

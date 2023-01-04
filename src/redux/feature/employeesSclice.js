@@ -40,16 +40,25 @@ export const listEmployees = createAsyncThunk(
    }
 );
 
-export const employeesProfile = createAsyncThunk(
-   "employees/employeesProfile",
-   async ({ id, setLoading }, { rejectWithValue }) => {
+export const updateEmployees = createAsyncThunk(
+   "employees/updateEmployees",
+   async ({ id, payload, toast, onHide, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await userAPI.profile(id);
+         const { data } = await userAPI.updateEmployees(id, payload);
+         toast.success("Cập nhật nhân viên thành công");
+         onHide();
          setLoading(false);
          return data;
       } catch (error) {
          setLoading(false);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
          return rejectWithValue(error.response.data);
       }
    }
@@ -92,15 +101,19 @@ const employeesSclice = createSlice({
          state.error = action.payload.message;
       },
 
-      // employees profile
-      [employeesProfile.pending]: (state, action) => {
+      // list
+      [updateEmployees.pending]: (state, action) => {
          state.loading = true;
       },
-      [employeesProfile.fulfilled]: (state, action) => {
+      [updateEmployees.fulfilled]: (state, action) => {
          state.loading = false;
-         state.employee = action.payload;
+         const {
+            arg: { id },
+         } = action.meta;
+         state.employees = state.employees.map((item) => (item._id === id ? action.payload : item));
+         // state.employees[index] = action.payload;
       },
-      [employeesProfile.rejected]: (state, action) => {
+      [updateEmployees.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
