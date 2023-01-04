@@ -26,6 +26,8 @@ const Clients = () => {
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
    const { setLoading } = useLoading();
+   const [render, setRender] = useState(0);
+   const [EditClient, setEditClient] = useState({});
    const { user } = useSelector((state) => state.auth);
 
    const dispatch = useDispatch();
@@ -125,10 +127,13 @@ const Clients = () => {
                               <a
                                  className="dropdown-item"
                                  href="#"
-                                 data-bs-toggle="modal"
-                                 data-bs-target="#edit_client"
+                                 onClick={() => {
+                                    setRender((prev) => prev + 1);
+                                    setEditClient(item);
+                                    handleShow(true);
+                                 }}
                               >
-                                 <i className="fa fa-pencil m-r-5" /> Edit
+                                 <i className="fa fa-pencil m-r-5" /> Sửa
                               </a>
                               <a
                                  className="dropdown-item"
@@ -136,7 +141,7 @@ const Clients = () => {
                                  data-bs-toggle="modal"
                                  data-bs-target="#delete_client"
                               >
-                                 <i className="fa fa-trash-o m-r-5" /> Delete
+                                 <i className="fa fa-trash-o m-r-5" /> Xóa
                               </a>
                            </div>
                         </div>
@@ -153,13 +158,13 @@ const Clients = () => {
                            to="/conversation/chat"
                            className="btn btn-white btn-sm m-t-10 mr-1"
                         >
-                           Message
+                           Nhắn tin
                         </Link>
                         <Link
                            to="/app/profile/client-profile"
                            className="btn btn-white btn-sm m-t-10"
                         >
-                           View Profile
+                           Trang cá nhân
                         </Link>
                      </div>
                   </div>
@@ -168,7 +173,7 @@ const Clients = () => {
          </div>
          {/* /Page Content */}
          {/* Add Client Modal */}
-         <AddClient show={show} handleClose={handleClose} />
+         <AddClient show={show} handleClose={handleClose} editClient={EditClient} render={render} />
          {/* /Add Client Modal */}
          {/* Edit Client Modal */}
          <Editclient />
