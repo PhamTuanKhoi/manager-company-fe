@@ -194,7 +194,7 @@ const AllEmployees = () => {
             <DeleteUser
                show={modalDelete}
                onHide={() => setModalDelete(false)}
-               employee={employee}
+               userRemove={employee}
             />
             {/* /Delete Employee Modal */}
          </div>
