@@ -13,12 +13,14 @@ import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import { useSelector } from "react-redux";
 import { EmployeeDepartmentType } from "../../../constant";
 import moment from "moment";
+import DeleteUser from "../../../_components/modelbox/DeleteUser";
 
 const Employeeslist = () => {
    const [menu, setMenu] = useState(false);
    const [modalShow, setModalShow] = useState(false);
    const [employee, setEmployee] = useState({});
    const [render, setRender] = useState(0);
+   const [modalDelete, setModalDelete] = useState(false);
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -130,8 +132,10 @@ const Employeeslist = () => {
                   <a
                      className="dropdown-item"
                      href="#"
-                     data-bs-toggle="modal"
-                     data-bs-target="#delete_employee"
+                     onClick={() => {
+                        setEmployee(record);
+                        setModalDelete(true);
+                     }}
                   >
                      <i className="fa fa-trash-o m-r-5" /> Xóa
                   </a>
@@ -250,36 +254,11 @@ const Employeeslist = () => {
             <Editemployee />
             {/* /Edit Employee Modal */}
             {/* Delete Employee Modal */}
-            <div className="modal custom-modal fade" id="delete_employee" role="dialog">
-               <div className="modal-dialog modal-dialog-centered">
-                  <div className="modal-content">
-                     <div className="modal-body">
-                        <div className="form-header">
-                           <h3>Delete Employee</h3>
-                           <p>Are you sure want to delete?</p>
-                        </div>
-                        <div className="modal-btn delete-action">
-                           <div className="row">
-                              <div className="col-6">
-                                 <a href="" className="btn btn-primary continue-btn">
-                                    Delete
-                                 </a>
-                              </div>
-                              <div className="col-6">
-                                 <a
-                                    href=""
-                                    data-bs-dismiss="modal"
-                                    className="btn btn-primary cancel-btn"
-                                 >
-                                    Cancel
-                                 </a>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
+            <DeleteUser
+               show={modalDelete}
+               onHide={() => setModalDelete(false)}
+               employee={employee}
+            />
             {/* /Delete Employee Modal */}
          </div>
       </div>

@@ -64,6 +64,23 @@ export const updateEmployees = createAsyncThunk(
    }
 );
 
+export const removeEmployees = createAsyncThunk(
+   "employees/removeEmployees",
+   async ({ id, onHide, setLoading, toast }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.remove(id);
+         setLoading(false);
+         onHide();
+         toast.success(`Xóa nhân viên thành công`);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const employeesSclice = createSlice({
    name: "employees",
    initialState: {
@@ -78,10 +95,8 @@ const employeesSclice = createSlice({
       },
       [createEmployees.fulfilled]: (state, action) => {
          state.loading = false;
-         console.log(action.payload, "action");
          state.employee = action.payload;
          state.employees.push(action.payload);
-         console.log(state);
       },
       [createEmployees.rejected]: (state, action) => {
          state.loading = false;
@@ -101,7 +116,7 @@ const employeesSclice = createSlice({
          state.error = action.payload.message;
       },
 
-      // list
+      // update
       [updateEmployees.pending]: (state, action) => {
          state.loading = true;
       },
@@ -110,10 +125,33 @@ const employeesSclice = createSlice({
          const {
             arg: { id },
          } = action.meta;
-         state.employees = state.employees.map((item) => (item._id === id ? action.payload : item));
-         // state.employees[index] = action.payload;
+
+         if (id) {
+            state.employees = state.employees.map((item) =>
+               item._id === id ? action.payload : item
+            );
+         }
       },
       [updateEmployees.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // remove
+      [removeEmployees.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [removeEmployees.fulfilled]: (state, action) => {
+         state.loading = false;
+         const {
+            arg: { id },
+         } = action.meta;
+
+         if (id) {
+            state.employees = state.employees.filter((item) => item._id !== id);
+         }
+      },
+      [removeEmployees.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

@@ -1,20 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import {
-   Avatar_01,
-   Avatar_02,
-   Avatar_03,
-   Avatar_04,
-   Avatar_05,
-   Avatar_11,
-   Avatar_12,
-   Avatar_09,
-   Avatar_10,
-   Avatar_08,
-   Avatar_13,
-   Avatar_16,
-} from "../../../Entryfile/imagepath";
+import { Avatar_02 } from "../../../Entryfile/imagepath";
 import Addemployee from "../../../_components/modelbox/Addemployee";
 import Editemployee from "../../../_components/modelbox/Editemployee";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
@@ -24,10 +11,12 @@ import { listEmployees } from "../../../redux/feature/employeesSclice";
 import { useSelector } from "react-redux";
 import { EmployeeDepartmentType } from "../../../constant";
 import { useLoading } from "../../../hook/useLoading";
+import DeleteUser from "../../../_components/modelbox/DeleteUser";
 
 const AllEmployees = () => {
    const [menu, setMenu] = useState(false);
    const [modalShow, setModalShow] = useState(false);
+   const [modalDelete, setModalDelete] = useState(false);
    const [employee, setEmployee] = useState({});
    const [render, setRender] = useState(0);
    const dispatch = useDispatch();
@@ -161,8 +150,10 @@ const AllEmployees = () => {
                                  <a
                                     className="dropdown-item"
                                     href="#"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#delete_employee"
+                                    onClick={() => {
+                                       setEmployee(item);
+                                       setModalDelete(true);
+                                    }}
                                  >
                                     <i className="fa fa-trash-o m-r-5" /> Xóa
                                  </a>
@@ -200,36 +191,11 @@ const AllEmployees = () => {
             <Editemployee />
             {/* /Edit Employee Modal */}
             {/* Delete Employee Modal */}
-            <div className="modal custom-modal fade" id="delete_employee" role="dialog">
-               <div className="modal-dialog modal-dialog-centered">
-                  <div className="modal-content">
-                     <div className="modal-body">
-                        <div className="form-header">
-                           <h3>Delete Employee</h3>
-                           <p>Are you sure want to delete?</p>
-                        </div>
-                        <div className="modal-btn delete-action">
-                           <div className="row">
-                              <div className="col-6">
-                                 <a href="" className="btn btn-primary continue-btn">
-                                    Delete
-                                 </a>
-                              </div>
-                              <div className="col-6">
-                                 <a
-                                    href=""
-                                    data-bs-dismiss="modal"
-                                    className="btn btn-primary cancel-btn"
-                                 >
-                                    Cancel
-                                 </a>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
+            <DeleteUser
+               show={modalDelete}
+               onHide={() => setModalDelete(false)}
+               employee={employee}
+            />
             {/* /Delete Employee Modal */}
          </div>
       </div>

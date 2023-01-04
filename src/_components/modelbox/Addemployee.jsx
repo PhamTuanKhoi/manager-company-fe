@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import moment from "moment";
 
 const Addemployee = ({ show, onHide, employee, render }) => {
+   const [isEdit, setIsEdit] = useState("");
    const [employees, setEmployees] = useState({
       name: "",
       email: "",
@@ -34,6 +35,8 @@ const Addemployee = ({ show, onHide, employee, render }) => {
          date: "",
          address: "",
       });
+
+      setIsEdit("");
    };
 
    const handleClose = () => {
@@ -47,6 +50,7 @@ const Addemployee = ({ show, onHide, employee, render }) => {
 
    useEffect(() => {
       setEmployees(employee);
+      setIsEdit(employee._id);
    }, [render]);
 
    const handleSave = () => {
@@ -112,9 +116,7 @@ const Addemployee = ({ show, onHide, employee, render }) => {
          >
             <div className="modal-content">
                <div className="modal-header">
-                  <h5 className="modal-title">
-                     {employees.email ? "Sửa nhân viên" : "Thêm nhân viên"}
-                  </h5>
+                  <h5 className="modal-title">{isEdit ? "Sửa nhân viên" : "Thêm nhân viên"}</h5>
                   <button type="button" className="close-x">
                      <span aria-hidden="true" onClick={handleClose}>
                         ×
@@ -242,7 +244,7 @@ const Addemployee = ({ show, onHide, employee, render }) => {
                         </div>
                      </div>
 
-                     {!employees.email ? (
+                     {!isEdit ? (
                         <div className="submit-section">
                            <button className="btn btn-primary submit-btn" onClick={handleSave}>
                               Lưu

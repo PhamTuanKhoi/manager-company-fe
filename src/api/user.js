@@ -33,4 +33,8 @@ export const userAPI = {
    async updateEmployees(id, payload) {
       return await axios.patch(path + "employees/" + id, payload);
    },
+
+   remove(id) {
+      return axios.delete(path + id);
+   },
 };
