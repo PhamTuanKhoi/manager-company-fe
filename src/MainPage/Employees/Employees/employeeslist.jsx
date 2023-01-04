@@ -5,15 +5,7 @@ import { Table } from "antd";
 import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
-import {
-   Avatar_02,
-   Avatar_05,
-   Avatar_11,
-   Avatar_12,
-   Avatar_09,
-   Avatar_10,
-   Avatar_13,
-} from "../../../Entryfile/imagepath";
+
 import Editemployee from "../../../_components/modelbox/Editemployee";
 import Addemployee from "../../../_components/modelbox/Addemployee";
 import Header from "../../../initialpage/Sidebar/header";
@@ -25,6 +17,8 @@ import moment from "moment";
 const Employeeslist = () => {
    const [menu, setMenu] = useState(false);
    const [modalShow, setModalShow] = useState(false);
+   const [employee, setEmployee] = useState({});
+   const [render, setRender] = useState(0);
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -71,6 +65,16 @@ const Employeeslist = () => {
       {
          title: "Phòng ban",
          dataIndex: "department",
+         render: (text, record) =>
+            record?.department === EmployeeDepartmentType.BUSSINESS
+               ? "Kinh doanh"
+               : record.department === EmployeeDepartmentType.ACCOUNTANT
+               ? "Kế toán"
+               : record.department === EmployeeDepartmentType.RECRUIT
+               ? "Tuyen Dung"
+               : record.department === EmployeeDepartmentType.MARKETING
+               ? "Maketing"
+               : "",
          sorter: (a, b) => a.department.length - b.department.length,
       },
 
@@ -115,10 +119,13 @@ const Employeeslist = () => {
                   <a
                      className="dropdown-item"
                      href="#"
-                     data-bs-toggle="modal"
-                     data-bs-target="#edit_employee"
+                     onClick={() => {
+                        setRender((prev) => prev + 1);
+                        setEmployee(record);
+                        setModalShow(true);
+                     }}
                   >
-                     <i className="fa fa-pencil m-r-5" /> Edit
+                     <i className="fa fa-pencil m-r-5" /> Sửa
                   </a>
                   <a
                      className="dropdown-item"
@@ -126,7 +133,7 @@ const Employeeslist = () => {
                      data-bs-toggle="modal"
                      data-bs-target="#delete_employee"
                   >
-                     <i className="fa fa-trash-o m-r-5" /> Delete
+                     <i className="fa fa-trash-o m-r-5" /> Xóa
                   </a>
                </div>
             </div>
@@ -232,7 +239,12 @@ const Employeeslist = () => {
             </div>
             {/* /Page Content */}
             {/* Add Employee Modal */}
-            <Addemployee show={modalShow} onHide={() => setModalShow(false)} />
+            <Addemployee
+               show={modalShow}
+               onHide={() => setModalShow(false)}
+               employee={employee}
+               render={render}
+            />
             {/* /Add Employee Modal */}
             {/* Edit Employee Modal */}
             <Editemployee />
