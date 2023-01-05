@@ -65,6 +65,21 @@ export const listPayslipByEmployees = createAsyncThunk(
    }
 );
 
+export const listPayslipByClient = createAsyncThunk(
+   "paySlip/listPayslipByClient",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await payslipAPI.listByClient(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const payslipSclice = createSlice({
    name: "payslip",
    initialState: {
@@ -128,6 +143,19 @@ const payslipSclice = createSlice({
          state.payslips = action.payload;
       },
       [listPayslipByEmployees.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // list by employees
+      [listPayslipByClient.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listPayslipByClient.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.payslips = action.payload;
+      },
+      [listPayslipByClient.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

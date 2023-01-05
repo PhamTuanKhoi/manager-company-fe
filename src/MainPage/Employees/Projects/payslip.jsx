@@ -8,7 +8,11 @@ import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { listPayslip, listPayslipByEmployees } from "../../../redux/feature/payslipSclice";
+import {
+   listPayslip,
+   listPayslipByClient,
+   listPayslipByEmployees,
+} from "../../../redux/feature/payslipSclice";
 import moment from "moment";
 import { UserRoleType } from "../../../constant";
 import { useLoading } from "../../../hook/useLoading";
@@ -31,6 +35,10 @@ const Payslip = () => {
          if (user?.role === UserRoleType.EMPLOYEE) {
             dispatch(listPayslipByEmployees({ id: user._id, setLoading }));
          }
+
+         if (user?.role === UserRoleType.CLIENT) {
+            dispatch(listPayslipByClient({ id: user._id, setLoading }));
+         }
       }
    }
 
@@ -38,20 +46,13 @@ const Payslip = () => {
 
    const columns = [
       {
-         title: "#",
-         dataIndex: "_id",
-         render: (text, record) => {
-            let i = 1;
-            return i++;
-         },
-         sorter: (a, b) => a._id.length - b._id.length,
-      },
-      {
          title: "Tên phiếu lương",
          dataIndex: "name",
          render: (text, record) => (
             <h2 className="table-avatar">
-               <Link to={`/app/payroll/salary-view/${record?._id}`}>{text}</Link>
+               <Link className="text-primary" to={`/app/payroll/salary-view/${record?._id}`}>
+                  {text}
+               </Link>
             </h2>
          ),
          sorter: (a, b) => a.name.length - b.name.length,
@@ -60,20 +61,8 @@ const Payslip = () => {
       {
          title: "Ngày tạo",
          dataIndex: "createdAt",
-         render: (text) => moment(text).format("DD/MM/YYYY  -- hh:mm"),
+         render: (text) => moment(text).format("DD/MM/YYYY"),
          sorter: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-      },
-      {
-         title: "Kết nối dự án",
-         dataIndex: "name",
-         render: (text, record) => (
-            <h2 className="table-avatar">
-               <a href="/app/projects/phieu-luong">
-                  <div className="back">{"<Back"}</div>
-               </a>
-            </h2>
-         ),
-         sorter: (a, b) => a.name.length - b.name.length,
       },
       {
          title: "Action",

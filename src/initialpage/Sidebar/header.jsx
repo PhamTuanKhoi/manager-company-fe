@@ -2,14 +2,11 @@
  * App Header
  */
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {
-   lnEnglish,
-   lnFrench,
-   lnSpanish,
-   lnGerman,
    Avatar_02,
    Avatar_03,
    Avatar_05,
@@ -37,6 +34,8 @@ const Header = (props) => {
    const handleLogout = () => {
       dispatch(authSclice.actions.logout());
    };
+
+   const { user } = useSelector((state) => state.auth);
 
    return (
       <div className="header" style={{ right: "0px" }}>
@@ -387,7 +386,7 @@ const Header = (props) => {
                      <img src={Avatar_21} alt="" />
                      <span className="status online" />
                   </span>
-                  <span>Admin</span>
+                  <span>{user?.name || "Admin"}</span>
                </a>
                <div className="dropdown-menu">
                   <Link className="dropdown-item" to="/app/profile/employee-profile">
