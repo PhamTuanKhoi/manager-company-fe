@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { createWorker } from "../../redux/feature/workerSclice";
+import { createWorker, updateWorker } from "../../redux/feature/workerSclice";
 import { useLoading } from "../../hook/useLoading";
 import TextArea from "antd/lib/input/TextArea";
+import moment from "moment";
 
-const Adduser = ({ show, onHide }) => {
+const Adduser = ({ show, onHide, editWorker, render }) => {
    const [worker, setWorker] = useState({
       name: "",
       email: "",
@@ -20,26 +21,89 @@ const Adduser = ({ show, onHide }) => {
       fieldContent: "",
    });
 
+   const [isEdit, setIsEdit] = useState("");
    const dispatch = useDispatch();
-   const { user } = useSelector((state) => state.auth);
    const { setLoading } = useLoading();
+   const { user } = useSelector((state) => state.auth);
 
-   function handleSave() {
-      if (user._id) {
-         dispatch(
-            createWorker({
-               payload: {
-                  ...worker,
-                  date: new Date(worker.date).getTime(),
-                  creator: user._id,
-               },
-               toast,
-               onHide,
-               setLoading,
-            })
-         );
+   const empty = () => {
+      setWorker({
+         name: "",
+         email: "",
+         cccd: "",
+         mobile: "",
+         date: "",
+         password: "",
+         confirmPasword: "",
+         field: "",
+         address: "",
+         fieldContent: "",
+      });
+
+      setIsEdit("");
+   };
+
+   const handleClose = () => {
+      empty();
+      onHide();
+   };
+
+   // set data
+   useEffect(() => {
+      setWorker(editWorker);
+      setIsEdit(editWorker._id);
+   }, [render]);
+
+   const handleSave = () => {
+      if (!user._id) {
+         toast.warn(`Làm ơn đăng nhập vào hệ thống`);
+         return;
       }
-   }
+
+      dispatch(
+         createWorker({
+            payload: {
+               ...worker,
+               date: new Date(worker.date).getTime(),
+               creator: user._id,
+            },
+            toast,
+            onHide,
+            setLoading,
+         })
+      );
+
+      empty();
+   };
+
+   const handleUpdate = () => {
+      if (!user._id) {
+         toast.warn(`Làm ơn đăng nhập vào hệ thống`);
+         return;
+      }
+
+      if (!editWorker._id) {
+         toast.warn(`Người lao động không tồn tại`);
+         return;
+      }
+
+      dispatch(
+         updateWorker({
+            id: editWorker._id,
+            payload: {
+               ...worker,
+               oldEmail: editWorker.email,
+               date: new Date(worker.date).getTime(),
+               creator: user._id,
+            },
+            toast,
+            onHide,
+            setLoading,
+         })
+      );
+
+      empty();
+   };
 
    return (
       <>
@@ -49,14 +113,14 @@ const Adduser = ({ show, onHide }) => {
             aria-labelledby="contained-modal-title-vcenter"
             centered
             show={show}
-            onHide={onHide}
+            onHide={handleClose}
          >
             <div role="document">
                <div className="modal-content">
                   <div className="modal-header">
                      <h5 className="modal-title">Thêm người lao động</h5>
                      <button type="button" className="close-x">
-                        <span aria-hidden="true" onClick={onHide}>
+                        <span aria-hidden="true" onClick={handleClose}>
                            ×
                         </span>
                      </button>
@@ -72,6 +136,7 @@ const Adduser = ({ show, onHide }) => {
                                  <input
                                     className="form-control"
                                     type="text"
+                                    defaultValue={worker.name}
                                     onChange={(e) => setWorker({ ...worker, name: e.target.value })}
                                  />
                               </div>
@@ -84,6 +149,7 @@ const Adduser = ({ show, onHide }) => {
                                  <input
                                     className="form-control"
                                     type="email"
+                                    defaultValue={worker.email}
                                     onChange={(e) =>
                                        setWorker({ ...worker, email: e.target.value })
                                     }
@@ -98,6 +164,7 @@ const Adduser = ({ show, onHide }) => {
                                  <input
                                     className="form-control"
                                     type="number"
+                                    defaultValue={worker.cccd}
                                     onChange={(e) => setWorker({ ...worker, cccd: e.target.value })}
                                  />
                               </div>
@@ -112,6 +179,7 @@ const Adduser = ({ show, onHide }) => {
                                  <input
                                     className="form-control"
                                     type="number"
+                                    defaultValue={worker.mobile}
                                     onChange={(e) =>
                                        setWorker({ ...worker, mobile: e.target.value })
                                     }
@@ -126,6 +194,7 @@ const Adduser = ({ show, onHide }) => {
                                  <input
                                     className="form-control"
                                     type="date"
+                                    value={moment(worker.date).format("YYYY-MM-DD")}
                                     onChange={(e) => setWorker({ ...worker, date: e.target.value })}
                                  />
                               </div>
@@ -139,42 +208,49 @@ const Adduser = ({ show, onHide }) => {
                                  <input
                                     className="form-control"
                                     type="text"
+                                    defaultValue={worker.address}
                                     onChange={(e) =>
-                                       setRegister({ ...register, address: e.target.value })
+                                       setWorker({ ...worker, address: e.target.value })
                                     }
                                  />
                               </div>
                            </div>
+                           {!isEdit && (
+                              <>
+                                 <div className="col-sm-6">
+                                    <div className="form-group">
+                                       <label className="col-form-label">
+                                          Mật khẩu <span className="text-danger">*</span>
+                                       </label>
+                                       <input
+                                          className="form-control"
+                                          type="password"
+                                          onChange={(e) =>
+                                             setWorker({ ...worker, password: e.target.value })
+                                          }
+                                       />
+                                    </div>
+                                 </div>
 
-                           <div className="col-sm-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">
-                                    Mật khẩu <span className="text-danger">*</span>
-                                 </label>
-                                 <input
-                                    className="form-control"
-                                    type="password"
-                                    onChange={(e) =>
-                                       setWorker({ ...worker, password: e.target.value })
-                                    }
-                                 />
-                              </div>
-                           </div>
-
-                           <div className="col-sm-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">
-                                    Nhập lại mật khẩu <span className="text-danger">*</span>
-                                 </label>
-                                 <input
-                                    className="form-control"
-                                    type="password"
-                                    onChange={(e) =>
-                                       setWorker({ ...worker, confirmPasword: e.target.value })
-                                    }
-                                 />
-                              </div>
-                           </div>
+                                 <div className="col-sm-6">
+                                    <div className="form-group">
+                                       <label className="col-form-label">
+                                          Nhập lại mật khẩu <span className="text-danger">*</span>
+                                       </label>
+                                       <input
+                                          className="form-control"
+                                          type="password"
+                                          onChange={(e) =>
+                                             setWorker({
+                                                ...worker,
+                                                confirmPasword: e.target.value,
+                                             })
+                                          }
+                                       />
+                                    </div>
+                                 </div>
+                              </>
+                           )}
 
                            <div className="col-sm-6">
                               <div className="form-group">
@@ -185,6 +261,7 @@ const Adduser = ({ show, onHide }) => {
                                  <input
                                     className="form-control"
                                     type="text"
+                                    defaultValue={worker.field}
                                     onChange={(e) =>
                                        setWorker({ ...worker, field: e.target.value })
                                     }
@@ -199,6 +276,7 @@ const Adduser = ({ show, onHide }) => {
                                     <span className="text-danger">*</span> <br />
                                  </label>
                                  <TextArea
+                                    value={worker.fieldContent}
                                     onChange={(e) =>
                                        setWorker({ ...worker, fieldContent: e.target.value })
                                     }
@@ -209,9 +287,15 @@ const Adduser = ({ show, onHide }) => {
                         </div>
 
                         <div className="submit-section">
-                           <button className="btn btn-primary submit-btn" onClick={handleSave}>
-                              Lưu
-                           </button>
+                           {!isEdit ? (
+                              <button className="btn btn-primary submit-btn" onClick={handleSave}>
+                                 Lưu
+                              </button>
+                           ) : (
+                              <button className="btn btn-primary submit-btn" onClick={handleUpdate}>
+                                 Cập nhật
+                              </button>
+                           )}
                         </div>
                      </div>
                   </div>
