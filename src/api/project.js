@@ -29,4 +29,8 @@ export const projectAPI = {
    async updateProject(id, payload) {
       return await axios.patch(path + id, payload);
    },
+
+   async deleteProject(id) {
+      return await axios.delete(path + id);
+   },
 };

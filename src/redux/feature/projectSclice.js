@@ -136,6 +136,24 @@ export const updateProject = createAsyncThunk(
    }
 );
 
+export const deleteProject = createAsyncThunk(
+   "project/deleteProject",
+   async ({ id, toast, onHide, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await projectAPI.deleteProject(id);
+         toast.success("Xóa dự án thành công");
+         onHide();
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const projectSclice = createSlice({
    name: "project",
    initialState: {
@@ -228,7 +246,7 @@ const projectSclice = createSlice({
          state.error = action.payload.message;
       },
 
-      // list by admin
+      // update
       [updateProject.pending]: (state, action) => {
          state.loading = true;
       },
@@ -246,6 +264,26 @@ const projectSclice = createSlice({
          }
       },
       [updateProject.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // delete
+      [deleteProject.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [deleteProject.fulfilled]: (state, action) => {
+         state.loading = false;
+
+         const {
+            arg: { id },
+         } = action.meta;
+
+         if (id) {
+            state.projects = state.projects.filter((item) => item._id !== id);
+         }
+      },
+      [deleteProject.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

@@ -30,8 +30,10 @@ import moment from "moment";
 import { useLoading } from "../../../hook/useLoading";
 import { UserRoleType } from "../../../constant";
 import { toast } from "react-toastify";
+import DeleteProject from "../../../_components/modelbox/DeleteProject";
 const Projects = () => {
    const [modalShow, setModalShow] = useState(false);
+   const [modalDelete, setModalDelete] = useState(false);
    const [render, setRender] = useState(0);
    const [projectData, setProjectData] = useState({});
    const onImageUpload = (fileList) => {
@@ -149,8 +151,10 @@ const Projects = () => {
                                  <a
                                     className="dropdown-item"
                                     href="#"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#delete_project"
+                                    onClick={() => {
+                                       setProjectData(item);
+                                       setModalDelete(true);
+                                    }}
                                  >
                                     <i className="fa fa-trash-o m-r-5" /> Xóa
                                  </a>
@@ -435,36 +439,11 @@ const Projects = () => {
          <Editproject />
          {/* /Edit Project Modal */}
          {/* Delete Project Modal */}
-         <div className="modal custom-modal fade" id="delete_project" role="dialog">
-            <div className="modal-dialog modal-dialog-centered">
-               <div className="modal-content">
-                  <div className="modal-body">
-                     <div className="form-header">
-                        <h3>Delete Project</h3>
-                        <p>Are you sure want to delete?</p>
-                     </div>
-                     <div className="modal-btn delete-action">
-                        <div className="row">
-                           <div className="col-6">
-                              <a href="" className="btn btn-primary continue-btn">
-                                 Delete
-                              </a>
-                           </div>
-                           <div className="col-6">
-                              <a
-                                 href=""
-                                 data-bs-dismiss="modal"
-                                 className="btn btn-primary cancel-btn"
-                              >
-                                 Cancel
-                              </a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
+         <DeleteProject
+            show={modalDelete}
+            onHide={() => setModalDelete(false)}
+            project={projectData}
+         />
          {/* /Delete Project Modal */}
       </div>
    );
