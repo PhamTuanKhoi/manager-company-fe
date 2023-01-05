@@ -4,6 +4,7 @@ import { jwtManager } from "../../helpers/jwtManager";
 
 // fix regeneratorRuntime is not defined
 import "regenerator-runtime"; // no delete
+import { UserRoleType } from "../../constant";
 
 export const login = createAsyncThunk(
    "auth/login",
@@ -12,7 +13,18 @@ export const login = createAsyncThunk(
          const { data } = await authAPI.login(payload);
          jwtManager.set(data.access_token);
          toast.success("Đăng nhập thành công");
-         props.history.push("/app/main/dashboard");
+
+         if (data?.user?.role === UserRoleType.ADMIN) {
+            props.history.push("/app/main/dashboard");
+         }
+
+         if (data?.user?.role === UserRoleType.CLIENT) {
+            props.history.push("/app/main/client-dashboard");
+         }
+
+         if (data?.user?.role === UserRoleType.EMPLOYEE) {
+            props.history.push("/app/main/employee-dashboard");
+         }
          return data;
       } catch (error) {
          console.log(error);
