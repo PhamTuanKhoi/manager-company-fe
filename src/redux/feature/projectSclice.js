@@ -156,7 +156,7 @@ const projectSclice = createSlice({
       [createProject.fulfilled]: (state, action) => {
          state.loading = false;
          state.project = action.payload;
-         state.projects.push(action.payload);
+         state.projects.unshift(action.payload);
       },
       [createProject.rejected]: (state, action) => {
          state.loading = false;

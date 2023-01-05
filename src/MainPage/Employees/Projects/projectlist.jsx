@@ -12,16 +12,9 @@ import { useSelector } from "react-redux";
 import { Table } from "antd";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import moment from "moment";
+import { ProjectPriorityEnum, ProjectStatusEnum } from "../../../constant";
 
 const ProjectList = () => {
-   //  useEffect(() => {
-   //     if ($(".select").length > 0) {
-   //        $(".select").select2({
-   //           minimumResultsForSearch: -1,
-   //           width: "100%",
-   //        });
-   //     }
-   //  });
    const onImageUpload = (fileList) => {
       const reader = new FileReader();
       // reader.onloadend = () => {
@@ -31,6 +24,8 @@ const ProjectList = () => {
    };
 
    const [modalShow, setModalShow] = useState(false);
+   const [render, setRender] = useState(0);
+   const [projectData, setProjectData] = useState({});
 
    const { projects } = useSelector((state) => state.project);
 
@@ -42,92 +37,79 @@ const ProjectList = () => {
       },
 
       {
-         title: "leader",
+         title: "Cost",
+         dataIndex: "price",
+         sorter: (a, b) => a.price - b.price,
       },
+
       {
-         title: "Dự án",
-         dataIndex: "team",
-         sorter: (a, b) => a.start.length - b.start.length,
-         render: (array, record) => (
-            <ul className="team-members">
-               {array.map((item) => (
-                  <li>
-                     <a href="#" title="John Doe" data-bs-toggle="tooltip">
-                        <img alt="" src={Avatar_02} />
-                     </a>
-                  </li>
-               ))}
-               <li className="dropdown avatar-dropdown">
-                  <a
-                     href="#"
-                     className="all-users dropdown-toggle"
-                     data-bs-toggle="dropdown"
-                     aria-expanded="false"
-                  >
-                     +{array.length}
-                  </a>
-               </li>
-            </ul>
-         ),
+         title: "Bắt đầu",
+         dataIndex: "start",
+         sorter: (a, b) => a.start - b.start,
+         render: (date) => moment(date).format("DD/MM/YYYY"),
       },
+
       {
-         title: "do uu tien",
+         title: "Kết thúc",
+         dataIndex: "end",
+         sorter: (a, b) => a.end - b.end,
+         render: (date) => moment(date).format("DD/MM/YYYY"),
+      },
+
+      {
+         title: "Độ ưu tiên",
          render: (array, record) => (
             <div className="dropdown action-label">
-               <a
-                  href
-                  className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-               >
-                  <i className="fa fa-dot-circle-o text-danger" /> High{" "}
+               <a href="#" className="btn btn-white btn-sm btn-rounded  " aria-expanded="false">
+                  {record.priority === ProjectPriorityEnum.HIGH ? (
+                     <>
+                        {" "}
+                        <i className="fa fa-dot-circle-o text-danger" /> Cao
+                     </>
+                  ) : record.priority === ProjectPriorityEnum.MEDIUM ? (
+                     <>
+                        {" "}
+                        <i className="fa fa-dot-circle-o text-warning" /> Trung bình
+                     </>
+                  ) : record.priority === ProjectPriorityEnum.LOW ? (
+                     <>
+                        {" "}
+                        <i className="fa fa-dot-circle-o text-success" /> Thấp
+                     </>
+                  ) : (
+                     ""
+                  )}
                </a>
-               <div className="dropdown-menu">
-                  <a className="dropdown-item" href="#">
-                     <i className="fa fa-dot-circle-o text-danger" /> High
-                  </a>
-                  <a className="dropdown-item" href="#">
-                     <i className="fa fa-dot-circle-o text-warning" /> Medium
-                  </a>
-                  <a className="dropdown-item" href="#">
-                     <i className="fa fa-dot-circle-o text-success" /> Low
-                  </a>
-               </div>
             </div>
          ),
       },
 
       {
-         title: "trang thai",
+         title: "Trạng thái",
          render: (array, record) => (
             <div className="dropdown action-label">
-               <a
-                  href
-                  className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-               >
-                  <i className="fa fa-dot-circle-o text-danger" /> High{" "}
+               <a href="#" className="btn btn-white btn-sm btn-rounded" aria-expanded="false">
+                  {record.status === ProjectStatusEnum.NEWPROJECTS ? (
+                     <>
+                        {" "}
+                        <i className="fa fa-dot-circle-o text-primary" /> Bắt đầu
+                     </>
+                  ) : record.status === ProjectStatusEnum.RUNNING ? (
+                     <>
+                        {" "}
+                        <i className="fa fa-dot-circle-o text-danger" /> Đang chạy
+                     </>
+                  ) : record.status === ProjectStatusEnum.FINISHED ? (
+                     <>
+                        {" "}
+                        <i className="fa fa-dot-circle-o text-success" /> Hoàn thành
+                     </>
+                  ) : (
+                     ""
+                  )}
                </a>
-               <div className="dropdown-menu">
-                  <a className="dropdown-item" href="#">
-                     <i className="fa fa-dot-circle-o text-danger" /> High
-                  </a>
-                  <a className="dropdown-item" href="#">
-                     <i className="fa fa-dot-circle-o text-warning" /> Medium
-                  </a>
-                  <a className="dropdown-item" href="#">
-                     <i className="fa fa-dot-circle-o text-success" /> Low
-                  </a>
-               </div>
             </div>
          ),
-      },
-      {
-         title: "bat dau",
-         dataIndex: "start",
-         sorter: (a, b) => a.start - b.start,
-         render: (date, record) => moment(date).format("DD/MM/YYYY"),
       },
 
       {
@@ -146,10 +128,13 @@ const ProjectList = () => {
                   <a
                      className="dropdown-item"
                      href="#"
-                     data-bs-toggle="modal"
-                     data-bs-target="#edit_client"
+                     onClick={() => {
+                        setRender((prev) => prev + 1);
+                        setProjectData(record);
+                        setModalShow(true);
+                     }}
                   >
-                     <i className="fa fa-pencil m-r-5" /> Edit
+                     <i className="fa fa-pencil m-r-5" /> Sửa
                   </a>
                   <a
                      className="dropdown-item"
@@ -157,15 +142,13 @@ const ProjectList = () => {
                      data-bs-toggle="modal"
                      data-bs-target="#delete_client"
                   >
-                     <i className="fa fa-trash-o m-r-5" /> Delete
+                     <i className="fa fa-trash-o m-r-5" /> Xóa
                   </a>
                </div>
             </div>
          ),
       },
    ];
-
-   console.log(projects);
 
    return (
       <div className="page-wrapper">
@@ -179,29 +162,21 @@ const ProjectList = () => {
             <div className="page-header">
                <div className="row align-items-center">
                   <div className="col">
-                     <h3 className="page-title">Projects</h3>
-                     <ul className="breadcrumb">
-                        <li className="breadcrumb-item">
-                           <Link to="/app/main/dashboard">Dashboard</Link>
-                        </li>
-                        <li className="breadcrumb-item active">Projects</li>
-                     </ul>
+                     <h3 className="page-title">Dự án</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
                      <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
-                        <i className="fa fa-plus" /> Create Project
+                        <i className="fa fa-plus" /> Thêm dự án
                      </a>
+                     {/* list project */}
                      <div className="view-icons">
                         <Link
                            to="/app/projects/project_dashboard"
-                           className="grid-view btn btn-link"
+                           className="grid-view btn btn-link active"
                         >
                            <i className="fa fa-th" />
                         </Link>
-                        <Link
-                           to="/app/projects/projects-list"
-                           className="list-view btn btn-link active"
-                        >
+                        <Link to="/app/projects/projects-list" className="list-view btn btn-link">
                            <i className="fa fa-bars" />
                         </Link>
                      </div>
@@ -214,31 +189,20 @@ const ProjectList = () => {
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus">
                      <input type="text" className="form-control floating" />
-                     <label className="focus-label">Project Name</label>
+                     <label className="focus-label">Tên dự án</label>
                   </div>
                </div>
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus">
                      <input type="text" className="form-control floating" />
-                     <label className="focus-label">Employee Name</label>
+                     <label className="focus-label">Tên nhân viên</label>
                   </div>
                </div>
-               <div className="col-sm-6 col-md-3">
-                  <div className="form-group form-focus select-focus">
-                     <select className="select floating">
-                        <option>Select Roll</option>
-                        <option>Web Developer</option>
-                        <option>Web Designer</option>
-                        <option>Android Developer</option>
-                        <option>Ios Developer</option>
-                     </select>
-                     <label className="focus-label">Role</label>
-                  </div>
-               </div>
+
                <div className="col-sm-6 col-md-3">
                   <a href="#" className="btn btn-success btn-block w-100">
                      {" "}
-                     Search{" "}
+                     Tìm kiếm{" "}
                   </a>
                </div>
             </div>
@@ -261,7 +225,7 @@ const ProjectList = () => {
                         // bordered
                         dataSource={projects}
                         rowKey={(record) => record._id}
-                        onChange={console.log("change")}
+                        // onChange={console.log("change")}
                      />
                   </div>
                </div>
@@ -269,7 +233,12 @@ const ProjectList = () => {
          </div>
          {/* /Page Content */}
          {/* Create Project Modal */}
-         <Addproject show={modalShow} onHide={() => setModalShow(false)} />
+         <Addproject
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            projectData={projectData}
+            render={render}
+         />
          {/* /Create Project Modal */}
          {/* Edit Project Modal */}
          <Editproject />

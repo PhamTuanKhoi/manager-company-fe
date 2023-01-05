@@ -82,7 +82,7 @@ const Projects = () => {
                         <i className="fa fa-plus" /> Thêm dự án
                      </a>
                      {/* list project */}
-                     {/* <div className="view-icons">
+                     <div className="view-icons">
                         <Link
                            to="/app/projects/project_dashboard"
                            className="grid-view btn btn-link active"
@@ -92,7 +92,7 @@ const Projects = () => {
                         <Link to="/app/projects/projects-list" className="list-view btn btn-link">
                            <i className="fa fa-bars" />
                         </Link>
-                     </div> */}
+                     </div>
                   </div>
                </div>
             </div>
