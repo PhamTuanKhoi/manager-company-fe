@@ -7,9 +7,9 @@ import Editemployee from "../../../_components/modelbox/Editemployee";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import Header from "../../../initialpage/Sidebar/header";
 import { useDispatch } from "react-redux";
-import { listEmployees } from "../../../redux/feature/employeesSclice";
+import { listEmployees, listEmployeesByClient } from "../../../redux/feature/employeesSclice";
 import { useSelector } from "react-redux";
-import { EmployeeDepartmentType } from "../../../constant";
+import { EmployeeDepartmentType, UserRoleType } from "../../../constant";
 import { useLoading } from "../../../hook/useLoading";
 import DeleteUser from "../../../_components/modelbox/DeleteUser";
 
@@ -34,15 +34,21 @@ const AllEmployees = () => {
       }
    });
 
+   const { employees } = useSelector((state) => state.employees);
+   const { user } = useSelector((state) => state.auth);
+
    useEffect(() => {
       fetchEmployees();
-   }, []);
+   }, [user]);
 
    function fetchEmployees() {
-      dispatch(listEmployees({ setLoading }));
+      if (user.role === UserRoleType.ADMIN) {
+         dispatch(listEmployees({ setLoading }));
+      }
+      if (user?.role === UserRoleType.CLIENT) {
+         dispatch(listEmployeesByClient({ id: user._id, setLoading }));
+      }
    }
-
-   const { employees } = useSelector((state) => state.employees);
 
    return (
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -62,9 +68,16 @@ const AllEmployees = () => {
                         <h3 className="page-title"> Nhân viên</h3>
                      </div>
                      <div className="col-auto float-end ml-auto">
-                        <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
-                           <i className="fa fa-plus" /> Thêm nhân viên
-                        </a>
+                        {user?.role === UserRoleType.ADMIN &&
+                           user?.role === UserRoleType.EMPLOYEE && (
+                              <a
+                                 href="#"
+                                 className="btn add-btn"
+                                 onClick={() => setModalShow(true)}
+                              >
+                                 <i className="fa fa-plus" /> Thêm nhân viên
+                              </a>
+                           )}
                         <div className="view-icons">
                            <Link
                               to="/app/employee/allemployees"
