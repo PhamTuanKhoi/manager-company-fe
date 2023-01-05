@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch } from "react-redux";
 import { prioritys, statusProject } from "../../constant/index";
@@ -9,12 +9,13 @@ import makeAnimated from "react-select/animated";
 import { useSelector } from "react-redux";
 import { createProject } from "../../redux/feature/projectSclice";
 import { useLoading } from "../../hook/useLoading";
+import moment from "moment";
 
-const Addproject = ({ show, onHide }) => {
+const Addproject = ({ show, onHide, projectData, render }) => {
    const [project, setProject] = useState({
       name: "",
       priority: "",
-      price: 0,
+      price: "",
       start: "",
       end: "",
       status: "",
@@ -33,6 +34,30 @@ const Addproject = ({ show, onHide }) => {
    const { user } = useSelector((state) => state.auth);
    const { employees } = useSelector((state) => state.employees);
    const { clients } = useSelector((state) => state.client);
+   //edit
+   const [isEdit, setIsEdit] = useState("");
+
+   const empty = () => {
+      setProject({
+         name: "",
+         priority: "",
+         price: "",
+         start: "",
+         end: "",
+         status: "",
+         content: "",
+         leader: "",
+      });
+
+      setIsEdit("");
+      setClient([]);
+      setTeams([]);
+   };
+
+   const handleClose = () => {
+      empty();
+      onHide();
+   };
 
    // select
 
@@ -42,28 +67,80 @@ const Addproject = ({ show, onHide }) => {
    employees?.map((item) => options.push({ value: item._id, label: item.name }));
    clients?.map((item) => optionClient.push({ value: item._id, label: item.name }));
 
+   // filter value muti select
+   let valueSelectClient = [];
+   let valueSelectTeam = [];
+   projectData?.client?.map((item) =>
+      optionClient.filter((i) => {
+         if (i.value === item) {
+            valueSelectClient.push(i);
+         }
+      })
+   );
+   projectData?.team?.map((item) =>
+      options.filter((i) => {
+         if (i.value === item) {
+            valueSelectTeam.push(i);
+         }
+      })
+   );
+   useEffect(() => {
+      if (projectData.client) {
+         setClient(valueSelectClient);
+         setTeams(valueSelectTeam);
+      }
+   }, [render]);
+
+   // fetch muti select
+   useEffect(() => {
+      setProject(projectData);
+      setIsEdit(projectData._id);
+   }, [render]);
+
    async function handleSave() {
       const isteam = teams.map((i) => i.value);
       const isclient = client.map((i) => i.value);
 
-      if (user._id) {
-         dispatch(
-            createProject({
-               payload: {
-                  ...project,
-                  start: new Date(project.start).getTime(),
-                  end: new Date(project.end).getTime(),
-                  creator: user._id,
-                  team: isteam,
-                  client: isclient,
-               },
-               toast,
-               onHide,
-               setLoading,
-            })
-         );
+      if (!user._id) {
+         toast.warn(`Làm ơn đăng nhập vào hệ thống`);
+         return;
       }
+
+      dispatch(
+         createProject({
+            payload: {
+               ...project,
+               start: new Date(project.start).getTime(),
+               end: new Date(project.end).getTime(),
+               creator: user._id,
+               team: isteam,
+               client: isclient,
+            },
+            toast,
+            onHide,
+            setLoading,
+         })
+      );
+
+      empty();
    }
+
+   const handleUpdate = () => {
+      if (!user._id) {
+         toast.warn(`Làm ơn đăng nhập vào hệ thống`);
+         return;
+      }
+
+      if (!projectData._id) {
+         toast.warn(`Dự án không tồn tại`);
+         return;
+      }
+      console.log(project);
+      console.log(teams);
+      console.log(client);
+
+      empty();
+   };
 
    return (
       <>
@@ -73,15 +150,15 @@ const Addproject = ({ show, onHide }) => {
             aria-labelledby="contained-modal-title-vcenter"
             centered
             show={show}
-            onHide={onHide}
+            onHide={handleClose}
             className="modal custom-modal fade"
             role="dialog"
          >
             <div className="modal-content">
                <div className="modal-header">
-                  <h5 className="modal-title">Thêm dự án</h5>
+                  <h5 className="modal-title">{isEdit ? "Chỉnh sửa dự án" : "Thêm dự án"}</h5>
                   <button type="button" className="close-x">
-                     <span aria-hidden="true" onClick={onHide}>
+                     <span aria-hidden="true" onClick={handleClose}>
                         ×
                      </span>
                   </button>
@@ -97,6 +174,7 @@ const Addproject = ({ show, onHide }) => {
                            <input
                               className="form-control"
                               type="text"
+                              defaultValue={project.name}
                               onChange={(e) => setProject({ ...project, name: e.target.value })}
                            />
                         </div>
@@ -109,6 +187,7 @@ const Addproject = ({ show, onHide }) => {
                            <select
                               className="form-control"
                               // className="select"   class tam linh
+                              value={project.priority}
                               onChange={(e) => setProject({ ...project, priority: e.target.value })}
                            >
                               <option>Chọn độ ưu tiên</option>
@@ -128,6 +207,7 @@ const Addproject = ({ show, onHide }) => {
                            <input
                               className="form-control"
                               type="datetime-local"
+                              value={moment(project.start).format("YYYY-MM-DD HH:mm")}
                               onChange={(e) => setProject({ ...project, start: e.target.value })}
                            />
                         </div>
@@ -142,6 +222,7 @@ const Addproject = ({ show, onHide }) => {
                            <input
                               className="form-control"
                               type="datetime-local"
+                              value={moment(project.end).format("YYYY-MM-DD HH:mm")}
                               onChange={(e) => setProject({ ...project, end: e.target.value })}
                            />
                         </div>
@@ -155,6 +236,7 @@ const Addproject = ({ show, onHide }) => {
                            <select
                               className="form-control"
                               // className="select"   class tam linh
+                              value={project.status}
                               onChange={(e) => setProject({ ...project, status: e.target.value })}
                            >
                               <option>Chọn trạng thái</option>
@@ -174,6 +256,7 @@ const Addproject = ({ show, onHide }) => {
                            <input
                               className="form-control"
                               type="number"
+                              defaultValue={project?.price}
                               onChange={(e) => setProject({ ...project, price: e.target.value })}
                            />
                         </div>
@@ -188,6 +271,7 @@ const Addproject = ({ show, onHide }) => {
                            <select
                               className="form-control"
                               // className="select"   class tam linh
+                              value={project.leader}
                               onChange={(e) => setProject({ ...project, leader: e.target.value })}
                            >
                               <option>Chọn leader</option>
@@ -208,6 +292,7 @@ const Addproject = ({ show, onHide }) => {
 
                            <Select
                               isMulti
+                              value={teams}
                               onChange={(e) => setTeams(e)}
                               closeMenuOnSelect={false}
                               components={animatedComponents}
@@ -224,6 +309,7 @@ const Addproject = ({ show, onHide }) => {
 
                            <Select
                               isMulti
+                              value={client}
                               onChange={(e) => setClient(e)}
                               closeMenuOnSelect={false}
                               components={animatedComponents}
@@ -238,21 +324,27 @@ const Addproject = ({ show, onHide }) => {
                               Nội dung <span className="text-danger">*</span>
                            </label>
                            <textarea
+                              defaultValue={project.content}
                               onChange={(e) => setProject({ ...project, content: e.target.value })}
                               rows={4}
                               cols={160}
                               className="form-control summernote"
                               placeholder="Enter your message here"
-                              defaultValue={""}
                            />
                         </div>
                      </div>
                   </div>
 
                   <div className="submit-section">
-                     <button className="btn btn-primary submit-btn" onClick={handleSave}>
-                        Lưu
-                     </button>
+                     {!isEdit ? (
+                        <button className="btn btn-primary submit-btn" onClick={handleSave}>
+                           Lưu
+                        </button>
+                     ) : (
+                        <button className="btn btn-primary submit-btn" onClick={handleUpdate}>
+                           Cập nhật
+                        </button>
+                     )}
                   </div>
                </div>
             </div>

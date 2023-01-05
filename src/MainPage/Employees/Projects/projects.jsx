@@ -32,6 +32,8 @@ import { UserRoleType } from "../../../constant";
 import { toast } from "react-toastify";
 const Projects = () => {
    const [modalShow, setModalShow] = useState(false);
+   const [render, setRender] = useState(0);
+   const [projectData, setProjectData] = useState({});
    const onImageUpload = (fileList) => {
       const reader = new FileReader();
       // reader.onloadend = () => {
@@ -51,11 +53,6 @@ const Projects = () => {
    }, [user._id]);
 
    const fetchProject = () => {
-      if (!user.role) {
-         toast.warn("Làm ơn đăng nhập vào hệ thống ");
-         return;
-      }
-
       if (user.role === UserRoleType.CLIENT) {
          dispatch(listProjectByClient({ id: user._id, setLoading }));
       }
@@ -141,8 +138,11 @@ const Projects = () => {
                                  <a
                                     className="dropdown-item"
                                     href="#"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#edit_project"
+                                    onClick={() => {
+                                       setRender((prev) => prev + 1);
+                                       setProjectData(item);
+                                       setModalShow(true);
+                                    }}
                                  >
                                     <i className="fa fa-pencil m-r-5" /> Sửa
                                  </a>
@@ -174,11 +174,141 @@ const Projects = () => {
                            </div>
                            <div className="pro-deadline m-b-15">
                               <div className="sub-title">Số lượng làm:</div>
-                              <div className="text-muted">50 Người</div>
+                              <div className="text-muted">
+                                 <ul className="team-members">
+                                    <li>
+                                       <a href="#" data-bs-toggle="tooltip" title="John Doe">
+                                          <img alt="" src={Avatar_02} />
+                                       </a>
+                                    </li>
+                                    <li>
+                                       <a href="#" data-bs-toggle="tooltip" title="John Doe">
+                                          <img alt="" src={Avatar_16} />
+                                       </a>
+                                    </li>
+
+                                    <li className="dropdown avatar-dropdown">
+                                       <a
+                                          href="#"
+                                          className="all-users dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                       >
+                                          +48
+                                       </a>
+                                       <div className="dropdown-menu dropdown-menu-right">
+                                          <div className="avatar-group">
+                                             <a className="avatar avatar-xs" href="#">
+                                                <img alt="" src={Avatar_16} />
+                                             </a>
+                                          </div>
+                                          <div className="avatar-pagination">
+                                             <ul className="pagination">
+                                                <li className="page-item">
+                                                   <a
+                                                      className="page-link"
+                                                      href="#"
+                                                      aria-label="Previous"
+                                                   >
+                                                      <span aria-hidden="true">«</span>
+                                                      <span className="sr-only">Previous</span>
+                                                   </a>
+                                                </li>
+                                                <li className="page-item">
+                                                   <a className="page-link" href="#">
+                                                      1
+                                                   </a>
+                                                </li>
+                                                <li className="page-item">
+                                                   <a className="page-link" href="#">
+                                                      2
+                                                   </a>
+                                                </li>
+                                                <li className="page-item">
+                                                   <a
+                                                      className="page-link"
+                                                      href="#"
+                                                      aria-label="Next"
+                                                   >
+                                                      <span aria-hidden="true">»</span>
+                                                      <span className="sr-only">Next</span>
+                                                   </a>
+                                                </li>
+                                             </ul>
+                                          </div>
+                                       </div>
+                                    </li>
+                                 </ul>
+                              </div>
                            </div>
                            <div className="pro-deadline m-b-15">
                               <div className="sub-title">Số lượng nghỉ:</div>
-                              <div className="text-muted">2 Người</div>
+                              <div className="text-muted">
+                                 <ul className="team-members">
+                                    <li>
+                                       <a href="#" data-bs-toggle="tooltip" title="John Doe">
+                                          <img alt="" src={Avatar_02} />
+                                       </a>
+                                    </li>
+                                    <li>
+                                       <a href="#" data-bs-toggle="tooltip" title="John Doe">
+                                          <img alt="" src={Avatar_16} />
+                                       </a>
+                                    </li>
+
+                                    <li className="dropdown avatar-dropdown">
+                                       <a
+                                          href="#"
+                                          className="all-users dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                       >
+                                          +1
+                                       </a>
+                                       <div className="dropdown-menu dropdown-menu-right">
+                                          <div className="avatar-group">
+                                             <a className="avatar avatar-xs" href="#">
+                                                <img alt="" src={Avatar_16} />
+                                             </a>
+                                          </div>
+                                          <div className="avatar-pagination">
+                                             <ul className="pagination">
+                                                <li className="page-item">
+                                                   <a
+                                                      className="page-link"
+                                                      href="#"
+                                                      aria-label="Previous"
+                                                   >
+                                                      <span aria-hidden="true">«</span>
+                                                      <span className="sr-only">Previous</span>
+                                                   </a>
+                                                </li>
+                                                <li className="page-item">
+                                                   <a className="page-link" href="#">
+                                                      1
+                                                   </a>
+                                                </li>
+                                                <li className="page-item">
+                                                   <a className="page-link" href="#">
+                                                      2
+                                                   </a>
+                                                </li>
+                                                <li className="page-item">
+                                                   <a
+                                                      className="page-link"
+                                                      href="#"
+                                                      aria-label="Next"
+                                                   >
+                                                      <span aria-hidden="true">»</span>
+                                                      <span className="sr-only">Next</span>
+                                                   </a>
+                                                </li>
+                                             </ul>
+                                          </div>
+                                       </div>
+                                    </li>
+                                 </ul>
+                              </div>
                            </div>
                            <div className="pro-deadline m-b-15">
                               <div className="sub-title">Deadline:</div>
@@ -224,18 +354,6 @@ const Projects = () => {
                                     </a>
                                     <div className="dropdown-menu dropdown-menu-right">
                                        <div className="avatar-group">
-                                          <a className="avatar avatar-xs" href="#">
-                                             <img alt="" src={Avatar_02} />
-                                          </a>
-                                          <a className="avatar avatar-xs" href="#">
-                                             <img alt="" src={Avatar_09} />
-                                          </a>
-                                          <a className="avatar avatar-xs" href="#">
-                                             <img alt="" src={Avatar_10} />
-                                          </a>
-                                          <a className="avatar avatar-xs" href="#">
-                                             <img alt="" src={Avatar_05} />
-                                          </a>
                                           <a className="avatar avatar-xs" href="#">
                                              <img alt="" src={Avatar_11} />
                                           </a>
@@ -306,7 +424,12 @@ const Projects = () => {
          </div>
          {/* /Page Content */}
          {/* Create Project Modal */}
-         <Addproject show={modalShow} onHide={() => setModalShow(false)} />
+         <Addproject
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            projectData={projectData}
+            render={render}
+         />
          {/* /Create Project Modal */}
          {/* Edit Project Modal */}
          <Editproject />
