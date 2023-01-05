@@ -213,14 +213,14 @@ const Sidebar = (props) => {
                            <i className="la la-user-secret" /> <span>Leads</span>
                         </Link>
                      </li> */}
-                     {user?.role === UserRoleType.ADMIN ||
-                        (user?.role === UserRoleType.EMPLOYEE && (
-                           <li className={pathname.includes("clients") ? "active" : ""}>
-                              <Link to="/app/employees/clients">
-                                 <i className="la la-users" /> <span>Khách hàng</span>
-                              </Link>
-                           </li>
-                        ))}
+                     {(user?.role === UserRoleType.ADMIN ||
+                        user?.role === UserRoleType.EMPLOYEE) && (
+                        <li className={pathname.includes("clients") ? "active" : ""}>
+                           <Link to="/app/employees/clients">
+                              <i className="la la-users" /> <span>Khách hàng</span>
+                           </Link>
+                        </li>
+                     )}
                      <li className={pathname.includes("allemployees") ? "active" : ""}>
                         <Link to="/app/employee/allemployees">
                            <i className="la la-users" /> <span>Nhân viên</span>
