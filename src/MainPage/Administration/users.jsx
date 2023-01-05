@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import { useLoading } from "../../hook/useLoading";
 import { avartarFAKE } from "../../constant/index";
+import DeleteUser from "../../_components/modelbox/DeleteUser";
 
 const Users = () => {
    const [modalShow, setModalShow] = useState(false);
@@ -24,6 +25,7 @@ const Users = () => {
    const { setLoading } = useLoading();
    const [render, setRender] = useState(0);
    const [editWorker, setEditWorker] = useState({});
+   const [modalDelete, setModalDelete] = useState(false);
 
    useEffect(() => {
       if ($(".select").length > 0) {
@@ -116,15 +118,17 @@ const Users = () => {
                         setModalShow(true);
                      }}
                   >
-                     <i className="fa fa-pencil m-r-5" /> Edit
+                     <i className="fa fa-pencil m-r-5" /> Sửa
                   </a>
                   <a
                      className="dropdown-item"
                      href="#"
-                     data-bs-toggle="modal"
-                     data-bs-target="#delete_user"
+                     onClick={() => {
+                        setEditWorker(record);
+                        setModalDelete(true);
+                     }}
                   >
-                     <i className="fa fa-trash-o m-r-5" /> Delete
+                     <i className="fa fa-trash-o m-r-5" /> Xóa
                   </a>
                </div>
             </div>
@@ -219,36 +223,11 @@ const Users = () => {
 
          {/* /Edit User Modal */}
          {/* Delete User Modal */}
-         <div className="modal custom-modal fade" id="delete_user" role="dialog">
-            <div className="modal-dialog modal-dialog-centered">
-               <div className="modal-content">
-                  <div className="modal-body">
-                     <div className="form-header">
-                        <h3>Delete User</h3>
-                        <p>Are you sure want to delete?</p>
-                     </div>
-                     <div className="modal-btn delete-action">
-                        <div className="row">
-                           <div className="col-6">
-                              <a href="" className="btn btn-primary continue-btn">
-                                 Delete
-                              </a>
-                           </div>
-                           <div className="col-6">
-                              <a
-                                 href=""
-                                 data-bs-dismiss="modal"
-                                 className="btn btn-primary cancel-btn"
-                              >
-                                 Cancel
-                              </a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
+         <DeleteUser
+            show={modalDelete}
+            onHide={() => setModalDelete(false)}
+            userRemove={editWorker}
+         />
          {/* /Delete User Modal */}
       </div>
    );

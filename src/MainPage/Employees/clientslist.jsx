@@ -66,7 +66,7 @@ const Clients = () => {
          sorter: (a, b) => a.mobile - b.mobile,
       },
       {
-         title: "Trạng thái",
+         title: "Mã số thuế",
          dataIndex: "tax",
          sorter: (a, b) => a.tax - b.tax,
       },

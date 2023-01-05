@@ -79,6 +79,23 @@ export const updateWorker = createAsyncThunk(
    }
 );
 
+export const removeWorker = createAsyncThunk(
+   "worker/removeWorker",
+   async ({ id, toast, onHide, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.remove(id);
+         setLoading(false);
+         onHide();
+         toast.success(`Xóa người lao động thành công`);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const workerSclice = createSlice({
    name: "worker",
    initialState: {
@@ -114,7 +131,7 @@ const workerSclice = createSlice({
          state.error = action.payload.message;
       },
 
-      // list
+      // profile
       [profileWorker.pending]: (state, action) => {
          state.loading = true;
       },
@@ -142,6 +159,25 @@ const workerSclice = createSlice({
          }
       },
       [updateWorker.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // delete
+      [removeWorker.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [removeWorker.fulfilled]: (state, action) => {
+         state.loading = false;
+         const {
+            arg: { id },
+         } = action.meta;
+
+         if (id) {
+            state.workers = state.workers.filter((item) => item._id !== id);
+         }
+      },
+      [removeWorker.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

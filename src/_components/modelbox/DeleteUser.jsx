@@ -6,6 +6,7 @@ import { UserRoleType } from "../../constant";
 import { useLoading } from "../../hook/useLoading";
 import { removeClient } from "../../redux/feature/clientSclice";
 import { removeEmployees } from "../../redux/feature/employeesSclice";
+import { removeWorker } from "../../redux/feature/workerSclice";
 
 const DeleteUser = ({ show, onHide, userRemove }) => {
    const dispatch = useDispatch();
@@ -17,11 +18,17 @@ const DeleteUser = ({ show, onHide, userRemove }) => {
          return;
       }
 
+      // gobal payload delete
+      let payload = { id: userRemove._id, onHide, setLoading, toast };
+
       if (userRemove.role === UserRoleType.EMPLOYEE) {
-         dispatch(removeEmployees({ id: userRemove._id, onHide, setLoading, toast }));
+         dispatch(removeEmployees(payload));
       }
       if (userRemove.role === UserRoleType.CLIENT) {
-         dispatch(removeClient({ id: userRemove._id, onHide, setLoading, toast }));
+         dispatch(removeClient(payload));
+      }
+      if (userRemove.role === UserRoleType.WORKER) {
+         dispatch(removeWorker(payload));
       }
    };
    return (
