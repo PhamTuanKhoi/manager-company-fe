@@ -70,6 +70,7 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
    // filter value muti select
    let valueSelectClient = [];
    let valueSelectTeam = [];
+
    projectData?.client?.map((item) =>
       optionClient.filter((i) => {
          if (i.value === item) {
@@ -84,6 +85,7 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
          }
       })
    );
+
    useEffect(() => {
       if (projectData.client) {
          setClient(valueSelectClient);

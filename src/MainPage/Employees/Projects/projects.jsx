@@ -31,6 +31,7 @@ import { useLoading } from "../../../hook/useLoading";
 import { UserRoleType } from "../../../constant";
 import { toast } from "react-toastify";
 import DeleteProject from "../../../_components/modelbox/DeleteProject";
+import { listEmployees } from "../../../redux/feature/employeesSclice";
 const Projects = () => {
    const [modalShow, setModalShow] = useState(false);
    const [modalDelete, setModalDelete] = useState(false);
@@ -52,6 +53,9 @@ const Projects = () => {
 
    useEffect(() => {
       fetchProject();
+
+      // fetch employees
+      dispatch(listEmployees({ setLoading }));
    }, [user._id]);
 
    const fetchProject = () => {
