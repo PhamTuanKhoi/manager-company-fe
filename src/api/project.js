@@ -22,6 +22,10 @@ export const projectAPI = {
       return await axios.post(path, payload);
    },
 
+   async updateProjectPayslip(id, payload) {
+      return await axios.patch(path + "payslip/" + id, payload);
+   },
+
    async updateProject(id, payload) {
       return await axios.patch(path + id, payload);
    },

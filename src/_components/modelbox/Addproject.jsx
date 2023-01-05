@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { useSelector } from "react-redux";
-import { createProject } from "../../redux/feature/projectSclice";
+import { createProject, updateProject } from "../../redux/feature/projectSclice";
 import { useLoading } from "../../hook/useLoading";
 import moment from "moment";
 
@@ -135,9 +135,26 @@ const Addproject = ({ show, onHide, projectData, render }) => {
          toast.warn(`Dự án không tồn tại`);
          return;
       }
-      console.log(project);
-      console.log(teams);
-      console.log(client);
+
+      const isteam = teams.map((i) => i.value);
+      const isclient = client.map((i) => i.value);
+
+      dispatch(
+         updateProject({
+            id: projectData._id,
+            payload: {
+               ...project,
+               start: new Date(project.start).getTime(),
+               end: new Date(project.end).getTime(),
+               creator: user._id,
+               team: isteam,
+               client: isclient,
+            },
+            toast,
+            onHide,
+            setLoading,
+         })
+      );
 
       empty();
    };

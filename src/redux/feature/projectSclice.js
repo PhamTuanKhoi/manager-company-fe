@@ -25,12 +25,12 @@ export const createProject = createAsyncThunk(
    }
 );
 
-export const updateProject = createAsyncThunk(
-   "project/updateProject",
+export const updateProjectPayslip = createAsyncThunk(
+   "project/updateProjectPayslip",
    async ({ id, payload, toast, onHide, setLoading, payslip }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await projectAPI.updateProject(id, payload);
+         const { data } = await projectAPI.updateProjectPayslip(id, payload);
          toast.success("Liên kết phiếu lương thành công");
          onHide();
          setLoading(false);
@@ -107,6 +107,31 @@ export const projectDetail = createAsyncThunk(
    }
 );
 
+export const updateProject = createAsyncThunk(
+   "project/updateProject",
+   async ({ id, payload, toast, onHide, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await projectAPI.updateProject(id, payload);
+         toast.success("Cập nhật dự án thành công");
+         onHide();
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const projectSclice = createSlice({
    name: "project",
    initialState: {
@@ -135,14 +160,14 @@ const projectSclice = createSlice({
       },
 
       // update
-      [updateProject.pending]: (state, action) => {
+      [updateProjectPayslip.pending]: (state, action) => {
          state.loading = true;
       },
-      [updateProject.fulfilled]: (state, action) => {
+      [updateProjectPayslip.fulfilled]: (state, action) => {
          state.loading = false;
          state.project.payslip = [action.payload.payslip];
       },
-      [updateProject.rejected]: (state, action) => {
+      [updateProjectPayslip.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
@@ -195,6 +220,27 @@ const projectSclice = createSlice({
          state.projects = action.payload;
       },
       [listProjectByAdmin.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // list by admin
+      [updateProject.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [updateProject.fulfilled]: (state, action) => {
+         state.loading = false;
+         const {
+            arg: { id },
+         } = action.meta;
+
+         if (id) {
+            state.projects = state.projects.map((item) =>
+               item._id === id ? action.payload : item
+            );
+         }
+      },
+      [updateProject.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

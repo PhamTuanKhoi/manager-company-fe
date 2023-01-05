@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { updateProject } from "../../redux/feature/projectSclice";
+import { updateProjectPayslip } from "../../redux/feature/projectSclice";
 import { useLoading } from "../../hook/useLoading";
 
 const LinkProject = ({ show, onHide }) => {
@@ -16,7 +16,7 @@ const LinkProject = ({ show, onHide }) => {
 
    const handleLink = (payslip) => {
       dispatch(
-         updateProject({
+         updateProjectPayslip({
             id,
             payload: { payslip: payslip._id },
             toast,
