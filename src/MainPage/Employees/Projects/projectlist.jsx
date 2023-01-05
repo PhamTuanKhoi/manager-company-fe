@@ -13,6 +13,7 @@ import { Table } from "antd";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import moment from "moment";
 import { ProjectPriorityEnum, ProjectStatusEnum } from "../../../constant";
+import DeleteProject from "../../../_components/modelbox/DeleteProject";
 
 const ProjectList = () => {
    const onImageUpload = (fileList) => {
@@ -26,6 +27,7 @@ const ProjectList = () => {
    const [modalShow, setModalShow] = useState(false);
    const [render, setRender] = useState(0);
    const [projectData, setProjectData] = useState({});
+   const [modalDelete, setModalDelete] = useState(false);
 
    const { projects } = useSelector((state) => state.project);
 
@@ -139,8 +141,10 @@ const ProjectList = () => {
                   <a
                      className="dropdown-item"
                      href="#"
-                     data-bs-toggle="modal"
-                     data-bs-target="#delete_client"
+                     onClick={() => {
+                        setProjectData(record);
+                        setModalDelete(true);
+                     }}
                   >
                      <i className="fa fa-trash-o m-r-5" /> Xóa
                   </a>
@@ -244,36 +248,11 @@ const ProjectList = () => {
          <Editproject />
          {/* /Edit Project Modal */}
          {/* Delete Project Modal */}
-         <div className="modal custom-modal fade" id="delete_project" role="dialog">
-            <div className="modal-dialog modal-dialog-centered">
-               <div className="modal-content">
-                  <div className="modal-body">
-                     <div className="form-header">
-                        <h3>Delete Project</h3>
-                        <p>Are you sure want to delete?</p>
-                     </div>
-                     <div className="modal-btn delete-action">
-                        <div className="row">
-                           <div className="col-6">
-                              <a href="" className="btn btn-primary continue-btn">
-                                 Delete
-                              </a>
-                           </div>
-                           <div className="col-6">
-                              <a
-                                 href=""
-                                 data-bs-dismiss="modal"
-                                 className="btn btn-primary cancel-btn"
-                              >
-                                 Cancel
-                              </a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
+         <DeleteProject
+            show={modalDelete}
+            onHide={() => setModalDelete(false)}
+            project={projectData}
+         />
          {/* /Delete Project Modal */}
       </div>
    );
