@@ -109,14 +109,18 @@ export const projectDetail = createAsyncThunk(
 
 export const updateProject = createAsyncThunk(
    "project/updateProject",
-   async ({ id, payload, toast, onHide, setLoading }, { rejectWithValue }) => {
+   async ({ id, payload, toast, onHide, setLoading, project, setLoad }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await projectAPI.updateProject(id, payload);
          toast.success("Cập nhật dự án thành công");
          onHide();
          setLoading(false);
-         return data;
+
+         if (setLoad) {
+            setLoad((prev) => prev + 1);
+         }
+         return { data, project };
       } catch (error) {
          setLoading(false);
          console.log(error);
@@ -230,13 +234,14 @@ const projectSclice = createSlice({
       },
       [updateProject.fulfilled]: (state, action) => {
          state.loading = false;
+
          const {
             arg: { id },
          } = action.meta;
 
          if (id) {
             state.projects = state.projects.map((item) =>
-               item._id === id ? action.payload : item
+               item._id === id ? action.payload.data : item
             );
          }
       },

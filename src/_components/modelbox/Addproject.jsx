@@ -11,7 +11,7 @@ import { createProject, updateProject } from "../../redux/feature/projectSclice"
 import { useLoading } from "../../hook/useLoading";
 import moment from "moment";
 
-const Addproject = ({ show, onHide, projectData, render }) => {
+const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
    const [project, setProject] = useState({
       name: "",
       priority: "",
@@ -139,20 +139,27 @@ const Addproject = ({ show, onHide, projectData, render }) => {
       const isteam = teams.map((i) => i.value);
       const isclient = client.map((i) => i.value);
 
+      let payload = {
+         ...project,
+         start: new Date(project.start).getTime(),
+         end: new Date(project.end).getTime(),
+         creator: user._id,
+         team: isteam,
+         client: isclient,
+      };
+
+      // no update payslip
+      delete payload.payslip;
+
       dispatch(
          updateProject({
             id: projectData._id,
-            payload: {
-               ...project,
-               start: new Date(project.start).getTime(),
-               end: new Date(project.end).getTime(),
-               creator: user._id,
-               team: isteam,
-               client: isclient,
-            },
+            payload,
             toast,
             onHide,
             setLoading,
+            project,
+            setLoad,
          })
       );
 

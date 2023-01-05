@@ -23,6 +23,7 @@ import { Collapse } from "antd";
 import { listTaskByProject } from "../../../redux/feature/taskSclice";
 import ActionTask from "../../../_components/modelbox/actionTask/ActionTask";
 import CreateTask from "../../../_components/modelbox/assignUserTask";
+import Addproject from "../../../_components/modelbox/Addproject";
 const { Panel } = Collapse;
 
 const ProjectView = () => {
@@ -37,11 +38,15 @@ const ProjectView = () => {
    const [modalShow, setModalShow] = useState(false);
    const [addWorker, setAddWorker] = useState(false);
    const [modalAssign, setModalAssign] = useState(false);
+   const [render, setRender] = useState(0);
+   const [projectData, setProjectData] = useState({});
+   const [modalProject, setModalProject] = useState(false);
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
 
    const { id } = useParams();
    const { user } = useSelector((state) => state.auth);
+   const [load, setLoad] = useState(0);
 
    useEffect(() => {
       //project detail {}
@@ -51,7 +56,7 @@ const ProjectView = () => {
       if (user._id) {
          listByUser();
       }
-   }, [id]);
+   }, [id, load]);
 
    useEffect(() => {
       // worker-project by id project
@@ -88,19 +93,16 @@ const ProjectView = () => {
                <div className="row align-items-center">
                   <div className="col">
                      <h3 className="page-title">Dự Án</h3>
-                     <ul className="breadcrumb">
-                        <li className="breadcrumb-item">
-                           <Link to="/app/main/dashboard">Trang chủ</Link>
-                        </li>
-                        <li className="breadcrumb-item active">Dự án</li>
-                     </ul>
                   </div>
                   <div className="col-auto float-end ml-auto">
                      <a
                         href="#"
                         className="btn btn-warning"
-                        data-bs-toggle="modal"
-                        data-bs-target="#edit_project"
+                        onClick={() => {
+                           setRender((prev) => prev + 1);
+                           setProjectData(project);
+                           setModalProject(true);
+                        }}
                      >
                         Chỉnh sửa
                      </a>
@@ -590,13 +592,13 @@ const ProjectView = () => {
                            </button>
                         </h6>
                         <ul className="list-box">
-                           {project?.client?.map((item) => (
+                           {project?.clientEX?.map((item) => (
                               <li key={item?._id}>
                                  <Link to="/app/profile/employee-profile">
                                     <div className="list-item">
                                        <div className="list-left">
                                           <span className="avatar">
-                                             <img alt="" src={Avatar_01} />
+                                             <img alt={item?.name} src={Avatar_01} />
                                           </span>
                                        </div>
                                        <div className="list-body">
@@ -637,7 +639,7 @@ const ProjectView = () => {
                                     </div>
                                     <div className="list-body">
                                        <span className="message-author">
-                                          {project?.leader?.name}
+                                          {project?.leaderEX?.name}
                                        </span>
                                        <div className="clearfix" />
                                        <span className="message-content">
@@ -665,13 +667,16 @@ const ProjectView = () => {
                            </button>
                         </h6>
                         <ul className="list-box">
-                           {project?.team?.map((item, index) => (
+                           {project?.teamEX?.map((item) => (
                               <li key={item?._id}>
                                  <Link to="/app/profile/employee-profile">
                                     <div className="list-item">
                                        <div className="list-left">
                                           <span className="avatar">
-                                             <img alt="" src={item?.avartar || Avatar_11} />
+                                             <img
+                                                alt={item?.name}
+                                                src={item?.avartar || Avatar_11}
+                                             />
                                           </span>
                                        </div>
                                        <div className="list-body">
@@ -746,6 +751,13 @@ const ProjectView = () => {
          <CreateTask show={modalAssign} onHide={() => setModalAssign(false)} />
          {/* Edit Project Modal */}
          <Editproject />
+         <Addproject
+            show={modalProject}
+            onHide={() => setModalProject(false)}
+            projectData={projectData}
+            render={render}
+            setLoad={setLoad}
+         />
          {/* /Edit Project Modal */}
       </div>
    );
