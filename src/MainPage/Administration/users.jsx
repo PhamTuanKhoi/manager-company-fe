@@ -12,7 +12,11 @@ import { itemRender, onShowSizeChange } from "../paginationfunction";
 import "../antdstyle.css";
 import Adduser from "../../_components/modelbox/Adduser";
 import { useDispatch } from "react-redux";
-import { listWorker, listWorkerByClient } from "../../redux/feature/workerSclice";
+import {
+   listWorker,
+   listWorkerByClient,
+   listWorkerByEmployees,
+} from "../../redux/feature/workerSclice";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { useLoading } from "../../hook/useLoading";
@@ -41,8 +45,13 @@ const Users = () => {
       if (user.role === UserRoleType.ADMIN) {
          dispatch(listWorker({ setLoading }));
       }
+
       if (user.role === UserRoleType.CLIENT) {
          dispatch(listWorkerByClient({ id: user._id, setLoading }));
+      }
+
+      if (user.role === UserRoleType.EMPLOYEE) {
+         dispatch(listWorkerByEmployees({ id: user._id, setLoading }));
       }
    }, [user]);
 
@@ -88,6 +97,13 @@ const Users = () => {
          dataIndex: "date",
          render: (text) => moment(text).format("DD/MM/YYYY"),
          sorter: (a, b) => a.date - b.date,
+      },
+
+      {
+         title: "Dự án",
+         dataIndex: "workerprojectEX",
+         render: (text, record) => record?.workerprojectEX?.projectEX?.name,
+         sorter: (a, b) => a?.workerprojectEX.length - b?.workerprojectEX.length,
       },
 
       {

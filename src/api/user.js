@@ -30,6 +30,10 @@ export const userAPI = {
       return axios.get(path + "worker-role-client/" + id);
    },
 
+   listWorkerByEmployees(id) {
+      return axios.get(path + "worker-role-employees/" + id);
+   },
+
    workerNoAssign() {
       return axios.get(path + "worker-no-assign");
    },
