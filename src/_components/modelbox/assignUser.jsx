@@ -15,14 +15,14 @@ function AssignUser({ show, onHide }) {
    const dispatch = useDispatch();
    const { id } = useParams();
    const { setLoading } = useLoading();
-   const [isExitArray, setIsExitArray] = useState([]);
+   const [render, setRender] = useState(0);
 
    function handleAdd(worker) {
       dispatch(
          createWorkerProject({
             payload: { worker: worker._id, project: id },
             toast,
-            onHide,
+            setRender,
             setLoading,
             worker,
          })
@@ -31,7 +31,7 @@ function AssignUser({ show, onHide }) {
 
    useEffect(() => {
       fetchWorker();
-   }, []);
+   }, [render]);
 
    function fetchWorker() {
       dispatch(workerNoAssign({ setLoading }));
