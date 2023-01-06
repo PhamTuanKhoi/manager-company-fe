@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { Applogo } from "../../../Entryfile/imagepath";
 import payslipSclice from "../../../redux/feature/payslipSclice";
 
@@ -13,6 +13,11 @@ const Payslip = () => {
 
    const { payslip } = useSelector((state) => state.payslip);
    const history = useHistory();
+
+   // get query
+   // const { search } = useLocation();
+   // const query = useMemo(() => new URLSearchParams(search), [search]);
+   // const editId = query.get("edit");
 
    useEffect(() => {
       dispatch(payslipSclice.actions.payslipDetail(id));
@@ -30,13 +35,7 @@ const Payslip = () => {
             <div className="page-header">
                <div className="row align-items-center">
                   <div className="col">
-                     <h3 className="page-title">Payslip</h3>
-                     <ul className="breadcrumb">
-                        <li className="breadcrumb-item">
-                           <Link to="/app/main/dashboard">Dashboard</Link>
-                        </li>
-                        <li className="breadcrumb-item active">Payslip</li>
-                     </ul>
+                     <h3 className="page-title"> Phiếu lương</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
                      <div className="btn-group btn-group-sm">
