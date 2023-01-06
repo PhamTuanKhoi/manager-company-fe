@@ -12,6 +12,7 @@ import {
    listPayslip,
    listPayslipByClient,
    listPayslipByEmployees,
+   listPayslipByWorker,
 } from "../../../redux/feature/payslipSclice";
 import moment from "moment";
 import { UserRoleType } from "../../../constant";
@@ -38,6 +39,10 @@ const Payslip = () => {
 
          if (user?.role === UserRoleType.CLIENT) {
             dispatch(listPayslipByClient({ id: user._id, setLoading }));
+         }
+
+         if (user?.role === UserRoleType.WORKER) {
+            dispatch(listPayslipByWorker({ id: user._id, setLoading }));
          }
       }
    }

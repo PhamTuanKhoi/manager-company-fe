@@ -14,6 +14,10 @@ export const payslipAPI = {
       return await axios.get(path + "client/" + id);
    },
 
+   async listByWorker(id) {
+      return await axios.get(path + "worker/" + id);
+   },
+
    async ListByUser(id) {
       return await axios.get(path + "user/" + id);
    },
