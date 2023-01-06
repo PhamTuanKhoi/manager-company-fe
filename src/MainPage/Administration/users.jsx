@@ -57,6 +57,8 @@ const Users = () => {
 
    const { workers } = useSelector((state) => state.worker);
 
+   console.log(workers);
+
    const columns = [
       {
          title: "Họ và tên",
