@@ -79,6 +79,21 @@ export const updateWorker = createAsyncThunk(
    }
 );
 
+export const workerNoAssign = createAsyncThunk(
+   "worker/workerNoAssign",
+   async ({ setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.workerNoAssign();
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 export const removeWorker = createAsyncThunk(
    "worker/removeWorker",
    async ({ id, toast, onHide, setLoading }, { rejectWithValue }) => {
@@ -178,6 +193,19 @@ const workerSclice = createSlice({
          }
       },
       [removeWorker.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // worker no assign
+      [workerNoAssign.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [workerNoAssign.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.workers = action.payload;
+      },
+      [workerNoAssign.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

@@ -9,7 +9,7 @@ import { createWorkerProject } from "../../redux/feature/workerProjectSclice";
 import { useLoading } from "../../hook/useLoading";
 import { useEffect } from "react";
 import { useState } from "react";
-import { listWorker } from "../../redux/feature/workerSclice";
+import { listWorker, workerNoAssign } from "../../redux/feature/workerSclice";
 function AssignUser({ show, onHide }) {
    const { workers } = useSelector((state) => state.worker);
    const dispatch = useDispatch();
@@ -29,22 +29,12 @@ function AssignUser({ show, onHide }) {
       );
    }
 
-   const { listWPByProject } = useSelector((state) => state.workerProject);
-
-   // console.log(listWPByProject);
-
    useEffect(() => {
-      exit();
       fetchWorker();
-   }, [listWPByProject]);
-
-   function exit() {
-      let arrWorkerId = listWPByProject.map((item) => item.worker);
-      setIsExitArray(arrWorkerId);
-   }
+   }, []);
 
    function fetchWorker() {
-      dispatch(listWorker({ setLoading }));
+      dispatch(workerNoAssign({ setLoading }));
    }
 
    return (
@@ -76,30 +66,26 @@ function AssignUser({ show, onHide }) {
                   </div>
                   <div className="body-dialog">
                      <ul className="chat-user-list">
-                        {workers?.map((item, index) =>
-                           isExitArray.includes(item._id) ? (
-                              ""
-                           ) : (
-                              <li key={index}>
-                                 <a href="#">
-                                    <div className="media import-content">
-                                       <div className="content-media">
-                                          <span className="avatar">
-                                             {/* <img alt="" src={Avatar_09} /> */}
-                                          </span>
-                                          <div className="media-body align-self-center text-nowrap">
-                                             <div className="user-name">{item?.name}</div>
-                                             {/* <span className="designation">{item?.department}</span> */}
-                                          </div>
-                                       </div>
-                                       <div className="import" onClick={() => handleAdd(item)}>
-                                          Thêm
+                        {workers?.map((item, index) => (
+                           <li key={index}>
+                              <a href="#">
+                                 <div className="media import-content">
+                                    <div className="content-media">
+                                       <span className="avatar">
+                                          {/* <img alt="" src={Avatar_09} /> */}
+                                       </span>
+                                       <div className="media-body align-self-center text-nowrap">
+                                          <div className="user-name">{item?.name}</div>
+                                          {/* <span className="designation">{item?.department}</span> */}
                                        </div>
                                     </div>
-                                 </a>
-                              </li>
-                           )
-                        )}
+                                    <div className="import" onClick={() => handleAdd(item)}>
+                                       Thêm
+                                    </div>
+                                 </div>
+                              </a>
+                           </li>
+                        ))}
                      </ul>
                   </div>
                </div>

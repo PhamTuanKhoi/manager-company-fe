@@ -11,7 +11,7 @@ import {
    TaskStatusType,
    UserRoleType,
 } from "../../../constant";
-import { Avatar_02, Avatar_11, Avatar_01, PlaceHolder } from "../../../Entryfile/imagepath";
+import { Avatar_02, Avatar_11, Avatar_01 } from "../../../Entryfile/imagepath";
 import { useLoading } from "../../../hook/useLoading";
 import { listPayslipByUser } from "../../../redux/feature/payslipSclice";
 import { projectDetail } from "../../../redux/feature/projectSclice";
@@ -202,112 +202,7 @@ const ProjectView = () => {
                         </div>
                      </div>
                   </div>
-                  {/* 
-                  <div className="card">
-                     <div className="card-body">
-                        <h5 className="card-title m-b-20">Uploaded files</h5>
-                        <ul className="files-list">
-                           <li>
-                              <div className="files-cont">
-                                 <div className="file-type">
-                                    <span className="files-icon">
-                                       <i className="fa fa-file-pdf-o" />
-                                    </span>
-                                 </div>
-                                 <div className="files-info">
-                                    <span className="file-name text-ellipsis">
-                                       <a href="#">
-                                          AHA Selfcare Mobile Application Test-Cases.xls
-                                       </a>
-                                    </span>
-                                    <span className="file-author">
-                                       <a href="#">John Doe</a>
-                                    </span>{" "}
-                                    <span className="file-date">May 31st at 6:53 PM</span>
-                                    <div className="file-size">Size: 14.8Mb</div>
-                                 </div>
-                                 <ul className="files-action">
-                                    <li className="dropdown dropdown-action">
-                                       <a
-                                          href=""
-                                          className="dropdown-toggle btn btn-link"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                       >
-                                          <i className="material-icons">more_horiz</i>
-                                       </a>
-                                       <div className="dropdown-menu dropdown-menu-right">
-                                          <a className="dropdown-item" href="">
-                                             Download
-                                          </a>
-                                          <a
-                                             className="dropdown-item"
-                                             href="#"
-                                             data-bs-toggle="modal"
-                                             data-bs-target="#share_files"
-                                          >
-                                             Share
-                                          </a>
-                                          <a className="dropdown-item" href="">
-                                             Delete
-                                          </a>
-                                       </div>
-                                    </li>
-                                 </ul>
-                              </div>
-                           </li>
-                           <li>
-                              <div className="files-cont">
-                                 <div className="file-type">
-                                    <span className="files-icon">
-                                       <i className="fa fa-file-pdf-o" />
-                                    </span>
-                                 </div>
-                                 <div className="files-info">
-                                    <span className="file-name text-ellipsis">
-                                       <a href="#">
-                                          AHA Selfcare Mobile Application Test-Cases.xls
-                                       </a>
-                                    </span>
-                                    <span className="file-author">
-                                       <a href="#">Richard Miles</a>
-                                    </span>{" "}
-                                    <span className="file-date">May 31st at 6:53 PM</span>
-                                    <div className="file-size">Size: 14.8Mb</div>
-                                 </div>
-                                 <ul className="files-action">
-                                    <li className="dropdown dropdown-action">
-                                       <a
-                                          href=""
-                                          className="dropdown-toggle btn btn-link"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                       >
-                                          <i className="material-icons">more_horiz</i>
-                                       </a>
-                                       <div className="dropdown-menu dropdown-menu-right">
-                                          <a className="dropdown-item" href="">
-                                             Download
-                                          </a>
-                                          <a
-                                             className="dropdown-item"
-                                             href="#"
-                                             data-bs-toggle="modal"
-                                             data-bs-target="#share_files"
-                                          >
-                                             Share
-                                          </a>
-                                          <a className="dropdown-item" href="">
-                                             Delete
-                                          </a>
-                                       </div>
-                                    </li>
-                                 </ul>
-                              </div>
-                           </li>
-                        </ul>
-                     </div>
-                  </div> */}
+                  {/* assign work */}
                   <div className="project-task">
                      <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
                         <li className="nav-item">

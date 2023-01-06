@@ -18,6 +18,10 @@ export const userAPI = {
       return axios.get(path + "worker");
    },
 
+   workerNoAssign() {
+      return axios.get(path + "worker-no-assign");
+   },
+
    profile(id) {
       return axios.get(path + id);
    },
