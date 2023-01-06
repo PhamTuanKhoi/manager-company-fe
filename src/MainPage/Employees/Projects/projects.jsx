@@ -20,6 +20,7 @@ import { useDispatch } from "react-redux";
 import {
    listProjectByAdmin,
    listProjectByClient,
+   listProjectByEmployees,
    listProjectByWorker,
 } from "../../../redux/feature/projectSclice";
 import { useSelector } from "react-redux";
@@ -62,6 +63,10 @@ const Projects = () => {
 
       if (user.role === UserRoleType.CLIENT) {
          dispatch(listProjectByClient({ id: user._id, setLoading }));
+      }
+
+      if (user.role === UserRoleType.EMPLOYEE) {
+         dispatch(listProjectByEmployees({ id: user._id, setLoading }));
       }
 
       if (user.role === UserRoleType.WORKER) {
