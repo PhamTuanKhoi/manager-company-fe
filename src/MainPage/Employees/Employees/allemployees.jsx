@@ -7,7 +7,11 @@ import Editemployee from "../../../_components/modelbox/Editemployee";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import Header from "../../../initialpage/Sidebar/header";
 import { useDispatch } from "react-redux";
-import { listEmployees, listEmployeesByClient } from "../../../redux/feature/employeesSclice";
+import {
+   listEmployees,
+   listEmployeesByClient,
+   listEmployeesByWorker,
+} from "../../../redux/feature/employeesSclice";
 import { useSelector } from "react-redux";
 import { EmployeeDepartmentType, UserRoleType } from "../../../constant";
 import { useLoading } from "../../../hook/useLoading";
@@ -45,8 +49,13 @@ const AllEmployees = () => {
       if (user.role === UserRoleType.ADMIN) {
          dispatch(listEmployees({ setLoading }));
       }
+
       if (user?.role === UserRoleType.CLIENT) {
          dispatch(listEmployeesByClient({ id: user._id, setLoading }));
+      }
+
+      if (user?.role === UserRoleType.WORKER) {
+         dispatch(listEmployeesByWorker({ id: user._id, setLoading }));
       }
    }
 
