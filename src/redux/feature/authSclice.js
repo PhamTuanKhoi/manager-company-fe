@@ -25,6 +25,10 @@ export const login = createAsyncThunk(
          if (data?.user?.role === UserRoleType.EMPLOYEE) {
             props.history.push("/app/main/employee-dashboard");
          }
+
+         if (data?.user?.role === UserRoleType.WORKER) {
+            props.history.push("/app/projects/project_dashboard");
+         }
          return data;
       } catch (error) {
          console.log(error);
