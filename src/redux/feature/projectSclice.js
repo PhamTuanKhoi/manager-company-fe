@@ -62,6 +62,21 @@ export const listProject = createAsyncThunk(
    }
 );
 
+export const listProjectByAdmin = createAsyncThunk(
+   "project/listProjectByAdmin",
+   async ({ setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await projectAPI.listByAdmin();
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 export const listProjectByClient = createAsyncThunk(
    "project/listProjectByClient",
    async ({ id, setLoading }, { rejectWithValue }) => {
@@ -77,12 +92,12 @@ export const listProjectByClient = createAsyncThunk(
    }
 );
 
-export const listProjectByAdmin = createAsyncThunk(
-   "project/listProjectByAdmin",
-   async ({ setLoading }, { rejectWithValue }) => {
+export const listProjectByWorker = createAsyncThunk(
+   "project/listProjectByWorker",
+   async ({ id, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await projectAPI.listByAdmin();
+         const { data } = await projectAPI.listByWorker(id);
          setLoading(false);
          return data;
       } catch (error) {
@@ -284,6 +299,19 @@ const projectSclice = createSlice({
          }
       },
       [deleteProject.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // list by worker
+      [listProjectByWorker.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listProjectByWorker.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.projects = action.payload;
+      },
+      [listProjectByWorker.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

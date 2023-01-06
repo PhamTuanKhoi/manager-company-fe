@@ -6,12 +6,16 @@ export const projectAPI = {
       return await axios.get(path);
    },
 
+   async listByAdmin(id) {
+      return await axios.get(path + "admin/");
+   },
+
    async listByClient(id) {
       return await axios.get(path + "client/" + id);
    },
 
-   async listByAdmin(id) {
-      return await axios.get(path + "admin/");
+   async listByWorker(id) {
+      return await axios.get(path + "worker/" + id);
    },
 
    async detail(id) {

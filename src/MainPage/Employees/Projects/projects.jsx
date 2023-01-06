@@ -9,9 +9,6 @@ import "../../index.css";
 import {
    Avatar_16,
    Avatar_02,
-   Avatar_05,
-   Avatar_09,
-   Avatar_10,
    Avatar_11,
    Avatar_12,
    Avatar_13,
@@ -21,9 +18,9 @@ import {
 import Addproject from "../../../_components/modelbox/Addproject";
 import { useDispatch } from "react-redux";
 import {
-   listProject,
    listProjectByAdmin,
    listProjectByClient,
+   listProjectByWorker,
 } from "../../../redux/feature/projectSclice";
 import { useSelector } from "react-redux";
 import moment from "moment";
@@ -59,12 +56,16 @@ const Projects = () => {
    }, [user._id]);
 
    const fetchProject = () => {
+      if (user.role === UserRoleType.ADMIN) {
+         dispatch(listProjectByAdmin({ setLoading }));
+      }
+
       if (user.role === UserRoleType.CLIENT) {
          dispatch(listProjectByClient({ id: user._id, setLoading }));
       }
 
-      if (user.role === UserRoleType.ADMIN) {
-         dispatch(listProjectByAdmin({ setLoading }));
+      if (user.role === UserRoleType.WORKER) {
+         dispatch(listProjectByWorker({ id: user._id, setLoading }));
       }
    };
 
