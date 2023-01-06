@@ -12,11 +12,11 @@ import { itemRender, onShowSizeChange } from "../paginationfunction";
 import "../antdstyle.css";
 import Adduser from "../../_components/modelbox/Adduser";
 import { useDispatch } from "react-redux";
-import { listWorker } from "../../redux/feature/workerSclice";
+import { listWorker, listWorkerByClient } from "../../redux/feature/workerSclice";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { useLoading } from "../../hook/useLoading";
-import { avartarFAKE } from "../../constant/index";
+import { avartarFAKE, UserRoleType } from "../../constant/index";
 import DeleteUser from "../../_components/modelbox/DeleteUser";
 
 const Users = () => {
@@ -26,6 +26,7 @@ const Users = () => {
    const [render, setRender] = useState(0);
    const [editWorker, setEditWorker] = useState({});
    const [modalDelete, setModalDelete] = useState(false);
+   const { user } = useSelector((state) => state.auth);
 
    useEffect(() => {
       if ($(".select").length > 0) {
@@ -37,8 +38,13 @@ const Users = () => {
    });
 
    useEffect(() => {
-      dispatch(listWorker({ setLoading }));
-   }, []);
+      if (user.role === UserRoleType.ADMIN) {
+         dispatch(listWorker({ setLoading }));
+      }
+      if (user.role === UserRoleType.CLIENT) {
+         dispatch(listWorkerByClient({ id: user._id, setLoading }));
+      }
+   }, [user]);
 
    const { workers } = useSelector((state) => state.worker);
 
@@ -52,7 +58,7 @@ const Users = () => {
                   <img alt={record?.name} src={record?.image || avartarFAKE} />
                </Link>
                <Link to={`/app/profile/worker-profile/${record?._id}`}>
-                  {text} <span>{record?.role}</span>
+                  {text} <span>{record?.field}</span>
                </Link>
             </h2>
          ),
@@ -84,18 +90,6 @@ const Users = () => {
          sorter: (a, b) => a.date - b.date,
       },
 
-      {
-         title: "Role",
-         dataIndex: "role",
-         render: (text, record) => (
-            <span
-               className={text === "Admin" ? "badge bg-inverse-danger" : "badge bg-inverse-success"}
-            >
-               {text}
-            </span>
-         ),
-         sorter: (a, b) => a.role.length - b.role.length,
-      },
       {
          title: "Action",
          render: (text, record) => (

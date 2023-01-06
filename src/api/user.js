@@ -18,6 +18,10 @@ export const userAPI = {
       return axios.get(path + "worker");
    },
 
+   listWorkerByClient(id) {
+      return axios.get(path + "worker-role-client/" + id);
+   },
+
    workerNoAssign() {
       return axios.get(path + "worker-no-assign");
    },

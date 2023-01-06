@@ -40,6 +40,21 @@ export const listWorker = createAsyncThunk(
    }
 );
 
+export const listWorkerByClient = createAsyncThunk(
+   "worker/listWorkerByClient",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.listWorkerByClient(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 export const profileWorker = createAsyncThunk(
    "worker/profileWorker",
    async ({ id, setLoading }, { rejectWithValue }) => {
@@ -206,6 +221,19 @@ const workerSclice = createSlice({
          state.workers = action.payload;
       },
       [workerNoAssign.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // worker by client
+      [listWorkerByClient.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listWorkerByClient.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.workers = action.payload;
+      },
+      [listWorkerByClient.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
