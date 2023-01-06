@@ -6,6 +6,10 @@ export const userAPI = {
       return axios.get(path + "client");
    },
 
+   listClientByEmployees(id) {
+      return axios.get(path + "client-role-employees/" + id);
+   },
+
    listEmployees() {
       return axios.get(path + "employees");
    },

@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Avatar_19 } from "../../Entryfile/imagepath";
-import { listClient } from "../../redux/feature/clientSclice";
+import { listClient, listClientByEmployees } from "../../redux/feature/clientSclice";
 import Editclient from "../../_components/modelbox/Editclient";
 import Modal from "react-bootstrap/Modal";
 import { useLoading } from "../../hook/useLoading";
@@ -29,18 +29,22 @@ const Clients = () => {
    const { setLoading } = useLoading();
    const [render, setRender] = useState(0);
    const [EditClient, setEditClient] = useState({});
-   const { user } = useSelector((state) => state.auth);
    const [modalDelete, setModalDelete] = useState(false);
+   const { user } = useSelector((state) => state.auth);
 
    const dispatch = useDispatch();
 
    useEffect(() => {
       fetchClient();
-   }, []);
+   }, [user]);
 
    async function fetchClient() {
       if (user.role === UserRoleType.ADMIN) {
          dispatch(listClient({ setLoading }));
+      }
+
+      if (user.role === UserRoleType.EMPLOYEE) {
+         dispatch(listClientByEmployees({ id: user._id, setLoading }));
       }
    }
 
