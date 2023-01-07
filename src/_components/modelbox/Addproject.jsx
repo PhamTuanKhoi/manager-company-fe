@@ -34,6 +34,8 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
    const { user } = useSelector((state) => state.auth);
    const { employees } = useSelector((state) => state.employees);
    const { clients } = useSelector((state) => state.client);
+   const [optionTeam, setOptionTeam] = useState([]);
+   const [optionEmployees, setOptionEmployees] = useState([]);
    //edit
    const [isEdit, setIsEdit] = useState("");
 
@@ -98,6 +100,21 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
       setProject(projectData);
       setIsEdit(projectData._id);
    }, [render]);
+
+   // load team && employees
+   useEffect(() => {
+      setOptionEmployees(employees);
+      setOptionTeam(options);
+   }, [employees]);
+
+   const changeLeader = (e) => {
+      setProject({ ...project, leader: e.target.value });
+      setOptionTeam(options.filter((item) => item.value !== e.target.value));
+   };
+
+   const changeTeam = (e) => {
+      setTeams(e);
+   };
 
    async function handleSave() {
       const isteam = teams.map((i) => i.value);
@@ -248,7 +265,7 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
                            <input
                               className="form-control"
                               type="datetime-local"
-                              value={moment(project.end).format("YYYY-MM-DD HH:mm")}
+                              value={moment(project?.end).format("YYYY-MM-DD HH:mm")}
                               onChange={(e) => setProject({ ...project, end: e.target.value })}
                            />
                         </div>
@@ -262,7 +279,7 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
                            <select
                               className="form-control"
                               // className="select"   class tam linh
-                              value={project.status}
+                              value={project?.status}
                               onChange={(e) => setProject({ ...project, status: e.target.value })}
                            >
                               <option>Chọn trạng thái</option>
@@ -297,11 +314,11 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
                            <select
                               className="form-control"
                               // className="select"   class tam linh
-                              value={project.leader}
-                              onChange={(e) => setProject({ ...project, leader: e.target.value })}
+                              value={project?.leader}
+                              onChange={changeLeader}
                            >
                               <option>Chọn leader</option>
-                              {employees.map((item) => (
+                              {optionEmployees.map((item) => (
                                  <option key={item._id} value={item._id}>
                                     {item.name}
                                  </option>
@@ -319,10 +336,10 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
                            <Select
                               isMulti
                               value={teams}
-                              onChange={(e) => setTeams(e)}
+                              onChange={changeTeam}
                               closeMenuOnSelect={false}
                               components={animatedComponents}
-                              options={options}
+                              options={optionTeam}
                            />
                         </div>
                      </div>
