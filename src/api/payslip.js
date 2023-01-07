@@ -6,6 +6,10 @@ export const payslipAPI = {
       return await axios.get(path);
    },
 
+   async findOne(id) {
+      return await axios.get(path + id);
+   },
+
    async listByEmployees(id) {
       return await axios.get(path + "employees/" + id);
    },
@@ -24,5 +28,9 @@ export const payslipAPI = {
 
    async createPayslip(payload) {
       return await axios.post(path, payload);
+   },
+
+   async updatePayslip(id, payload) {
+      return await axios.patch(path + id, payload);
    },
 };

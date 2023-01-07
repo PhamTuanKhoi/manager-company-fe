@@ -4,13 +4,16 @@ import { userAPI } from "../../api/user";
 
 export const createPayslip = createAsyncThunk(
    "paySlip/createPayslip",
-   async ({ payload, toast, history }, { rejectWithValue }) => {
+   async ({ payload, toast, history, setLoading }, { rejectWithValue }) => {
       try {
+         setLoading(true);
          const { data } = await payslipAPI.createPayslip(payload);
          toast.success("Thêm dự án thành công");
+         setLoading(false);
          history.push("/app/projects/phieu-luong");
          return data;
       } catch (error) {
+         setLoading(false);
          if (typeof error?.response?.data?.message === "string") {
             toast.error(error?.response?.data?.message);
          } else {
@@ -90,6 +93,45 @@ export const listPayslipByWorker = createAsyncThunk(
          return data;
       } catch (error) {
          setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const payslipById = createAsyncThunk(
+   "paySlip/payslipById",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await payslipAPI.findOne(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const updatePayslip = createAsyncThunk(
+   "paySlip/updatePayslip",
+   async ({ id, payload, toast, history, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await payslipAPI.updatePayslip(id, payload);
+         toast.success("Cập nhật dự án thành công");
+         setLoading(false);
+         history.push("/app/projects/phieu-luong");
+         return data;
+      } catch (error) {
+         setLoading(false);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
          return rejectWithValue(error.response.data);
       }
    }
@@ -184,6 +226,41 @@ const payslipSclice = createSlice({
          state.payslips = action.payload;
       },
       [listPayslipByWorker.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // payslip by id
+      [payslipById.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [payslipById.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.payslip = action.payload;
+      },
+      [payslipById.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // update payslip
+      [updatePayslip.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [updatePayslip.fulfilled]: (state, action) => {
+         state.loading = false;
+
+         const {
+            arg: { id },
+         } = action.meta;
+
+         if (id) {
+            state.payslips = state.payslips.map((item) =>
+               item._id === id ? action.payload : item
+            );
+         }
+      },
+      [updatePayslip.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

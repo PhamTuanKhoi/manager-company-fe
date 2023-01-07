@@ -9,7 +9,8 @@ import { useHistory, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
-import { createPayslip } from "../../../redux/feature/payslipSclice.js";
+import { createPayslip, payslipById, updatePayslip } from "../../../redux/feature/payslipSclice.js";
+import { useLoading } from "../../../hook/useLoading";
 
 const AddPayslip = () => {
    const [menu, setMenu] = useState(false);
@@ -18,7 +19,7 @@ const AddPayslip = () => {
       //
       leave: "",
       reward: "",
-      rice: 0,
+      rice: "",
       bonus: "",
       overtime: "",
       sunday: "",
@@ -42,20 +43,62 @@ const AddPayslip = () => {
 
    const dispatch = useDispatch();
    const history = useHistory();
+   const { setLoading } = useLoading();
    const { user } = useSelector((state) => state.auth);
+   const { payslip } = useSelector((state) => state.payslip);
 
    const { id } = useParams();
 
-   console.log(id);
+   useEffect(() => {
+      if (id) {
+         dispatch(payslipById({ id, setLoading }));
+      }
+   }, [id]);
+
+   useEffect(() => {
+      setPaysplip(payslip);
+   }, [payslip]);
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
    };
 
-   const handleSave = async () => {
-      if (user._id) {
-         dispatch(createPayslip({ payload: { ...paysplip, creator: user._id }, toast, history }));
+   const handleSave = () => {
+      if (!user._id) {
+         toast.warn("Làm ơn đăng nhập vào hệ thống");
+         return;
       }
+
+      dispatch(
+         createPayslip({
+            payload: { ...paysplip, creator: user._id },
+            toast,
+            history,
+            setLoading,
+         })
+      );
+   };
+
+   const handleUpdate = () => {
+      if (!user._id) {
+         toast.warn("Làm ơn đăng nhập vào hệ thống");
+         return;
+      }
+
+      if (!payslip._id) {
+         toast.warn("Phiếu lương không tồn tại");
+         return;
+      }
+
+      dispatch(
+         updatePayslip({
+            id: payslip._id,
+            payload: { ...paysplip, creator: user._id },
+            toast,
+            history,
+            setLoading,
+         })
+      );
    };
 
    return (
@@ -78,7 +121,9 @@ const AddPayslip = () => {
                            <div className="back" onClick={() => history.goBack()}>
                               {"<Back"}
                            </div>
-                           <h2 className="payslip-title">Thêm phiếu lương</h2>
+                           <h2 className="payslip-title">
+                              {id ? "Chỉnh sửa phiếu lương" : "Thêm phiếu lương"}
+                           </h2>
                            <div>
                               <div className="row">
                                  <div className="col-sm-6">
@@ -90,6 +135,7 @@ const AddPayslip = () => {
                                        <input
                                           className="form-control"
                                           type="text"
+                                          defaultValue={paysplip?.name}
                                           onChange={(e) =>
                                              setPaysplip({
                                                 ...paysplip,
@@ -111,6 +157,7 @@ const AddPayslip = () => {
                                        <input
                                           className="form-control"
                                           type="number"
+                                          defaultValue={paysplip?.leave}
                                           onChange={(e) =>
                                              setPaysplip({
                                                 ...paysplip,
@@ -131,6 +178,7 @@ const AddPayslip = () => {
                                           prefix="￥"
                                           className="form-control"
                                           type="number"
+                                          defaultValue={paysplip?.reward}
                                           onChange={(e) =>
                                              setPaysplip({
                                                 ...paysplip,
@@ -150,6 +198,7 @@ const AddPayslip = () => {
                                        <input
                                           className="form-control"
                                           type="number"
+                                          defaultValue={paysplip?.rice}
                                           onChange={(e) =>
                                              setPaysplip({
                                                 ...paysplip,
@@ -168,6 +217,7 @@ const AddPayslip = () => {
                                        <input
                                           className="form-control"
                                           type="number"
+                                          defaultValue={paysplip?.bonus}
                                           onChange={(e) =>
                                              setPaysplip({
                                                 ...paysplip,
@@ -189,6 +239,7 @@ const AddPayslip = () => {
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
+                                             defaultValue={paysplip?.overtime}
                                              onChange={(e) =>
                                                 setPaysplip({
                                                    ...paysplip,
@@ -211,6 +262,7 @@ const AddPayslip = () => {
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
+                                             defaultValue={paysplip?.sunday}
                                              onChange={(e) =>
                                                 setPaysplip({
                                                    ...paysplip,
@@ -233,6 +285,7 @@ const AddPayslip = () => {
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
+                                             defaultValue={paysplip?.holiday}
                                              onChange={(e) =>
                                                 setPaysplip({
                                                    ...paysplip,
@@ -255,6 +308,7 @@ const AddPayslip = () => {
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
+                                             defaultValue={paysplip?.service}
                                              onChange={(e) =>
                                                 setPaysplip({
                                                    ...paysplip,
@@ -277,6 +331,7 @@ const AddPayslip = () => {
                                        <input
                                           className="form-control"
                                           type="number"
+                                          defaultValue={paysplip?.go}
                                           onChange={(e) =>
                                              setPaysplip({
                                                 ...paysplip,
@@ -295,6 +350,7 @@ const AddPayslip = () => {
                                        <input
                                           className="form-control"
                                           type="number"
+                                          defaultValue={paysplip?.home}
                                           onChange={(e) =>
                                              setPaysplip({
                                                 ...paysplip,
@@ -315,6 +371,7 @@ const AddPayslip = () => {
                                        <input
                                           className="form-control"
                                           type="number"
+                                          defaultValue={paysplip?.toxic}
                                           onChange={(e) =>
                                              setPaysplip({
                                                 ...paysplip,
@@ -333,6 +390,7 @@ const AddPayslip = () => {
                                        <input
                                           className="form-control"
                                           type="number"
+                                          defaultValue={paysplip?.diligence}
                                           onChange={(e) =>
                                              setPaysplip({
                                                 ...paysplip,
@@ -351,6 +409,7 @@ const AddPayslip = () => {
                                        <input
                                           className="form-control"
                                           type="number"
+                                          defaultValue={paysplip?.effectively}
                                           onChange={(e) =>
                                              setPaysplip({
                                                 ...paysplip,
@@ -369,6 +428,7 @@ const AddPayslip = () => {
                                        <input
                                           className="form-control"
                                           type="number"
+                                          defaultValue={paysplip?.eat}
                                           onChange={(e) =>
                                              setPaysplip({
                                                 ...paysplip,
@@ -393,6 +453,7 @@ const AddPayslip = () => {
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
+                                             defaultValue={paysplip?.medican}
                                              onChange={(e) =>
                                                 setPaysplip({
                                                    ...paysplip,
@@ -415,6 +476,7 @@ const AddPayslip = () => {
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
+                                             defaultValue={paysplip?.society}
                                              onChange={(e) =>
                                                 setPaysplip({
                                                    ...paysplip,
@@ -439,6 +501,7 @@ const AddPayslip = () => {
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
+                                             defaultValue={paysplip?.unemployment}
                                              onChange={(e) =>
                                                 setPaysplip({
                                                    ...paysplip,
@@ -461,6 +524,7 @@ const AddPayslip = () => {
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
+                                             defaultValue={paysplip?.union}
                                              onChange={(e) =>
                                                 setPaysplip({
                                                    ...paysplip,
@@ -483,6 +547,7 @@ const AddPayslip = () => {
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
+                                             defaultValue={paysplip?.accident}
                                              onChange={(e) =>
                                                 setPaysplip({
                                                    ...paysplip,
@@ -506,6 +571,7 @@ const AddPayslip = () => {
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
+                                             defaultValue={paysplip?.health}
                                              onChange={(e) =>
                                                 setPaysplip({
                                                    ...paysplip,
@@ -518,12 +584,21 @@ const AddPayslip = () => {
                                  </div>
                               </div>
                               <div className="submit-section">
-                                 <button
-                                    className="btn btn-primary submit-btn"
-                                    onClick={handleSave}
-                                 >
-                                    Lưu
-                                 </button>
+                                 {!id ? (
+                                    <button
+                                       className="btn btn-primary submit-btn"
+                                       onClick={handleSave}
+                                    >
+                                       Lưu
+                                    </button>
+                                 ) : (
+                                    <button
+                                       className="btn btn-primary submit-btn"
+                                       onClick={handleUpdate}
+                                    >
+                                       Cập nhật
+                                    </button>
+                                 )}
                               </div>
                            </div>
                         </div>
