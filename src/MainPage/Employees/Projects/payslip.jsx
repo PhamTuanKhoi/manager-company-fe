@@ -84,7 +84,7 @@ const Payslip = () => {
                <div className="dropdown-menu dropdown-menu-right">
                   <a
                      className="dropdown-item"
-                     href={`/app/payroll/salary-view?edit=${record?._id}`}
+                     href={`/app/projects/them-phieu-luong/${record?._id}`}
                   >
                      <i className="fa fa-pencil m-r-5" /> Sửa
                   </a>

@@ -15,7 +15,6 @@ const ReportsRoute = ({ match }) => (
       <Route path={`${match.url}/_salary`} component={EmployeeSalary} />
       <Route path={`${match.url}/payroll-items`} component={Payrollitem} />
       <Route path={`${match.url}/salary-view/:id`} component={Payslip} />
-      <Route path={`${match.url}/salary-view`} component={Payslip} />
    </Switch>
 );
 

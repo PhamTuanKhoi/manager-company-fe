@@ -5,16 +5,8 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-   Avatar_02,
-   Avatar_04,
-   Avatar_05,
-   Avatar_07,
-   Avatar_08,
-   Avatar_09,
-} from "../../../Entryfile/imagepath.jsx";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import { createPayslip } from "../../../redux/feature/payslipSclice.js";
@@ -51,6 +43,10 @@ const AddPayslip = () => {
    const dispatch = useDispatch();
    const history = useHistory();
    const { user } = useSelector((state) => state.auth);
+
+   const { id } = useParams();
+
+   console.log(id);
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -187,8 +183,8 @@ const AddPayslip = () => {
                                        <label className="col-form-label">
                                           Làm Ngoài Giờ <span className="text-danger">*</span>
                                        </label>
-                                       <div class="input-box">
-                                          <span class="prefix">%</span>
+                                       <div className="input-box">
+                                          <span className="prefix">%</span>
                                           <input
                                              prefix="￥"
                                              className="form-control tel"
@@ -209,8 +205,8 @@ const AddPayslip = () => {
                                        <label className="col-form-label">
                                           Làm Chủ Nhật <span className="text-danger">*</span>
                                        </label>
-                                       <div class="input-box">
-                                          <span class="prefix">%</span>
+                                       <div className="input-box">
+                                          <span className="prefix">%</span>
                                           <input
                                              prefix="￥"
                                              className="form-control tel"
@@ -231,8 +227,8 @@ const AddPayslip = () => {
                                        <label className="col-form-label">
                                           Làm Lễ Tết <span className="text-danger">*</span>
                                        </label>
-                                       <div class="input-box">
-                                          <span class="prefix">%</span>
+                                       <div className="input-box">
+                                          <span className="prefix">%</span>
                                           <input
                                              prefix="￥"
                                              className="form-control tel"
@@ -253,8 +249,8 @@ const AddPayslip = () => {
                                        <label className="col-form-label">
                                           Phí Dịch Vụ <span className="text-danger">*</span>
                                        </label>
-                                       <div class="input-box">
-                                          <span class="prefix">%</span>
+                                       <div className="input-box">
+                                          <span className="prefix">%</span>
                                           <input
                                              prefix="￥"
                                              className="form-control tel"
@@ -391,8 +387,8 @@ const AddPayslip = () => {
                                           Bảo Hiểm Y Tế
                                           <span className="text-danger">*</span>
                                        </label>
-                                       <div class="input-box">
-                                          <span class="prefix">%</span>
+                                       <div className="input-box">
+                                          <span className="prefix">%</span>
                                           <input
                                              prefix="￥"
                                              className="form-control tel"
@@ -413,8 +409,8 @@ const AddPayslip = () => {
                                        <label className="col-form-label">
                                           Bảo Hiểm Xã Hội <span className="text-danger">*</span>
                                        </label>
-                                       <div class="input-box">
-                                          <span class="prefix">%</span>
+                                       <div className="input-box">
+                                          <span className="prefix">%</span>
                                           <input
                                              prefix="￥"
                                              className="form-control tel"
@@ -437,8 +433,8 @@ const AddPayslip = () => {
                                           <span className="text-danger">*</span>
                                        </label>{" "}
                                        <br />
-                                       <div class="input-box">
-                                          <span class="prefix">%</span>
+                                       <div className="input-box">
+                                          <span className="prefix">%</span>
                                           <input
                                              prefix="￥"
                                              className="form-control tel"
@@ -459,8 +455,8 @@ const AddPayslip = () => {
                                        <label className="col-form-label">
                                           Công Đoàn <span className="text-danger">*</span>
                                        </label>
-                                       <div class="input-box">
-                                          <span class="prefix">%</span>
+                                       <div className="input-box">
+                                          <span className="prefix">%</span>
                                           <input
                                              prefix="￥"
                                              className="form-control tel"
@@ -481,8 +477,8 @@ const AddPayslip = () => {
                                        <label className="col-form-label">
                                           Bảo Hiểm Tai Nạn <span className="text-danger">*</span>
                                        </label>
-                                       <div class="input-box">
-                                          <span class="prefix">%</span>
+                                       <div className="input-box">
+                                          <span className="prefix">%</span>
                                           <input
                                              prefix="￥"
                                              className="form-control tel"
@@ -504,8 +500,8 @@ const AddPayslip = () => {
                                           Khám Sức Khỏe Định Kỳ{" "}
                                           <span className="text-danger">*</span>
                                        </label>
-                                       <div class="input-box">
-                                          <span class="prefix">%</span>
+                                       <div className="input-box">
+                                          <span className="prefix">%</span>
                                           <input
                                              prefix="￥"
                                              className="form-control tel"

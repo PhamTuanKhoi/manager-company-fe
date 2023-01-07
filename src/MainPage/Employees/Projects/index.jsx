@@ -21,6 +21,7 @@ const ProjectRoute = ({ match }) => (
       <Route path={`${match.url}/task-board`} component={Taskboard} />
       <Route path={`${match.url}/phieu-luong`} component={Payslip} />
       <Route path={`${match.url}/them-phieu-luong`} component={AddPayslip} />
+      <Route path={`${match.url}/them-phieu-luong/:id`} component={AddPayslip} />
    </Switch>
 );
 
