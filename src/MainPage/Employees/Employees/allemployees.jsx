@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import { Avatar_02 } from "../../../Entryfile/imagepath";
+import { avartarFAKE } from "../../../constant/index";
 import Addemployee from "../../../_components/modelbox/Addemployee";
 import Editemployee from "../../../_components/modelbox/Editemployee";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
@@ -144,8 +144,11 @@ const AllEmployees = () => {
                      <div key={item?._id} className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
                         <div className="profile-widget">
                            <div className="profile-img">
-                              <Link to="/app/profile/employee-profile" className="avatar">
-                                 <img src={item?.avartar || Avatar_02} alt="" />
+                              <Link
+                                 to={`/app/profile/employee-profile/${item._id}`}
+                                 className="avatar"
+                              >
+                                 <img src={item?.avartar || avartarFAKE} alt={item?.name} />
                               </Link>
                            </div>
                            <div className="dropdown profile-action">

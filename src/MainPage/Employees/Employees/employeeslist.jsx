@@ -43,10 +43,10 @@ const Employeeslist = () => {
          dataIndex: "name",
          render: (text, record) => (
             <h2 className="table-avatar">
-               <Link to="/app/profile/employee-profile" className="avatar">
+               <Link to={`/app/profile/employee-profile/${record?._id}`} className="avatar">
                   <img alt="" src={record.avartar || record.image} />
                </Link>
-               <Link to="/app/profile/employee-profile">
+               <Link to={`/app/profile/employee-profile/${record?._id}`}>
                   {text}{" "}
                   <span>
                      {record?.department === EmployeeDepartmentType.BUSSINESS

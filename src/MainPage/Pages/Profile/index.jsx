@@ -4,14 +4,15 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
-import EmployeeProfile from "./employeeprofile";
 import ClientProfile from "./clientprofile";
+import WorkerProfile from "./workerprofile";
+import EmployeesProfile from "./employeesprofile";
 
 const subscriptionroute = ({ match }) => (
    <Switch>
       <Redirect exact from={`${match.url}/`} to={`${match.url}/employee-profile`} />
-      <Route path={`${match.url}/employee-profile`} component={EmployeeProfile} />
-      <Route path={`${match.url}/worker-profile/:id`} component={EmployeeProfile} />
+      <Route path={`${match.url}/employee-profile/:id`} component={EmployeesProfile} />
+      <Route path={`${match.url}/worker-profile/:id`} component={WorkerProfile} />
       <Route path={`${match.url}/client-profile`} component={ClientProfile} />
    </Switch>
 );

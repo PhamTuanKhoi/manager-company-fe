@@ -17,7 +17,7 @@ import { useLoading } from "../../../hook/useLoading";
 import { useSelector } from "react-redux";
 import moment from "moment";
 
-const EmployeeProfile = () => {
+const WorkerProfile = () => {
    useEffect(() => {
       if ($(".select").length > 0) {
          $(".select").select2({
@@ -1986,4 +1986,4 @@ const EmployeeProfile = () => {
       </div>
    );
 };
-export default EmployeeProfile;
+export default WorkerProfile;
