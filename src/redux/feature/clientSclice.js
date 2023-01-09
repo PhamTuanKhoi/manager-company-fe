@@ -96,6 +96,21 @@ export const removeClient = createAsyncThunk(
    }
 );
 
+export const clientProfile = createAsyncThunk(
+   "worker/clientProfile",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.profile(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const clientSclice = createSlice({
    name: "client",
    initialState: {
@@ -178,6 +193,19 @@ const clientSclice = createSlice({
          state.clients = action.payload;
       },
       [listClientByEmployees.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      //  client profile
+      [clientProfile.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [clientProfile.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.client = action.payload;
+      },
+      [clientProfile.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

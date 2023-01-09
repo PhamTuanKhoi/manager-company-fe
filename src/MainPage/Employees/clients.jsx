@@ -8,7 +8,7 @@ import { listClient, listClientByEmployees } from "../../redux/feature/clientScl
 import Editclient from "../../_components/modelbox/Editclient";
 import Modal from "react-bootstrap/Modal";
 import { useLoading } from "../../hook/useLoading";
-import { UserRoleType } from "../../constant";
+import { avartarFAKE, UserRoleType } from "../../constant";
 import AddClient from "../../_components/modelbox/AddClient";
 import DeleteUser from "../../_components/modelbox/DeleteUser";
 
@@ -116,8 +116,8 @@ const Clients = () => {
                   <div key={item?._id} className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
                      <div className="profile-widget">
                         <div className="profile-img">
-                           <Link to="/app/profile/client-profile" className="avatar">
-                              <img alt="" src={Avatar_19} />
+                           <Link to={`/app/profile/client-profile/${item?._id}`} className="avatar">
+                              <img alt={item?.avartar} src={avartarFAKE} />
                            </Link>
                         </div>
                         <div className="dropdown profile-action">
