@@ -12,10 +12,11 @@ import {
    Avatar_10,
    Avatar_16,
 } from "../../../Entryfile/imagepath";
-import { profileWorker } from "../../../redux/feature/workerSclice";
 import { useLoading } from "../../../hook/useLoading";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import { employeesProfile } from "../../../redux/feature/employeesSclice";
+import { avartarFAKE, EmployeeDepartmentType } from "../../../constant/index";
 
 const EmployeesProfile = () => {
    useEffect(() => {
@@ -33,12 +34,11 @@ const EmployeesProfile = () => {
 
    useEffect(() => {
       // fetch profile
-      dispatch(profileWorker({ id, setLoading }));
+      dispatch(employeesProfile({ id, setLoading }));
    }, [id]);
 
-   const { worker } = useSelector((state) => state.worker);
+   const { employee } = useSelector((state) => state.employees);
 
-   //  console.log(id);
    return (
       <div className="page-wrapper">
          <Helmet>
@@ -64,7 +64,7 @@ const EmployeesProfile = () => {
                            <div className="profile-img-wrap">
                               <div className="profile-img">
                                  <a href="#">
-                                    <img alt="" src={Avatar_02} />
+                                    <img alt={employee?.avartar} src={avartarFAKE} />
                                  </a>
                               </div>
                            </div>
@@ -72,14 +72,26 @@ const EmployeesProfile = () => {
                               <div className="row">
                                  <div className="col-md-5">
                                     <div className="profile-info-left">
-                                       <h3 className="user-name m-t-0 mb-0">{worker?.name}</h3>
-                                       <h6 className="text-muted">{worker?.field}</h6>
-                                       <small className="text-muted">Người lao động</small>
-                                       {/* <small className="text-muted">Web Designer</small> */}
-                                       <div className="staff-id">Employee ID : FT-0001</div>
+                                       <h3 className="user-name m-t-0 mb-0">{employee?.name}</h3>
+                                       <small className="text-muted">Nhân viên</small>
+                                       <div className="staff-id">
+                                          Phòng ban :{" "}
+                                          {employee?.department === EmployeeDepartmentType.BUSSINESS
+                                             ? "Kinh doanh"
+                                             : employee.department ===
+                                               EmployeeDepartmentType.ACCOUNTANT
+                                             ? "Kế toán"
+                                             : employee.department ===
+                                               EmployeeDepartmentType.RECRUIT
+                                             ? "Tuyen Dung"
+                                             : employee.department ===
+                                               EmployeeDepartmentType.MARKETING
+                                             ? "Maketing"
+                                             : ""}
+                                       </div>
                                        <div className="small doj text-muted">
                                           Ngày tham gia :{" "}
-                                          {moment(worker?.createdAt).format("DD/MM/YYYY")}
+                                          {moment(employee?.createdAt).format("DD/MM/YYYY")}
                                        </div>
                                        <div className="staff-msg">
                                           <Link
@@ -99,37 +111,37 @@ const EmployeesProfile = () => {
                                        <li>
                                           <div className="title">Điện thoại:</div>
                                           <div className="text">
-                                             <a href="">{worker?.mobile}</a>
+                                             <a href="">{employee?.mobile}</a>
                                           </div>
                                        </li>
                                        <li>
                                           <div className="title">Email:</div>
                                           <div className="text">
-                                             <a href="">{worker?.email}</a>
+                                             <a href="">{employee?.email}</a>
                                           </div>
                                        </li>
                                        <li>
                                           <div className="title">Ngày sinh:</div>
                                           <div className="text">
-                                             {moment(worker?.date).format("DD/MM/YYYY")}
+                                             {moment(employee?.date).format("DD/MM/YYYY")}
                                           </div>
                                        </li>
                                        <li>
                                           <div className="title">Địa chỉ:</div>
                                           <div className="text">
-                                             {worker?.address || "chưa có thông tin"}
+                                             {employee?.address || "chưa có thông tin"}
                                           </div>
                                        </li>
                                        <li>
                                           <div className="title">Giới tính:</div>
                                           <div className="text">
-                                             {worker?.gender || "chưa có thông tin"}
+                                             {employee?.gender || "chưa có thông tin"}
                                           </div>
                                        </li>
                                        <li>
                                           <div className="title">Căn cước công dân:</div>
                                           <div className="text">
-                                             {worker?.cccd || "chưa có thông tin"}
+                                             {employee?.cccd || "chưa có thông tin"}
                                           </div>
                                        </li>
                                     </ul>
