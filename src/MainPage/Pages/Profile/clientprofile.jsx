@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import { avartarFAKE } from "../../../constant";
 import {
    Avatar_01,
    Avatar_02,
@@ -19,7 +19,6 @@ import {
    Avatar_12,
    Avatar_13,
    Avatar_16,
-   Avatar_19,
 } from "../../../Entryfile/imagepath";
 import { useLoading } from "../../../hook/useLoading";
 import { clientProfile } from "../../../redux/feature/clientSclice";
@@ -51,13 +50,7 @@ const ClientProfile = () => {
             <div className="page-header">
                <div className="row">
                   <div className="col-sm-12">
-                     <h3 className="page-title">Profile</h3>
-                     <ul className="breadcrumb">
-                        <li className="breadcrumb-item">
-                           <Link to="/app/main/dashboard">Dashboard</Link>
-                        </li>
-                        <li className="breadcrumb-item active">Profile</li>
-                     </ul>
+                     <h3 className="page-title">Khách hàng</h3>
                   </div>
                </div>
             </div>
@@ -70,7 +63,7 @@ const ClientProfile = () => {
                            <div className="profile-img-wrap">
                               <div className="profile-img">
                                  <a href="">
-                                    <img src={Avatar_19} alt="" />
+                                    <img src={client?.avartar || avartarFAKE} alt={client?.name} />
                                  </a>
                               </div>
                            </div>
