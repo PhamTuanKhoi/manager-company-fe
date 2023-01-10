@@ -2,38 +2,42 @@
  * App Routes
  */
 
- import React, {useEffect,useState } from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Route, withRouter } from "react-router-dom";
 
 // router service
 import chatService from "../../router_service/chatservice";
 
-import Header from './header';
-import Chatsidebar from './chatsidebar';
-
+import Header from "./header";
+import Chatsidebar from "./chatsidebar";
+import Sidebar from "./sidebar";
 
 const chatlayout = (props) => {
+   const [menu, setMenu] = useState(false);
 
-	const [menu, setMenu] = useState(false)
+   const toggleMobileMenu = () => {
+      setMenu(!menu);
+   };
+   const { match } = props;
+   return (
+      <>
+         <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
+            <Header onMenuClick={(value) => toggleMobileMenu()} />
 
-	const toggleMobileMenu = () => {
-		setMenu(!menu)
-	  }
-		const { match } = props;
-		return (
-			<>
-			 <div className={`main-wrapper ${menu ? 'slide-nav': ''}`}>           
-		  		<Header onMenuClick={(value) => toggleMobileMenu()} />
-			
-				<div>
-					{chatService && chatService.map((route,key)=>
-						<Route key={key} path={`${match.url}/${route.path}`} component={route.component} />
-					)}
-				</div>				
-				<Chatsidebar/>
-			</div>
-			</>
-		);
-	
-}
+            <div>
+               {chatService &&
+                  chatService.map((route, key) => (
+                     <Route
+                        key={key}
+                        path={`${match.url}/${route.path}`}
+                        component={route.component}
+                     />
+                  ))}
+            </div>
+            {/* <Chatsidebar /> */}
+            <Sidebar />
+         </div>
+      </>
+   );
+};
 export default withRouter(chatlayout);

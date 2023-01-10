@@ -21,6 +21,7 @@ import { api } from "../../../constant";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { useRef } from "react";
+// import Chatsidebar from "../../../initialpage/Sidebar/chatsidebar";
 
 const Chat = () => {
    useEffect(() => {
@@ -137,7 +138,7 @@ const Chat = () => {
                               </div>
                               <div className="user-info float-start">
                                  <Link to="/app/profile/employee-profile" title="Mike Litorus">
-                                    <span>Mike Litorus</span>{" "}
+                                    <span>{init?.initUser?.name}</span>{" "}
                                     <i className="typing-text">Typing...</i>
                                  </Link>
                                  <span className="last-seen">Last seen today at 7:50 AM</span>
@@ -338,7 +339,7 @@ const Chat = () => {
                </div>
                {/* /Chats View */}
                {/* Chat Right Sidebar */}
-               <div
+               {/* <div
                   className="col-lg-3 message-view chat-profile-view chat-sidebar"
                   id="task_window"
                >
@@ -681,7 +682,8 @@ const Chat = () => {
                         </div>
                      </div>
                   </div>
-               </div>
+               </div> */}
+               {/* <Chatsidebar /> */}
                {/* /Chat Right Sidebar */}
             </div>
             {/* /Chat Main Wrapper */}
