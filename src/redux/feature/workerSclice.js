@@ -195,6 +195,7 @@ const workerSclice = createSlice({
       },
       [updateWorker.fulfilled]: (state, action) => {
          state.loading = false;
+         state.worker = action.payload;
          const {
             arg: { id },
          } = action.meta;

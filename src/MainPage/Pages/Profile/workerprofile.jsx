@@ -1,7 +1,7 @@
 /**
  * TermsCondition Page
  */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
@@ -16,6 +16,7 @@ import { profileWorker } from "../../../redux/feature/workerSclice";
 import { useLoading } from "../../../hook/useLoading";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import Adduser from "../../../_components/modelbox/Adduser";
 
 const WorkerProfile = () => {
    useEffect(() => {
@@ -27,6 +28,8 @@ const WorkerProfile = () => {
       }
    });
 
+   const [modalShow, setModalShow] = useState(false);
+   const [render, setRender] = useState(0);
    const { id } = useParams();
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
@@ -138,10 +141,12 @@ const WorkerProfile = () => {
                            </div>
                            <div className="pro-edit">
                               <a
-                                 data-bs-target="#profile_info"
-                                 data-bs-toggle="modal"
                                  className="edit-icon"
                                  href="#"
+                                 onClick={() => {
+                                    setRender((prev) => prev + 1);
+                                    setModalShow(true);
+                                 }}
                               >
                                  <i className="fa fa-pencil" />
                               </a>
@@ -182,205 +187,7 @@ const WorkerProfile = () => {
                      <div className="col-md-6 d-flex">
                         <div className="card profile-box flex-fill">
                            <div className="card-body">
-                              <h3 className="card-title">
-                                 Personal Informations{" "}
-                                 <a
-                                    href="#"
-                                    className="edit-icon"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#personal_info_modal"
-                                 >
-                                    <i className="fa fa-pencil" />
-                                 </a>
-                              </h3>
-                              <ul className="personal-info">
-                                 <li>
-                                    <div className="title">Passport No.</div>
-                                    <div className="text">9876543210</div>
-                                 </li>
-                                 <li>
-                                    <div className="title">Passport Exp Date.</div>
-                                    <div className="text">9876543210</div>
-                                 </li>
-                                 <li>
-                                    <div className="title">Tel</div>
-                                    <div className="text">
-                                       <a href="">9876543210</a>
-                                    </div>
-                                 </li>
-                                 <li>
-                                    <div className="title">Nationality</div>
-                                    <div className="text">Indian</div>
-                                 </li>
-                                 <li>
-                                    <div className="title">Religion</div>
-                                    <div className="text">Christian</div>
-                                 </li>
-                                 <li>
-                                    <div className="title">Marital status</div>
-                                    <div className="text">Married</div>
-                                 </li>
-                                 <li>
-                                    <div className="title">Employment of spouse</div>
-                                    <div className="text">No</div>
-                                 </li>
-                                 <li>
-                                    <div className="title">No. of children</div>
-                                    <div className="text">2</div>
-                                 </li>
-                              </ul>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
-                           <div className="card-body">
-                              <h3 className="card-title">
-                                 Emergency Contact{" "}
-                                 <a
-                                    href="#"
-                                    className="edit-icon"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#emergency_contact_modal"
-                                 >
-                                    <i className="fa fa-pencil" />
-                                 </a>
-                              </h3>
-                              <h5 className="section-title">Primary</h5>
-                              <ul className="personal-info">
-                                 <li>
-                                    <div className="title">Name</div>
-                                    <div className="text">John Doe</div>
-                                 </li>
-                                 <li>
-                                    <div className="title">Relationship</div>
-                                    <div className="text">Father</div>
-                                 </li>
-                                 <li>
-                                    <div className="title">Phone </div>
-                                    <div className="text">9876543210, 9876543210</div>
-                                 </li>
-                              </ul>
-                              <hr />
-                              <h5 className="section-title">Secondary</h5>
-                              <ul className="personal-info">
-                                 <li>
-                                    <div className="title">Name</div>
-                                    <div className="text">Karen Wills</div>
-                                 </li>
-                                 <li>
-                                    <div className="title">Relationship</div>
-                                    <div className="text">Brother</div>
-                                 </li>
-                                 <li>
-                                    <div className="title">Phone </div>
-                                    <div className="text">9876543210, 9876543210</div>
-                                 </li>
-                              </ul>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div className="row">
-                     <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
-                           <div className="card-body">
-                              <h3 className="card-title">Bank information</h3>
-                              <ul className="personal-info">
-                                 <li>
-                                    <div className="title">Bank name</div>
-                                    <div className="text">ICICI Bank</div>
-                                 </li>
-                                 <li>
-                                    <div className="title">Bank account No.</div>
-                                    <div className="text">159843014641</div>
-                                 </li>
-                                 <li>
-                                    <div className="title">IFSC Code</div>
-                                    <div className="text">ICI24504</div>
-                                 </li>
-                                 <li>
-                                    <div className="title">PAN No</div>
-                                    <div className="text">TC000Y56</div>
-                                 </li>
-                              </ul>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
-                           <div className="card-body">
-                              <h3 className="card-title">
-                                 Family Informations{" "}
-                                 <a
-                                    href="#"
-                                    className="edit-icon"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#family_info_modal"
-                                 >
-                                    <i className="fa fa-pencil" />
-                                 </a>
-                              </h3>
-                              <div className="table-responsive">
-                                 <table className="table table-nowrap">
-                                    <thead>
-                                       <tr>
-                                          <th>Name</th>
-                                          <th>Relationship</th>
-                                          <th>Date of Birth</th>
-                                          <th>Phone</th>
-                                          <th />
-                                       </tr>
-                                    </thead>
-                                    <tbody>
-                                       <tr>
-                                          <td>Leo</td>
-                                          <td>Brother</td>
-                                          <td>Feb 16th, 2019</td>
-                                          <td>9876543210</td>
-                                          <td className="text-end">
-                                             <div className="dropdown dropdown-action">
-                                                <a
-                                                   aria-expanded="false"
-                                                   data-bs-toggle="dropdown"
-                                                   className="action-icon dropdown-toggle"
-                                                   href="#"
-                                                >
-                                                   <i className="material-icons">more_vert</i>
-                                                </a>
-                                                <div className="dropdown-menu dropdown-menu-right">
-                                                   <a href="#" className="dropdown-item">
-                                                      <i className="fa fa-pencil m-r-5" /> Edit
-                                                   </a>
-                                                   <a href="#" className="dropdown-item">
-                                                      <i className="fa fa-trash-o m-r-5" /> Delete
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div className="row">
-                     <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
-                           <div className="card-body">
-                              <h3 className="card-title">
-                                 Education Informations{" "}
-                                 <a
-                                    href="#"
-                                    className="edit-icon"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#education_info"
-                                 >
-                                    <i className="fa fa-pencil" />
-                                 </a>
-                              </h3>
+                              <h3 className="card-title">Học vấn </h3>
                               <div className="experience-box">
                                  <ul className="experience-list">
                                     <li>
@@ -417,64 +224,14 @@ const WorkerProfile = () => {
                         </div>
                      </div>
                      <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
+                        <div className="card profile-box  ">
                            <div className="card-body">
-                              <h3 className="card-title">
-                                 Experience{" "}
-                                 <a
-                                    href="#"
-                                    className="edit-icon"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#experience_info"
-                                 >
-                                    <i className="fa fa-pencil" />
-                                 </a>
-                              </h3>
+                              <h3 className="card-title">Kinh nghiệm làm việc </h3>
                               <div className="experience-box">
-                                 <ul className="experience-list">
+                                 <ul className="personal-info">
                                     <li>
-                                       <div className="experience-user">
-                                          <div className="before-circle" />
-                                       </div>
-                                       <div className="experience-content">
-                                          <div className="timeline-content">
-                                             <a href="/" className="name">
-                                                Web Designer at Zen Corporation
-                                             </a>
-                                             <span className="time">
-                                                Jan 2013 - Present (5 years 2 months)
-                                             </span>
-                                          </div>
-                                       </div>
-                                    </li>
-                                    <li>
-                                       <div className="experience-user">
-                                          <div className="before-circle" />
-                                       </div>
-                                       <div className="experience-content">
-                                          <div className="timeline-content">
-                                             <a href="/" className="name">
-                                                Web Designer at Ron-tech
-                                             </a>
-                                             <span className="time">
-                                                Jan 2013 - Present (5 years 2 months)
-                                             </span>
-                                          </div>
-                                       </div>
-                                    </li>
-                                    <li>
-                                       <div className="experience-user">
-                                          <div className="before-circle" />
-                                       </div>
-                                       <div className="experience-content">
-                                          <div className="timeline-content">
-                                             <a href="/" className="name">
-                                                Web Designer at Dalt Technology
-                                             </a>
-                                             <span className="time">
-                                                Jan 2013 - Present (5 years 2 months)
-                                             </span>
-                                          </div>
+                                       <div className="text">
+                                          {worker?.fieldContent || "chưa có thông tin"}
                                        </div>
                                     </li>
                                  </ul>
@@ -1983,6 +1740,14 @@ const WorkerProfile = () => {
             </div>
          </div>
          {/* /Experience Modal */}
+         {/* Add User Modal */}
+         <Adduser
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            editWorker={worker}
+            render={render}
+         />
+         {/* /Add User Modal */}
       </div>
    );
 };

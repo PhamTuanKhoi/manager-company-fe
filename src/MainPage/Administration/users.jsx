@@ -24,9 +24,9 @@ import { avartarFAKE, UserRoleType } from "../../constant/index";
 import DeleteUser from "../../_components/modelbox/DeleteUser";
 
 const Users = () => {
-   const [modalShow, setModalShow] = useState(false);
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
+   const [modalShow, setModalShow] = useState(false);
    const [render, setRender] = useState(0);
    const [editWorker, setEditWorker] = useState({});
    const [modalDelete, setModalDelete] = useState(false);
