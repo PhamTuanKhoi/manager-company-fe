@@ -21,6 +21,7 @@ import { api } from "../../../constant";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { useRef } from "react";
+import { listMessage } from "../../../redux/feature/messageSclice";
 // import Chatsidebar from "../../../initialpage/Sidebar/chatsidebar";
 
 const Chat = () => {
@@ -109,6 +110,17 @@ const Chat = () => {
       };
    }, [listenMessage]);
    // receive data
+
+   // fetch message db
+   useEffect(() => {
+      dispatch(listMessage({ query: { from: user._id, to: id }, setLoading }));
+   }, [id, user]);
+
+   const data = useSelector((state) => state.message);
+
+   useEffect(() => {
+      setMessages([...data.messages]);
+   }, [data.messages]);
 
    return (
       <div className="page-wrapper">
