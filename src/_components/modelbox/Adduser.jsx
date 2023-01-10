@@ -6,6 +6,7 @@ import { createWorker, updateWorker } from "../../redux/feature/workerSclice";
 import { useLoading } from "../../hook/useLoading";
 import TextArea from "antd/lib/input/TextArea";
 import moment from "moment";
+import { emailrgx, phonergx } from "../../constant";
 
 const Adduser = ({ show, onHide, editWorker, render }) => {
    const [worker, setWorker] = useState({
@@ -20,6 +21,92 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
       address: "",
       fieldContent: "",
    });
+
+   const validatetion = () => {
+      if (!user._id) {
+         toast.warn(`Làm ơn đăng nhập vào hệ thống`);
+         return false;
+      }
+      if (!worker.name) {
+         toast.warn("Vui lòng nhập họ tên");
+         return false;
+      }
+
+      if (!worker.email) {
+         toast.warn("Vui lòng nhập email");
+         return false;
+      }
+
+      if (worker.email) {
+         const isValidEmail = emailrgx.test(worker.email);
+         if (!isValidEmail) {
+            toast.warn("Vui lòng nhập đúng email");
+            return false;
+         }
+      }
+
+      if (!worker.cccd) {
+         toast.warn("Vui lòng nhập căn cước hoặc chứng minh nhân dân");
+         return false;
+      }
+
+      if (worker.cccd) {
+         if (!(worker.cccd.toString().length === 9 || worker.cccd.toString().length === 12)) {
+            console.log(worker.cccd.length);
+            toast.warn("Vui lòng nhập đúng căn cước hoặc chứng minh nhân dân");
+            return false;
+         }
+      }
+
+      if (!worker.mobile) {
+         toast.warn("Vui lòng nhập số điện thoại");
+         return false;
+      }
+
+      if (worker.mobile) {
+         const isValidPhone = phonergx.test(worker.mobile);
+         if (!isValidPhone) {
+            toast.warn("Vui lòng nhập đúng số điện thoại");
+            return false;
+         }
+      }
+
+      if (!worker.date) {
+         toast.warn("Vui lòng chọn ngày sinh");
+         return false;
+      }
+
+      if (!worker.address) {
+         toast.warn("Vui lòng nhập địa chỉ");
+         return false;
+      }
+
+      if (!isEdit) {
+         if (!worker.password) {
+            toast.warn("Vui lòng nhập mật khẩu");
+            return false;
+         }
+
+         if (!worker.confirmPasword) {
+            toast.warn("Vui lòng nhập lại mật khẩu");
+            return false;
+         }
+
+         if (worker.password) {
+            if (worker.password !== worker.confirmPasword) {
+               toast.warn("Mật khẩu không chính xác");
+               return false;
+            }
+         }
+      }
+
+      if (!worker.field) {
+         toast.warn("Vui lòng nhập ngành nghề chuyên môn");
+         return false;
+      }
+
+      return true;
+   };
 
    const [isEdit, setIsEdit] = useState("");
    const dispatch = useDispatch();
@@ -55,54 +142,48 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
    }, [render]);
 
    const handleSave = () => {
-      if (!user._id) {
-         toast.warn(`Làm ơn đăng nhập vào hệ thống`);
-         return;
+      if (validatetion()) {
+         dispatch(
+            createWorker({
+               payload: {
+                  ...worker,
+                  date: new Date(worker.date).getTime(),
+                  creator: user._id,
+               },
+               toast,
+               onHide,
+               setLoading,
+            })
+         );
+
+         empty();
       }
-
-      dispatch(
-         createWorker({
-            payload: {
-               ...worker,
-               date: new Date(worker.date).getTime(),
-               creator: user._id,
-            },
-            toast,
-            onHide,
-            setLoading,
-         })
-      );
-
-      empty();
    };
 
    const handleUpdate = () => {
-      if (!user._id) {
-         toast.warn(`Làm ơn đăng nhập vào hệ thống`);
-         return;
-      }
-
       if (!editWorker._id) {
          toast.warn(`Người lao động không tồn tại`);
          return;
       }
 
-      dispatch(
-         updateWorker({
-            id: editWorker._id,
-            payload: {
-               ...worker,
-               oldEmail: editWorker.email,
-               date: new Date(worker.date).getTime(),
-               creator: user._id,
-            },
-            toast,
-            onHide,
-            setLoading,
-         })
-      );
+      if (validatetion()) {
+         dispatch(
+            updateWorker({
+               id: editWorker._id,
+               payload: {
+                  ...worker,
+                  oldEmail: editWorker.email,
+                  date: new Date(worker.date).getTime(),
+                  creator: user._id,
+               },
+               toast,
+               onHide,
+               setLoading,
+            })
+         );
 
-      empty();
+         empty();
+      }
    };
 
    return (

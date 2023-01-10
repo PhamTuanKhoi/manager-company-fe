@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch } from "react-redux";
-import { EmployeeDepartmentType } from "../../constant/index";
+import { emailrgx, EmployeeDepartmentType, phonergx } from "../../constant/index";
 import {
    createEmployees,
    employeesProfile,
@@ -54,54 +54,114 @@ const Addemployee = ({ show, onHide, employee, render }) => {
    }, [render]);
 
    const handleSave = () => {
-      if (!user._id) {
-         toast.warn(`Làm ơn đăng nhập vào hệ thống`);
-         return;
+      if (validatetion()) {
+         dispatch(
+            createEmployees({
+               payload: {
+                  ...employees,
+                  date: new Date(employees.date).getTime(),
+                  creator: user._id,
+               },
+               toast,
+               onHide,
+               setLoading,
+            })
+         );
+
+         empty();
       }
-
-      dispatch(
-         createEmployees({
-            payload: {
-               ...employees,
-               date: new Date(employees.date).getTime(),
-               creator: user._id,
-            },
-            toast,
-            onHide,
-            setLoading,
-         })
-      );
-
-      empty();
    };
 
    const handleUpdate = () => {
-      if (!user._id) {
-         toast.warn(`Làm ơn đăng nhập vào hệ thống`);
-         return;
-      }
-
       if (!employee._id) {
          toast.warn(`Nhân viên không tồn tại`);
          return;
       }
 
-      dispatch(
-         updateEmployees({
-            id: employee._id,
-            payload: {
-               ...employees,
-               oldEmail: employee?.email,
-               date: new Date(employees.date).getTime(),
-               creator: user._id,
-            },
-            toast,
-            onHide,
-            setLoading,
-         })
-      );
+      if (validatetion()) {
+         dispatch(
+            updateEmployees({
+               id: employee._id,
+               payload: {
+                  ...employees,
+                  oldEmail: employee?.email,
+                  date: new Date(employees.date).getTime(),
+                  creator: user._id,
+               },
+               toast,
+               onHide,
+               setLoading,
+            })
+         );
 
-      empty();
+         empty();
+      }
+   };
+
+   const validatetion = () => {
+      if (!user._id) {
+         toast.warn(`Làm ơn đăng nhập vào hệ thống`);
+         return false;
+      }
+      if (!employees.name) {
+         toast.warn("Vui lòng nhập họ tên");
+         return false;
+      }
+
+      if (!employees.email) {
+         toast.warn("Vui lòng nhập email");
+         return false;
+      }
+
+      if (employees.email) {
+         const isValidEmail = emailrgx.test(employees.email);
+         if (!isValidEmail) {
+            toast.warn("Vui lòng nhập đúng email");
+            return false;
+         }
+      }
+
+      if (!employees.cccd) {
+         toast.warn("Vui lòng nhập căn cước hoặc chứng minh nhân dân");
+         return false;
+      }
+      if (employees.cccd) {
+         if (!(employees.cccd.toString().length === 9 || employees.cccd.toString().length === 12)) {
+            console.log(employees.cccd.length);
+            toast.warn("Vui lòng nhập đúng căn cước hoặc chứng minh nhân dân");
+            return false;
+         }
+      }
+
+      if (!employees.department) {
+         toast.warn("Vui lòng chọn vị trí");
+         return false;
+      }
+
+      if (!employees.mobile) {
+         toast.warn("Vui lòng nhập số điện thoại");
+         return false;
+      }
+
+      if (employees.mobile) {
+         const isValidPhone = phonergx.test(employees.mobile);
+         if (!isValidPhone) {
+            toast.warn("Vui lòng nhập đúng số điện thoại");
+            return false;
+         }
+      }
+
+      if (!employees.date) {
+         toast.warn("Vui lòng chọn ngày sinh");
+         return false;
+      }
+
+      if (!employees.address) {
+         toast.warn("Vui lòng nhập địa chỉ");
+         return false;
+      }
+
+      return true;
    };
 
    return (

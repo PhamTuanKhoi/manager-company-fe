@@ -99,12 +99,12 @@ const Users = () => {
          sorter: (a, b) => a.date - b.date,
       },
 
-      {
-         title: "Dự án",
-         dataIndex: "workerprojectEX",
-         render: (text, record) => record?.workerprojectEX?.projectEX?.name,
-         sorter: (a, b) => a?.workerprojectEX.length - b?.workerprojectEX.length,
-      },
+      // {
+      //    title: "Dự án",
+      //    dataIndex: "workerprojectEX",
+      //    render: (text, record) => record?.workerprojectEX?.projectEX?.name,
+      //    sorter: (a, b) => a?.workerprojectEX.length - b?.workerprojectEX.length,
+      // },
 
       {
          title: "Action",

@@ -77,16 +77,12 @@ const AllEmployees = () => {
                         <h3 className="page-title"> Nhân viên</h3>
                      </div>
                      <div className="col-auto float-end ml-auto">
-                        {user?.role === UserRoleType.ADMIN &&
-                           user?.role === UserRoleType.EMPLOYEE && (
-                              <a
-                                 href="#"
-                                 className="btn add-btn"
-                                 onClick={() => setModalShow(true)}
-                              >
-                                 <i className="fa fa-plus" /> Thêm nhân viên
-                              </a>
-                           )}
+                        {(user?.role === UserRoleType.ADMIN ||
+                           user?.role === UserRoleType.EMPLOYEE) && (
+                           <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
+                              <i className="fa fa-plus" /> Thêm nhân viên
+                           </a>
+                        )}
                         <div className="view-icons">
                            <Link
                               to="/app/employee/allemployees"

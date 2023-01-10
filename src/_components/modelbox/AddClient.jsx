@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { emailrgx, phonergx } from "../../constant";
 import { useLoading } from "../../hook/useLoading";
 import { createClient, updateClient } from "../../redux/feature/clientSclice";
 
@@ -45,40 +46,79 @@ const AddClient = ({ show, handleClose, editClient, render }) => {
    }, [render]);
 
    const handleSave = () => {
-      if (!user._id) {
-         toast.warn(`Làm ơn đăng nhập vào hệ thống`);
-         return;
+      if (validatetion()) {
+         dispatch(
+            createClient({
+               payload: { ...client, creator: user._id },
+               toast,
+               handleClose,
+               setLoading,
+            })
+         );
+
+         empty();
       }
-
-      dispatch(
-         createClient({
-            payload: { ...client, creator: user._id },
-            toast,
-            handleClose,
-            setLoading,
-         })
-      );
-
-      empty();
    };
 
    const handleUpdate = () => {
+      // api
+      if (validatetion()) {
+         dispatch(
+            updateClient({
+               id: editClient._id,
+               payload: { ...client, creator: user._id, oldEmail: editClient.email },
+               toast,
+               handleClose,
+               setLoading,
+            })
+         );
+         empty();
+      }
+   };
+
+   const validatetion = () => {
       if (!user._id) {
          toast.warn(`Làm ơn đăng nhập vào hệ thống`);
-         return;
+         return false;
       }
-      // api
-      dispatch(
-         updateClient({
-            id: editClient._id,
-            payload: { ...client, creator: user._id, oldEmail: editClient.email },
-            toast,
-            handleClose,
-            setLoading,
-         })
-      );
 
-      empty();
+      if (!client.name) {
+         toast.warn("Vui lòng nhập họ tên");
+         return false;
+      }
+
+      if (!client.email) {
+         toast.warn("Vui lòng nhập email");
+         return false;
+      }
+
+      if (client.email) {
+         const isValidEmail = emailrgx.test(client.email);
+         if (!isValidEmail) {
+            toast.warn("Vui lòng nhập đúng email");
+            return false;
+         }
+      }
+
+      if (!client.mobile) {
+         toast.warn("Vui lòng nhập số điện thoại");
+         return false;
+      }
+
+      if (client.mobile) {
+         const isValidPhone = phonergx.test(client.mobile);
+         if (!isValidPhone) {
+            toast.warn("Vui lòng nhập đúng số điện thoại");
+            return false;
+         }
+      }
+
+      if (!client.field) {
+         toast.warn("Vui lòng nhập lĩnh vực");
+         return false;
+      }
+
+      return true;
    };
 
    return (
