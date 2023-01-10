@@ -22,6 +22,7 @@ import { avartarFAKE, EmployeeDepartmentType, UserRoleType } from "../../../cons
 import Addproject from "../../../_components/modelbox/Addproject";
 import DeleteProject from "../../../_components/modelbox/DeleteProject";
 import Addemployee from "../../../_components/modelbox/Addemployee";
+import { listProjectByEmployees } from "../../../redux/feature/projectSclice";
 
 const EmployeesProfile = () => {
    useEffect(() => {
@@ -53,12 +54,10 @@ const EmployeesProfile = () => {
 
    useEffect(() => {
       fetchProject();
-   }, [user._id]);
+   }, [id]);
 
    const fetchProject = () => {
-      if (user.role === UserRoleType.EMPLOYEE) {
-         dispatch(listProjectByEmployees({ id: user._id, setLoading }));
-      }
+      dispatch(listProjectByEmployees({ id: id, setLoading }));
    };
 
    return (
