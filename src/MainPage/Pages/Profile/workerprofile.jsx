@@ -7,9 +7,10 @@ import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import {
    Avatar_02,
-   Avatar_05,
-   Avatar_09,
-   Avatar_10,
+   Avatar_11,
+   Avatar_12,
+   Avatar_13,
+   Avatar_01,
    Avatar_16,
 } from "../../../Entryfile/imagepath";
 import { profileWorker } from "../../../redux/feature/workerSclice";
@@ -17,6 +18,9 @@ import { useLoading } from "../../../hook/useLoading";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import Adduser from "../../../_components/modelbox/Adduser";
+import { listProjectByWorker } from "../../../redux/feature/projectSclice";
+import Addproject from "../../../_components/modelbox/Addproject";
+import DeleteProject from "../../../_components/modelbox/DeleteProject";
 
 const WorkerProfile = () => {
    useEffect(() => {
@@ -30,6 +34,11 @@ const WorkerProfile = () => {
 
    const [modalShow, setModalShow] = useState(false);
    const [render, setRender] = useState(0);
+   const [modalProject, setModalProject] = useState(false);
+   const [modalDelete, setModalDelete] = useState(false);
+   const [load, setLoad] = useState(0);
+   const [projectData, setProjectData] = useState({});
+
    const { id } = useParams();
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
@@ -41,7 +50,16 @@ const WorkerProfile = () => {
 
    const { worker } = useSelector((state) => state.worker);
 
-   //  console.log(id);
+   useEffect(() => {
+      fetchProject();
+   }, [id]);
+
+   const fetchProject = () => {
+      dispatch(listProjectByWorker({ id: id, setLoading }));
+   };
+
+   const { projects } = useSelector((state) => state.project);
+
    return (
       <div className="page-wrapper">
          <Helmet>
@@ -170,12 +188,6 @@ const WorkerProfile = () => {
                               Dự án
                            </a>
                         </li>
-                        <li className="nav-item">
-                           <a href="#bank_statutory" data-bs-toggle="tab" className="nav-link">
-                              Bank &amp; Statutory{" "}
-                              <small className="text-danger">(Admin Only)</small>
-                           </a>
-                        </li>
                      </ul>
                   </div>
                </div>
@@ -245,672 +257,322 @@ const WorkerProfile = () => {
                {/* Projects Tab */}
                <div className="tab-pane fade" id="emp_projects">
                   <div className="row">
-                     <div className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-                        <div className="card">
-                           <div className="card-body">
-                              <div className="dropdown profile-action">
-                                 <a
-                                    aria-expanded="false"
-                                    data-bs-toggle="dropdown"
-                                    className="action-icon dropdown-toggle"
-                                    href="#"
-                                 >
-                                    <i className="material-icons">more_vert</i>
-                                 </a>
-                                 <div className="dropdown-menu dropdown-menu-right">
+                     {projects?.map((item) => (
+                        <div key={item?._id} className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
+                           <div className="card">
+                              <div className="card-body">
+                                 <div className="dropdown dropdown-action profile-action">
                                     <a
-                                       data-bs-target="#edit_project"
-                                       data-bs-toggle="modal"
                                        href="#"
-                                       className="dropdown-item"
+                                       className="action-icon dropdown-toggle"
+                                       data-bs-toggle="dropdown"
+                                       aria-expanded="false"
                                     >
-                                       <i className="fa fa-pencil m-r-5" /> Edit
+                                       <i className="material-icons">more_vert</i>
                                     </a>
-                                    <a
-                                       data-bs-target="#delete_project"
-                                       data-bs-toggle="modal"
-                                       href="#"
-                                       className="dropdown-item"
-                                    >
-                                       <i className="fa fa-trash-o m-r-5" /> Delete
-                                    </a>
-                                 </div>
-                              </div>
-                              <h4 className="project-title">
-                                 <Link to="/app/projects/projects-view">Office Management</Link>
-                              </h4>
-                              <small className="block text-ellipsis m-b-15">
-                                 <span className="text-xs">1</span>{" "}
-                                 <span className="text-muted">open tasks, </span>
-                                 <span className="text-xs">9</span>{" "}
-                                 <span className="text-muted">tasks completed</span>
-                              </small>
-                              <p className="text-muted">
-                                 Lorem Ipsum is simply dummy text of the printing and typesetting
-                                 industry. When an unknown printer took a galley of type and
-                                 scrambled it...
-                              </p>
-                              <div className="pro-deadline m-b-15">
-                                 <div className="sub-title">Deadline:</div>
-                                 <div className="text-muted">17 Apr 2019</div>
-                              </div>
-                              <div className="project-members m-b-15">
-                                 <div>Project Leader :</div>
-                                 <ul className="team-members">
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="Jeffery Lalor">
-                                          <img alt="" src={Avatar_16} />
+                                    <div className="dropdown-menu dropdown-menu-right">
+                                       <a
+                                          className="dropdown-item"
+                                          href="#"
+                                          onClick={() => {
+                                             setLoad((prev) => prev + 1);
+                                             setProjectData(item);
+                                             setModalProject(true);
+                                          }}
+                                       >
+                                          <i className="fa fa-pencil m-r-5" /> Sửa
                                        </a>
-                                    </li>
-                                 </ul>
-                              </div>
-                              <div className="project-members m-b-15">
-                                 <div>Team :</div>
-                                 <ul className="team-members">
+                                       <a
+                                          className="dropdown-item"
+                                          href="#"
+                                          onClick={() => {
+                                             setProjectData(item);
+                                             setModalDelete(true);
+                                          }}
+                                       >
+                                          <i className="fa fa-trash-o m-r-5" /> Xóa
+                                       </a>
+                                    </div>
+                                 </div>
+                                 <h4 className="project-title">
+                                    <Link to={"/app/projects/projects-view/" + item?._id}>
+                                       {item?.name}
+                                    </Link>
+                                 </h4>
+                                 <small className="block text-ellipsis m-b-15">
+                                    <span className="text-xs">1</span>{" "}
+                                    <span className="text-muted">open tasks, </span>
+                                    <span className="text-xs">9</span>{" "}
+                                    <span className="text-muted">tasks completed</span>
+                                 </small>
+                                 {/* <p className="text-muted">{item?.content}</p> */}
+                                 <div className="pro-deadline m-b-15">
+                                    <div className="sub-title">Tổng số:</div>
+                                    <div className="text-muted">70 Người</div>
+                                 </div>
+                                 <div className="pro-deadline m-b-15">
+                                    <div className="sub-title">Số lượng làm:</div>
+                                    <div className="text-muted">
+                                       <ul className="team-members">
+                                          <li>
+                                             <a href="#" data-bs-toggle="tooltip" title="John Doe">
+                                                <img alt="" src={Avatar_02} />
+                                             </a>
+                                          </li>
+                                          <li>
+                                             <a href="#" data-bs-toggle="tooltip" title="John Doe">
+                                                <img alt="" src={Avatar_16} />
+                                             </a>
+                                          </li>
+
+                                          <li className="dropdown avatar-dropdown">
+                                             <a
+                                                href="#"
+                                                className="all-users dropdown-toggle"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                             >
+                                                +48
+                                             </a>
+                                             <div className="dropdown-menu dropdown-menu-right">
+                                                <div className="avatar-group">
+                                                   <a className="avatar avatar-xs" href="#">
+                                                      <img alt="" src={Avatar_16} />
+                                                   </a>
+                                                </div>
+                                                <div className="avatar-pagination">
+                                                   <ul className="pagination">
+                                                      <li className="page-item">
+                                                         <a
+                                                            className="page-link"
+                                                            href="#"
+                                                            aria-label="Previous"
+                                                         >
+                                                            <span aria-hidden="true">«</span>
+                                                            <span className="sr-only">
+                                                               Previous
+                                                            </span>
+                                                         </a>
+                                                      </li>
+                                                      <li className="page-item">
+                                                         <a className="page-link" href="#">
+                                                            1
+                                                         </a>
+                                                      </li>
+                                                      <li className="page-item">
+                                                         <a className="page-link" href="#">
+                                                            2
+                                                         </a>
+                                                      </li>
+                                                      <li className="page-item">
+                                                         <a
+                                                            className="page-link"
+                                                            href="#"
+                                                            aria-label="Next"
+                                                         >
+                                                            <span aria-hidden="true">»</span>
+                                                            <span className="sr-only">Next</span>
+                                                         </a>
+                                                      </li>
+                                                   </ul>
+                                                </div>
+                                             </div>
+                                          </li>
+                                       </ul>
+                                    </div>
+                                 </div>
+                                 <div className="pro-deadline m-b-15">
+                                    <div className="sub-title">Số lượng nghỉ:</div>
+                                    <div className="text-muted">
+                                       <ul className="team-members">
+                                          <li>
+                                             <a href="#" data-bs-toggle="tooltip" title="John Doe">
+                                                <img alt="" src={Avatar_02} />
+                                             </a>
+                                          </li>
+                                          <li>
+                                             <a href="#" data-bs-toggle="tooltip" title="John Doe">
+                                                <img alt="" src={Avatar_16} />
+                                             </a>
+                                          </li>
+
+                                          <li className="dropdown avatar-dropdown">
+                                             <a
+                                                href="#"
+                                                className="all-users dropdown-toggle"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                             >
+                                                +1
+                                             </a>
+                                             <div className="dropdown-menu dropdown-menu-right">
+                                                <div className="avatar-group">
+                                                   <a className="avatar avatar-xs" href="#">
+                                                      <img alt="" src={Avatar_16} />
+                                                   </a>
+                                                </div>
+                                                <div className="avatar-pagination">
+                                                   <ul className="pagination">
+                                                      <li className="page-item">
+                                                         <a
+                                                            className="page-link"
+                                                            href="#"
+                                                            aria-label="Previous"
+                                                         >
+                                                            <span aria-hidden="true">«</span>
+                                                            <span className="sr-only">
+                                                               Previous
+                                                            </span>
+                                                         </a>
+                                                      </li>
+                                                      <li className="page-item">
+                                                         <a className="page-link" href="#">
+                                                            1
+                                                         </a>
+                                                      </li>
+                                                      <li className="page-item">
+                                                         <a className="page-link" href="#">
+                                                            2
+                                                         </a>
+                                                      </li>
+                                                      <li className="page-item">
+                                                         <a
+                                                            className="page-link"
+                                                            href="#"
+                                                            aria-label="Next"
+                                                         >
+                                                            <span aria-hidden="true">»</span>
+                                                            <span className="sr-only">Next</span>
+                                                         </a>
+                                                      </li>
+                                                   </ul>
+                                                </div>
+                                             </div>
+                                          </li>
+                                       </ul>
+                                    </div>
+                                 </div>
+                                 <div className="pro-deadline m-b-15">
+                                    <div className="sub-title">Deadline:</div>
+                                    <div className="text-muted">
+                                       {moment(item?.end).format("DD-MM-YYYY")}
+                                    </div>
+                                 </div>
+                                 <div className="project-members m-b-15">
+                                    <div>Project Leader :</div>
+                                    <ul className="team-members">
+                                       <li>
+                                          <a
+                                             href="#"
+                                             data-bs-toggle="tooltip"
+                                             title="Jeffery Lalor"
+                                          >
+                                             <img alt="" src={Avatar_16} />
+                                          </a>
+                                       </li>
+                                    </ul>
+                                 </div>
+                                 <div className="project-members m-b-15">
+                                    <div>Team :</div>
+                                    <ul className="team-members">
+                                       {/* {item?.team((elemyees) => (
                                     <li>
                                        <a href="#" data-bs-toggle="tooltip" title="John Doe">
-                                          <img alt="" src={Avatar_02} />
+                                          <img alt="" src={elemyees?.avartar || Avatar_02} />
                                        </a>
                                     </li>
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="Richard Miles">
-                                          <img alt="" src={Avatar_09} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="John Smith">
-                                          <img alt="" src={Avatar_10} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="Mike Litorus">
-                                          <img alt="" src={Avatar_05} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" className="all-users">
-                                          +15
-                                       </a>
-                                    </li>
-                                 </ul>
-                              </div>
-                              <p className="m-b-5">
-                                 Progress <span className="text-success float-end">40%</span>
-                              </p>
-                              <div className="progress progress-xs mb-0">
-                                 <div
-                                    style={{ width: "40%" }}
-                                    data-bs-toggle="tooltip"
-                                    role="progressbar"
-                                    className="progress-bar bg-success"
-                                    data-original-title="40%"
-                                 />
+                                 ))} */}
+
+                                       <li>
+                                          <a href="#" data-bs-toggle="tooltip" title="John Doe">
+                                             <img alt="" src={Avatar_02} />
+                                          </a>
+                                       </li>
+
+                                       <li className="dropdown avatar-dropdown">
+                                          <a
+                                             href="#"
+                                             className="all-users dropdown-toggle"
+                                             data-bs-toggle="dropdown"
+                                             aria-expanded="false"
+                                          >
+                                             +15
+                                          </a>
+                                          <div className="dropdown-menu dropdown-menu-right">
+                                             <div className="avatar-group">
+                                                <a className="avatar avatar-xs" href="#">
+                                                   <img alt="" src={Avatar_11} />
+                                                </a>
+                                                <a className="avatar avatar-xs" href="#">
+                                                   <img alt="" src={Avatar_12} />
+                                                </a>
+                                                <a className="avatar avatar-xs" href="#">
+                                                   <img alt="" src={Avatar_13} />
+                                                </a>
+                                                <a className="avatar avatar-xs" href="#">
+                                                   <img alt="" src={Avatar_01} />
+                                                </a>
+                                                <a className="avatar avatar-xs" href="#">
+                                                   <img alt="" src={Avatar_16} />
+                                                </a>
+                                             </div>
+                                             <div className="avatar-pagination">
+                                                <ul className="pagination">
+                                                   <li className="page-item">
+                                                      <a
+                                                         className="page-link"
+                                                         href="#"
+                                                         aria-label="Previous"
+                                                      >
+                                                         <span aria-hidden="true">«</span>
+                                                         <span className="sr-only">Previous</span>
+                                                      </a>
+                                                   </li>
+                                                   <li className="page-item">
+                                                      <a className="page-link" href="#">
+                                                         1
+                                                      </a>
+                                                   </li>
+                                                   <li className="page-item">
+                                                      <a className="page-link" href="#">
+                                                         2
+                                                      </a>
+                                                   </li>
+                                                   <li className="page-item">
+                                                      <a
+                                                         className="page-link"
+                                                         href="#"
+                                                         aria-label="Next"
+                                                      >
+                                                         <span aria-hidden="true">»</span>
+                                                         <span className="sr-only">Next</span>
+                                                      </a>
+                                                   </li>
+                                                </ul>
+                                             </div>
+                                          </div>
+                                       </li>
+                                    </ul>
+                                 </div>
+                                 <p className="m-b-5">
+                                    Progress <span className="text-success float-end">40%</span>
+                                 </p>
+                                 <div className="progress progress-xs mb-0">
+                                    <div
+                                       className="progress-bar bg-success"
+                                       role="progressbar"
+                                       data-bs-toggle="tooltip"
+                                       title="40%"
+                                       style={{ width: "40%" }}
+                                    />
+                                 </div>
                               </div>
                            </div>
                         </div>
-                     </div>
-                     <div className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-                        <div className="card">
-                           <div className="card-body">
-                              <div className="dropdown profile-action">
-                                 <a
-                                    aria-expanded="false"
-                                    data-bs-toggle="dropdown"
-                                    className="action-icon dropdown-toggle"
-                                    href="#"
-                                 >
-                                    <i className="material-icons">more_vert</i>
-                                 </a>
-                                 <div className="dropdown-menu dropdown-menu-right">
-                                    <a
-                                       data-bs-target="#edit_project"
-                                       data-bs-toggle="modal"
-                                       href="#"
-                                       className="dropdown-item"
-                                    >
-                                       <i className="fa fa-pencil m-r-5" /> Edit
-                                    </a>
-                                    <a
-                                       data-bs-target="#delete_project"
-                                       data-bs-toggle="modal"
-                                       href="#"
-                                       className="dropdown-item"
-                                    >
-                                       <i className="fa fa-trash-o m-r-5" /> Delete
-                                    </a>
-                                 </div>
-                              </div>
-                              <h4 className="project-title">
-                                 <Link to="/app/projects/projects-view">Project Management</Link>
-                              </h4>
-                              <small className="block text-ellipsis m-b-15">
-                                 <span className="text-xs">2</span>{" "}
-                                 <span className="text-muted">open tasks, </span>
-                                 <span className="text-xs">5</span>{" "}
-                                 <span className="text-muted">tasks completed</span>
-                              </small>
-                              <p className="text-muted">
-                                 Lorem Ipsum is simply dummy text of the printing and typesetting
-                                 industry. When an unknown printer took a galley of type and
-                                 scrambled it...
-                              </p>
-                              <div className="pro-deadline m-b-15">
-                                 <div className="sub-title">Deadline:</div>
-                                 <div className="text-muted">17 Apr 2019</div>
-                              </div>
-                              <div className="project-members m-b-15">
-                                 <div>Project Leader :</div>
-                                 <ul className="team-members">
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="Jeffery Lalor">
-                                          <img alt="" src={Avatar_16} />
-                                       </a>
-                                    </li>
-                                 </ul>
-                              </div>
-                              <div className="project-members m-b-15">
-                                 <div>Team :</div>
-                                 <ul className="team-members">
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="John Doe">
-                                          <img alt="" src={Avatar_02} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="Richard Miles">
-                                          <img alt="" src={Avatar_09} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="John Smith">
-                                          <img alt="" src={Avatar_10} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="Mike Litorus">
-                                          <img alt="" src={Avatar_05} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" className="all-users">
-                                          +15
-                                       </a>
-                                    </li>
-                                 </ul>
-                              </div>
-                              <p className="m-b-5">
-                                 Progress <span className="text-success float-end">40%</span>
-                              </p>
-                              <div className="progress progress-xs mb-0">
-                                 <div
-                                    style={{ width: "40%" }}
-                                    data-bs-toggle="tooltip"
-                                    role="progressbar"
-                                    className="progress-bar bg-success"
-                                    data-original-title="40%"
-                                 />
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-                        <div className="card">
-                           <div className="card-body">
-                              <div className="dropdown profile-action">
-                                 <a
-                                    aria-expanded="false"
-                                    data-bs-toggle="dropdown"
-                                    className="action-icon dropdown-toggle"
-                                    href="#"
-                                 >
-                                    <i className="material-icons">more_vert</i>
-                                 </a>
-                                 <div className="dropdown-menu dropdown-menu-right">
-                                    <a
-                                       data-bs-target="#edit_project"
-                                       data-bs-toggle="modal"
-                                       href="#"
-                                       className="dropdown-item"
-                                    >
-                                       <i className="fa fa-pencil m-r-5" /> Edit
-                                    </a>
-                                    <a
-                                       data-bs-target="#delete_project"
-                                       data-bs-toggle="modal"
-                                       href="#"
-                                       className="dropdown-item"
-                                    >
-                                       <i className="fa fa-trash-o m-r-5" /> Delete
-                                    </a>
-                                 </div>
-                              </div>
-                              <h4 className="project-title">
-                                 <Link to="/app/projects/projects-view">Video Calling App</Link>
-                              </h4>
-                              <small className="block text-ellipsis m-b-15">
-                                 <span className="text-xs">3</span>{" "}
-                                 <span className="text-muted">open tasks, </span>
-                                 <span className="text-xs">3</span>{" "}
-                                 <span className="text-muted">tasks completed</span>
-                              </small>
-                              <p className="text-muted">
-                                 Lorem Ipsum is simply dummy text of the printing and typesetting
-                                 industry. When an unknown printer took a galley of type and
-                                 scrambled it...
-                              </p>
-                              <div className="pro-deadline m-b-15">
-                                 <div className="sub-title">Deadline:</div>
-                                 <div className="text-muted">17 Apr 2019</div>
-                              </div>
-                              <div className="project-members m-b-15">
-                                 <div>Project Leader :</div>
-                                 <ul className="team-members">
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="Jeffery Lalor">
-                                          <img alt="" src={Avatar_16} />
-                                       </a>
-                                    </li>
-                                 </ul>
-                              </div>
-                              <div className="project-members m-b-15">
-                                 <div>Team :</div>
-                                 <ul className="team-members">
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="John Doe">
-                                          <img alt="" src={Avatar_02} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="Richard Miles">
-                                          <img alt="" src={Avatar_09} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="John Smith">
-                                          <img alt="" src={Avatar_10} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="Mike Litorus">
-                                          <img alt="" src={Avatar_05} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" className="all-users">
-                                          +15
-                                       </a>
-                                    </li>
-                                 </ul>
-                              </div>
-                              <p className="m-b-5">
-                                 Progress <span className="text-success float-end">40%</span>
-                              </p>
-                              <div className="progress progress-xs mb-0">
-                                 <div
-                                    style={{ width: "40%" }}
-                                    data-bs-toggle="tooltip"
-                                    role="progressbar"
-                                    className="progress-bar bg-success"
-                                    data-original-title="40%"
-                                 />
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-                        <div className="card">
-                           <div className="card-body">
-                              <div className="dropdown profile-action">
-                                 <a
-                                    aria-expanded="false"
-                                    data-bs-toggle="dropdown"
-                                    className="action-icon dropdown-toggle"
-                                    href="#"
-                                 >
-                                    <i className="material-icons">more_vert</i>
-                                 </a>
-                                 <div className="dropdown-menu dropdown-menu-right">
-                                    <a
-                                       data-bs-target="#edit_project"
-                                       data-bs-toggle="modal"
-                                       href="#"
-                                       className="dropdown-item"
-                                    >
-                                       <i className="fa fa-pencil m-r-5" /> Edit
-                                    </a>
-                                    <a
-                                       data-bs-target="#delete_project"
-                                       data-bs-toggle="modal"
-                                       href="#"
-                                       className="dropdown-item"
-                                    >
-                                       <i className="fa fa-trash-o m-r-5" /> Delete
-                                    </a>
-                                 </div>
-                              </div>
-                              <h4 className="project-title">
-                                 <Link to="/app/projects/projects-view">
-                                    Hospital Administration
-                                 </Link>
-                              </h4>
-                              <small className="block text-ellipsis m-b-15">
-                                 <span className="text-xs">12</span>{" "}
-                                 <span className="text-muted">open tasks, </span>
-                                 <span className="text-xs">4</span>{" "}
-                                 <span className="text-muted">tasks completed</span>
-                              </small>
-                              <p className="text-muted">
-                                 Lorem Ipsum is simply dummy text of the printing and typesetting
-                                 industry. When an unknown printer took a galley of type and
-                                 scrambled it...
-                              </p>
-                              <div className="pro-deadline m-b-15">
-                                 <div className="sub-title">Deadline:</div>
-                                 <div className="text-muted">17 Apr 2019</div>
-                              </div>
-                              <div className="project-members m-b-15">
-                                 <div>Project Leader :</div>
-                                 <ul className="team-members">
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="Jeffery Lalor">
-                                          <img alt="" src={Avatar_16} />
-                                       </a>
-                                    </li>
-                                 </ul>
-                              </div>
-                              <div className="project-members m-b-15">
-                                 <div>Team :</div>
-                                 <ul className="team-members">
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="John Doe">
-                                          <img alt="" src={Avatar_02} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="Richard Miles">
-                                          <img alt="" src={Avatar_09} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="John Smith">
-                                          <img alt="" src={Avatar_10} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="Mike Litorus">
-                                          <img alt="" src={Avatar_05} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" className="all-users">
-                                          +15
-                                       </a>
-                                    </li>
-                                 </ul>
-                              </div>
-                              <p className="m-b-5">
-                                 Progress <span className="text-success float-end">40%</span>
-                              </p>
-                              <div className="progress progress-xs mb-0">
-                                 <div
-                                    style={{ width: "40%" }}
-                                    data-bs-toggle="tooltip"
-                                    role="progressbar"
-                                    className="progress-bar bg-success"
-                                    data-original-title="40%"
-                                 />
-                              </div>
-                           </div>
-                        </div>
-                     </div>
+                     ))}
                   </div>
                </div>
                {/* /Projects Tab */}
-               {/* Bank Statutory Tab */}
-               <div className="tab-pane fade" id="bank_statutory">
-                  <div className="card">
-                     <div className="card-body">
-                        <h3 className="card-title"> Basic Salary Information</h3>
-                        <form>
-                           <div className="row">
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">
-                                       Salary basis <span className="text-danger">*</span>
-                                    </label>
-                                    <select className="select">
-                                       <option>Select salary basis type</option>
-                                       <option>Hourly</option>
-                                       <option>Daily</option>
-                                       <option>Weekly</option>
-                                       <option>Monthly</option>
-                                    </select>
-                                 </div>
-                              </div>
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">
-                                       Salary amount <small className="text-muted">per month</small>
-                                    </label>
-                                    <div className="input-group">
-                                       <div className="input-group-prepend">
-                                          <span className="input-group-text">$</span>
-                                       </div>
-                                       <input
-                                          type="text"
-                                          className="form-control"
-                                          placeholder="Type your salary amount"
-                                          defaultValue={0.0}
-                                       />
-                                    </div>
-                                 </div>
-                              </div>
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">Payment type</label>
-                                    <select className="select">
-                                       <option>Select payment type</option>
-                                       <option>Bank transfer</option>
-                                       <option>Check</option>
-                                       <option>Cash</option>
-                                    </select>
-                                 </div>
-                              </div>
-                           </div>
-                           <hr />
-                           <h3 className="card-title"> PF Information</h3>
-                           <div className="row">
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">PF contribution</label>
-                                    <select className="select">
-                                       <option>Select PF contribution</option>
-                                       <option>Yes</option>
-                                       <option>No</option>
-                                    </select>
-                                 </div>
-                              </div>
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">
-                                       PF No. <span className="text-danger">*</span>
-                                    </label>
-                                    <select className="select">
-                                       <option>Select PF contribution</option>
-                                       <option>Yes</option>
-                                       <option>No</option>
-                                    </select>
-                                 </div>
-                              </div>
-                           </div>
-                           <div className="row">
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">Employee PF rate</label>
-                                    <select className="select">
-                                       <option>Select PF contribution</option>
-                                       <option>Yes</option>
-                                       <option>No</option>
-                                    </select>
-                                 </div>
-                              </div>
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">
-                                       Additional rate <span className="text-danger">*</span>
-                                    </label>
-                                    <select className="select">
-                                       <option>Select additional rate</option>
-                                       <option>0%</option>
-                                       <option>1%</option>
-                                       <option>2%</option>
-                                       <option>3%</option>
-                                       <option>4%</option>
-                                       <option>5%</option>
-                                       <option>6%</option>
-                                       <option>7%</option>
-                                       <option>8%</option>
-                                       <option>9%</option>
-                                       <option>10%</option>
-                                    </select>
-                                 </div>
-                              </div>
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">Total rate</label>
-                                    <input
-                                       type="text"
-                                       className="form-control"
-                                       placeholder="N/A"
-                                       defaultValue="11%"
-                                    />
-                                 </div>
-                              </div>
-                           </div>
-                           <div className="row">
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">Employee PF rate</label>
-                                    <select className="select">
-                                       <option>Select PF contribution</option>
-                                       <option>Yes</option>
-                                       <option>No</option>
-                                    </select>
-                                 </div>
-                              </div>
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">
-                                       Additional rate <span className="text-danger">*</span>
-                                    </label>
-                                    <select className="select">
-                                       <option>Select additional rate</option>
-                                       <option>0%</option>
-                                       <option>1%</option>
-                                       <option>2%</option>
-                                       <option>3%</option>
-                                       <option>4%</option>
-                                       <option>5%</option>
-                                       <option>6%</option>
-                                       <option>7%</option>
-                                       <option>8%</option>
-                                       <option>9%</option>
-                                       <option>10%</option>
-                                    </select>
-                                 </div>
-                              </div>
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">Total rate</label>
-                                    <input
-                                       type="text"
-                                       className="form-control"
-                                       placeholder="N/A"
-                                       defaultValue="11%"
-                                    />
-                                 </div>
-                              </div>
-                           </div>
-                           <hr />
-                           <h3 className="card-title"> ESI Information</h3>
-                           <div className="row">
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">ESI contribution</label>
-                                    <select className="select">
-                                       <option>Select ESI contribution</option>
-                                       <option>Yes</option>
-                                       <option>No</option>
-                                    </select>
-                                 </div>
-                              </div>
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">
-                                       ESI No. <span className="text-danger">*</span>
-                                    </label>
-                                    <select className="select">
-                                       <option>Select ESI contribution</option>
-                                       <option>Yes</option>
-                                       <option>No</option>
-                                    </select>
-                                 </div>
-                              </div>
-                           </div>
-                           <div className="row">
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">Employee ESI rate</label>
-                                    <select className="select">
-                                       <option>Select ESI contribution</option>
-                                       <option>Yes</option>
-                                       <option>No</option>
-                                    </select>
-                                 </div>
-                              </div>
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">
-                                       Additional rate <span className="text-danger">*</span>
-                                    </label>
-                                    <select className="select">
-                                       <option>Select additional rate</option>
-                                       <option>0%</option>
-                                       <option>1%</option>
-                                       <option>2%</option>
-                                       <option>3%</option>
-                                       <option>4%</option>
-                                       <option>5%</option>
-                                       <option>6%</option>
-                                       <option>7%</option>
-                                       <option>8%</option>
-                                       <option>9%</option>
-                                       <option>10%</option>
-                                    </select>
-                                 </div>
-                              </div>
-                              <div className="col-sm-4">
-                                 <div className="form-group">
-                                    <label className="col-form-label">Total rate</label>
-                                    <input
-                                       type="text"
-                                       className="form-control"
-                                       placeholder="N/A"
-                                       defaultValue="11%"
-                                    />
-                                 </div>
-                              </div>
-                           </div>
-                           <div className="submit-section">
-                              <button className="btn btn-primary submit-btn" type="submit">
-                                 Save
-                              </button>
-                           </div>
-                        </form>
-                     </div>
-                  </div>
-               </div>
-               {/* /Bank Statutory Tab */}
             </div>
          </div>
          {/* /Page Content */}
@@ -1748,6 +1410,22 @@ const WorkerProfile = () => {
             render={render}
          />
          {/* /Add User Modal */}
+
+         {/* Create Project Modal */}
+         <Addproject
+            show={modalProject}
+            onHide={() => setModalProject(false)}
+            projectData={projectData}
+            render={load}
+         />
+         {/* /Create Project Modal */}
+         {/* Delete Project Modal */}
+         <DeleteProject
+            show={modalDelete}
+            onHide={() => setModalDelete(false)}
+            project={projectData}
+         />
+         {/* /Delete Project Modal */}
       </div>
    );
 };
