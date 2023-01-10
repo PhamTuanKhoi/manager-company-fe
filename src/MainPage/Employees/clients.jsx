@@ -154,26 +154,22 @@ const Clients = () => {
                            </div>
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                           <Link to="/app/profile/client-profile">{item?.name}</Link>
+                           <Link to={`/app/profile/client-profile/${item?._id}`}>{item?.name}</Link>
                         </h4>
                         <h5 className="user-name m-t-10 mb-0 text-ellipsis">
-                           <Link to="/app/profile/client-profile">{item?.company}</Link>
+                           <Link to={`/app/profile/client-profile/${item?._id}`}>
+                              {item?.company}
+                           </Link>
                         </h5>
 
                         <div className="small text-muted">{item?.field}</div>
-                        <Link
+                        {/* <Link
                            onClick={() => localStorage.setItem("minheight", "true")}
-                           to="/conversation/chat"
+                           to={`/conversation/chat/${item?.$id}`}
                            className="btn btn-white btn-sm m-t-10 mr-1"
                         >
                            Nhắn tin
-                        </Link>
-                        <Link
-                           to="/app/profile/client-profile"
-                           className="btn btn-white btn-sm m-t-10"
-                        >
-                           Trang cá nhân
-                        </Link>
+                        </Link> */}
                      </div>
                   </div>
                ))}

@@ -35,10 +35,10 @@ const Clients = () => {
          dataIndex: "name",
          render: (text, record) => (
             <h2 className="table-avatar">
-               <Link to="/app/profile/employee-profile" className="avatar">
+               <Link to={`/app/profile/client-profile/${record?._id}`} className="avatar">
                   <img alt="" src={record.image} />
                </Link>
-               <Link to="/app/profile/employee-profile">{text}</Link>
+               <Link to={`/app/profile/client-profile/${record?._id}`}>{text}</Link>
             </h2>
          ),
          sorter: (a, b) => a.name.length - b.name.length,

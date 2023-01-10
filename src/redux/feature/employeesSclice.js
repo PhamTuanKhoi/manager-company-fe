@@ -167,6 +167,7 @@ const employeesSclice = createSlice({
       },
       [updateEmployees.fulfilled]: (state, action) => {
          state.loading = false;
+         state.employee = action.payload;
          const {
             arg: { id },
          } = action.meta;

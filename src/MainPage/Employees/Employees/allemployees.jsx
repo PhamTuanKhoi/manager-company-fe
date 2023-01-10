@@ -185,7 +185,9 @@ const AllEmployees = () => {
                               </div>
                            </div>
                            <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                              <Link to="/app/profile/employee-profile">{item?.name}</Link>
+                              <Link to={`/app/profile/employee-profile/${item._id}`}>
+                                 {item?.name}
+                              </Link>
                            </h4>
                            <div className="small text-muted">
                               {item?.department === EmployeeDepartmentType.BUSSINESS
