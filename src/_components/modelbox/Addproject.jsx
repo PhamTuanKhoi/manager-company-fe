@@ -125,23 +125,25 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
          return;
       }
 
-      dispatch(
-         createProject({
-            payload: {
-               ...project,
-               start: new Date(project.start).getTime(),
-               end: new Date(project.end).getTime(),
-               creator: user._id,
-               team: isteam,
-               client: isclient,
-            },
-            toast,
-            onHide,
-            setLoading,
-         })
-      );
+      if (validatetion()) {
+         dispatch(
+            createProject({
+               payload: {
+                  ...project,
+                  start: new Date(project.start).getTime(),
+                  end: new Date(project.end).getTime(),
+                  creator: user._id,
+                  team: isteam,
+                  client: isclient,
+               },
+               toast,
+               onHide,
+               setLoading,
+            })
+         );
 
-      empty();
+         empty();
+      }
    }
 
    const handleUpdate = () => {
@@ -170,19 +172,60 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
       // no update payslip
       delete payload.payslip;
 
-      dispatch(
-         updateProject({
-            id: projectData._id,
-            payload,
-            toast,
-            onHide,
-            setLoading,
-            project,
-            setLoad,
-         })
-      );
+      if (validatetion()) {
+         dispatch(
+            updateProject({
+               id: projectData._id,
+               payload,
+               toast,
+               onHide,
+               setLoading,
+               project,
+               setLoad,
+            })
+         );
 
-      empty();
+         empty();
+      }
+   };
+
+   const validatetion = () => {
+      if (!project.name) {
+         toast.warn("Vui lòng nhập tên dự án");
+         return false;
+      }
+
+      if (!project.start || !project.end) {
+         toast.warn("Vui lòng chọn ngày bắt đầu và kết thúc");
+         return false;
+      }
+
+      if (new Date(project.end).getTime() <= new Date(project.start).getTime()) {
+         toast.warn("Ngày kết thúc phải lớn hơn ngày bắt đầu");
+         return false;
+      }
+
+      if (!project.status) {
+         toast.warn("Vui lòng chọn trạng thái của dự án");
+         return false;
+      }
+
+      if (!project.leader) {
+         toast.warn("Vui lòng chọn trưởng nhóm");
+         return false;
+      }
+
+      if (teams.length === 0) {
+         toast.warn("Vui lòng chọn nhân viên");
+         return false;
+      }
+
+      if (client.length === 0) {
+         toast.warn("Vui lòng chọn khách hàng");
+         return false;
+      }
+
+      return true;
    };
 
    return (

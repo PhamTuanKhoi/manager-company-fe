@@ -56,7 +56,9 @@ const AddPayslip = () => {
    }, [id]);
 
    useEffect(() => {
-      setPaysplip(payslip);
+      if (id) {
+         setPaysplip(payslip);
+      }
    }, [payslip]);
 
    const toggleMobileMenu = () => {
@@ -64,41 +66,109 @@ const AddPayslip = () => {
    };
 
    const handleSave = () => {
-      if (!user._id) {
-         toast.warn("Làm ơn đăng nhập vào hệ thống");
-         return;
+      if (validatetion()) {
+         dispatch(
+            createPayslip({
+               payload: { ...paysplip, creator: user._id },
+               toast,
+               history,
+               setLoading,
+            })
+         );
       }
-
-      dispatch(
-         createPayslip({
-            payload: { ...paysplip, creator: user._id },
-            toast,
-            history,
-            setLoading,
-         })
-      );
    };
 
    const handleUpdate = () => {
-      if (!user._id) {
-         toast.warn("Làm ơn đăng nhập vào hệ thống");
-         return;
-      }
-
       if (!payslip._id) {
          toast.warn("Phiếu lương không tồn tại");
          return;
       }
 
-      dispatch(
-         updatePayslip({
-            id: payslip._id,
-            payload: { ...paysplip, creator: user._id },
-            toast,
-            history,
-            setLoading,
-         })
-      );
+      if (validatetion()) {
+         dispatch(
+            updatePayslip({
+               id: payslip._id,
+               payload: { ...paysplip, creator: user._id },
+               toast,
+               history,
+               setLoading,
+            })
+         );
+      }
+   };
+
+   const validatetion = () => {
+      if (!user._id) {
+         toast.warn("Làm ơn đăng nhập vào hệ thống");
+         return false;
+      }
+
+      if (!paysplip.name) {
+         toast.warn("Vui lòng nhập tên phiếu lương");
+         return false;
+      }
+      if (!paysplip.leave) {
+         delete paysplip.leave;
+      }
+      if (!paysplip.reward) {
+         delete paysplip.reward;
+      }
+      if (!paysplip.rice) {
+         delete paysplip.rice;
+      }
+      if (!paysplip.bonus) {
+         delete paysplip.bonus;
+      }
+      if (!paysplip.overtime) {
+         delete paysplip.overtime;
+      }
+      if (!paysplip.sunday) {
+         delete paysplip.sunday;
+      }
+      if (!paysplip.holiday) {
+         delete paysplip.holiday;
+      }
+      if (!paysplip.service) {
+         delete paysplip.service;
+      }
+      if (!paysplip.go) {
+         delete paysplip.go;
+      }
+      if (!paysplip.home) {
+         delete paysplip.home;
+      }
+      if (!paysplip.toxic) {
+         delete paysplip.toxic;
+      }
+      if (!paysplip.diligence) {
+         delete paysplip.diligence;
+      }
+      if (!paysplip.effectively) {
+         delete paysplip.effectively;
+      }
+      if (!paysplip.eat) {
+         delete paysplip.eat;
+      }
+      if (!paysplip.medican) {
+         delete paysplip.medican;
+      }
+      if (!paysplip.society) {
+         delete paysplip.society;
+      }
+      if (!paysplip.unemployment) {
+         delete paysplip.unemployment;
+      }
+      if (!paysplip.union) {
+         delete paysplip.union;
+      }
+      if (!paysplip.accident) {
+         delete paysplip.accident;
+      }
+      if (!paysplip.health) {
+         delete paysplip.health;
+      }
+
+      return true;
    };
 
    return (
