@@ -12,10 +12,10 @@ export const projectsRemainingSelector = createSelector(
    filterPriority,
 
    (projectList, nameText, priority) => {
-      console.log(priority);
-      return projectList?.projects?.filter(
-         (item) =>
-            customText(item?.name).includes(customText(nameText)) && item.priority === +priority
+      return projectList?.projects?.filter((item) =>
+         priority !== "all"
+            ? customText(item?.name).includes(customText(nameText)) && item.priority === +priority
+            : customText(item?.name).includes(customText(nameText))
       );
    }
 );

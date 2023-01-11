@@ -81,13 +81,10 @@ const Projects = () => {
    };
 
    const [priority, setPriority] = useState("all");
-   const handlePrioritys = (e) => {
-      dispatch(projectSclice.actions.filterPriority(priority));
-   };
 
    useEffect(() => {
-      setPriority("all");
-   }, []);
+      dispatch(projectSclice.actions.filterPriority(priority));
+   }, [priority]);
 
    return (
       <div className="page-wrapper">
@@ -142,11 +139,9 @@ const Projects = () => {
                      <select
                         value={priority}
                         className="form-control"
-                        onChange={(e) => {
-                           handlePrioritys(e), setPriority(e.target.value);
-                        }}
+                        onChange={(e) => setPriority(e.target.value)}
                      >
-                        <option value={"all"}>Chọn độ ưu tiên</option>
+                        <option value={"all"}>Tất cả</option>
                         {prioritys.map((item) => (
                            <option key={item.value} value={item.value}>
                               {item.label}
