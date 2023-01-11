@@ -144,7 +144,7 @@ const Sidebar = (props) => {
                                     Phiếu lương
                                  </Link>
                               </li>
-                              <li>
+                              {/* <li>
                                  <Link
                                     onClick={() => localStorage.setItem("minheight", "true")}
                                     to="/tasks/tasks"
@@ -159,7 +159,7 @@ const Sidebar = (props) => {
                                  >
                                     Task Board
                                  </Link>
-                              </li>
+                              </li> */}
                            </ul>
                         ) : (
                            ""
