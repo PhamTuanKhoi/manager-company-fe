@@ -33,4 +33,8 @@ export const payslipAPI = {
    async updatePayslip(id, payload) {
       return await axios.patch(path + id, payload);
    },
+
+   async remove(id) {
+      return await axios.delete(path + id);
+   },
 };

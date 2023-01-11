@@ -137,6 +137,23 @@ export const updatePayslip = createAsyncThunk(
    }
 );
 
+export const removePayslip = createAsyncThunk(
+   "paySlip/removePayslip",
+   async ({ id, toast, onHide, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await payslipAPI.remove(id);
+         onHide();
+         toast.success(`Xóa phiếu lương thành công`);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const payslipSclice = createSlice({
    name: "payslip",
    initialState: {
@@ -155,7 +172,6 @@ const payslipSclice = createSlice({
          state.loading = true;
       },
       [createPayslip.fulfilled]: (state, action) => {
-         console.log(action.payload);
          state.loading = false;
          state.payslip = action.payload;
          state.payslips.push(action.payload);
@@ -261,6 +277,26 @@ const payslipSclice = createSlice({
          }
       },
       [updatePayslip.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // remove payslip
+      [removePayslip.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [removePayslip.fulfilled]: (state, action) => {
+         state.loading = false;
+
+         const {
+            arg: { id },
+         } = action.meta;
+
+         if (id) {
+            state.payslips = state.payslips.filter((item) => item._id !== id);
+         }
+      },
+      [removePayslip.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

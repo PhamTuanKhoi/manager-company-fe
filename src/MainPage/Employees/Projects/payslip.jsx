@@ -17,8 +17,11 @@ import {
 import moment from "moment";
 import { UserRoleType } from "../../../constant";
 import { useLoading } from "../../../hook/useLoading";
+import DeletePayslip from "../../../_components/modelbox/DeletePayslip";
 
 const Payslip = () => {
+   const [payslip, setPayslip] = useState({});
+   const [modalDelete, setModalDelete] = useState(false);
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
    const { user } = useSelector((state) => state.auth);
@@ -88,7 +91,14 @@ const Payslip = () => {
                   >
                      <i className="fa fa-pencil m-r-5" /> Sửa
                   </a>
-                  <a className="dropdown-item" href="#">
+                  <a
+                     className="dropdown-item"
+                     href="#"
+                     onClick={() => {
+                        setPayslip(record);
+                        setModalDelete(true);
+                     }}
+                  >
                      <i className="fa fa-trash-o m-r-5" /> Xóa
                   </a>
                </div>
@@ -143,6 +153,7 @@ const Payslip = () => {
             </div>
          </div>
          {/* /Page Content */}
+         <DeletePayslip show={modalDelete} onHide={() => setModalDelete(false)} project={payslip} />
       </div>
    );
 };
