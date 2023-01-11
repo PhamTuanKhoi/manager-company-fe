@@ -195,7 +195,7 @@ const Users = () => {
                         className="form-control floating"
                         onChange={(e) => setTextField(e.target.value)}
                      />
-                     <label className="focus-label"> Họ tên</label>
+                     <label className="focus-label">Lĩnh vực</label>
                   </div>
                </div>
             </div>

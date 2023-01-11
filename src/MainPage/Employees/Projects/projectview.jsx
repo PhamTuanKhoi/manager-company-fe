@@ -475,16 +475,8 @@ const ProjectView = () => {
                   )}
                   <div className="card project-user">
                      <div className="card-body">
-                        <h6 className="card-title m-b-20">
-                           Khách hàng{" "}
-                           <button
-                              type="button"
-                              className="float-end btn btn-primary btn-sm"
-                              data-bs-toggle="modal"
-                              data-bs-target="#assign_leader"
-                           >
-                              <i className="fa fa-plus" /> Thêm
-                           </button>
+                        <h6 className="card-title m-b-5 worker-name text-center text-primary">
+                           <i className="la la-users" /> Khách hàng{" "}
                         </h6>
                         <ul className="list-box">
                            {project?.clientEX?.map((item) => (
@@ -506,22 +498,10 @@ const ProjectView = () => {
                               </li>
                            ))}
                         </ul>
-                     </div>
-                  </div>
-
-                  {/* lead */}
-                  <div className="card project-user">
-                     <div className="card-body">
-                        <h6 className="card-title m-b-20">
-                           Leader{" "}
-                           <button
-                              type="button"
-                              className="float-end btn btn-primary btn-sm"
-                              data-bs-toggle="modal"
-                              data-bs-target="#assign_leader"
-                           >
-                              <i className="fa fa-plus" /> Thay đổi
-                           </button>
+                        <br />
+                        {/* lead */}
+                        <h6 className="card-title m-b-5 worker-name text-center text-primary">
+                           <i className="la la-users" /> Leader{" "}
                         </h6>
                         <ul className="list-box">
                            <li>
@@ -538,28 +518,18 @@ const ProjectView = () => {
                                        </span>
                                        <div className="clearfix" />
                                        <span className="message-content">
-                                          {project?.leader?.department}
+                                          {project?.leaderEX?.department}
                                        </span>
                                     </div>
                                  </div>
                               </Link>
                            </li>
                         </ul>
-                     </div>
-                  </div>
-                  {/* nhan vien */}
-                  <div className="card project-user">
-                     <div className="card-body">
-                        <h6 className="card-title m-b-20">
-                           Nhân viên
-                           <button
-                              type="button"
-                              className="float-end btn btn-primary btn-sm"
-                              data-bs-toggle="modal"
-                              data-bs-target="#assign_leader"
-                           >
-                              <i className="fa fa-plus" /> Thêm
-                           </button>
+                        <br />
+
+                        {/* nhan vien */}
+                        <h6 className="card-title m-b-5 worker-name text-center text-primary">
+                           <i className="la la-users" /> Nhân viên
                         </h6>
                         <ul className="list-box">
                            {project?.teamEX?.map((item) => (
@@ -599,6 +569,7 @@ const ProjectView = () => {
                         </ul>
                      </div>
                   </div>
+
                   <div className="card project-user">
                      <div className="card-body">
                         <h6 className="card-title m-b-20 worker-name">
