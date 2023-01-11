@@ -144,10 +144,21 @@ export const removeWorker = createAsyncThunk(
 const workerSclice = createSlice({
    name: "worker",
    initialState: {
+      searchName: "",
+      searchField: "",
       worker: {},
       workers: [],
       error: "",
       loading: false,
+   },
+   reducers: {
+      searchName: (state, action) => {
+         state.searchName = action.payload;
+      },
+
+      searchField: (state, action) => {
+         state.searchField = action.payload;
+      },
    },
    extraReducers: {
       [createWorker.pending]: (state, action) => {

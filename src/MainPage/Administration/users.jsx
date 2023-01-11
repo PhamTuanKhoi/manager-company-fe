@@ -12,7 +12,7 @@ import { itemRender, onShowSizeChange } from "../paginationfunction";
 import "../antdstyle.css";
 import Adduser from "../../_components/modelbox/Adduser";
 import { useDispatch } from "react-redux";
-import {
+import workerSclice, {
    listWorker,
    listWorkerByClient,
    listWorkerByEmployees,
@@ -22,6 +22,7 @@ import moment from "moment";
 import { useLoading } from "../../hook/useLoading";
 import { avartarFAKE, UserRoleType } from "../../constant/index";
 import DeleteUser from "../../_components/modelbox/DeleteUser";
+import { workerRemainingSelector } from "../../redux/selectors/workerSelector";
 
 const Users = () => {
    const dispatch = useDispatch();
@@ -55,7 +56,15 @@ const Users = () => {
       }
    }, [user]);
 
-   const { workers } = useSelector((state) => state.worker);
+   const workers = useSelector(workerRemainingSelector);
+
+   const [textName, setTextName] = useState("");
+   const [textField, setTextField] = useState("");
+
+   useEffect(() => {
+      dispatch(workerSclice.actions.searchName(textName));
+      dispatch(workerSclice.actions.searchField(textField));
+   }, [textName, textField]);
 
    const columns = [
       {
@@ -171,26 +180,23 @@ const Users = () => {
             <div className="row filter-row">
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus">
-                     <input type="text" className="form-control floating" />
+                     <input
+                        type="text"
+                        className="form-control floating"
+                        onChange={(e) => setTextName(e.target.value)}
+                     />
                      <label className="focus-label"> Họ tên</label>
                   </div>
                </div>
                <div className="col-sm-6 col-md-3">
-                  <div className="form-group form-focus select-focus">
-                     <select className="select floating">
-                        {/* <option>Select Company</option>
-                        <option>Global Technologies</option>
-                        <option>Delta Infotech</option> */}
-                     </select>
-                     <label className="focus-label"> Công ty</label>
+                  <div className="form-group form-focus">
+                     <input
+                        type="text"
+                        className="form-control floating"
+                        onChange={(e) => setTextField(e.target.value)}
+                     />
+                     <label className="focus-label"> Họ tên</label>
                   </div>
-               </div>
-
-               <div className="col-sm-6 col-md-3">
-                  <a href="#" className="btn btn-success btn-block w-100">
-                     {" "}
-                     Tìm kiếm{" "}
-                  </a>
                </div>
             </div>
             {/* /Search Filter */}
