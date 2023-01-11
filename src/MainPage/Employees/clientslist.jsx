@@ -10,15 +10,36 @@ import "../antdstyle.css";
 import { useSelector } from "react-redux";
 import AddClient from "../../_components/modelbox/AddClient";
 import DeleteUser from "../../_components/modelbox/DeleteUser";
+import { clientRemainingSelector } from "../../redux/selectors/clientSelector";
+import clientSclice from "../../redux/feature/clientSclice";
+import { useDispatch } from "react-redux";
 
 const Clients = () => {
-   const { clients } = useSelector((state) => state.client);
    const [show, setShow] = useState(false);
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
    const [render, setRender] = useState(0);
    const [EditClient, setEditClient] = useState({});
    const [modalDelete, setModalDelete] = useState(false);
+   const [text, setText] = useState("");
+   const [company, setCompany] = useState("all");
+   const [optionCompany, setOptionCompany] = useState([]);
+   const dispatch = useDispatch();
+
+   const clients = useSelector(clientRemainingSelector);
+   const state = useSelector((state) => state.client);
+
+   useEffect(() => {
+      let opition = state.clients?.map((item) => {
+         return { value: item._id, label: item.company };
+      });
+      setOptionCompany(opition);
+   }, [state]);
+
+   useEffect(() => {
+      dispatch(clientSclice.actions.searchNameClient(text));
+      dispatch(clientSclice.actions.filterCompany(company));
+   }, [text, company]);
 
    useEffect(() => {
       if ($(".select").length > 0) {
@@ -147,31 +168,31 @@ const Clients = () => {
             <div className="row filter-row">
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus">
-                     <input type="text" className="form-control floating" />
-                     <label className="focus-label">ID khách hàng</label>
-                  </div>
-               </div>
-               <div className="col-sm-6 col-md-3">
-                  <div className="form-group form-focus">
-                     <input type="text" className="form-control floating" />
+                     <input
+                        type="text"
+                        className="form-control floating"
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                     />
                      <label className="focus-label">Tên khách hàng</label>
                   </div>
                </div>
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus select-focus">
-                     <select className="select floating">
-                        {/* <option>Select Company</option>
-                        <option>Global Technologies</option>
-                        <option>Delta Infotech</option> */}
+                     <select
+                        className="form-control floating"
+                        value={company}
+                        onChange={(e) => setCompany(e.target.value)}
+                     >
+                        <option value={"all"}>Tất cả</option>
+                        {optionCompany?.map((item) => (
+                           <option key={item.value} value={item?.value}>
+                              {item?.label}
+                           </option>
+                        ))}
                      </select>
                      <label className="focus-label"> Công ty</label>
                   </div>
-               </div>
-               <div className="col-sm-6 col-md-3">
-                  <a href="#" className="btn btn-success btn-block w-100">
-                     {" "}
-                     Tìm kiếm{" "}
-                  </a>
                </div>
             </div>
             {/* Search Filter */}

@@ -114,10 +114,21 @@ export const clientProfile = createAsyncThunk(
 const clientSclice = createSlice({
    name: "client",
    initialState: {
+      searchName: "",
+      filterCompany: "",
       client: {},
       clients: [],
       error: "",
       loading: false,
+   },
+   reducers: {
+      searchNameClient: (state, action) => {
+         state.searchName = action.payload;
+      },
+
+      filterCompany: (state, action) => {
+         state.filterCompany = action.payload;
+      },
    },
    extraReducers: {
       [createClient.pending]: (state, action) => {
