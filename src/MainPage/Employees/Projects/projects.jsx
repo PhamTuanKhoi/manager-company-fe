@@ -26,7 +26,7 @@ import projectSclice, {
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { useLoading } from "../../../hook/useLoading";
-import { UserRoleType } from "../../../constant";
+import { prioritys, UserRoleType } from "../../../constant";
 import { toast } from "react-toastify";
 import DeleteProject from "../../../_components/modelbox/DeleteProject";
 import { listEmployees } from "../../../redux/feature/employeesSclice";
@@ -80,6 +80,15 @@ const Projects = () => {
       dispatch(projectSclice.actions.searchNameProject(e.target.value));
    };
 
+   const [priority, setPriority] = useState("all");
+   const handlePrioritys = (e) => {
+      dispatch(projectSclice.actions.filterPriority(priority));
+   };
+
+   useEffect(() => {
+      setPriority("all");
+   }, []);
+
    return (
       <div className="page-wrapper">
          <Helmet>
@@ -127,18 +136,25 @@ const Projects = () => {
                      <label className="focus-label">Tên dự án</label>
                   </div>
                </div>
-               <div className="col-sm-6 col-md-3">
-                  <div className="form-group form-focus">
-                     <input type="text" className="form-control floating" />
-                     <label className="focus-label">Tên nhân viên</label>
-                  </div>
-               </div>
 
                <div className="col-sm-6 col-md-3">
-                  <a href="#" className="btn btn-success btn-block w-100">
-                     {" "}
-                     Tìm kiếm{" "}
-                  </a>
+                  <div className="form-group form-focus select-focus">
+                     <select
+                        value={priority}
+                        className="form-control"
+                        onChange={(e) => {
+                           handlePrioritys(e), setPriority(e.target.value);
+                        }}
+                     >
+                        <option value={"all"}>Chọn độ ưu tiên</option>
+                        {prioritys.map((item) => (
+                           <option key={item.value} value={item.value}>
+                              {item.label}
+                           </option>
+                        ))}
+                     </select>
+                     <label className="focus-label">Độ ưu tiên</label>
+                  </div>
                </div>
             </div>
             {/* Search Filter */}

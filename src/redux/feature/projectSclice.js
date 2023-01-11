@@ -188,6 +188,7 @@ const projectSclice = createSlice({
    name: "project",
    initialState: {
       searchName: "",
+      filterPriority: "",
       project: {},
       projects: [],
       error: "",
@@ -199,6 +200,9 @@ const projectSclice = createSlice({
       },
       searchNameProject: (state, action) => {
          state.searchName = action.payload;
+      },
+      filterPriority: (state, action) => {
+         state.filterPriority = action.payload;
       },
    },
    extraReducers: {
