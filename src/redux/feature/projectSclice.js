@@ -187,6 +187,7 @@ export const deleteProject = createAsyncThunk(
 const projectSclice = createSlice({
    name: "project",
    initialState: {
+      searchName: "",
       project: {},
       projects: [],
       error: "",
@@ -195,6 +196,9 @@ const projectSclice = createSlice({
    reducers: {
       projectDetail: (state, action) => {
          state.project = state.projects.find((item) => item._id === action.payload);
+      },
+      searchNameProject: (state, action) => {
+         state.searchName = action.payload;
       },
    },
    extraReducers: {

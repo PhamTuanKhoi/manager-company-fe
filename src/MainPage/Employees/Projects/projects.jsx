@@ -17,7 +17,7 @@ import {
 
 import Addproject from "../../../_components/modelbox/Addproject";
 import { useDispatch } from "react-redux";
-import {
+import projectSclice, {
    listProjectByAdmin,
    listProjectByClient,
    listProjectByEmployees,
@@ -30,6 +30,7 @@ import { UserRoleType } from "../../../constant";
 import { toast } from "react-toastify";
 import DeleteProject from "../../../_components/modelbox/DeleteProject";
 import { listEmployees } from "../../../redux/feature/employeesSclice";
+import { projectsRemainingSelector } from "../../../redux/selectors/projectSelector";
 const Projects = () => {
    const [modalShow, setModalShow] = useState(false);
    const [modalDelete, setModalDelete] = useState(false);
@@ -46,7 +47,8 @@ const Projects = () => {
    const { setLoading } = useLoading();
    const dispatch = useDispatch();
 
-   const { projects } = useSelector((state) => state.project);
+   const projects = useSelector(projectsRemainingSelector);
+
    const { user } = useSelector((state) => state.auth);
 
    useEffect(() => {
@@ -72,6 +74,10 @@ const Projects = () => {
       if (user.role === UserRoleType.WORKER) {
          dispatch(listProjectByWorker({ id: user._id, setLoading }));
       }
+   };
+
+   const handleSearchName = (e) => {
+      dispatch(projectSclice.actions.searchNameProject(e.target.value));
    };
 
    return (
@@ -113,7 +119,11 @@ const Projects = () => {
             <div className="row filter-row">
                <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus">
-                     <input type="text" className="form-control floating" />
+                     <input
+                        type="text"
+                        className="form-control floating"
+                        onChange={handleSearchName}
+                     />
                      <label className="focus-label">Tên dự án</label>
                   </div>
                </div>

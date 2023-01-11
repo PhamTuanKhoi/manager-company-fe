@@ -57,6 +57,7 @@ const LinkProject = ({ show, onHide }) => {
                   <ul className="chat-user-list">
                      {payslips?.map(
                         (item) =>
+                           project?.payslip?.length > 0 &&
                            project?.payslip[0]?._id !== item._id && (
                               <li key={item?._id}>
                                  <div className="media import-content">

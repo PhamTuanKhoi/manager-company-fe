@@ -5,6 +5,15 @@ export const emailrgx =
 // export const phonergx = /^[a-zA-Z0-9_ .-]*$/;
 export const phonergx = /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/;
 
+export var customText = (str) => {
+   return str
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/đ/g, "d")
+      .replace(/Đ/g, "D");
+};
+
 export const avartarFAKE = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
 export const EmployeeDepartmentType = {
