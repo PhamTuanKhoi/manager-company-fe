@@ -36,6 +36,8 @@ const Projects = () => {
    const [modalDelete, setModalDelete] = useState(false);
    const [render, setRender] = useState(0);
    const [projectData, setProjectData] = useState({});
+   const [priority, setPriority] = useState("all");
+   const [text, setText] = useState("");
    const onImageUpload = (fileList) => {
       const reader = new FileReader();
       // reader.onloadend = () => {
@@ -76,15 +78,11 @@ const Projects = () => {
       }
    };
 
-   const handleSearchName = (e) => {
-      dispatch(projectSclice.actions.searchNameProject(e.target.value));
-   };
-
-   const [priority, setPriority] = useState("all");
-
+   // filter search
    useEffect(() => {
+      dispatch(projectSclice.actions.searchNameProject(text));
       dispatch(projectSclice.actions.filterPriority(priority));
-   }, [priority]);
+   }, [priority, text]);
 
    return (
       <div className="page-wrapper">
@@ -128,7 +126,7 @@ const Projects = () => {
                      <input
                         type="text"
                         className="form-control floating"
-                        onChange={handleSearchName}
+                        onChange={(e) => setText(e.target.value)}
                      />
                      <label className="focus-label">Tên dự án</label>
                   </div>
