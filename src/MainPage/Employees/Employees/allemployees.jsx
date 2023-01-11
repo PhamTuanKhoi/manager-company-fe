@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import { avartarFAKE } from "../../../constant/index";
+import { avartarFAKE, EmployeeDepartmentOpition } from "../../../constant/index";
 import Addemployee from "../../../_components/modelbox/Addemployee";
 import Editemployee from "../../../_components/modelbox/Editemployee";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import Header from "../../../initialpage/Sidebar/header";
 import { useDispatch } from "react-redux";
-import {
+import employeesSclice, {
    listEmployees,
    listEmployeesByClient,
    listEmployeesByWorker,
@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { EmployeeDepartmentType, UserRoleType } from "../../../constant";
 import { useLoading } from "../../../hook/useLoading";
 import DeleteUser from "../../../_components/modelbox/DeleteUser";
+import { employeesRemainingSelector } from "../../../redux/selectors/employeesSelector";
 
 const AllEmployees = () => {
    const [menu, setMenu] = useState(false);
@@ -38,7 +39,7 @@ const AllEmployees = () => {
       }
    });
 
-   const { employees } = useSelector((state) => state.employees);
+   const employees = useSelector(employeesRemainingSelector);
    const { user } = useSelector((state) => state.auth);
 
    useEffect(() => {
@@ -58,6 +59,14 @@ const AllEmployees = () => {
          dispatch(listEmployeesByWorker({ id: user._id, setLoading }));
       }
    }
+   const [text, setText] = useState("");
+
+   const [department, setDepartment] = useState("all");
+
+   useEffect(() => {
+      dispatch(employeesSclice.actions.searchNameEmployees(text));
+      dispatch(employeesSclice.actions.filterDepartment(department));
+   }, [text, department]);
 
    return (
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -105,33 +114,31 @@ const AllEmployees = () => {
                <div className="row filter-row">
                   <div className="col-sm-6 col-md-3">
                      <div className="form-group form-focus">
-                        <input type="text" className="form-control floating" />
-                        <label className="focus-label">ID nhân viên</label>
-                     </div>
-                  </div>
-                  <div className="col-sm-6 col-md-3">
-                     <div className="form-group form-focus">
-                        <input type="text" className="form-control floating" />
+                        <input
+                           type="text"
+                           className="form-control floating"
+                           value={text}
+                           onChange={(e) => setText(e.target.value)}
+                        />
                         <label className="focus-label">Tên nhân viên</label>
                      </div>
                   </div>
                   <div className="col-sm-6 col-md-3">
                      <div className="form-group form-focus select-focus">
-                        <select className="select floating">
-                           {/* <option>Select Designation</option>
-                           <option>Web Developer</option>
-                           <option>Web Designer</option>
-                           <option>Android Developer</option>
-                           <option>Ios Developer</option> */}
+                        <select
+                           className="form-control floating"
+                           value={department}
+                           onChange={(e) => setDepartment(e.target.value)}
+                        >
+                           <option value={"all"}>Tất cả</option>
+                           {EmployeeDepartmentOpition?.map((item) => (
+                              <option key={item?.label} value={item?.value}>
+                                 {item?.label}
+                              </option>
+                           ))}
                         </select>
                         <label className="focus-label">Vị trí</label>
                      </div>
-                  </div>
-                  <div className="col-sm-6 col-md-3">
-                     <a href="#" className="btn btn-success btn-block w-100">
-                        {" "}
-                        Tìm kiếm{" "}
-                     </a>
                   </div>
                </div>
                {/* Search Filter */}

@@ -129,10 +129,21 @@ export const employeesProfile = createAsyncThunk(
 const employeesSclice = createSlice({
    name: "employees",
    initialState: {
+      searchName: "",
+      filterDepartment: "all",
       employee: {},
       employees: [],
       error: "",
       loading: false,
+   },
+   reducers: {
+      searchNameEmployees: (state, action) => {
+         state.searchName = action.payload;
+      },
+
+      filterDepartment: (state, action) => {
+         state.filterDepartment = action.payload;
+      },
    },
    extraReducers: {
       [createEmployees.pending]: (state, action) => {

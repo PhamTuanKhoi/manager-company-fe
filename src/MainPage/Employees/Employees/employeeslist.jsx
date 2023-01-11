@@ -11,9 +11,12 @@ import Addemployee from "../../../_components/modelbox/Addemployee";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import { useSelector } from "react-redux";
-import { EmployeeDepartmentType } from "../../../constant";
+import { EmployeeDepartmentOpition, EmployeeDepartmentType } from "../../../constant";
 import moment from "moment";
 import DeleteUser from "../../../_components/modelbox/DeleteUser";
+import employeesSclice from "../../../redux/feature/employeesSclice";
+import { employeesRemainingSelector } from "../../../redux/selectors/employeesSelector";
+import { useDispatch } from "react-redux";
 
 const Employeeslist = () => {
    const [menu, setMenu] = useState(false);
@@ -21,6 +24,9 @@ const Employeeslist = () => {
    const [employee, setEmployee] = useState({});
    const [render, setRender] = useState(0);
    const [modalDelete, setModalDelete] = useState(false);
+   const [text, setText] = useState("");
+   const [department, setDepartment] = useState("all");
+   const dispatch = useDispatch();
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -35,7 +41,12 @@ const Employeeslist = () => {
       }
    });
 
-   const { employees } = useSelector((state) => state.employees);
+   const employees = useSelector(employeesRemainingSelector);
+
+   useEffect(() => {
+      dispatch(employeesSclice.actions.searchNameEmployees(text));
+      dispatch(employeesSclice.actions.filterDepartment(department));
+   }, [text, department]);
 
    const columns = [
       {
@@ -187,33 +198,31 @@ const Employeeslist = () => {
                <div className="row filter-row">
                   <div className="col-sm-6 col-md-3">
                      <div className="form-group form-focus">
-                        <input type="text" className="form-control floating" />
-                        <label className="focus-label">ID nhân viên</label>
-                     </div>
-                  </div>
-                  <div className="col-sm-6 col-md-3">
-                     <div className="form-group form-focus">
-                        <input type="text" className="form-control floating" />
+                        <input
+                           type="text"
+                           className="form-control floating"
+                           value={text}
+                           onChange={(e) => setText(e.target.value)}
+                        />
                         <label className="focus-label">Tên nhân viên</label>
                      </div>
                   </div>
                   <div className="col-sm-6 col-md-3">
                      <div className="form-group form-focus select-focus">
-                        <select className="select floating">
-                           {/* <option>Select Designation</option>
-                           <option>Web Developer</option>
-                           <option>Web Designer</option>
-                           <option>Android Developer</option>
-                           <option>Ios Developer</option> */}
+                        <select
+                           className="form-control floating"
+                           value={department}
+                           onChange={(e) => setDepartment(e.target.value)}
+                        >
+                           <option value={"all"}>Tất cả</option>
+                           {EmployeeDepartmentOpition?.map((item) => (
+                              <option key={item?.label} value={item?.value}>
+                                 {item?.label}
+                              </option>
+                           ))}
                         </select>
                         <label className="focus-label">Vị trí</label>
                      </div>
-                  </div>
-                  <div className="col-sm-6 col-md-3">
-                     <a href="#" className="btn btn-success btn-block w-100">
-                        {" "}
-                        Tìm kiếm{" "}
-                     </a>
                   </div>
                </div>
                {/* /Search Filter */}

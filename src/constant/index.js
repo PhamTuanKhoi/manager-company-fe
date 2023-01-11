@@ -23,6 +23,25 @@ export const EmployeeDepartmentType = {
    ACCOUNTANT: "accountant",
 };
 
+export const EmployeeDepartmentOpition = [
+   {
+      value: EmployeeDepartmentType.ACCOUNTANT,
+      label: "Kế toán",
+   },
+   {
+      value: EmployeeDepartmentType.MARKETING,
+      label: "Marketing",
+   },
+   {
+      value: EmployeeDepartmentType.RECRUIT,
+      label: "Tuyển dụng",
+   },
+   {
+      value: EmployeeDepartmentType.BUSSINESS,
+      label: "Kinh doanh",
+   },
+];
+
 export const ProjectPriorityEnum = {
    LOW: 0,
    MEDIUM: 1,
