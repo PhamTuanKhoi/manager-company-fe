@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AssignPerson from "./assignPerson";
+import AssignPerson from "./AssignPerson";
 
 const ActionTask = ({ item }) => {
    const [modalPerson, setModalPerson] = useState(false);
