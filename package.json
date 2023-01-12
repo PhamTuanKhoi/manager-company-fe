@@ -67,7 +67,7 @@
     "react-popper": "^2.2.3",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^5.0.1",
     "react-scrollspy-nav": "^1.2.4",
     "react-select": "^5.7.0",
     "react-select2-wrapper": "^1.0.4-beta6",
