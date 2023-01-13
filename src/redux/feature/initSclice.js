@@ -17,10 +17,26 @@ export const initUser = createAsyncThunk(
    }
 );
 
+export const workerProjectClient = createAsyncThunk(
+   "init/workerProjectClient",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.workerProjectClient(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const initSclice = createSlice({
    name: "init",
    initialState: {
       initUser: {},
+      notificationWorker: [],
       error: "",
       loading: false,
    },
@@ -34,6 +50,19 @@ const initSclice = createSlice({
          state.initUser = action.payload;
       },
       [initUser.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      //list
+      [workerProjectClient.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [workerProjectClient.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.notificationWorker = action.payload;
+      },
+      [workerProjectClient.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

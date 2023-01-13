@@ -1,7 +1,7 @@
 /**
  * App Header
  */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -18,6 +18,9 @@ import {
    Avatar_21,
 } from "../../Entryfile/imagepath";
 import authSclice from "../../redux/feature/authSclice";
+import { workerProjectClient } from "../../redux/feature/initSclice";
+import { useLoading } from "../../hook/useLoading";
+import moment from "moment";
 
 const Header = (props) => {
    const handlesidebar = () => {
@@ -36,6 +39,13 @@ const Header = (props) => {
    };
 
    const { user } = useSelector((state) => state.auth);
+
+   const { setLoading } = useLoading();
+
+   const { notificationWorker } = useSelector((state) => state.init);
+   useEffect(() => {
+      dispatch(workerProjectClient({ query: { id: user._id }, setLoading }));
+   }, [user]);
 
    return (
       <div className="header" style={{ right: "0px" }}>
@@ -113,122 +123,32 @@ const Header = (props) => {
                   </div>
                   <div className="noti-content">
                      <ul className="notification-list">
-                        <li className="notification-message">
-                           <Link
-                              onClick={() => localStorage.setItem("minheight", "true")}
-                              to="/app/administrator/activities"
-                           >
-                              <div className="media">
-                                 <span className="avatar">
-                                    <img alt="" src={Avatar_02} />
-                                 </span>
-                                 <div className="media-body">
-                                    <p className="noti-details">
-                                       <span className="noti-title">John Doe</span> added new task{" "}
-                                       <span className="noti-title">
-                                          Patient appointment booking
-                                       </span>
-                                    </p>
-                                    <p className="noti-time">
-                                       <span className="notification-time">4 mins ago</span>
-                                    </p>
+                        {notificationWorker?.map((item) => (
+                           <li className="notification-message" key={item?._id}>
+                              <Link
+                                 onClick={() => localStorage.setItem("minheight", "true")}
+                                 to="/app/administrator/activities"
+                              >
+                                 <div className="media" style={{ display: "flex" }}>
+                                    <span className="avatar">
+                                       <img alt="" src={Avatar_02} />
+                                    </span>
+                                    <div className="media-body">
+                                       <p className="noti-details">
+                                          <span className="noti-title">{item?.name}</span> đã tham
+                                          gia dự án{" "}
+                                          <span className="noti-title">{item?.project}</span>
+                                       </p>
+                                       <p className="noti-time">
+                                          <span className="notification-time">
+                                             {moment(item?.joindate).format("DD/MM/YYYY HH:mm A")}
+                                          </span>
+                                       </p>
+                                    </div>
                                  </div>
-                              </div>
-                           </Link>
-                        </li>
-                        <li className="notification-message">
-                           <Link
-                              onClick={() => localStorage.setItem("minheight", "true")}
-                              to="/app/administrator/activities"
-                           >
-                              <div className="media">
-                                 <span className="avatar">
-                                    <img alt="" src={Avatar_03} />
-                                 </span>
-                                 <div className="media-body">
-                                    <p className="noti-details">
-                                       <span className="noti-title">Tarah Shropshire</span> changed
-                                       the task name{" "}
-                                       <span className="noti-title">
-                                          Appointment booking with payment gateway
-                                       </span>
-                                    </p>
-                                    <p className="noti-time">
-                                       <span className="notification-time">6 mins ago</span>
-                                    </p>
-                                 </div>
-                              </div>
-                           </Link>
-                        </li>
-                        <li className="notification-message">
-                           <Link
-                              onClick={() => localStorage.setItem("minheight", "true")}
-                              to="/app/administrator/activities"
-                           >
-                              <div className="media">
-                                 <span className="avatar">
-                                    <img alt="" src={Avatar_06} />
-                                 </span>
-                                 <div className="media-body">
-                                    <p className="noti-details">
-                                       <span className="noti-title">Misty Tison</span> added{" "}
-                                       <span className="noti-title">Domenic Houston</span> and{" "}
-                                       <span className="noti-title">Claire Mapes</span> to project{" "}
-                                       <span className="noti-title">Doctor available module</span>
-                                    </p>
-                                    <p className="noti-time">
-                                       <span className="notification-time">8 mins ago</span>
-                                    </p>
-                                 </div>
-                              </div>
-                           </Link>
-                        </li>
-                        <li className="notification-message">
-                           <Link
-                              onClick={() => localStorage.setItem("minheight", "true")}
-                              to="/app/administrator/activities"
-                           >
-                              <div className="media">
-                                 <span className="avatar">
-                                    <img alt="" src={Avatar_17} />
-                                 </span>
-                                 <div className="media-body">
-                                    <p className="noti-details">
-                                       <span className="noti-title">Rolland Webber</span> completed
-                                       task{" "}
-                                       <span className="noti-title">
-                                          Patient and Doctor video conferencing
-                                       </span>
-                                    </p>
-                                    <p className="noti-time">
-                                       <span className="notification-time">12 mins ago</span>
-                                    </p>
-                                 </div>
-                              </div>
-                           </Link>
-                        </li>
-                        <li className="notification-message">
-                           <Link
-                              onClick={() => localStorage.setItem("minheight", "true")}
-                              to="/app/administrator/activities"
-                           >
-                              <div className="media">
-                                 <span className="avatar">
-                                    <img alt="" src={Avatar_13} />
-                                 </span>
-                                 <div className="media-body">
-                                    <p className="noti-details">
-                                       <span className="noti-title">Bernardo Galaviz</span> added
-                                       new task{" "}
-                                       <span className="noti-title">Private chat module</span>
-                                    </p>
-                                    <p className="noti-time">
-                                       <span className="notification-time">2 days ago</span>
-                                    </p>
-                                 </div>
-                              </div>
-                           </Link>
-                        </li>
+                              </Link>
+                           </li>
+                        ))}
                      </ul>
                   </div>
                   <div className="topnav-dropdown-footer">

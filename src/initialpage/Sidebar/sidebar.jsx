@@ -10,24 +10,14 @@ import { UserRoleType } from "../../constant";
 
 const Sidebar = (props) => {
    const [isSideMenu, setSideMenu] = useState("");
-   const [level2Menu, setLevel2Menu] = useState("");
-   const [level3Menu, setLevel3Menu] = useState("");
-
-   const toggleSidebar = (value) => {
-      // console.log(value);
-      setSideMenu(value);
-   };
-
-   const toggleLvelTwo = (value) => {
-      setLevel2Menu(value);
-   };
-   const toggleLevelThree = (value) => {
-      setLevel3Menu(value);
-   };
-
    let pathname = props.location.pathname;
 
    const { user } = useSelector((state) => state.auth);
+
+   const toggleSidebar = (value) => {
+      setSideMenu(value);
+   };
+
    return (
       <div className="sidebar" id="sidebar">
          <Scrollbars
