@@ -13,13 +13,10 @@ window.Popper = require("popper.js").default;
 
 configAxios();
 ReactDOM.render(
-   <Spinner>
-      <Provider store={store}>
-         <ToastContainer />
-         <Main />
-      </Provider>
-   </Spinner>,
-
+   <Provider store={store}>
+      <ToastContainer />
+      <Main />
+   </Provider>,
    document.getElementById("app")
 );
 

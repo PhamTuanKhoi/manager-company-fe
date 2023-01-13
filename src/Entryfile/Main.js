@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import App from "../initialpage/App";
-import config from "config";
+// import config from "config";
 import "bootstrap";
 
 import "bootstrap/dist/js/bootstrap.bundle";
@@ -31,7 +31,7 @@ import "../assets/css/custom.css";
 window.Popper = require("popper.js").default;
 
 const MainApp = () => (
-   <Router basename={`${config.publicPath}`}>
+   <Router>
       <Switch>
          <Route path="/" component={App} />
       </Switch>
