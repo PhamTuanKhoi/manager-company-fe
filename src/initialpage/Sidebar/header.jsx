@@ -6,19 +6,13 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
-import {
-   Avatar_02,
-   Avatar_03,
-   Avatar_05,
-   Avatar_08,
-   Avatar_09,
-   Avatar_21,
-} from "../../Entryfile/imagepath";
+import { Avatar_02, Avatar_09 } from "../../Entryfile/imagepath";
 import authSclice from "../../redux/feature/authSclice";
 import { workerProjectClient } from "../../redux/feature/initSclice";
 import { useLoading } from "../../hook/useLoading";
 import moment from "moment";
 import { avartarFAKE, logoFAKE } from "../../constant";
+import { useSocket } from "../../context/useSocket";
 import { notificationMessage } from "../../redux/feature/messageSclice";
 
 const Header = (props) => {
@@ -31,6 +25,8 @@ const Header = (props) => {
 
    let pathname = location.pathname;
 
+   const [messages, setMessages] = useState([]);
+   const { socket } = useSocket();
    const dispatch = useDispatch();
 
    const handleLogout = () => {
@@ -42,13 +38,35 @@ const Header = (props) => {
    const { setLoading } = useLoading();
 
    const { notificationWorker } = useSelector((state) => state.init);
-
    const { messageNotification } = useSelector((state) => state.message);
 
    useEffect(() => {
       dispatch(workerProjectClient({ query: { id: user._id }, setLoading }));
       dispatch(notificationMessage({ query: { id: user._id }, setLoading }));
    }, [user]);
+
+   useEffect(() => {
+      setMessages(messageNotification);
+   }, [messageNotification]);
+
+   // receive data
+   const listenMessage = (message) => {
+      if (message.from !== user._id) {
+         console.log(message);
+         setMessages(messages?.map((item) => (item.from === message.from ? message : item)));
+      }
+   };
+
+   useEffect(() => {
+      if (socket.id) {
+         socket?.on(`message`, listenMessage);
+
+         return () => {
+            socket?.off("message", listenMessage);
+         };
+      }
+   }, [listenMessage, socket]);
+   // receive data
 
    return (
       <div className="header" style={{ right: "0px" }}>
@@ -175,116 +193,30 @@ const Header = (props) => {
                   </div>
                   <div className="noti-content">
                      <ul className="notification-list">
-                        <li className="notification-message">
-                           <Link
-                              onClick={() => localStorage.setItem("minheight", "true")}
-                              to="/conversation/chat"
-                           >
-                              <div className="list-item">
-                                 <div className="list-left">
-                                    <span className="avatar">
-                                       <img alt="" src={Avatar_09} />
-                                    </span>
+                        {messages?.map((item) => (
+                           <li className="notification-message" key={item?.from}>
+                              <Link
+                                 onClick={() => localStorage.setItem("minheight", "true")}
+                                 to="/conversation/chat"
+                              >
+                                 <div className="list-item">
+                                    <div className="list-left">
+                                       <span className="avatar">
+                                          <img alt="" src={Avatar_09} />
+                                       </span>
+                                    </div>
+                                    <div className="list-body">
+                                       <span className="message-author">{item?.name} </span>
+                                       <div className="clearfix" />
+                                       <span className="message-content">{item?.message}</span>
+                                       <span className="message-time">
+                                          {moment(item?.createdAt).format("DD/MM/YYYY - HH:mm:ss")}
+                                       </span>
+                                    </div>
                                  </div>
-                                 <div className="list-body">
-                                    <span className="message-author">Richard Miles </span>
-                                    <span className="message-time">12:28 AM</span>
-                                    <div className="clearfix" />
-                                    <span className="message-content">
-                                       Lorem ipsum dolor sit amet, consectetur adipiscing
-                                    </span>
-                                 </div>
-                              </div>
-                           </Link>
-                        </li>
-                        <li className="notification-message">
-                           <Link
-                              onClick={() => localStorage.setItem("minheight", "true")}
-                              to="/conversation/chat"
-                           >
-                              <div className="list-item">
-                                 <div className="list-left">
-                                    <span className="avatar">
-                                       <img alt="" src={Avatar_02} />
-                                    </span>
-                                 </div>
-                                 <div className="list-body">
-                                    <span className="message-author">John Doe</span>
-                                    <span className="message-time">6 Mar</span>
-                                    <div className="clearfix" />
-                                    <span className="message-content">
-                                       Lorem ipsum dolor sit amet, consectetur adipiscing
-                                    </span>
-                                 </div>
-                              </div>
-                           </Link>
-                        </li>
-                        <li className="notification-message">
-                           <Link
-                              onClick={() => localStorage.setItem("minheight", "true")}
-                              to="/conversation/chat"
-                           >
-                              <div className="list-item">
-                                 <div className="list-left">
-                                    <span className="avatar">
-                                       <img alt="" src={Avatar_03} />
-                                    </span>
-                                 </div>
-                                 <div className="list-body">
-                                    <span className="message-author"> Tarah Shropshire </span>
-                                    <span className="message-time">5 Mar</span>
-                                    <div className="clearfix" />
-                                    <span className="message-content">
-                                       Lorem ipsum dolor sit amet, consectetur adipiscing
-                                    </span>
-                                 </div>
-                              </div>
-                           </Link>
-                        </li>
-                        <li className="notification-message">
-                           <Link
-                              onClick={() => localStorage.setItem("minheight", "true")}
-                              to="/conversation/chat"
-                           >
-                              <div className="list-item">
-                                 <div className="list-left">
-                                    <span className="avatar">
-                                       <img alt="" src={Avatar_05} />
-                                    </span>
-                                 </div>
-                                 <div className="list-body">
-                                    <span className="message-author">Mike Litorus</span>
-                                    <span className="message-time">3 Mar</span>
-                                    <div className="clearfix" />
-                                    <span className="message-content">
-                                       Lorem ipsum dolor sit amet, consectetur adipiscing
-                                    </span>
-                                 </div>
-                              </div>
-                           </Link>
-                        </li>
-                        <li className="notification-message">
-                           <Link
-                              onClick={() => localStorage.setItem("minheight", "true")}
-                              to="/conversation/chat"
-                           >
-                              <div className="list-item">
-                                 <div className="list-left">
-                                    <span className="avatar">
-                                       <img alt="" src={Avatar_08} />
-                                    </span>
-                                 </div>
-                                 <div className="list-body">
-                                    <span className="message-author"> Catherine Manseau </span>
-                                    <span className="message-time">27 Feb</span>
-                                    <div className="clearfix" />
-                                    <span className="message-content">
-                                       Lorem ipsum dolor sit amet, consectetur adipiscing
-                                    </span>
-                                 </div>
-                              </div>
-                           </Link>
-                        </li>
+                              </Link>
+                           </li>
+                        ))}
                      </ul>
                   </div>
                   <div className="topnav-dropdown-footer">

@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { useRef } from "react";
 import { listMessage } from "../../../redux/feature/messageSclice";
+import { useSocket } from "../../../context/useSocket";
 // import Chatsidebar from "../../../initialpage/Sidebar/chatsidebar";
 
 const Chat = () => {
@@ -41,7 +42,7 @@ const Chat = () => {
    const dispatch = useDispatch();
    const [text, setText] = useState("");
    const [messages, setMessages] = useState([]);
-   const [socket, setSocket] = useState();
+   // const [socket, setSocket] = useState();
    const scrollRef = useRef();
 
    // scroll top message
@@ -59,16 +60,20 @@ const Chat = () => {
    const { user } = useSelector((state) => state.auth);
 
    // socket.id only
-   useEffect(() => {
-      setSocket(io(api));
-   }, [setSocket]);
+   // useEffect(() => {
+   //    setSocket(io(api));
+   // }, [setSocket]);
+
+   const { socket } = useSocket();
 
    // send infor user
    useEffect(() => {
-      socket?.emit("inforUser", {
-         userid: user?._id,
-      });
-   }, [user]);
+      if (socket.id) {
+         socket?.emit("inforUser", {
+            userid: user?._id,
+         });
+      }
+   }, [user, socket]);
 
    // send message
    const sendMessage = () => {
@@ -91,6 +96,8 @@ const Chat = () => {
          to: init?.initUser?._id,
          message: text,
          createdAt: Date.now(),
+         name: user?.name,
+         avartar: user?.avartar,
       });
 
       setText("");
@@ -103,12 +110,14 @@ const Chat = () => {
    };
 
    useEffect(() => {
-      socket?.on(`message`, listenMessage);
+      if (socket.id) {
+         socket?.on(`message`, listenMessage);
 
-      return () => {
-         socket?.off("message", listenMessage);
-      };
-   }, [listenMessage]);
+         return () => {
+            socket?.off("message", listenMessage);
+         };
+      }
+   }, [listenMessage, socket]);
    // receive data
 
    // fetch message db

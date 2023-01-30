@@ -8,15 +8,18 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 //bootrap
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Websocket } from "./context/useSocket";
 
 window.Popper = require("popper.js").default;
 
 configAxios();
 ReactDOM.render(
-   <Provider store={store}>
-      <ToastContainer />
-      <Main />
-   </Provider>,
+   <Websocket>
+      <Provider store={store}>
+         <ToastContainer />
+         <Main />
+      </Provider>
+   </Websocket>,
    document.getElementById("app")
 );
 

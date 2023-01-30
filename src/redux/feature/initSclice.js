@@ -36,9 +36,15 @@ const initSclice = createSlice({
    name: "init",
    initialState: {
       initUser: {},
+      socket: {},
       notificationWorker: [],
       error: "",
       loading: false,
+   },
+   reducers: {
+      setSocket: (state, action) => {
+         state.socket = action.payload;
+      },
    },
    extraReducers: {
       //list
