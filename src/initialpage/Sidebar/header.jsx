@@ -19,6 +19,7 @@ import { workerProjectClient } from "../../redux/feature/initSclice";
 import { useLoading } from "../../hook/useLoading";
 import moment from "moment";
 import { avartarFAKE, logoFAKE } from "../../constant";
+import { notificationMessage } from "../../redux/feature/messageSclice";
 
 const Header = (props) => {
    const handlesidebar = () => {
@@ -41,8 +42,12 @@ const Header = (props) => {
    const { setLoading } = useLoading();
 
    const { notificationWorker } = useSelector((state) => state.init);
+
+   const { messageNotification } = useSelector((state) => state.message);
+
    useEffect(() => {
       dispatch(workerProjectClient({ query: { id: user._id }, setLoading }));
+      dispatch(notificationMessage({ query: { id: user._id }, setLoading }));
    }, [user]);
 
    return (
