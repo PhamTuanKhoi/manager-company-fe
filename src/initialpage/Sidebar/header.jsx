@@ -26,6 +26,7 @@ const Header = (props) => {
    let pathname = location.pathname;
 
    const [messages, setMessages] = useState([]);
+   const [messQty, setMessQty] = useState(0);
    const { socket } = useSocket();
    const dispatch = useDispatch();
 
@@ -52,8 +53,8 @@ const Header = (props) => {
    // receive data
    const listenMessage = (message) => {
       if (message.from !== user._id) {
-         console.log(message);
          setMessages(messages?.map((item) => (item.from === message.from ? message : item)));
+         setMessQty((prev) => prev + 1);
       }
    };
 
@@ -127,7 +128,8 @@ const Header = (props) => {
             {/* Notifications */}
             <li className="nav-item dropdown">
                <a href="#" className="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-                  <i className="fa fa-bell-o" /> <span className="badge badge-pill">3</span>
+                  <i className="fa fa-bell-o" />
+                  {/* <span className="badge badge-pill">3</span> */}
                </a>
                <div className="dropdown-menu notifications">
                   <div className="topnav-dropdown-header">
@@ -181,7 +183,8 @@ const Header = (props) => {
             {/* Message Notifications */}
             <li className="nav-item dropdown">
                <a href="#" className="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-                  <i className="fa fa-comment-o" /> <span className="badge badge-pill">8</span>
+                  <i className="fa fa-comment-o" />
+                  {messQty !== 0 && <span className="badge badge-pill">{messQty}</span>}
                </a>
                <div className="dropdown-menu notifications">
                   <div className="topnav-dropdown-header">
@@ -197,7 +200,7 @@ const Header = (props) => {
                            <li className="notification-message" key={item?.from}>
                               <Link
                                  onClick={() => localStorage.setItem("minheight", "true")}
-                                 to="/conversation/chat"
+                                 to={`/conversation/chat/${item?.from}`}
                               >
                                  <div className="list-item">
                                     <div className="list-left">
