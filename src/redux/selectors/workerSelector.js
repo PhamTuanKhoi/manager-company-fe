@@ -12,7 +12,6 @@ export const workerRemainingSelector = createSelector(
    searchField,
    (workerList, nameText, fieldText) =>
       workerList?.workers?.filter((item) => {
-         console.log(fieldText);
          return (
             customText(item.name).includes(customText(nameText)) &&
             customText(item.field).includes(customText(fieldText))

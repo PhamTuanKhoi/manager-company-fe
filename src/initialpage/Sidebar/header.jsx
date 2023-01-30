@@ -10,17 +10,15 @@ import {
    Avatar_02,
    Avatar_03,
    Avatar_05,
-   Avatar_06,
    Avatar_08,
    Avatar_09,
-   Avatar_13,
-   Avatar_17,
    Avatar_21,
 } from "../../Entryfile/imagepath";
 import authSclice from "../../redux/feature/authSclice";
 import { workerProjectClient } from "../../redux/feature/initSclice";
 import { useLoading } from "../../hook/useLoading";
 import moment from "moment";
+import { avartarFAKE, logoFAKE } from "../../constant";
 
 const Header = (props) => {
    const handlesidebar = () => {
@@ -53,12 +51,7 @@ const Header = (props) => {
          <div className="header-left">
             <Link to="/app/main/dashboard" className="logo">
                {/* <img src={headerlogo} width={40} height={40} alt="" /> */}
-               <img
-                  width={40}
-                  height={30}
-                  src="https://fce.com.vn/wp-content/uploads/2022/08/logo_fce_trong_suot-1024x614.png"
-                  alt="Dreamguy's Technologies"
-               />
+               <img width={40} height={30} src={logoFAKE} alt="Dreamguy's Technologies" />
             </Link>
          </div>
          {/* /Logo */}
@@ -303,7 +296,7 @@ const Header = (props) => {
             <li className="nav-item dropdown has-arrow main-drop">
                <a href="#" className="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                   <span className="user-img me-1">
-                     <img src={Avatar_21} alt="" />
+                     <img src={user?.avartar || avartarFAKE} alt={user?.name} />
                      <span className="status online" />
                   </span>
                   <span>{user?.name || "Admin"}</span>

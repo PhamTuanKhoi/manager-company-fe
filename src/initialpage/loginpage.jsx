@@ -9,7 +9,7 @@ import { Applogo } from "../Entryfile/imagepath.jsx";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { alphaNumericPattern, emailrgx } from "../constant";
+import { alphaNumericPattern, emailrgx, logoFAKE } from "../constant";
 import { authAPI } from "../api/auth.js";
 import { jwtManager } from "../helpers/jwtManager.js";
 import { login } from "../redux/feature/authSclice";
@@ -72,7 +72,7 @@ const Loginpage = (props) => {
             <Link to="/app/main/dashboard">
                <img
                   style={{ width: "100px", marginLeft: "50px" }}
-                  src="https://fce.com.vn/wp-content/uploads/2022/08/logo_fce_trong_suot-1024x614.png"
+                  src={logoFAKE}
                   alt="Dreamguy's Technologies"
                />
             </Link>
