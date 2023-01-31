@@ -3,13 +3,13 @@ import { assignTaskAPI } from "../../api/assignTask";
 
 export const createAssignTask = createAsyncThunk(
    "assignTask/createAssignTask",
-   async ({ payload, toast, setLoading }, { rejectWithValue }) => {
+   async ({ payload, toast, setLoading, assignTask }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await assignTaskAPI.createAssign(payload);
          toast.success("Giao công việc thành công");
          setLoading(false);
-         return data;
+         return { data, assignTask };
       } catch (error) {
          setLoading(false);
          if (typeof error?.response?.data?.message === "string") {
@@ -106,8 +106,9 @@ const assignTaskSclice = createSlice({
       [createAssignTask.fulfilled]: (state, action) => {
          state.loading = false;
          state.notAssignTask = state.notAssignTask.filter(
-            (item) => item._id !== action.payload.worker
+            (item) => item._id !== action.payload.data.worker
          );
+         state.assignTasks.push({ ...action.payload.assignTask, _id: action.payload.data._id });
       },
       [createAssignTask.rejected]: (state, action) => {
          state.loading = false;

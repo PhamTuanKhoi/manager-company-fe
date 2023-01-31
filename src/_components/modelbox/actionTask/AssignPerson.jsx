@@ -18,6 +18,14 @@ function AssignPerson({ show, onHide, task, load }) {
       dispatch(
          createAssignTask({
             payload: { worker: user._id, task: task._id, creator: user._id },
+            assignTask: {
+               userId: user._id,
+               name: user.name,
+               filed: user.field,
+               avartar: user.avartar,
+               taskId: task._id,
+               taskName: task.name,
+            },
             toast,
             setLoading,
          })
