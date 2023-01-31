@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLoading } from "../../../hook/useLoading";
 
 import {
+   checkNotAssignTask,
    createAssignTask,
    listAssignByTask,
    listAssignTask,
@@ -13,20 +15,9 @@ function AssignPerson({ show, onHide, task, load }) {
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
    const { user } = useSelector((state) => state.auth);
-   const { assignTasks } = useSelector((state) => state.assignTask);
-   const { assignTaskByTask } = useSelector((state) => state.assignTask);
-
-   // console.log(assignTasks);
-
-   useEffect(() => {
-      dispatch(listAssignByTask({ id: task._id, setLoading }));
-   }, [load]);
-
-   // console.log(load);
+   const { id } = useParams();
 
    function handleAdd(worker, task) {
-      // console.log(worker.worker, task, { creator: user._id });
-
       if (!user._id) toast.warn(`Vui lòng đăng nhập vào hệ thống`);
 
       dispatch(
@@ -40,9 +31,14 @@ function AssignPerson({ show, onHide, task, load }) {
 
    const { listWPByProject } = useSelector((state) => state.workerProject);
 
-   // console.log(listWPByProject);
-   // console.log(task);
-   // console.log(assignTaskByTask, "okay");
+   // get user not assign task
+   useEffect(() => {
+      if (task._id) {
+         dispatch(checkNotAssignTask({ query: { project: id, task: task._id }, setLoading }));
+      }
+   }, [id, task._id, load]);
+
+   const { notAssignTask } = useSelector((state) => state.assignTask);
 
    return (
       <Modal
@@ -78,35 +74,26 @@ function AssignPerson({ show, onHide, task, load }) {
                   </div>
                   <div className="body-dialog">
                      <ul className="chat-user-list">
-                        {listWPByProject?.map((item, index) => {
-                           // console.log(item?.user?._id, "user");
-                           // console.log(ele.worker, "worker");
-
-                           // console.log("next", item);
-                           return (
-                              <li key={index}>
-                                 <a href="#">
-                                    <div className="media import-content">
-                                       <div className="content-media">
-                                          <span className="avatar">
-                                             {/* <img alt="" src={Avatar_09} /> */}
-                                          </span>
-                                          <div className="media-body align-self-center text-nowrap">
-                                             <div className="user-name">{item?.user?.name}</div>
-                                             {/* <span className="designation">{item?.department}</span> */}
-                                          </div>
-                                       </div>
-                                       <div
-                                          className="import"
-                                          onClick={() => handleAdd(item, task)}
-                                       >
-                                          Thêm
+                        {notAssignTask?.map((item, index) => (
+                           <li key={index}>
+                              <a href="#">
+                                 <div className="media import-content">
+                                    <div className="content-media">
+                                       <span className="avatar">
+                                          {/* <img alt="" src={Avatar_09} /> */}
+                                       </span>
+                                       <div className="media-body align-self-center text-nowrap">
+                                          <div className="user-name">{item?.name}</div>
+                                          {/* <span className="designation">{item?.department}</span> */}
                                        </div>
                                     </div>
-                                 </a>
-                              </li>
-                           );
-                        })}
+                                    <div className="import" onClick={() => handleAdd(item, task)}>
+                                       Thêm
+                                    </div>
+                                 </div>
+                              </a>
+                           </li>
+                        ))}
                      </ul>
                   </div>
                </div>

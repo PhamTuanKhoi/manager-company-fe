@@ -56,11 +56,28 @@ export const listAssignByTask = createAsyncThunk(
    }
 );
 
+export const checkNotAssignTask = createAsyncThunk(
+   "assignTask/checkNotAssignTask",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await assignTaskAPI.checkNotAssignTask(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const assignTaskSclice = createSlice({
    name: "assignTask",
    initialState: {
       assignTask: {},
       assignTasks: [],
+      notAssignTask: [],
       assignTaskByTask: [],
       error: "",
       loading: false,
@@ -103,6 +120,19 @@ const assignTaskSclice = createSlice({
          state.assignTaskByTask = action.payload;
       },
       [listAssignByTask.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      //list by task
+      [checkNotAssignTask.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [checkNotAssignTask.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.notAssignTask = action.payload;
+      },
+      [checkNotAssignTask.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

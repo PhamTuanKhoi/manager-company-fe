@@ -3,12 +3,14 @@ import AssignPerson from "./AssignPerson";
 
 const ActionTask = ({ item }) => {
    const [modalPerson, setModalPerson] = useState(false);
+   const [task, setTask] = useState({});
    const [load, setLoad] = useState(0);
 
    const handlePerson = (e) => {
       e.stopPropagation();
-      setModalPerson(true);
+      setTask(item);
       setLoad((prev) => prev + 1);
+      setModalPerson(true);
    };
    return (
       <>
@@ -31,7 +33,7 @@ const ActionTask = ({ item }) => {
          <AssignPerson
             show={modalPerson}
             onHide={() => setModalPerson(false)}
-            task={item}
+            task={task}
             load={load}
          />
       </>
