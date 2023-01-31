@@ -13,8 +13,9 @@ const AssignTask = () => {
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
 
-   const onPerform = (checked) => {
+   const onPerform = (checked, record) => {
       console.log(`perform to ${checked}`);
+      console.log(record.name);
    };
 
    const onFinish = (checked) => {
@@ -44,11 +45,16 @@ const AssignTask = () => {
       },
       {
          title: "Thực hiện",
-         render: (text, record) => <Switch onChange={onPerform} />,
+         dataIndex: "perform",
+         render: (perform, record) => (
+            <Switch defaultChecked={perform.status} onChange={(e) => onPerform(e, record)} />
+         ),
       },
+
       {
          title: "Hoàn thành",
-         render: (text, record) => <Switch onChange={onFinish} />,
+         dataIndex: "finish",
+         render: (finish, record) => <Switch defaultChecked={finish?.status} onChange={onFinish} />,
       },
    ];
 

@@ -25,6 +25,8 @@ function AssignPerson({ show, onHide, task, load }) {
                avartar: user.avartar,
                taskId: task._id,
                taskName: task.name,
+               perform: { status: false, date: Date.now() },
+               finish: { status: false, date: Date.now() },
             },
             toast,
             setLoading,
