@@ -14,6 +14,10 @@ export const assignTaskAPI = {
       return await axios.get(path + "task/" + id);
    },
 
+   async listByProject(id) {
+      return await axios.get(path + "project/" + id);
+   },
+
    async checkNotAssignTask(filter = {}) {
       return await axios.get("worker-project/assign-task/", { params: filter });
    },

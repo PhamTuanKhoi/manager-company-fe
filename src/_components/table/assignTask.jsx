@@ -1,13 +1,31 @@
-import { Table } from "antd";
+import { Switch, Table } from "antd";
 import React, { useState } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useLoading } from "../../hook/useLoading";
 import { itemRender, onShowSizeChange } from "../../MainPage/paginationfunction";
+import { listAssignTaskByProject } from "../../redux/feature/assignTaskSclice";
 
 const AssignTask = () => {
-   const [data, setData] = useState([
-      { id: 1, leavetype: "Medical Leave", leavedays: "12 days" },
-      { id: 2, leavetype: "Loss of Pay", leavedays: "-" },
-      { id: 3, leavetype: "Casual Leave", leavedays: "12 days" },
-   ]);
+   const { id } = useParams();
+   const dispatch = useDispatch();
+   const { setLoading } = useLoading();
+
+   const onPerform = (checked) => {
+      console.log(`perform to ${checked}`);
+   };
+
+   const onFinish = (checked) => {
+      console.log(`finish to ${checked}`);
+   };
+
+   useEffect(() => {
+      dispatch(listAssignTaskByProject({ id, setLoading }));
+   }, [id]);
+
+   const { assignTasks } = useSelector((state) => state.assignTask);
 
    const columns = [
       {
@@ -15,38 +33,22 @@ const AssignTask = () => {
          dataIndex: "id",
       },
       {
-         title: "Leave Type",
-         dataIndex: "leavetype",
-         sorter: (a, b) => a.leavetype.length - b.leavetype.length,
-      },
-
-      {
-         title: "Leave Days",
-         dataIndex: "leavedays",
-         sorter: (a, b) => a.leavedays.length - b.leavedays.length,
+         title: "Họ tên",
+         dataIndex: "name",
+         sorter: (a, b) => a.name.length - b.name.length,
       },
       {
-         title: "Status",
-         render: (text, record) => (
-            <div className="dropdown action-label">
-               <a
-                  className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                  href="#"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-               >
-                  <i className="fa fa-dot-circle-o text-success" /> Active
-               </a>
-               <div className="dropdown-menu dropdown-menu-right">
-                  <a href="#" className="dropdown-item">
-                     <i className="fa fa-dot-circle-o text-success" /> Active
-                  </a>
-                  <a href="#" className="dropdown-item">
-                     <i className="fa fa-dot-circle-o text-danger" /> Inactive
-                  </a>
-               </div>
-            </div>
-         ),
+         title: "Công việc",
+         dataIndex: "taskName",
+         sorter: (a, b) => a.taskName.length - b.taskName.length,
+      },
+      {
+         title: "Thực hiện",
+         render: (text, record) => <Switch onChange={onPerform} />,
+      },
+      {
+         title: "Hoàn thành",
+         render: (text, record) => <Switch onChange={onFinish} />,
       },
    ];
 
@@ -58,7 +60,7 @@ const AssignTask = () => {
             <div className="table-responsive">
                <Table
                   pagination={{
-                     total: data.length,
+                     total: assignTasks.length,
                      showTotal: (total, range) =>
                         `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                      showSizeChanger: true,
@@ -68,8 +70,8 @@ const AssignTask = () => {
                   style={{ overflowX: "auto" }}
                   columns={columns}
                   bordered
-                  dataSource={data}
-                  rowKey={(record) => record.id}
+                  dataSource={assignTasks}
+                  rowKey={(record) => record._id}
                   // onChange={this.handleTableChange}
                />
             </div>

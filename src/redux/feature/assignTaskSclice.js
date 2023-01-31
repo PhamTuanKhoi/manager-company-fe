@@ -72,6 +72,22 @@ export const checkNotAssignTask = createAsyncThunk(
    }
 );
 
+export const listAssignTaskByProject = createAsyncThunk(
+   "assignTask/listAssignTaskByProject",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await assignTaskAPI.listByProject(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const assignTaskSclice = createSlice({
    name: "assignTask",
    initialState: {
@@ -89,9 +105,6 @@ const assignTaskSclice = createSlice({
       },
       [createAssignTask.fulfilled]: (state, action) => {
          state.loading = false;
-         state.assignTask = action.payload;
-         state.assignTasks.push(action.payload);
-         state.assignTaskByTask.push(action.payload);
          state.notAssignTask = state.notAssignTask.filter(
             (item) => item._id !== action.payload.worker
          );
@@ -136,6 +149,19 @@ const assignTaskSclice = createSlice({
          state.notAssignTask = action.payload;
       },
       [checkNotAssignTask.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // list by project
+      [listAssignTaskByProject.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listAssignTaskByProject.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.assignTasks = action.payload;
+      },
+      [listAssignTaskByProject.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
