@@ -24,6 +24,8 @@ import { listTaskByProject } from "../../../redux/feature/taskSclice";
 import ActionTask from "../../../_components/modelbox/actionTask/ActionTask";
 import CreateTask from "../../../_components/modelbox/assignUserTask";
 import Addproject from "../../../_components/modelbox/Addproject";
+import Form from "react-bootstrap/Form";
+import AssignTask from "../../../_components/table/assignTask";
 const { Panel } = Collapse;
 
 const ProjectView = () => {
@@ -147,61 +149,6 @@ const ProjectView = () => {
                      </div>
                   </div>
 
-                  <div className="card">
-                     <div className="card-body">
-                        <h5 className="card-title m-b-20">Hình ảnh</h5>
-                        <div className="row">
-                           <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-                              <div className="uploaded-box">
-                                 <div className="uploaded-img">
-                                    <img
-                                       src="https://fce.com.vn/wp-content/uploads/2022/07/cowomen-ZKHksse8tUU-unsplash-1-600x400-1.jpg"
-                                       className="img-fluid"
-                                       alt=""
-                                    />
-                                 </div>
-                                 <div className="uploaded-img-name">demo.png</div>
-                              </div>
-                           </div>
-                           <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-                              <div className="uploaded-box">
-                                 <div className="uploaded-img">
-                                    <img
-                                       src="https://fce.com.vn/wp-content/uploads/2022/07/cowomen-ZKHksse8tUU-unsplash-1-600x400-1.jpg"
-                                       className="img-fluid"
-                                       alt=""
-                                    />
-                                 </div>
-                                 <div className="uploaded-img-name">demo.png</div>
-                              </div>
-                           </div>
-                           <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-                              <div className="uploaded-box">
-                                 <div className="uploaded-img">
-                                    <img
-                                       src="https://fce.com.vn/wp-content/uploads/2022/07/co-huong-di-ro-rang-se-giup-ban-dat-duoc-thanh-cong-khi-quyet-dinh-thanh-lap-cong-ty-900x560-1.jpg"
-                                       className="img-fluid"
-                                       alt=""
-                                    />
-                                 </div>
-                                 <div className="uploaded-img-name">demo.png</div>
-                              </div>
-                           </div>
-                           <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-                              <div className="uploaded-box">
-                                 <div className="uploaded-img">
-                                    <img
-                                       src="https://fce.com.vn/wp-content/uploads/2022/07/cowomen-ZKHksse8tUU-unsplash-1-600x400-1.jpg"
-                                       className="img-fluid"
-                                       alt=""
-                                    />
-                                 </div>
-                                 <div className="uploaded-img-name">demo.png</div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
                   {/* assign work */}
                   <div className="project-task">
                      <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
@@ -329,6 +276,8 @@ const ProjectView = () => {
                         <div className="tab-pane" id="completed_tasks" />
                      </div>
                   </div>
+                  {/* table assign task */}
+                  <AssignTask />
                </div>
                <div className="col-lg-4 col-xl-3">
                   <div className="card">
