@@ -5,31 +5,24 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLoading } from "../../../hook/useLoading";
 
-import {
-   checkNotAssignTask,
-   createAssignTask,
-   listAssignByTask,
-   listAssignTask,
-} from "../../../redux/feature/assignTaskSclice";
+import { checkNotAssignTask, createAssignTask } from "../../../redux/feature/assignTaskSclice";
 function AssignPerson({ show, onHide, task, load }) {
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
    const { user } = useSelector((state) => state.auth);
    const { id } = useParams();
 
-   function handleAdd(worker, task) {
+   function handleAdd(user, task) {
       if (!user._id) toast.warn(`Vui lòng đăng nhập vào hệ thống`);
 
       dispatch(
          createAssignTask({
-            payload: { worker: worker.worker, task: task._id, creator: user._id },
+            payload: { worker: user._id, task: task._id, creator: user._id },
             toast,
             setLoading,
          })
       );
    }
-
-   const { listWPByProject } = useSelector((state) => state.workerProject);
 
    // get user not assign task
    useEffect(() => {
@@ -51,7 +44,7 @@ function AssignPerson({ show, onHide, task, load }) {
          <div ole="document">
             <div className="modal-content">
                <div className="modal-header">
-                  <h5 className="modal-title">Giao công việc</h5>
+                  <h5 className="modal-title">Giao việc {task.name}</h5>
                   <button type="button" className="close-x">
                      <span
                         aria-hidden="true"

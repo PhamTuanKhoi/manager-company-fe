@@ -92,6 +92,9 @@ const assignTaskSclice = createSlice({
          state.assignTask = action.payload;
          state.assignTasks.push(action.payload);
          state.assignTaskByTask.push(action.payload);
+         state.notAssignTask = state.notAssignTask.filter(
+            (item) => item._id !== action.payload.worker
+         );
       },
       [createAssignTask.rejected]: (state, action) => {
          state.loading = false;
