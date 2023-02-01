@@ -154,6 +154,38 @@ export const finishTrueByIdProject = createAsyncThunk(
    }
 );
 
+export const precentTaskPerfromTrue = createAsyncThunk(
+   "assignTask/precentTaskPerfrom",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await assignTaskAPI.precentTaskPerfrom(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const precentTaskFinishTrue = createAsyncThunk(
+   "assignTask/precentTaskFinish",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await assignTaskAPI.precentTaskFinish(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const assignTaskSclice = createSlice({
    name: "assignTask",
    initialState: {
@@ -163,6 +195,8 @@ const assignTaskSclice = createSlice({
       assignTaskByTask: [],
       assignTaskPerformTrue: [],
       assignTaskFinishTrue: [],
+      precentTaskPerfrom: [],
+      precentTaskFinish: [],
       error: "",
       loading: false,
    },
@@ -327,6 +361,32 @@ const assignTaskSclice = createSlice({
          state.assignTaskFinishTrue = action.payload;
       },
       [finishTrueByIdProject.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // precent task perform = true
+      [precentTaskPerfromTrue.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [precentTaskPerfromTrue.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.precentTaskPerfrom = action.payload;
+      },
+      [precentTaskPerfromTrue.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // precent task finish = true
+      [precentTaskFinishTrue.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [precentTaskFinishTrue.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.precentTaskFinish = action.payload;
+      },
+      [precentTaskFinishTrue.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

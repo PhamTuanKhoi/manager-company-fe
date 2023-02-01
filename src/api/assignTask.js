@@ -37,4 +37,12 @@ export const assignTaskAPI = {
    async finishTrueByIdProject(id) {
       return await axios.get(path + "finish/" + id + "/project");
    },
+
+   async precentTaskPerfrom(id) {
+      return await axios.get(path + "task/perform/" + id + "/project");
+   },
+
+   async precentTaskFinish(id) {
+      return await axios.get(path + "task/finish/" + id + "/project");
+   },
 };

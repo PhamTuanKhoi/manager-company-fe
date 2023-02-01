@@ -112,7 +112,7 @@ const ProjectView = () => {
                      </a>
 
                      <Link
-                        to="/app/projects/task-board"
+                        to={`/app/projects/task-board/${id}`}
                         className="btn btn-white float-end m-r-10"
                         data-bs-toggle="tooltip"
                         title="Task Board"
