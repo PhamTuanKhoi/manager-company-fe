@@ -90,13 +90,13 @@ export const listAssignTaskByProject = createAsyncThunk(
 
 export const updatePerform = createAsyncThunk(
    "assignTask/updatePerform",
-   async ({ id, payload, toast, setLoading }, { rejectWithValue }) => {
+   async ({ id, payload, toast, setLoading, record }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await assignTaskAPI.updatePerform(id, payload);
          setLoading(false);
          toast.success(`cập nhật trạng thái thực hiện thành công`);
-         return data;
+         return { data, record };
       } catch (error) {
          setLoading(false);
          console.log(error);
@@ -107,13 +107,13 @@ export const updatePerform = createAsyncThunk(
 
 export const updateFinish = createAsyncThunk(
    "assignTask/updateFinish",
-   async ({ id, payload, toast, setLoading }, { rejectWithValue }) => {
+   async ({ id, payload, toast, setLoading, record }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await assignTaskAPI.updateFinish(id, payload);
          setLoading(false);
          toast.success(`cập nhật trạng thái hoàn thành thành công`);
-         return data;
+         return { data, record };
       } catch (error) {
          setLoading(false);
          console.log(error);
@@ -249,11 +249,21 @@ const assignTaskSclice = createSlice({
             },
          } = action.meta;
 
+         //update assigntasks
          state.assignTasks = state.assignTasks.map((item) =>
             item._id === id
-               ? { ...item, perform: { status: verify, date: action.payload.perform?.date } }
+               ? { ...item, perform: { status: verify, date: action.payload.data.perform?.date } }
                : item
          );
+
+         // update assignTaskPerformtrue
+         if (verify === false) {
+            state.assignTaskPerformTrue = state.assignTaskPerformTrue.filter(
+               (item) => item._id !== id
+            );
+         } else {
+            state.assignTaskPerformTrue.push(action.payload.record);
+         }
       },
       [updatePerform.rejected]: (state, action) => {
          state.loading = false;
@@ -274,11 +284,21 @@ const assignTaskSclice = createSlice({
             },
          } = action.meta;
 
+         // update assigntasks
          state.assignTasks = state.assignTasks.map((item) =>
             item._id === id
-               ? { ...item, finish: { status: verify, date: action.payload.finish?.date } }
+               ? { ...item, finish: { status: verify, date: action.payload.data?.finish?.date } }
                : item
          );
+
+         // update assignTaskFinishtrue
+         if (verify === false) {
+            state.assignTaskFinishTrue = state.assignTaskFinishTrue.filter(
+               (item) => item._id !== id
+            );
+         } else {
+            state.assignTaskFinishTrue.push(action.payload.record);
+         }
       },
       [updateFinish.rejected]: (state, action) => {
          state.loading = false;

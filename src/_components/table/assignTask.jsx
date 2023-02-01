@@ -19,11 +19,27 @@ const AssignTask = () => {
    const { setLoading } = useLoading();
 
    const onPerform = (checked, record) => {
-      dispatch(updatePerform({ id: record._id, payload: { verify: checked }, toast, setLoading }));
+      dispatch(
+         updatePerform({
+            id: record._id,
+            payload: { verify: checked },
+            toast,
+            setLoading,
+            record: { ...record, perform: { status: checked, date: Date.now() } },
+         })
+      );
    };
 
    const onFinish = (checked, record) => {
-      dispatch(updateFinish({ id: record._id, payload: { verify: checked }, toast, setLoading }));
+      dispatch(
+         updateFinish({
+            id: record._id,
+            payload: { verify: checked },
+            toast,
+            setLoading,
+            record: { ...record, finish: { status: checked, date: Date.now() } },
+         })
+      );
    };
 
    useEffect(() => {
@@ -58,9 +74,9 @@ const AssignTask = () => {
       {
          title: "Hoàn thành",
          dataIndex: "finish",
-         render: (finish, record) => (
-            <Switch defaultChecked={finish?.status} onChange={(e) => onFinish(e, record)} />
-         ),
+         render: (finish, record) => {
+            return <Switch defaultChecked={finish?.status} onChange={(e) => onFinish(e, record)} />;
+         },
       },
    ];
 
