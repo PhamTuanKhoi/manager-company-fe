@@ -27,6 +27,7 @@ import Addproject from "../../../_components/modelbox/Addproject";
 import Form from "react-bootstrap/Form";
 import AssignTask from "../../../_components/table/assignTask";
 import PerfromTab from "../../../_components/tabs/perform";
+import FinishTab from "../../../_components/tabs/finish";
 const { Panel } = Collapse;
 
 const ProjectView = () => {
@@ -272,8 +273,9 @@ const ProjectView = () => {
                               </div>
                            </div>
                         </div>
+                        {/* tab */}
                         <PerfromTab />
-                        <div className="tab-pane" id="completed_tasks" />
+                        <FinishTab />
                      </div>
                   </div>
                   <br /> <br />

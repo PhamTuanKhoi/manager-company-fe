@@ -138,6 +138,22 @@ export const performTrueByIdProject = createAsyncThunk(
    }
 );
 
+export const finishTrueByIdProject = createAsyncThunk(
+   "assignTask/finishTrueByIdProject",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await assignTaskAPI.finishTrueByIdProject(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const assignTaskSclice = createSlice({
    name: "assignTask",
    initialState: {
@@ -146,6 +162,7 @@ const assignTaskSclice = createSlice({
       notAssignTask: [],
       assignTaskByTask: [],
       assignTaskPerformTrue: [],
+      assignTaskFinishTrue: [],
       error: "",
       loading: false,
    },
@@ -277,6 +294,19 @@ const assignTaskSclice = createSlice({
          state.assignTaskPerformTrue = action.payload;
       },
       [performTrueByIdProject.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // get assign task at finish true by id project
+      [finishTrueByIdProject.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [finishTrueByIdProject.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.assignTaskFinishTrue = action.payload;
+      },
+      [finishTrueByIdProject.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

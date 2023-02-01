@@ -33,4 +33,8 @@ export const assignTaskAPI = {
    async performTrueByIdProject(id) {
       return await axios.get(path + "perform/" + id + "/project");
    },
+
+   async finishTrueByIdProject(id) {
+      return await axios.get(path + "finish/" + id + "/project");
+   },
 };
