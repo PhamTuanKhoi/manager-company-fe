@@ -4,9 +4,14 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useLoading } from "../../hook/useLoading";
 import { itemRender, onShowSizeChange } from "../../MainPage/paginationfunction";
-import { listAssignTaskByProject } from "../../redux/feature/assignTaskSclice";
+import {
+   listAssignTaskByProject,
+   updateFinish,
+   updatePerform,
+} from "../../redux/feature/assignTaskSclice";
 
 const AssignTask = () => {
    const { id } = useParams();
@@ -14,12 +19,11 @@ const AssignTask = () => {
    const { setLoading } = useLoading();
 
    const onPerform = (checked, record) => {
-      console.log(`perform to ${checked}`);
-      console.log(record.name);
+      dispatch(updatePerform({ id: record._id, payload: { verify: checked }, toast, setLoading }));
    };
 
-   const onFinish = (checked) => {
-      console.log(`finish to ${checked}`);
+   const onFinish = (checked, record) => {
+      dispatch(updateFinish({ id: record._id, payload: { verify: checked }, toast, setLoading }));
    };
 
    useEffect(() => {
@@ -54,7 +58,9 @@ const AssignTask = () => {
       {
          title: "Hoàn thành",
          dataIndex: "finish",
-         render: (finish, record) => <Switch defaultChecked={finish?.status} onChange={onFinish} />,
+         render: (finish, record) => (
+            <Switch defaultChecked={finish?.status} onChange={(e) => onFinish(e, record)} />
+         ),
       },
    ];
 
@@ -66,7 +72,7 @@ const AssignTask = () => {
             <div className="table-responsive">
                <Table
                   pagination={{
-                     total: assignTasks.length,
+                     total: assignTasks?.length,
                      showTotal: (total, range) =>
                         `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                      showSizeChanger: true,

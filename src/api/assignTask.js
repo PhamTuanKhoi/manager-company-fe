@@ -21,4 +21,12 @@ export const assignTaskAPI = {
    async checkNotAssignTask(filter = {}) {
       return await axios.get("worker-project/assign-task/", { params: filter });
    },
+
+   async updatePerform(id, payload) {
+      return await axios.patch(path + "perform/" + id, payload);
+   },
+
+   async updateFinish(id, payload) {
+      return await axios.patch(path + "finish/" + id, payload);
+   },
 };

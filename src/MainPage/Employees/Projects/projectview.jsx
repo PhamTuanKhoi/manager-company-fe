@@ -148,7 +148,6 @@ const ProjectView = () => {
                         <p>{project?.content}</p>
                      </div>
                   </div>
-
                   {/* assign work */}
                   <div className="project-task">
                      <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
@@ -276,6 +275,7 @@ const ProjectView = () => {
                         <div className="tab-pane" id="completed_tasks" />
                      </div>
                   </div>
+                  <br /> <br />
                   {/* table assign task */}
                   <AssignTask />
                </div>

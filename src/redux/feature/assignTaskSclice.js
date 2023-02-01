@@ -88,6 +88,40 @@ export const listAssignTaskByProject = createAsyncThunk(
    }
 );
 
+export const updatePerform = createAsyncThunk(
+   "assignTask/updatePerform",
+   async ({ id, payload, toast, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await assignTaskAPI.updatePerform(id, payload);
+         setLoading(false);
+         toast.success(`cập nhật trạng thái thực hiện thành công`);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const updateFinish = createAsyncThunk(
+   "assignTask/updateFinish",
+   async ({ id, payload, toast, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await assignTaskAPI.updateFinish(id, payload);
+         setLoading(false);
+         toast.success(`cập nhật trạng thái hoàn thành thành công`);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const assignTaskSclice = createSlice({
    name: "assignTask",
    initialState: {
@@ -163,6 +197,56 @@ const assignTaskSclice = createSlice({
          state.assignTasks = action.payload;
       },
       [listAssignTaskByProject.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // updated by project
+      [updatePerform.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [updatePerform.fulfilled]: (state, action) => {
+         state.loading = false;
+
+         const {
+            arg: {
+               id,
+               payload: { verify },
+            },
+         } = action.meta;
+
+         state.assignTasks = state.assignTasks.map((item) =>
+            item._id === id
+               ? { ...item, perform: { status: verify, date: action.payload.perform?.date } }
+               : item
+         );
+      },
+      [updatePerform.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // updated by finish
+      [updateFinish.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [updateFinish.fulfilled]: (state, action) => {
+         state.loading = false;
+
+         const {
+            arg: {
+               id,
+               payload: { verify },
+            },
+         } = action.meta;
+
+         state.assignTasks = state.assignTasks.map((item) =>
+            item._id === id
+               ? { ...item, finish: { status: verify, date: action.payload.finish?.date } }
+               : item
+         );
+      },
+      [updateFinish.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
