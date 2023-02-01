@@ -29,4 +29,8 @@ export const assignTaskAPI = {
    async updateFinish(id, payload) {
       return await axios.patch(path + "finish/" + id, payload);
    },
+
+   async performTrueByIdProject(id) {
+      return await axios.get(path + "perform/" + id + "/project");
+   },
 };
