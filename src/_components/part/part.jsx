@@ -14,138 +14,360 @@ import {
 } from "../../redux/feature/assignTaskSclice";
 
 const Part = () => {
+   const [create, setCreate] = useState(false);
    return (
-      <div className="card">
-         <div className="card-body">
-            <h5 className="card-title m-b-20">Bộ phận</h5>
-            <div class="row">
-               <div class="column">
-                  <div className="kanban-list kanban-success">
-                     <div className="kanban-header">
-                        <span className="status-title">Completed</span>
-                        <div className="dropdown kanban-action">
-                           <a href="" data-bs-toggle="dropdown">
-                              <i className="fa fa-ellipsis-v" />
-                           </a>
-                           <div className="dropdown-menu dropdown-menu-right">
-                              <a
-                                 className="dropdown-item"
-                                 href="#"
-                                 data-bs-toggle="modal"
-                                 data-bs-target="#edit_task_board"
+      <>
+         <div className="card">
+            <div className="card-body">
+               <div className="part-header">
+                  <div className="card-title m-b-20">Bộ phận</div>
+                  {create ? (
+                     <div className="from-part">
+                        <span
+                           className="text-danger   close-create-part"
+                           onClick={() => setCreate(!create)}
+                        >
+                           x
+                        </span>
+                        <input type="text" className="input-custom" placeholder="Nhập tên..." />
+                        <button className="btn btn-primary">Lưu</button>
+                     </div>
+                  ) : (
+                     <div onClick={() => setCreate(!create)}>
+                        <a
+                           href="#"
+                           className="btn btn-white float-end ml-2 text-primary border-primary"
+                        >
+                           <i className="fa fa-plus" /> Thêm bộ phận
+                        </a>
+                     </div>
+                  )}
+               </div>
+               <div class="row">
+                  <div className="col-md-12 col-lg-6 col-xl-6 d-flex">
+                     <div className="card flex-fill">
+                        <div className="card-body">
+                           <div className="part-header">
+                              <h4 className="card-title">Task Statistics</h4>
+                              <div className="dropdown kanban-action">
+                                 <a href="" data-bs-toggle="dropdown">
+                                    <i className="fa fa-ellipsis-v" />
+                                 </a>
+                                 <div className="dropdown-menu dropdown-menu-right">
+                                    <a
+                                       className="dropdown-item"
+                                       href="#"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#edit_task_board"
+                                    >
+                                       Edit
+                                    </a>
+                                    <a className="dropdown-item" href="#">
+                                       Delete
+                                    </a>
+                                 </div>
+                              </div>
+                           </div>
+                           <div className="statistics">
+                              <div className="row">
+                                 <div className="col-md-6 col-6 text-center">
+                                    <div className="stats-box mb-4">
+                                       <p>Total Tasks</p>
+                                       <h3>385</h3>
+                                    </div>
+                                 </div>
+                                 <div className="col-md-6 col-6 text-center">
+                                    <div className="stats-box mb-4">
+                                       <p>Overdue Tasks</p>
+                                       <h3>19</h3>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div className="progress mb-4">
+                              <div
+                                 className="progress-bar bg-purple"
+                                 role="progressbar"
+                                 style={{ width: "80%" }}
+                                 aria-valuenow={30}
+                                 aria-valuemin={0}
+                                 aria-valuemax={100}
                               >
-                                 Edit
-                              </a>
-                              <a className="dropdown-item" href="#">
-                                 Delete
-                              </a>
+                                 80%
+                              </div>
+                           </div>
+                           <div className="progress mb-4">
+                              <div
+                                 className="progress-bar bg-success"
+                                 role="progressbar"
+                                 style={{ width: "30%" }}
+                                 aria-valuenow={30}
+                                 aria-valuemin={0}
+                                 aria-valuemax={100}
+                              >
+                                 30%
+                              </div>
+                           </div>
+                           <div>
+                              <p>
+                                 <i className="fa fa-dot-circle-o text-purple me-2" />
+                                 Completed Tasks <span className="float-end">166</span>
+                              </p>
+
+                              <p>
+                                 <i className="fa fa-dot-circle-o text-danger me-2" />
+                                 Pending Tasks <span className="float-end">47</span>
+                              </p>
                            </div>
                         </div>
                      </div>
-                     <div className="kanban-wrap ks-empty"></div>
-                     <div className="add-new-task">
-                        <a href="" data-bs-toggle="modal" data-bs-target="#add_task_modal">
-                           Add New Task
-                        </a>
+                  </div>
+                  <div className="col-md-12 col-lg-6 col-xl-6 d-flex">
+                     <div className="card flex-fill">
+                        <div className="card-body">
+                           <div className="part-header">
+                              <h4 className="card-title">Task Statistics</h4>
+                              <div className="dropdown kanban-action">
+                                 <a href="" data-bs-toggle="dropdown">
+                                    <i className="fa fa-ellipsis-v" />
+                                 </a>
+                                 <div className="dropdown-menu dropdown-menu-right">
+                                    <a
+                                       className="dropdown-item"
+                                       href="#"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#edit_task_board"
+                                    >
+                                       Edit
+                                    </a>
+                                    <a className="dropdown-item" href="#">
+                                       Delete
+                                    </a>
+                                 </div>
+                              </div>
+                           </div>
+                           <div className="statistics">
+                              <div className="row">
+                                 <div className="col-md-6 col-6 text-center">
+                                    <div className="stats-box mb-4">
+                                       <p>Total Tasks</p>
+                                       <h3>385</h3>
+                                    </div>
+                                 </div>
+                                 <div className="col-md-6 col-6 text-center">
+                                    <div className="stats-box mb-4">
+                                       <p>Overdue Tasks</p>
+                                       <h3>19</h3>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div className="progress mb-4">
+                              <div
+                                 className="progress-bar bg-purple"
+                                 role="progressbar"
+                                 style={{ width: "80%" }}
+                                 aria-valuenow={30}
+                                 aria-valuemin={0}
+                                 aria-valuemax={100}
+                              >
+                                 80%
+                              </div>
+                           </div>
+                           <div className="progress mb-4">
+                              <div
+                                 className="progress-bar bg-success"
+                                 role="progressbar"
+                                 style={{ width: "30%" }}
+                                 aria-valuenow={30}
+                                 aria-valuemin={0}
+                                 aria-valuemax={100}
+                              >
+                                 30%
+                              </div>
+                           </div>
+                           <div>
+                              <p>
+                                 <i className="fa fa-dot-circle-o text-purple me-2" />
+                                 Completed Tasks <span className="float-end">166</span>
+                              </p>
+
+                              <p>
+                                 <i className="fa fa-dot-circle-o text-danger me-2" />
+                                 Pending Tasks <span className="float-end">47</span>
+                              </p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div className="col-md-12 col-lg-6 col-xl-6 d-flex">
+                     <div className="card flex-fill">
+                        <div className="card-body">
+                           <div className="part-header">
+                              <h4 className="card-title">Task Statistics</h4>
+                              <div className="dropdown kanban-action">
+                                 <a href="" data-bs-toggle="dropdown">
+                                    <i className="fa fa-ellipsis-v" />
+                                 </a>
+                                 <div className="dropdown-menu dropdown-menu-right">
+                                    <a
+                                       className="dropdown-item"
+                                       href="#"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#edit_task_board"
+                                    >
+                                       Edit
+                                    </a>
+                                    <a className="dropdown-item" href="#">
+                                       Delete
+                                    </a>
+                                 </div>
+                              </div>
+                           </div>
+                           <div className="statistics">
+                              <div className="row">
+                                 <div className="col-md-6 col-6 text-center">
+                                    <div className="stats-box mb-4">
+                                       <p>Total Tasks</p>
+                                       <h3>385</h3>
+                                    </div>
+                                 </div>
+                                 <div className="col-md-6 col-6 text-center">
+                                    <div className="stats-box mb-4">
+                                       <p>Overdue Tasks</p>
+                                       <h3>19</h3>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div className="progress mb-4">
+                              <div
+                                 className="progress-bar bg-purple"
+                                 role="progressbar"
+                                 style={{ width: "80%" }}
+                                 aria-valuenow={30}
+                                 aria-valuemin={0}
+                                 aria-valuemax={100}
+                              >
+                                 80%
+                              </div>
+                           </div>
+                           <div className="progress mb-4">
+                              <div
+                                 className="progress-bar bg-success"
+                                 role="progressbar"
+                                 style={{ width: "30%" }}
+                                 aria-valuenow={30}
+                                 aria-valuemin={0}
+                                 aria-valuemax={100}
+                              >
+                                 30%
+                              </div>
+                           </div>
+                           <div>
+                              <p>
+                                 <i className="fa fa-dot-circle-o text-purple me-2" />
+                                 Completed Tasks <span className="float-end">166</span>
+                              </p>
+
+                              <p>
+                                 <i className="fa fa-dot-circle-o text-danger me-2" />
+                                 Pending Tasks <span className="float-end">47</span>
+                              </p>
+                           </div>
+                        </div>
                      </div>
                   </div>
                </div>
-               <div class="column">
-                  <div className="kanban-list kanban-success">
-                     <div className="kanban-header">
-                        <span className="status-title">Completed</span>
-                        <div className="dropdown kanban-action">
-                           <a href="" data-bs-toggle="dropdown">
-                              <i className="fa fa-ellipsis-v" />
-                           </a>
-                           <div className="dropdown-menu dropdown-menu-right">
-                              <a
-                                 className="dropdown-item"
-                                 href="#"
-                                 data-bs-toggle="modal"
-                                 data-bs-target="#edit_task_board"
-                              >
-                                 Edit
-                              </a>
-                              <a className="dropdown-item" href="#">
-                                 Delete
-                              </a>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="kanban-wrap ks-empty"></div>
-                     <div className="add-new-task">
-                        <a href="" data-bs-toggle="modal" data-bs-target="#add_task_modal">
-                           Add New Task
-                        </a>
-                     </div>
-                  </div>
-               </div>
-               <div class="column">
-                  <div className="kanban-list kanban-success">
-                     <div className="kanban-header">
-                        <span className="status-title">Completed</span>
-                        <div className="dropdown kanban-action">
-                           <a href="" data-bs-toggle="dropdown">
-                              <i className="fa fa-ellipsis-v" />
-                           </a>
-                           <div className="dropdown-menu dropdown-menu-right">
-                              <a
-                                 className="dropdown-item"
-                                 href="#"
-                                 data-bs-toggle="modal"
-                                 data-bs-target="#edit_task_board"
-                              >
-                                 Edit
-                              </a>
-                              <a className="dropdown-item" href="#">
-                                 Delete
-                              </a>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="kanban-wrap ks-empty"></div>
-                     <div className="add-new-task">
-                        <a href="" data-bs-toggle="modal" data-bs-target="#add_task_modal">
-                           Add New Task
-                        </a>
-                     </div>
-                  </div>
-               </div>
-               <div class="column">
-                  <div className="kanban-list kanban-success">
-                     <div className="kanban-header">
-                        <span className="status-title">Completed</span>
-                        <div className="dropdown kanban-action">
-                           <a href="" data-bs-toggle="dropdown">
-                              <i className="fa fa-ellipsis-v" />
-                           </a>
-                           <div className="dropdown-menu dropdown-menu-right">
-                              <a
-                                 className="dropdown-item"
-                                 href="#"
-                                 data-bs-toggle="modal"
-                                 data-bs-target="#edit_task_board"
-                              >
-                                 Edit
-                              </a>
-                              <a className="dropdown-item" href="#">
-                                 Delete
-                              </a>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="kanban-wrap ks-empty"></div>
-                     <div className="add-new-task">
-                        <a href="" data-bs-toggle="modal" data-bs-target="#add_task_modal">
-                           Add New Task
-                        </a>
-                     </div>
-                  </div>
-               </div>{" "}
             </div>
          </div>
-      </div>
+
+         {/* modal */}
+         {/* <div id="add_task_board" className="modal custom-modal fade" role="dialog">
+            <div className="modal-dialog modal-dialog-centered">
+               <div className="modal-content">
+                  <div className="modal-header">
+                     <h4 className="modal-title">Thêm bộ phận</h4>
+
+                     <button type="button" className="close-x" data-bs-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                     </button>
+                  </div>
+                  <div className="modal-body">
+                     <form>
+                        <div className="form-group">
+                           <label>Tên bộ phận</label>
+                           <input type="text" className="form-control" />
+                        </div>
+                        <div className="form-group task-board-color">
+                           <label>Màu nền</label>
+                           <div className="board-color-list">
+                              <label className="board-control board-primary">
+                                 <input
+                                    name="radio"
+                                    type="radio"
+                                    className="board-control-input"
+                                    defaultValue="primary"
+                                    defaultChecked
+                                 />
+                                 <span className="board-indicator" />
+                              </label>
+                              <label className="board-control board-success">
+                                 <input
+                                    name="radio"
+                                    type="radio"
+                                    className="board-control-input"
+                                    defaultValue="success"
+                                 />
+                                 <span className="board-indicator" />
+                              </label>
+                              <label className="board-control board-info">
+                                 <input
+                                    name="radio"
+                                    type="radio"
+                                    className="board-control-input"
+                                    defaultValue="info"
+                                 />
+                                 <span className="board-indicator" />
+                              </label>
+                              <label className="board-control board-purple">
+                                 <input
+                                    name="radio"
+                                    type="radio"
+                                    className="board-control-input"
+                                    defaultValue="purple"
+                                 />
+                                 <span className="board-indicator" />
+                              </label>
+                              <label className="board-control board-warning">
+                                 <input
+                                    name="radio"
+                                    type="radio"
+                                    className="board-control-input"
+                                    defaultValue="warning"
+                                 />
+                                 <span className="board-indicator" />
+                              </label>
+                              <label className="board-control board-danger">
+                                 <input
+                                    name="radio"
+                                    type="radio"
+                                    className="board-control-input"
+                                    defaultValue="danger"
+                                 />
+                                 <span className="board-indicator" />
+                              </label>
+                           </div>
+                        </div>
+                        <div className="m-t-20 text-center">
+                           <button className="btn btn-primary btn-lg">Submit</button>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div> */}
+      </>
    );
 };
 

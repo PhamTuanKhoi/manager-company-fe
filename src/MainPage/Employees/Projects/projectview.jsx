@@ -268,7 +268,7 @@ const ProjectView = () => {
                                  </div>
 
                                  <div
-                                    className="assign-button"
+                                    className="assign-button bg-primary"
                                     onClick={() => setModalAssign(true)}
                                  >
                                     <span className="button-circle">
