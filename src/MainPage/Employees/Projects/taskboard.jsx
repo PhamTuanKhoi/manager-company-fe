@@ -16,6 +16,7 @@ import {
 } from "../../../Entryfile/imagepath";
 import { useLoading } from "../../../hook/useLoading";
 import {
+   precentFinishTrue,
    precentTaskFinishTrue,
    precentTaskPerfromTrue,
 } from "../../../redux/feature/assignTaskSclice";
@@ -28,10 +29,12 @@ const TaskBoard = () => {
    useEffect(() => {
       dispatch(precentTaskPerfromTrue({ id, setLoading }));
       dispatch(precentTaskFinishTrue({ id, setLoading }));
+      dispatch(precentFinishTrue({ id, setLoading }));
    }, [id]);
 
    const { precentTaskPerfrom } = useSelector((state) => state.assignTask);
    const { precentTaskFinish } = useSelector((state) => state.assignTask);
+   const { precentFinish } = useSelector((state) => state.assignTask);
 
    return (
       <div className="page-wrapper">
@@ -53,7 +56,7 @@ const TaskBoard = () => {
             <div className="row board-view-header">
                <div className="col-4">
                   <div className="pro-teams">
-                     <div className="pro-team-lead">
+                     {/* <div className="pro-team-lead">
                         <h4>Lead</h4>
                         <div className="avatar-group">
                            <div className="avatar">
@@ -124,7 +127,7 @@ const TaskBoard = () => {
                               </a>
                            </div>
                         </div>
-                     </div>
+                     </div> */}
                   </div>
                </div>
                <div className="col-8 text-end">
@@ -134,7 +137,7 @@ const TaskBoard = () => {
                      data-bs-toggle="modal"
                      data-bs-target="#add_task_board"
                   >
-                     <i className="fa fa-plus" /> Create List
+                     <i className="fa fa-plus" /> Tạo danh sách
                   </a>
                   <Link
                      to={`/app/projects/projects-view/${id}`}
@@ -147,15 +150,15 @@ const TaskBoard = () => {
                <div className="col-12">
                   <div className="pro-progress">
                      <div className="pro-progress-bar">
-                        <h4>Progress</h4>
+                        <h4 style={{ width: "90px" }}>Tiến trình</h4>
                         <div className="progress">
                            <div
                               className="progress-bar bg-success"
                               role="progressbar"
-                              style={{ width: "20%" }}
+                              style={{ width: `${precentFinish[0]?.precent}%` }}
                            />
                         </div>
-                        <span>20%</span>
+                        <span>{precentFinish[0]?.precent}%</span>
                      </div>
                   </div>
                </div>
@@ -187,7 +190,7 @@ const TaskBoard = () => {
                         </div>
                         <div className="kanban-wrap">
                            {precentTaskPerfrom?.map((item) => (
-                              <div className="card panel">
+                              <div key={item?.taskId} className="card panel">
                                  <div className="kanban-box">
                                     <div className="task-board-header">
                                        <span className="status-title">
@@ -280,7 +283,7 @@ const TaskBoard = () => {
                         </div>
                         <div className="kanban-wrap ks-empty">
                            {precentTaskFinish?.map((item) => (
-                              <div className="card panel">
+                              <div key={item?.taskId} className="card panel">
                                  <div className="kanban-box">
                                     <div className="task-board-header">
                                        <span className="status-title">

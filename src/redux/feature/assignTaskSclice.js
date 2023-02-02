@@ -186,6 +186,22 @@ export const precentTaskFinishTrue = createAsyncThunk(
    }
 );
 
+export const precentFinishTrue = createAsyncThunk(
+   "assignTask/precentFinishTrue",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await assignTaskAPI.precentFinish(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const assignTaskSclice = createSlice({
    name: "assignTask",
    initialState: {
@@ -197,6 +213,7 @@ const assignTaskSclice = createSlice({
       assignTaskFinishTrue: [],
       precentTaskPerfrom: [],
       precentTaskFinish: [],
+      precentFinish: [],
       error: "",
       loading: false,
    },
@@ -387,6 +404,19 @@ const assignTaskSclice = createSlice({
          state.precentTaskFinish = action.payload;
       },
       [precentTaskFinishTrue.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // precent finish = true
+      [precentFinishTrue.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [precentFinishTrue.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.precentFinish = action.payload;
+      },
+      [precentFinishTrue.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

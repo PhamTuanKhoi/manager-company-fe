@@ -45,4 +45,8 @@ export const assignTaskAPI = {
    async precentTaskFinish(id) {
       return await axios.get(path + "task/finish/" + id + "/project");
    },
+
+   async precentFinish(id) {
+      return await axios.get(path + "precent-finish/" + id + "/project");
+   },
 };
