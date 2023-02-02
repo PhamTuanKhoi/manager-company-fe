@@ -28,6 +28,7 @@ import "../assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css";
 import "../assets/css/bootstrap-datetimepicker.min.css";
 import "../assets/css/style.css";
 import "../assets/css/custom.css";
+import "../assets/css/project.css";
 window.Popper = require("popper.js").default;
 
 const MainApp = () => (

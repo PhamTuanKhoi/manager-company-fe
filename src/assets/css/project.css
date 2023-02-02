@@ -1,0 +1,25 @@
+.column {
+    float: left;
+    width: 48.5%;
+    padding: 0 10px;
+    margin-top: 20px;
+}
+
+  /* Responsive columns   */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+
+.row {
+    padding-left: 3%;
+}
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}

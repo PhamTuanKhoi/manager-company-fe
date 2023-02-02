@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import {
+   avartarFAKE,
    EmployeeDepartmentType,
    ProjectPriorityEnum,
    ProjectStatusEnum,
@@ -28,6 +29,7 @@ import Form from "react-bootstrap/Form";
 import AssignTask from "../../../_components/table/assignTask";
 import PerfromTab from "../../../_components/tabs/perform";
 import FinishTab from "../../../_components/tabs/finish";
+import Part from "../../../_components/part/part";
 const { Panel } = Collapse;
 
 const ProjectView = () => {
@@ -150,6 +152,9 @@ const ProjectView = () => {
                         <p>{project?.content}</p>
                      </div>
                   </div>
+                  {/* part project */}
+                  <Part />
+                  {/* part project */}
                   {/* assign work */}
                   <div className="project-task">
                      <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
@@ -437,7 +442,10 @@ const ProjectView = () => {
                                     <div className="list-item">
                                        <div className="list-left">
                                           <span className="avatar">
-                                             <img alt={item?.name} src={Avatar_01} />
+                                             <img
+                                                alt={item?.name}
+                                                src={item?.avartar || avartarFAKE}
+                                             />
                                           </span>
                                        </div>
                                        <div className="list-body">
@@ -461,7 +469,10 @@ const ProjectView = () => {
                                  <div className="list-item">
                                     <div className="list-left">
                                        <span className="avatar">
-                                          <img alt="" src={Avatar_01} />
+                                          <img
+                                             alt={project?.leaderEX?.name}
+                                             src={project?.leaderEX?.avartar || avartarFAKE}
+                                          />
                                        </span>
                                     </div>
                                     <div className="list-body">
@@ -492,7 +503,7 @@ const ProjectView = () => {
                                           <span className="avatar">
                                              <img
                                                 alt={item?.name}
-                                                src={item?.avartar || Avatar_11}
+                                                src={item?.avartar || avartarFAKE}
                                              />
                                           </span>
                                        </div>
@@ -541,13 +552,18 @@ const ProjectView = () => {
                                     <div className="list-item">
                                        <div className="list-left">
                                           <span className="avatar">
-                                             <img alt="" src={Avatar_02} />
+                                             <img
+                                                alt={item?.name}
+                                                src={item?.avartar || avartarFAKE}
+                                             />
                                           </span>
                                        </div>
                                        <div className="list-body">
                                           <span className="message-author">{item?.user?.name}</span>
                                           <div className="clearfix" />
-                                          {/* <span className="message-content">Web Designer</span> */}
+                                          <span className="message-content">
+                                             {item?.user?.field}
+                                          </span>
                                        </div>
                                     </div>
                                  </Link>
