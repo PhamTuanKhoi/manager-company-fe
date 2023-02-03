@@ -125,6 +125,14 @@ const partSclice = createSlice({
       },
       [addUserToPart.fulfilled]: (state, action) => {
          state.loading = false;
+
+         const {
+            arg: {
+               payload: { userId },
+            },
+         } = action.meta;
+
+         state.userNotAssignPart = state.userNotAssignPart.filter((item) => item.userId !== userId);
       },
       [addUserToPart.rejected]: (state, action) => {
          state.loading = false;

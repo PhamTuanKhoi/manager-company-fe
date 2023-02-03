@@ -31,6 +31,8 @@ function Part() {
          return;
       }
 
+      setText("");
+
       dispatch(
          createPart({ payload: { project: id, name: text, creator: user._id }, toast, setLoading })
       );
@@ -42,17 +44,22 @@ function Part() {
 
    const { parts } = useSelector((state) => state.part);
 
-   // ==================================== modal ===================================
+   // ======================================== modal ========================================
 
    const onListUser = (item) => {
       setPart(item);
-      dispatch(checkNotAssignPart({ query: { project: id, part: item._id }, setLoading }));
    };
+
+   useEffect(() => {
+      dispatch(checkNotAssignPart({ query: { project: id }, setLoading }));
+   }, [id]);
 
    const { userNotAssignPart } = useSelector((state) => state.part);
 
    const handleAdd = (item) => {
-      dispatch(addUserToPart({ id: part._id, payload: { user: item.worker }, toast, setLoading }));
+      dispatch(
+         addUserToPart({ id: part._id, payload: { userId: item.userId }, toast, setLoading })
+      );
    };
 
    return (
@@ -73,6 +80,7 @@ function Part() {
                            type="text"
                            className="input-custom"
                            placeholder="Nhập tên..."
+                           defaultValue={text}
                            onChange={(e) => setText(e.target.value)}
                         />
                         <button className="btn btn-primary" onClick={handleSave}>
@@ -191,14 +199,14 @@ function Part() {
                         <input type="text" className="form-control" />
                      </div>
                      {userNotAssignPart?.map((item) => (
-                        <ul className="chat-user-list">
+                        <ul key={item._id} className="chat-user-list">
                            <li>
                               <a href="#">
                                  <div className="media import-content">
                                     <div className="content-media">
                                        <span className="avatar">{/* <img alt="" src={} /> */}</span>
                                        <div className="media-body align-self-center text-nowrap">
-                                          <div className="user-name">{item?.worker}</div>
+                                          <div className="user-name">{item?.name}</div>
                                           {/* <span className="designation">{item?.department}</span> */}
                                        </div>
                                     </div>
