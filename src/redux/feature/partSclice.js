@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { partAPI } from "../../api/part";
 
 export const createPart = createAsyncThunk(
-   "task/createPart",
+   "part/createPart",
    async ({ payload, toast, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
@@ -25,11 +25,42 @@ export const createPart = createAsyncThunk(
 );
 
 export const listPartByIdProject = createAsyncThunk(
-   "task/listPart",
+   "part/listPart",
    async ({ id, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await partAPI.listByIdProject(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const checkNotAssignPart = createAsyncThunk(
+   "part/checkNotAssignPart",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await partAPI.checkNotAssignPart(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const addUserToPart = createAsyncThunk(
+   "part/addUserToPart",
+   async ({ id, payload, toast, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await partAPI.updateFiledWorkers(id, payload);
+         toast.success(`Thêm người lao động vào bộ phận`);
          setLoading(false);
          return data;
       } catch (error) {
@@ -44,6 +75,7 @@ const partSclice = createSlice({
    initialState: {
       part: {},
       parts: [],
+      userNotAssignPart: [],
       error: "",
       loading: false,
    },
@@ -70,6 +102,31 @@ const partSclice = createSlice({
          state.parts = action.payload;
       },
       [listPartByIdProject.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // load user not assign part
+      [checkNotAssignPart.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [checkNotAssignPart.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.userNotAssignPart = action.payload;
+      },
+      [checkNotAssignPart.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // add user to part
+      [addUserToPart.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [addUserToPart.fulfilled]: (state, action) => {
+         state.loading = false;
+      },
+      [addUserToPart.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

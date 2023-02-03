@@ -1,15 +1,22 @@
 import React, { useState } from "react";
+import ReactDOM from "react-dom";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLoading } from "../../hook/useLoading";
-import { createPart, listPartByIdProject } from "../../redux/feature/partSclice";
+import {
+   addUserToPart,
+   checkNotAssignPart,
+   createPart,
+   listPartByIdProject,
+} from "../../redux/feature/partSclice";
 
-const Part = () => {
+function Part() {
    const [create, setCreate] = useState(false);
    const [text, setText] = useState("");
+   const [part, setPart] = useState({});
    const { id } = useParams();
    const { setLoading } = useLoading();
    const dispatch = useDispatch();
@@ -34,6 +41,19 @@ const Part = () => {
    }, [id]);
 
    const { parts } = useSelector((state) => state.part);
+
+   // ==================================== modal ===================================
+
+   const onListUser = (item) => {
+      setPart(item);
+      dispatch(checkNotAssignPart({ query: { project: id, part: item._id }, setLoading }));
+   };
+
+   const { userNotAssignPart } = useSelector((state) => state.part);
+
+   const handleAdd = (item) => {
+      dispatch(addUserToPart({ id: part._id, payload: { user: item.worker }, toast, setLoading }));
+   };
 
    return (
       <>
@@ -67,7 +87,7 @@ const Part = () => {
                      </div>
                   )}
                </div>
-               <div class="row">
+               <div className="row">
                   {parts?.map((item) => (
                      <div key={item?._id} className="col-md-12 col-lg-6 col-xl-6 d-flex">
                         <div className="card flex-fill">
@@ -79,15 +99,16 @@ const Part = () => {
                                        <i className="fa fa-ellipsis-v" />
                                     </a>
                                     <div className="dropdown-menu dropdown-menu-right">
-                                       <a className="dropdown-item" href="#">
-                                          Thêm người lao động
-                                       </a>
                                        <a
                                           className="dropdown-item"
                                           href="#"
                                           data-bs-toggle="modal"
-                                          data-bs-target="#edit_task_board"
+                                          data-bs-target="#addUser"
+                                          onClick={() => onListUser(item)}
                                        >
+                                          Thêm người lao động
+                                       </a>
+                                       <a className="dropdown-item" href="#">
                                           Chỉnh sửa
                                        </a>
                                        <a className="dropdown-item" href="#">
@@ -156,92 +177,45 @@ const Part = () => {
          </div>
 
          {/* modal */}
-         {/* <div id="add_task_board" className="modal custom-modal fade" role="dialog">
-            <div className="modal-dialog modal-dialog-centered">
+         <div id="addUser" className="modal custom-modal fade" role="dialog">
+            <div className="modal-dialog">
                <div className="modal-content">
                   <div className="modal-header">
-                     <h4 className="modal-title">Thêm bộ phận</h4>
-
+                     <h4 className="modal-title">Thêm người lao động bộ phận save</h4>
                      <button type="button" className="close-x" data-bs-dismiss="modal">
                         <span aria-hidden="true">×</span>
                      </button>
                   </div>
                   <div className="modal-body">
-                     <form>
-                        <div className="form-group">
-                           <label>Tên bộ phận</label>
-                           <input type="text" className="form-control" />
-                        </div>
-                        <div className="form-group task-board-color">
-                           <label>Màu nền</label>
-                           <div className="board-color-list">
-                              <label className="board-control board-primary">
-                                 <input
-                                    name="radio"
-                                    type="radio"
-                                    className="board-control-input"
-                                    defaultValue="primary"
-                                    defaultChecked
-                                 />
-                                 <span className="board-indicator" />
-                              </label>
-                              <label className="board-control board-success">
-                                 <input
-                                    name="radio"
-                                    type="radio"
-                                    className="board-control-input"
-                                    defaultValue="success"
-                                 />
-                                 <span className="board-indicator" />
-                              </label>
-                              <label className="board-control board-info">
-                                 <input
-                                    name="radio"
-                                    type="radio"
-                                    className="board-control-input"
-                                    defaultValue="info"
-                                 />
-                                 <span className="board-indicator" />
-                              </label>
-                              <label className="board-control board-purple">
-                                 <input
-                                    name="radio"
-                                    type="radio"
-                                    className="board-control-input"
-                                    defaultValue="purple"
-                                 />
-                                 <span className="board-indicator" />
-                              </label>
-                              <label className="board-control board-warning">
-                                 <input
-                                    name="radio"
-                                    type="radio"
-                                    className="board-control-input"
-                                    defaultValue="warning"
-                                 />
-                                 <span className="board-indicator" />
-                              </label>
-                              <label className="board-control board-danger">
-                                 <input
-                                    name="radio"
-                                    type="radio"
-                                    className="board-control-input"
-                                    defaultValue="danger"
-                                 />
-                                 <span className="board-indicator" />
-                              </label>
-                           </div>
-                        </div>
-                        <div className="m-t-20 text-center">
-                           <button className="btn btn-primary btn-lg">Submit</button>
-                        </div>
-                     </form>
+                     <div className="form-group">
+                        <input type="text" className="form-control" />
+                     </div>
+                     {userNotAssignPart?.map((item) => (
+                        <ul className="chat-user-list">
+                           <li>
+                              <a href="#">
+                                 <div className="media import-content">
+                                    <div className="content-media">
+                                       <span className="avatar">{/* <img alt="" src={} /> */}</span>
+                                       <div className="media-body align-self-center text-nowrap">
+                                          <div className="user-name">{item?.worker}</div>
+                                          {/* <span className="designation">{item?.department}</span> */}
+                                       </div>
+                                    </div>
+                                    <div className="import" onClick={() => handleAdd(item)}>
+                                       Thêm
+                                    </div>
+                                 </div>
+                              </a>
+                           </li>
+                        </ul>
+                     ))}
                   </div>
                </div>
             </div>
-         </div> */}
+         </div>
       </>
    );
-};
+}
 
 export default Part;
