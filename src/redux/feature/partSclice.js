@@ -24,6 +24,21 @@ export const createPart = createAsyncThunk(
    }
 );
 
+export const listPartByIdProject = createAsyncThunk(
+   "task/listPart",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await partAPI.listByIdProject(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const partSclice = createSlice({
    name: "part",
    initialState: {
@@ -33,6 +48,7 @@ const partSclice = createSlice({
       loading: false,
    },
    extraReducers: {
+      // create part
       [createPart.pending]: (state, action) => {
          state.loading = true;
       },
@@ -41,6 +57,19 @@ const partSclice = createSlice({
          state.parts.push(action.payload);
       },
       [createPart.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // list part by id project
+      [listPartByIdProject.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listPartByIdProject.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.parts = action.payload;
+      },
+      [listPartByIdProject.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

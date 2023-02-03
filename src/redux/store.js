@@ -12,6 +12,7 @@ import taskSclice from "./feature/taskSclice";
 import assignTaskSclice from "./feature/assignTaskSclice";
 import initSclice from "./feature/initSclice";
 import messageSclice from "./feature/messageSclice";
+import partSclice from "./feature/partSclice";
 
 const persistConfig = {
    key: "root",
@@ -30,6 +31,7 @@ const reducer = combineReducers({
    assignTask: assignTaskSclice.reducer,
    init: initSclice.reducer,
    message: messageSclice.reducer,
+   part: partSclice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);
