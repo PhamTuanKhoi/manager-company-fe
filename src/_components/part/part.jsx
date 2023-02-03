@@ -129,14 +129,14 @@ function Part() {
                                  <div className="row">
                                     <div className="col-md-6 col-6 text-center">
                                        <div className="stats-box mb-4">
-                                          <p>Total Tasks</p>
+                                          <p>Tổng công việc</p>
                                           <h3>385</h3>
                                        </div>
                                     </div>
                                     <div className="col-md-6 col-6 text-center">
                                        <div className="stats-box mb-4">
-                                          <p>Overdue Tasks</p>
-                                          <h3>19</h3>
+                                          <p>Tổng thành viên</p>
+                                          <h3>{item?.workers?.length}</h3>
                                        </div>
                                     </div>
                                  </div>
@@ -168,12 +168,12 @@ function Part() {
                               <div>
                                  <p>
                                     <i className="fa fa-dot-circle-o text-purple me-2" />
-                                    Completed Tasks <span className="float-end">166</span>
+                                    Thực hiện <span className="float-end">166</span>
                                  </p>
 
                                  <p>
                                     <i className="fa fa-dot-circle-o text-danger me-2" />
-                                    Pending Tasks <span className="float-end">47</span>
+                                    Hoàn thành <span className="float-end">47</span>
                                  </p>
                               </div>
                            </div>

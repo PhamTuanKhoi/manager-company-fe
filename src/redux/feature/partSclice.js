@@ -128,11 +128,18 @@ const partSclice = createSlice({
 
          const {
             arg: {
+               id,
                payload: { userId },
             },
          } = action.meta;
 
+         // delete user
          state.userNotAssignPart = state.userNotAssignPart.filter((item) => item.userId !== userId);
+
+         // update parts
+         state.parts = state.parts?.map((item) =>
+            item._id === id ? { ...item, workers: [...item.workers, userId] } : item
+         );
       },
       [addUserToPart.rejected]: (state, action) => {
          state.loading = false;
