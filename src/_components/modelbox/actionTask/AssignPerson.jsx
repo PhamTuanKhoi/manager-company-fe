@@ -68,17 +68,58 @@ function AssignPerson({ show, onHide, task, load }) {
                   </button>
                </div>
                <div className="modal-body">
-                  <div className="input-group m-b-30">
-                     <input
-                        placeholder="Search a user to assign"
-                        className="form-control search-input"
-                        type="text"
-                     />
-                  </div>
+                  <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
+                     <li className="nav-item">
+                        <a
+                           className="nav-link active"
+                           href="#person"
+                           data-bs-toggle="tab"
+                           aria-expanded="true"
+                        >
+                           Người lao động
+                        </a>
+                     </li>
+                     <li className="nav-item">
+                        <a
+                           className="nav-link"
+                           href="#part"
+                           data-bs-toggle="tab"
+                           aria-expanded="false"
+                        >
+                           Bộ phận
+                        </a>
+                     </li>
+                  </ul>
                   <div className="body-dialog">
-                     <ul className="chat-user-list">
-                        {notAssignTask?.map((item, index) => (
-                           <li key={index}>
+                     <div className="tab-content">
+                        <ul className="chat-user-list tab-pane show active" id="person">
+                           {notAssignTask?.map((item, index) => (
+                              <li key={index}>
+                                 <a href="#">
+                                    <div className="media import-content">
+                                       <div className="content-media">
+                                          <span className="avatar">
+                                             {/* <img alt="" src={Avatar_09} /> */}
+                                          </span>
+                                          <div className="media-body align-self-center text-nowrap">
+                                             <div className="user-name">{item?.name}</div>
+                                             {/* <span className="designation">{item?.department}</span> */}
+                                          </div>
+                                       </div>
+                                       <div
+                                          className="import"
+                                          onClick={() => handleAdd(item, task)}
+                                       >
+                                          Thêm
+                                       </div>
+                                    </div>
+                                 </a>
+                              </li>
+                           ))}
+                        </ul>
+                        {/* tab part */}
+                        <ul className="chat-user-list tab-pane" id="part">
+                           <li>
                               <a href="#">
                                  <div className="media import-content">
                                     <div className="content-media">
@@ -86,18 +127,16 @@ function AssignPerson({ show, onHide, task, load }) {
                                           {/* <img alt="" src={Avatar_09} /> */}
                                        </span>
                                        <div className="media-body align-self-center text-nowrap">
-                                          <div className="user-name">{item?.name}</div>
+                                          <div className="user-name"> gou a</div>
                                           {/* <span className="designation">{item?.department}</span> */}
                                        </div>
                                     </div>
-                                    <div className="import" onClick={() => handleAdd(item, task)}>
-                                       Thêm
-                                    </div>
+                                    <div className="import">Thêm</div>
                                  </div>
                               </a>
                            </li>
-                        ))}
-                     </ul>
+                        </ul>
+                     </div>
                   </div>
                </div>
             </div>

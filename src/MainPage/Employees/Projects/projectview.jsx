@@ -12,7 +12,6 @@ import {
    TaskStatusType,
    UserRoleType,
 } from "../../../constant";
-import { Avatar_02, Avatar_11, Avatar_01 } from "../../../Entryfile/imagepath";
 import { useLoading } from "../../../hook/useLoading";
 import { listPayslipByUser } from "../../../redux/feature/payslipSclice";
 import { projectDetail } from "../../../redux/feature/projectSclice";
@@ -25,7 +24,6 @@ import { listTaskByProject } from "../../../redux/feature/taskSclice";
 import ActionTask from "../../../_components/modelbox/actionTask/ActionTask";
 import CreateTask from "../../../_components/modelbox/assignUserTask";
 import Addproject from "../../../_components/modelbox/Addproject";
-import Form from "react-bootstrap/Form";
 import AssignTask from "../../../_components/table/assignTask";
 import PerfromTab from "../../../_components/tabs/perform";
 import FinishTab from "../../../_components/tabs/finish";
@@ -79,10 +77,6 @@ const ProjectView = () => {
    const { project } = useSelector((state) => state.project);
    const { listWPByProject } = useSelector((state) => state.workerProject);
    const { tasks } = useSelector((state) => state.task);
-
-   const onChange = (key) => {
-      console.log(key);
-   };
 
    const Action = ({ item }) => <ActionTask item={item} />;
 
@@ -231,17 +225,19 @@ const ProjectView = () => {
 
                                        <li className="task">
                                           <Collapse
+                                             style={{ fontWeight: "bold" }}
                                              defaultActiveKey={["1"]}
-                                             onChange={onChange}
                                              expandIconPosition="start"
+                                             collapsible="disabled"
                                           >
                                              {tasks?.map((item) => (
                                                 <Panel
+                                                   showArrow={false}
                                                    key={item?._id}
                                                    header={item?.name}
                                                    extra={Action({ item })}
                                                 >
-                                                   <div>{item?.content}</div>
+                                                   {/* <div>{item?.content}</div> */}
                                                 </Panel>
                                              ))}
                                           </Collapse>
