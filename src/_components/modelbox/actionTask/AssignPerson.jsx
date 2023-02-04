@@ -5,7 +5,11 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLoading } from "../../../hook/useLoading";
 
-import { checkNotAssignTask, createAssignTask } from "../../../redux/feature/assignTaskSclice";
+import {
+   checkNotAssignTask,
+   createAssignTask,
+   createAssignTaskByPart,
+} from "../../../redux/feature/assignTaskSclice";
 function AssignPerson({ show, onHide, task, load }) {
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
@@ -42,6 +46,24 @@ function AssignPerson({ show, onHide, task, load }) {
    }, [id, task._id, load]);
 
    const { notAssignTask } = useSelector((state) => state.assignTask);
+
+   //  =================================== part ======================================
+   const { parts } = useSelector((state) => state.part);
+
+   const handAddPart = (part, task) => {
+      console.log(part, task);
+
+      if (!user._id) toast.warn(`Vui lòng đăng nhập vào hệ thống`);
+
+      dispatch(
+         createAssignTaskByPart({
+            payload: { workers: JSON.stringify(part?.workers), task: task._id, creator: user._id },
+            assignTask: {},
+            toast,
+            setLoading,
+         })
+      );
+   };
 
    return (
       <Modal
@@ -119,22 +141,29 @@ function AssignPerson({ show, onHide, task, load }) {
                         </ul>
                         {/* tab part */}
                         <ul className="chat-user-list tab-pane" id="part">
-                           <li>
-                              <a href="#">
-                                 <div className="media import-content">
-                                    <div className="content-media">
-                                       <span className="avatar">
-                                          {/* <img alt="" src={Avatar_09} /> */}
-                                       </span>
-                                       <div className="media-body align-self-center text-nowrap">
-                                          <div className="user-name"> gou a</div>
-                                          {/* <span className="designation">{item?.department}</span> */}
+                           {parts?.map((item) => (
+                              <li key={item?._id}>
+                                 <a href="#">
+                                    <div className="media import-content">
+                                       <div className="content-media">
+                                          <span className="avatar">
+                                             {/* <img alt="" src={Avatar_09} /> */}
+                                          </span>
+                                          <div className="media-body align-self-center text-nowrap">
+                                             <div className="user-name">{item?.name}</div>
+                                             {/* <span className="designation">{item?.department}</span> */}
+                                          </div>
+                                       </div>
+                                       <div
+                                          className="import"
+                                          onClick={() => handAddPart(item, task)}
+                                       >
+                                          Thêm
                                        </div>
                                     </div>
-                                    <div className="import">Thêm</div>
-                                 </div>
-                              </a>
-                           </li>
+                                 </a>
+                              </li>
+                           ))}
                         </ul>
                      </div>
                   </div>

@@ -6,6 +6,10 @@ export const assignTaskAPI = {
       return await axios.post(path, payload);
    },
 
+   async createAssignByPart(payload) {
+      return await axios.post(path + "part", payload);
+   },
+
    async list() {
       return await axios.get(path);
    },
