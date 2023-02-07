@@ -57,9 +57,16 @@ function Part() {
    const { userNotAssignPart } = useSelector((state) => state.part);
 
    const handleAdd = (item) => {
-      dispatch(
-         addUserToPart({ id: part._id, payload: { userId: item.userId }, toast, setLoading })
-      );
+      if (user._id) {
+         dispatch(
+            addUserToPart({
+               id: part._id,
+               payload: { userId: item.userId, creator: user._id },
+               toast,
+               setLoading,
+            })
+         );
+      }
    };
 
    return (
@@ -189,7 +196,7 @@ function Part() {
             <div className="modal-dialog">
                <div className="modal-content">
                   <div className="modal-header">
-                     <h4 className="modal-title">Thêm người lao động bộ phận save</h4>
+                     <h4 className="modal-title">Thêm người lao động bộ phận</h4>
                      <button type="button" className="close-x" data-bs-dismiss="modal">
                         <span aria-hidden="true">×</span>
                      </button>
