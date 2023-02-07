@@ -11,7 +11,7 @@ import authSclice from "../../redux/feature/authSclice";
 import { workerProjectClient } from "../../redux/feature/initSclice";
 import { useLoading } from "../../hook/useLoading";
 import moment from "moment";
-import { avartarFAKE, logoFAKE } from "../../constant";
+import { avartarFAKE, logoFAKE, UserRoleType } from "../../constant";
 import { useSocket } from "../../context/useSocket";
 import { notificationMessage } from "../../redux/feature/messageSclice";
 
@@ -42,8 +42,11 @@ const Header = (props) => {
    const { messageNotification } = useSelector((state) => state.message);
 
    useEffect(() => {
-      dispatch(workerProjectClient({ query: { id: user._id }, setLoading }));
-      dispatch(notificationMessage({ query: { id: user._id }, setLoading }));
+      if (user.role === UserRoleType.CLIENT) {
+         dispatch(workerProjectClient({ query: { id: user._id }, setLoading }));
+      }
+
+      if (user._id) dispatch(notificationMessage({ query: { id: user._id }, setLoading }));
    }, [user]);
 
    useEffect(() => {
