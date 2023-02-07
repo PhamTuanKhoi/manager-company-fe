@@ -77,6 +77,7 @@ function AssignPerson({ show, onHide, task, load }) {
                part: part._id,
             },
             assignTask: userEX,
+            workers: part.workers,
             toast,
             setLoading,
          })

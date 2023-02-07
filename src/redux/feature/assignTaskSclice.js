@@ -204,13 +204,13 @@ export const precentFinishTrue = createAsyncThunk(
 
 export const createAssignTaskByPart = createAsyncThunk(
    "assignTask/createAssignTaskByPart",
-   async ({ payload, toast, setLoading, assignTask }, { rejectWithValue }) => {
+   async ({ payload, toast, setLoading, assignTask, workers }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await assignTaskAPI.createAssignByPart(payload);
          toast.success("Giao công việc thành công");
          setLoading(false);
-         return { data, assignTask, task: payload.task };
+         return { data, assignTask, task: payload.task, workers };
       } catch (error) {
          setLoading(false);
          if (typeof error?.response?.data?.message === "string") {
@@ -497,6 +497,13 @@ const assignTaskSclice = createSlice({
 
          // push new data
          state.assignTasks = [...state.assignTasks, ...action.payload.assignTask];
+
+         // remove user dialog assign
+         if (action.payload.workers.length > 0) {
+            state.notAssignTask = state.notAssignTask.filter(
+               (item) => !action.payload.workers?.includes(item?._id)
+            );
+         }
       },
       [createAssignTaskByPart.rejected]: (state, action) => {
          state.loading = false;
