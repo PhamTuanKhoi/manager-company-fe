@@ -12,6 +12,7 @@ import {
    createPart,
    listPartByIdProject,
 } from "../../redux/feature/partSclice";
+import assignTaskSclice from "../../redux/feature/assignTaskSclice";
 
 function Part() {
    const [create, setCreate] = useState(false);
@@ -57,6 +58,19 @@ function Part() {
    const { userNotAssignPart } = useSelector((state) => state.part);
 
    const handleAdd = (item) => {
+      //custom data assign
+      const dataAssign = part.taskEX?.map((val) => ({
+         // _id fake
+         userId: item?._id,
+         name: item?.name,
+         filed: item?.field,
+         avartar: item?.avartar,
+         taskId: val._id,
+         taskName: val.name,
+         perform: { status: false, date: Date.now() },
+         finish: { status: false, date: Date.now() },
+      }));
+
       if (user._id) {
          dispatch(
             addUserToPart({
@@ -66,6 +80,9 @@ function Part() {
                setLoading,
             })
          );
+
+         // add data assign
+         dispatch(assignTaskSclice.actions.addAssignTasks(dataAssign));
       }
    };
 

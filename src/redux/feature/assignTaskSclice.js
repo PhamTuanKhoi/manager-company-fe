@@ -257,6 +257,11 @@ const assignTaskSclice = createSlice({
       error: "",
       loading: false,
    },
+   reducers: {
+      addAssignTasks: (state, action) => {
+         state.assignTasks = [...state.assignTasks, ...action.payload];
+      },
+   },
    extraReducers: {
       //assign
       [createAssignTask.pending]: (state, action) => {
