@@ -257,11 +257,6 @@ const assignTaskSclice = createSlice({
       error: "",
       loading: false,
    },
-   reducers: {
-      setPartData: (state, action) => {
-         state.partsData = action.payload;
-      },
-   },
    extraReducers: {
       //assign
       [createAssignTask.pending]: (state, action) => {
@@ -493,11 +488,7 @@ const assignTaskSclice = createSlice({
          } = action.meta;
 
          // remove part
-         console.log(action.payload.assignTask);
-
-         if (action.payload.data.tasks.includes(action.payload.task)) {
-            state.partsData = state.partsData.filter((item) => item._id !== part);
-         }
+         state.partNotAssignTask = state.partNotAssignTask.filter((item) => item._id !== part);
 
          // push new data
          state.assignTasks = [...state.assignTasks, ...action.payload.assignTask];
