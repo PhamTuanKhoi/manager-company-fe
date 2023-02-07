@@ -5,8 +5,9 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLoading } from "../../../hook/useLoading";
 
-import {
+import assignTaskSclice, {
    checkNotAssignTask,
+   checkPartNotAssignTask,
    createAssignTask,
    createAssignTaskByPart,
 } from "../../../redux/feature/assignTaskSclice";
@@ -48,17 +49,34 @@ function AssignPerson({ show, onHide, task, load }) {
    const { notAssignTask } = useSelector((state) => state.assignTask);
 
    //  =================================== part ======================================
-   const { parts } = useSelector((state) => state.part);
+
+   useEffect(() => {
+      if (task._id) {
+         dispatch(checkPartNotAssignTask({ query: { project: id, task: task._id }, setLoading }));
+      }
+   }, [id, task._id, load]);
+
+   const { partNotAssignTask } = useSelector((state) => state.assignTask);
 
    const handAddPart = (part, task) => {
-      console.log(part, task);
-
       if (!user._id) toast.warn(`Vui lòng đăng nhập vào hệ thống`);
+      const userEX = part?.userEX?.map((item) => ({
+         ...item,
+         taskId: task._id,
+         taskName: task?.name,
+         perform: { status: false, date: Date.now() },
+         finish: { status: false, date: Date.now() },
+      }));
 
       dispatch(
          createAssignTaskByPart({
-            payload: { workers: JSON.stringify(part?.workers), task: task._id, creator: user._id },
-            assignTask: {},
+            payload: {
+               workers: JSON.stringify(part?.workers),
+               task: task._id,
+               creator: user._id,
+               part: part._id,
+            },
+            assignTask: userEX,
             toast,
             setLoading,
          })
@@ -141,7 +159,7 @@ function AssignPerson({ show, onHide, task, load }) {
                         </ul>
                         {/* tab part */}
                         <ul className="chat-user-list tab-pane" id="part">
-                           {parts?.map((item) => (
+                           {partNotAssignTask?.map((item) => (
                               <li key={item?._id}>
                                  <a href="#">
                                     <div className="media import-content">

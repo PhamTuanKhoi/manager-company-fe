@@ -210,7 +210,7 @@ export const createAssignTaskByPart = createAsyncThunk(
          const { data } = await assignTaskAPI.createAssignByPart(payload);
          toast.success("Giao công việc thành công");
          setLoading(false);
-         return { data, assignTask };
+         return { data, assignTask, task: payload.task };
       } catch (error) {
          setLoading(false);
          if (typeof error?.response?.data?.message === "string") {
@@ -220,6 +220,22 @@ export const createAssignTaskByPart = createAsyncThunk(
                toast.error(item);
             });
          }
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const checkPartNotAssignTask = createAsyncThunk(
+   "assignTask/checkPartNotAssignTask",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await assignTaskAPI.checkPartNotAssignTask(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
          return rejectWithValue(error.response.data);
       }
    }
@@ -237,8 +253,14 @@ const assignTaskSclice = createSlice({
       precentTaskPerfrom: [],
       precentTaskFinish: [],
       precentFinish: [],
+      partNotAssignTask: [],
       error: "",
       loading: false,
+   },
+   reducers: {
+      setPartData: (state, action) => {
+         state.partsData = action.payload;
+      },
    },
    extraReducers: {
       //assign
@@ -444,16 +466,41 @@ const assignTaskSclice = createSlice({
          state.error = action.payload.message;
       },
 
+      // precent finish = true
+      [checkPartNotAssignTask.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [checkPartNotAssignTask.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.partNotAssignTask = action.payload;
+      },
+      [checkPartNotAssignTask.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
       //assign by part
       [createAssignTaskByPart.pending]: (state, action) => {
          state.loading = true;
       },
       [createAssignTaskByPart.fulfilled]: (state, action) => {
          state.loading = false;
-         // state.notAssignTask = state.notAssignTask.filter(
-         //    (item) => item._id !== action.payload.data.worker
-         // );
-         // state.assignTasks.push({ ...action.payload.assignTask, _id: action.payload.data._id });
+
+         const {
+            arg: {
+               payload: { part },
+            },
+         } = action.meta;
+
+         // remove part
+         console.log(action.payload.assignTask);
+
+         if (action.payload.data.tasks.includes(action.payload.task)) {
+            state.partsData = state.partsData.filter((item) => item._id !== part);
+         }
+
+         // push new data
+         state.assignTasks = [...state.assignTasks, ...action.payload.assignTask];
       },
       [createAssignTaskByPart.rejected]: (state, action) => {
          state.loading = false;
