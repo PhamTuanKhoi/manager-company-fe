@@ -11,8 +11,10 @@ import {
    checkNotAssignPart,
    createPart,
    listPartByIdProject,
+   precentPartByIdProject,
 } from "../../redux/feature/partSclice";
 import assignTaskSclice from "../../redux/feature/assignTaskSclice";
+import { useMemo } from "react";
 
 function Part() {
    const [create, setCreate] = useState(false);
@@ -23,7 +25,7 @@ function Part() {
    const dispatch = useDispatch();
 
    const { user } = useSelector((state) => state.auth);
-
+   // ======================================== create part ===============================
    const handleSave = () => {
       if (!text) return;
 
@@ -44,6 +46,7 @@ function Part() {
    }, [id]);
 
    const { parts } = useSelector((state) => state.part);
+   // ======================================== create part ===============================
 
    // ======================================== modal ========================================
 
@@ -85,6 +88,16 @@ function Part() {
          dispatch(assignTaskSclice.actions.addAssignTasks(dataAssign));
       }
    };
+   // ======================================== modal ========================================
+
+   //========================================== precent ====================
+
+   useEffect(() => {
+      dispatch(precentPartByIdProject({ query: { project: id }, setLoading }));
+   }, [id]);
+
+   const { precentPart } = useSelector((state) => state.part);
+   //========================================== precent ====================
 
    return (
       <>
@@ -154,7 +167,7 @@ function Part() {
                                     <div className="col-md-6 col-6 text-center">
                                        <div className="stats-box mb-4">
                                           <p>Tổng công việc</p>
-                                          <h3>385</h3>
+                                          <h3>{item?.tasks?.length}</h3>
                                        </div>
                                     </div>
                                     <div className="col-md-6 col-6 text-center">
@@ -165,41 +178,54 @@ function Part() {
                                     </div>
                                  </div>
                               </div>
-                              <div className="progress mb-4">
-                                 <div
-                                    className="progress-bar bg-purple"
-                                    role="progressbar"
-                                    style={{ width: "80%" }}
-                                    aria-valuenow={30}
-                                    aria-valuemin={0}
-                                    aria-valuemax={100}
-                                 >
-                                    80%
-                                 </div>
-                              </div>
-                              <div className="progress mb-4">
-                                 <div
-                                    className="progress-bar bg-success"
-                                    role="progressbar"
-                                    style={{ width: "30%" }}
-                                    aria-valuenow={30}
-                                    aria-valuemin={0}
-                                    aria-valuemax={100}
-                                 >
-                                    30%
-                                 </div>
-                              </div>
-                              <div>
-                                 <p>
-                                    <i className="fa fa-dot-circle-o text-purple me-2" />
-                                    Thực hiện <span className="float-end">166</span>
-                                 </p>
+                              {precentPart?.map(
+                                 (precent) =>
+                                    precent?._id === item._id && (
+                                       <div key={precent?._id}>
+                                          <div className="progress mb-4">
+                                             <div
+                                                className="progress-bar bg-warning"
+                                                role="progressbar"
+                                                style={{ width: `${precent?.precentPerform}%` }}
+                                                aria-valuenow={30}
+                                                aria-valuemin={0}
+                                                aria-valuemax={100}
+                                             >
+                                                {precent?.precentPerform || 0}%
+                                             </div>
+                                          </div>
+                                          <div className="progress mb-4">
+                                             <div
+                                                className="progress-bar bg-success"
+                                                role="progressbar"
+                                                style={{ width: `${precent.precentFinish}%` }}
+                                                aria-valuenow={30}
+                                                aria-valuemin={0}
+                                                aria-valuemax={100}
+                                             >
+                                                {precent?.precentFinish || 0}%
+                                             </div>
+                                          </div>
+                                          <div>
+                                             <p>
+                                                <i className="fa fa-dot-circle-o text-purple me-2" />
+                                                Thực hiện{" "}
+                                                <span className="float-end">
+                                                   {precent?.performTrue}
+                                                </span>
+                                             </p>
 
-                                 <p>
-                                    <i className="fa fa-dot-circle-o text-danger me-2" />
-                                    Hoàn thành <span className="float-end">47</span>
-                                 </p>
-                              </div>
+                                             <p>
+                                                <i className="fa fa-dot-circle-o text-danger me-2" />
+                                                Hoàn thành{" "}
+                                                <span className="float-end">
+                                                   {precent?.finishTrue}
+                                                </span>
+                                             </p>
+                                          </div>
+                                       </div>
+                                    )
+                              )}
                            </div>
                         </div>
                      </div>

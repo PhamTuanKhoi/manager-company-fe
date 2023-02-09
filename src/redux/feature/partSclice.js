@@ -70,12 +70,28 @@ export const addUserToPart = createAsyncThunk(
    }
 );
 
+export const precentPartByIdProject = createAsyncThunk(
+   "part/checkNotAssignPart",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await partAPI.precentPartByIdProject(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const partSclice = createSlice({
    name: "part",
    initialState: {
       part: {},
       parts: [],
       userNotAssignPart: [],
+      precentPart: [],
       error: "",
       loading: false,
    },
@@ -142,6 +158,19 @@ const partSclice = createSlice({
          );
       },
       [addUserToPart.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // load user not assign part
+      [precentPartByIdProject.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [precentPartByIdProject.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.precentPart = action.payload;
+      },
+      [precentPartByIdProject.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

@@ -17,4 +17,8 @@ export const partAPI = {
    async updateFiledWorkers(id, payload) {
       return await axios.patch(path + "workers/" + id, payload);
    },
+
+   async precentPartByIdProject(filter = {}) {
+      return await axios.get(path + "precent", { params: filter });
+   },
 };
