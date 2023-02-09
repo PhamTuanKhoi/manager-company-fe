@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { avartarFAKE } from "../../constant";
 import { useLoading } from "../../hook/useLoading";
 import { itemRender, onShowSizeChange } from "../../MainPage/paginationfunction";
 import {
@@ -56,7 +57,22 @@ const AssignTask = () => {
       {
          title: "Họ tên",
          dataIndex: "name",
+         render: (text, record) => (
+            <h2 className="table-avatar">
+               <Link to={`/app/profile/worker-profile/${record?.userId}`} className="avatar">
+                  <img alt={record?.name} src={record?.image || avartarFAKE} />
+               </Link>
+               <Link to={`/app/profile/worker-profile/${record?.userId}`}>
+                  {text} <span>{record?.field}</span>
+               </Link>
+            </h2>
+         ),
          sorter: (a, b) => a.name.length - b.name.length,
+      },
+      {
+         title: "Bộ phận",
+         dataIndex: "partName",
+         sorter: (a, b) => a.partName.length - b.partName.length,
       },
       {
          title: "Công việc",
