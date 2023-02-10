@@ -87,14 +87,23 @@ export const precentPartByIdProject = createAsyncThunk(
 
 export const removeUserInPart = createAsyncThunk(
    "part/removeUserInPart",
-   async ({ partId, userId, setLoading }, { rejectWithValue }) => {
+   async ({ partId, userId, setLoading, toast, setUserEX, userEX }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await partAPI.removeUserInPart(partId, userId);
+         setUserEX(userEX.filter((val) => val._id !== userId));
+         toast.success(`removed a user in part ${data?.name}`);
          setLoading(false);
          return data;
       } catch (error) {
          setLoading(false);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
          return rejectWithValue(error.response.data);
       }
    }

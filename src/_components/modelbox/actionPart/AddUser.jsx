@@ -10,6 +10,7 @@ import {
 } from "../../../redux/feature/partSclice";
 import { CloseOutlined } from "@ant-design/icons";
 import { useMemo } from "react";
+import { useState } from "react";
 
 const AddUserToPart = ({ show, onHide, part, id, setLoading, user }) => {
    // ======================================== add user =====================================
@@ -18,7 +19,6 @@ const AddUserToPart = ({ show, onHide, part, id, setLoading, user }) => {
    const { userNotAssignPart } = useSelector((state) => state.part);
 
    const handleAdd = (item) => {
-      console.log("next");
       //custom data assign
       const dataAssign = part.taskEX?.map((val) => ({
          // _id fake
@@ -50,11 +50,23 @@ const AddUserToPart = ({ show, onHide, part, id, setLoading, user }) => {
    };
    // ======================================== add user ========================================
    // ======================================== remove user ========================================
+   const [userEX, setUserEX] = useState([]);
+   useEffect(() => {
+      setUserEX(part.userEX);
+   }, [part.userEX]);
    const handleRemoveUserInPart = (item) => {
-      console.log("part, user");
       if (!part._id) return;
       if (!user._id) return;
-      dispatch(removeUserInPart({ partId: part._id, userId: item._id, setLoading }));
+      dispatch(
+         removeUserInPart({
+            partId: part._id,
+            userId: item._id,
+            setLoading,
+            toast,
+            setUserEX,
+            userEX,
+         })
+      );
    };
    // ======================================== remove user ========================================
 
@@ -116,7 +128,7 @@ const AddUserToPart = ({ show, onHide, part, id, setLoading, user }) => {
                      </ul>
                      {/* remove user */}
                      <ul className="chat-user-list tab-pane" id="removeuser">
-                        {part?.userEX?.map((item) => (
+                        {userEX?.map((item) => (
                            <li key={item?._id}>
                               <a href="#">
                                  <div className="media import-content">
