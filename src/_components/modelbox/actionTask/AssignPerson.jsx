@@ -66,6 +66,8 @@ function AssignPerson({ show, onHide, task, load }) {
          taskName: task?.name,
          perform: { status: false, date: Date.now() },
          finish: { status: false, date: Date.now() },
+         partId: part._id,
+         partName: part.name,
       }));
 
       dispatch(

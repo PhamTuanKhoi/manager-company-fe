@@ -21,4 +21,8 @@ export const partAPI = {
    async precentPartByIdProject(filter = {}) {
       return await axios.get(path + "precent", { params: filter });
    },
+
+   async removeUserInPart(partId, userId) {
+      return await axios.delete(path + "remove-user/" + partId + "/" + userId);
+   },
 };

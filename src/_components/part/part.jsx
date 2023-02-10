@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -7,25 +6,24 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLoading } from "../../hook/useLoading";
 import {
-   addUserToPart,
    checkNotAssignPart,
    createPart,
    listPartByIdProject,
    precentPartByIdProject,
 } from "../../redux/feature/partSclice";
-import assignTaskSclice from "../../redux/feature/assignTaskSclice";
-import { useMemo } from "react";
+import AddUserToPart from "../modelbox/actionPart/AddUser";
 
 function Part() {
    const [create, setCreate] = useState(false);
    const [text, setText] = useState("");
    const [part, setPart] = useState({});
+   const [modalShow, setModalShow] = useState(false);
    const { id } = useParams();
    const { setLoading } = useLoading();
    const dispatch = useDispatch();
 
    const { user } = useSelector((state) => state.auth);
-   // ======================================== create part ===============================
+   // ======================================== create updated part ===============================
    const handleSave = () => {
       if (!text) return;
 
@@ -34,11 +32,14 @@ function Part() {
          return;
       }
 
-      setText("");
-
       dispatch(
-         createPart({ payload: { project: id, name: text, creator: user._id }, toast, setLoading })
+         createPart({
+            payload: { project: id, name: text, creator: user._id },
+            toast,
+            setLoading,
+         })
       );
+      setText("");
    };
 
    useEffect(() => {
@@ -48,56 +49,24 @@ function Part() {
    const { parts } = useSelector((state) => state.part);
    // ======================================== create part ===============================
 
-   // ======================================== modal ========================================
-
-   const onListUser = (item) => {
+   // ======================================== modal =====================================
+   const handleListUser = (item) => {
       setPart(item);
+      setModalShow(true);
    };
 
    useEffect(() => {
       dispatch(checkNotAssignPart({ query: { project: id }, setLoading }));
    }, [id]);
+   // ========================================= modal =======================================
 
-   const { userNotAssignPart } = useSelector((state) => state.part);
-
-   const handleAdd = (item) => {
-      //custom data assign
-      const dataAssign = part.taskEX?.map((val) => ({
-         // _id fake
-         userId: item?._id,
-         name: item?.name,
-         filed: item?.field,
-         avartar: item?.avartar,
-         taskId: val._id,
-         taskName: val.name,
-         perform: { status: false, date: Date.now() },
-         finish: { status: false, date: Date.now() },
-      }));
-
-      if (user._id) {
-         dispatch(
-            addUserToPart({
-               id: part._id,
-               payload: { userId: item.userId, creator: user._id },
-               toast,
-               setLoading,
-            })
-         );
-
-         // add data assign
-         dispatch(assignTaskSclice.actions.addAssignTasks(dataAssign));
-      }
-   };
-   // ======================================== modal ========================================
-
-   //========================================== precent ====================
-
+   // ========================================= precent =====================================
    useEffect(() => {
       dispatch(precentPartByIdProject({ query: { project: id }, setLoading }));
    }, [id]);
 
    const { precentPart } = useSelector((state) => state.part);
-   //========================================== precent ====================
+   // ========================================= precent =====================================
 
    return (
       <>
@@ -117,7 +86,7 @@ function Part() {
                            type="text"
                            className="input-custom"
                            placeholder="Nhập tên..."
-                           defaultValue={text}
+                           value={text}
                            onChange={(e) => setText(e.target.value)}
                         />
                         <button className="btn btn-primary" onClick={handleSave}>
@@ -147,13 +116,8 @@ function Part() {
                                        <a
                                           className="dropdown-item"
                                           href="#"
-                                          data-bs-toggle="modal"
-                                          data-bs-target="#addUser"
-                                          onClick={() => onListUser(item)}
+                                          onClick={() => handleListUser(item)}
                                        >
-                                          Thêm người lao động
-                                       </a>
-                                       <a className="dropdown-item" href="#">
                                           Chỉnh sửa
                                        </a>
                                        <a className="dropdown-item" href="#">
@@ -208,7 +172,7 @@ function Part() {
                                           </div>
                                           <div>
                                              <p>
-                                                <i className="fa fa-dot-circle-o text-purple me-2" />
+                                                <i className="fa fa-dot-circle-o text-warning me-2" />
                                                 Thực hiện{" "}
                                                 <span className="float-end">
                                                    {precent?.performTrue}
@@ -216,7 +180,7 @@ function Part() {
                                              </p>
 
                                              <p>
-                                                <i className="fa fa-dot-circle-o text-danger me-2" />
+                                                <i className="fa fa-dot-circle-o text-success me-2" />
                                                 Hoàn thành{" "}
                                                 <span className="float-end">
                                                    {precent?.finishTrue}
@@ -234,44 +198,14 @@ function Part() {
             </div>
          </div>
 
-         {/* modal */}
-         <div id="addUser" className="modal custom-modal fade" role="dialog">
-            <div className="modal-dialog">
-               <div className="modal-content">
-                  <div className="modal-header">
-                     <h4 className="modal-title">Thêm người lao động bộ phận</h4>
-                     <button type="button" className="close-x" data-bs-dismiss="modal">
-                        <span aria-hidden="true">×</span>
-                     </button>
-                  </div>
-                  <div className="modal-body">
-                     <div className="form-group">
-                        <input type="text" className="form-control" />
-                     </div>
-                     {userNotAssignPart?.map((item) => (
-                        <ul key={item._id} className="chat-user-list">
-                           <li>
-                              <a href="#">
-                                 <div className="media import-content">
-                                    <div className="content-media">
-                                       <span className="avatar">{/* <img alt="" src={} /> */}</span>
-                                       <div className="media-body align-self-center text-nowrap">
-                                          <div className="user-name">{item?.name}</div>
-                                          {/* <span className="designation">{item?.department}</span> */}
-                                       </div>
-                                    </div>
-                                    <div className="import" onClick={() => handleAdd(item)}>
-                                       Thêm
-                                    </div>
-                                 </div>
-                              </a>
-                           </li>
-                        </ul>
-                     ))}
-                  </div>
-               </div>
-            </div>
-         </div>
+         <AddUserToPart
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            part={part}
+            id={id}
+            setLoading={setLoading}
+            user={user}
+         />
       </>
    );
 }
