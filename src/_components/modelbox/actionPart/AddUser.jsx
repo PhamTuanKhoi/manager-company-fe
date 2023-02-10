@@ -24,7 +24,7 @@ const AddUserToPart = ({ show, onHide, part, id, setLoading, user }) => {
          // _id fake
          userId: item?._id,
          name: item?.name,
-         filed: item?.field,
+         field: item?.field,
          avartar: item?.avartar,
          taskId: val._id,
          taskName: val.name,
@@ -39,24 +39,38 @@ const AddUserToPart = ({ show, onHide, part, id, setLoading, user }) => {
             addUserToPart({
                id: part._id,
                payload: { userId: item.userId, creator: user._id },
+               userData: {
+                  _id: item?.userId,
+                  userId: item?.userId,
+                  name: item?.name,
+                  field: item?.field,
+                  avartar: item?.avartar,
+               },
                toast,
                setLoading,
+               setUserEX,
+               userEX,
             })
          );
-
          // add data assign
          dispatch(assignTaskSclice.actions.addAssignTasks(dataAssign));
       }
    };
+
    // ======================================== add user ========================================
    // ======================================== remove user ========================================
    const [userEX, setUserEX] = useState([]);
+
    useEffect(() => {
-      setUserEX(part.userEX);
+      if (part.userEX) {
+         setUserEX(part.userEX);
+      }
    }, [part.userEX]);
+
    const handleRemoveUserInPart = (item) => {
       if (!part._id) return;
       if (!user._id) return;
+
       dispatch(
          removeUserInPart({
             partId: part._id,
@@ -65,6 +79,7 @@ const AddUserToPart = ({ show, onHide, part, id, setLoading, user }) => {
             toast,
             setUserEX,
             userEX,
+            user: item,
          })
       );
    };

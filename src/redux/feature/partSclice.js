@@ -56,15 +56,23 @@ export const checkNotAssignPart = createAsyncThunk(
 
 export const addUserToPart = createAsyncThunk(
    "part/addUserToPart",
-   async ({ id, payload, toast, setLoading }, { rejectWithValue }) => {
+   async ({ id, payload, toast, setLoading, setUserEX, userEX, userData }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await partAPI.updateFiledWorkers(id, payload);
+         setUserEX([...userEX, userData]);
          toast.success(`Thêm người lao động vào bộ phận`);
          setLoading(false);
-         return data;
+         return { data, userData };
       } catch (error) {
          setLoading(false);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
          return rejectWithValue(error.response.data);
       }
    }
@@ -87,14 +95,14 @@ export const precentPartByIdProject = createAsyncThunk(
 
 export const removeUserInPart = createAsyncThunk(
    "part/removeUserInPart",
-   async ({ partId, userId, setLoading, toast, setUserEX, userEX }, { rejectWithValue }) => {
+   async ({ partId, userId, setLoading, toast, setUserEX, userEX, user }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await partAPI.removeUserInPart(partId, userId);
          setUserEX(userEX.filter((val) => val._id !== userId));
          toast.success(`removed a user in part ${data?.name}`);
          setLoading(false);
-         return data;
+         return { data, user };
       } catch (error) {
          setLoading(false);
          if (typeof error?.response?.data?.message === "string") {
@@ -126,7 +134,7 @@ const partSclice = createSlice({
       },
       [createPart.fulfilled]: (state, action) => {
          state.loading = false;
-         state.parts.push(action.payload);
+         state.parts.push({ ...action.payload, taskEX: [] });
       },
       [createPart.rejected]: (state, action) => {
          state.loading = false;
@@ -180,6 +188,11 @@ const partSclice = createSlice({
          state.parts = state.parts?.map((item) =>
             item._id === id ? { ...item, workers: [...item.workers, userId] } : item
          );
+
+         // update userEX
+         state.parts = state.parts?.map((item) =>
+            item._id === id ? { ...item, userEX: [...item.userEX, action.payload.userData] } : item
+         );
       },
       [addUserToPart.rejected]: (state, action) => {
          state.loading = false;
@@ -205,6 +218,18 @@ const partSclice = createSlice({
       },
       [removeUserInPart.fulfilled]: (state, action) => {
          state.loading = false;
+
+         const {
+            arg: { partId, userId },
+         } = action.meta;
+
+         state.parts = state.parts?.map((item) =>
+            item._id === partId
+               ? { ...item, workers: item.workers.filter((i) => i !== userId) }
+               : item
+         );
+
+         state.userNotAssignPart = [...state.userNotAssignPart, action.payload.user];
       },
       [removeUserInPart.rejected]: (state, action) => {
          state.loading = false;
