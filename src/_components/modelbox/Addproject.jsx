@@ -130,6 +130,7 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
             createProject({
                payload: {
                   ...project,
+                  price: +project.price,
                   start: new Date(project.start).getTime(),
                   end: new Date(project.end).getTime(),
                   creator: user._id,
@@ -162,6 +163,7 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
 
       let payload = {
          ...project,
+         price: +project.price,
          start: new Date(project.start).getTime(),
          end: new Date(project.end).getTime(),
          creator: user._id,
