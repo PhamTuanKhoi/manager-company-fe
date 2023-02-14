@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { joinProjectAPI } from "../../api/join-project";
+import projectSclice from "./projectSclice";
 import workerSclice from "./workerSclice";
 
 export const createJoinProject = createAsyncThunk(
@@ -10,6 +11,10 @@ export const createJoinProject = createAsyncThunk(
          const { data } = await joinProjectAPI.create(payload);
          // remove worker
          dispatch(workerSclice.actions.removeUser(worker._id));
+         // add user join project
+         dispatch(projectSclice.actions.addUserJoinProject(worker));
+
+         // success
          toast.success("Thêm người lao động thành công");
          setLoading(false);
          return { ...data, user: worker };

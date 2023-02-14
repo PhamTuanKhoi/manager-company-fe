@@ -559,29 +559,32 @@ const ProjectView = () => {
                            </button>
                         </h6>
                         <ul className="list-box">
-                           {listWPByProject?.map((item, index) => (
-                              <li key={index}>
-                                 <Link to="/app/profile/employee-profile">
-                                    <div className="list-item">
-                                       <div className="list-left">
-                                          <span className="avatar">
-                                             <img
-                                                alt={item?.name}
-                                                src={item?.avartar || avartarFAKE}
-                                             />
-                                          </span>
-                                       </div>
-                                       <div className="list-body">
-                                          <span className="message-author">{item?.user?.name}</span>
-                                          <div className="clearfix" />
-                                          <span className="message-content">
-                                             {item?.user?.field}
-                                          </span>
-                                       </div>
-                                    </div>
-                                 </Link>
-                              </li>
-                           ))}
+                           {project?.userEX?.map(
+                              (item, index) =>
+                                 item?.role === UserRoleType?.WORKER && (
+                                    <li key={index}>
+                                       <Link to="/app/profile/employee-profile">
+                                          <div className="list-item">
+                                             <div className="list-left">
+                                                <span className="avatar">
+                                                   <img
+                                                      alt={item?.name}
+                                                      src={item?.avartar || avartarFAKE}
+                                                   />
+                                                </span>
+                                             </div>
+                                             <div className="list-body">
+                                                <span className="message-author">{item?.name}</span>
+                                                <div className="clearfix" />
+                                                <span className="message-content">
+                                                   {item?.field}
+                                                </span>
+                                             </div>
+                                          </div>
+                                       </Link>
+                                    </li>
+                                 )
+                           )}
                         </ul>
                      </div>
                   </div>

@@ -15,14 +15,12 @@ function AssignUser({ show, onHide }) {
    const dispatch = useDispatch();
    const { id } = useParams();
    const { setLoading } = useLoading();
-   const [create, setCreate] = useState(false);
 
    function handleAdd(worker) {
       dispatch(
          createJoinProject({
             payload: { joinor: worker._id, project: id, role: UserRoleType.WORKER },
             toast,
-            setCreate,
             setLoading,
             worker,
             dispatch,

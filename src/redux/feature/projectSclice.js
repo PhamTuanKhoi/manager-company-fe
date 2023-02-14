@@ -204,6 +204,9 @@ const projectSclice = createSlice({
       filterPriority: (state, action) => {
          state.filterPriority = action.payload;
       },
+      addUserJoinProject: (state, action) => {
+         state.project?.userEX?.push(action.payload);
+      },
    },
    extraReducers: {
       [createProject.pending]: (state, action) => {
