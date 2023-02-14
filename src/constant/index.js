@@ -26,6 +26,46 @@ export const EmployeeDepartmentType = {
    ACCOUNTANT: "accountant",
 };
 
+export const UserRoleType = {
+   ADMIN: "Admin",
+   CLIENT: "Client",
+   EMPLOYEE: "Employee",
+   WORKER: "Worker",
+   LEADER: "Leader",
+};
+
+export const ProjectPriorityEnum = {
+   LOW: 0,
+   MEDIUM: 1,
+   HIGH: 2,
+};
+
+export const ProjectStatusEnum = {
+   CANCEL: 0,
+   NEWPROJECTS: 1,
+   RUNNING: 2,
+   ONHOLD: 3,
+   FINISHED: 4,
+};
+
+export const TaskStatusType = {
+   START: 0,
+   INPROGRESS: 1,
+   COMPLETED: 2,
+};
+
+export const prioritys = [
+   { value: 0, label: "Thấp" },
+   { value: 1, label: "Trung bình" },
+   { value: 2, label: "Cao" },
+];
+
+export const statusProject = [
+   { value: 1, label: "Dự án mới" },
+   { value: 2, label: "Đang chạy" },
+   { value: 4, label: "Hoàn thành" },
+];
+
 export const EmployeeDepartmentOpition = [
    {
       value: EmployeeDepartmentType.ACCOUNTANT,
@@ -45,41 +85,13 @@ export const EmployeeDepartmentOpition = [
    },
 ];
 
-export const ProjectPriorityEnum = {
-   LOW: 0,
-   MEDIUM: 1,
-   HIGH: 2,
-};
-
-export const ProjectStatusEnum = {
-   CANCEL: 0,
-   NEWPROJECTS: 1,
-   RUNNING: 2,
-   ONHOLD: 3,
-   FINISHED: 4,
-};
-
-export const prioritys = [
-   { value: 0, label: "Thấp" },
-   { value: 1, label: "Trung bình" },
-   { value: 2, label: "Cao" },
+export const EmployeesRoleOpition = [
+   {
+      value: UserRoleType.EMPLOYEE,
+      label: "Nhân viên",
+   },
+   {
+      value: UserRoleType.LEADER,
+      label: "Leader",
+   },
 ];
-
-export const statusProject = [
-   { value: 1, label: "Dự án mới" },
-   { value: 2, label: "Đang chạy" },
-   { value: 4, label: "Hoàn thành" },
-];
-
-export const UserRoleType = {
-   ADMIN: "Admin",
-   CLIENT: "Client",
-   EMPLOYEE: "Employee",
-   WORKER: "Worker",
-};
-
-export const TaskStatusType = {
-   START: 0,
-   INPROGRESS: 1,
-   COMPLETED: 2,
-};

@@ -75,6 +75,7 @@ const ProjectView = () => {
    }
 
    const { project } = useSelector((state) => state.project);
+   console.log(project);
    const { listWPByProject } = useSelector((state) => state.workerProject);
    const { tasks } = useSelector((state) => state.task);
 

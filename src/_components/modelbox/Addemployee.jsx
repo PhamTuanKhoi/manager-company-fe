@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch } from "react-redux";
-import { emailrgx, EmployeeDepartmentType, phonergx } from "../../constant/index";
+import {
+   emailrgx,
+   EmployeeDepartmentType,
+   EmployeesRoleOpition,
+   phonergx,
+   UserRoleType,
+} from "../../constant/index";
 import {
    createEmployees,
    employeesProfile,
@@ -23,6 +29,7 @@ const Addemployee = ({ show, onHide, employee, render }) => {
       mobile: "",
       date: "",
       address: "",
+      role: UserRoleType.EMPLOYEE,
    });
 
    const empty = () => {
@@ -34,6 +41,7 @@ const Addemployee = ({ show, onHide, employee, render }) => {
          mobile: "",
          date: "",
          address: "",
+         role: UserRoleType.EMPLOYEE,
       });
 
       setIsEdit("");
@@ -64,11 +72,10 @@ const Addemployee = ({ show, onHide, employee, render }) => {
                },
                toast,
                onHide,
+               empty,
                setLoading,
             })
          );
-
-         empty();
       }
    };
 
@@ -90,11 +97,10 @@ const Addemployee = ({ show, onHide, employee, render }) => {
                },
                toast,
                onHide,
+               empty,
                setLoading,
             })
          );
-
-         empty();
       }
    };
 
@@ -127,7 +133,6 @@ const Addemployee = ({ show, onHide, employee, render }) => {
       }
       if (employees.cccd) {
          if (!(employees.cccd.toString().length === 9 || employees.cccd.toString().length === 12)) {
-            console.log(employees.cccd.length);
             toast.warn("Vui lòng nhập đúng căn cước hoặc chứng minh nhân dân");
             return false;
          }
@@ -158,6 +163,11 @@ const Addemployee = ({ show, onHide, employee, render }) => {
 
       if (!employees.address) {
          toast.warn("Vui lòng nhập địa chỉ");
+         return false;
+      }
+
+      if (!employees.role) {
+         toast.warn("Vui lòng chọn vai trò");
          return false;
       }
 
@@ -300,6 +310,26 @@ const Addemployee = ({ show, onHide, employee, render }) => {
                                     setEmployees({ ...employees, address: e.target.value })
                                  }
                               />
+                           </div>
+                        </div>
+
+                        <div className="col-sm-6">
+                           <div className="form-group">
+                              <label className="col-form-label">
+                                 Vai trò <span className="text-danger">*</span>
+                              </label>
+                              <select
+                                 className="form-control"
+                                 value={employees.role}
+                                 onChange={(e) =>
+                                    setEmployees({ ...employees, role: e.target.value })
+                                 }
+                              >
+                                 <option>Chọn vai trò</option>
+                                 {EmployeesRoleOpition?.map((item) => (
+                                    <option value={item?.value}>{item?.label}</option>
+                                 ))}
+                              </select>
                            </div>
                         </div>
                      </div>

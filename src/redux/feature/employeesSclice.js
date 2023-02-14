@@ -3,11 +3,12 @@ import { userAPI } from "../../api/user";
 
 export const createEmployees = createAsyncThunk(
    "employees/createEmployees",
-   async ({ payload, toast, onHide, setLoading }, { rejectWithValue }) => {
+   async ({ payload, toast, onHide, setLoading, empty }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await userAPI.createEmployees(payload);
          toast.success("Thêm nhân viên thành công");
+         empty();
          onHide();
          setLoading(false);
          return data;
@@ -42,11 +43,12 @@ export const listEmployees = createAsyncThunk(
 
 export const updateEmployees = createAsyncThunk(
    "employees/updateEmployees",
-   async ({ id, payload, toast, onHide, setLoading }, { rejectWithValue }) => {
+   async ({ id, payload, toast, onHide, setLoading, empty }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await userAPI.updateEmployees(id, payload);
          toast.success("Cập nhật nhân viên thành công");
+         empty();
          onHide();
          setLoading(false);
          return data;
