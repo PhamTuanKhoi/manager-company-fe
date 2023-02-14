@@ -159,6 +159,13 @@ const workerSclice = createSlice({
       searchField: (state, action) => {
          state.searchField = action.payload;
       },
+
+      removeUser: (state, action) => {
+         state.workers = state.workers.filter((i) => {
+            console.log(i);
+            return i._id !== action.payload;
+         });
+      },
    },
    extraReducers: {
       [createWorker.pending]: (state, action) => {

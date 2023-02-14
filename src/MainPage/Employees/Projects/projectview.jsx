@@ -75,7 +75,7 @@ const ProjectView = () => {
    }
 
    const { project } = useSelector((state) => state.project);
-   console.log(project);
+
    const { listWPByProject } = useSelector((state) => state.workerProject);
    const { tasks } = useSelector((state) => state.task);
 
@@ -433,27 +433,32 @@ const ProjectView = () => {
                            <i className="la la-users" /> Khách hàng{" "}
                         </h6>
                         <ul className="list-box">
-                           {project?.clientEX?.map((item) => (
-                              <li key={item?._id}>
-                                 <Link to="/app/profile/employee-profile">
-                                    <div className="list-item">
-                                       <div className="list-left">
-                                          <span className="avatar">
-                                             <img
-                                                alt={item?.name}
-                                                src={item?.avartar || avartarFAKE}
-                                             />
-                                          </span>
-                                       </div>
-                                       <div className="list-body">
-                                          <span className="message-author">{item?.name}</span>
-                                          <div className="clearfix" />
-                                          <span className="message-content">{item?.company}</span>
-                                       </div>
-                                    </div>
-                                 </Link>
-                              </li>
-                           ))}
+                           {project?.userEX?.map(
+                              (item) =>
+                                 item?.role === UserRoleType.CLIENT && (
+                                    <li key={item?._id}>
+                                       <Link to="#">
+                                          <div className="list-item">
+                                             <div className="list-left">
+                                                <span className="avatar">
+                                                   <img
+                                                      alt={item?.name}
+                                                      src={item?.avartar || avartarFAKE}
+                                                   />
+                                                </span>
+                                             </div>
+                                             <div className="list-body">
+                                                <span className="message-author">{item?.name}</span>
+                                                <div className="clearfix" />
+                                                <span className="message-content">
+                                                   {item?.company}
+                                                </span>
+                                             </div>
+                                          </div>
+                                       </Link>
+                                    </li>
+                                 )
+                           )}
                         </ul>
                         <br />
                         {/* lead */}
@@ -461,29 +466,36 @@ const ProjectView = () => {
                            <i className="la la-users" /> Leader{" "}
                         </h6>
                         <ul className="list-box">
-                           <li>
-                              <Link to="/app/profile/employee-profile">
-                                 <div className="list-item">
-                                    <div className="list-left">
-                                       <span className="avatar">
-                                          <img
-                                             alt={project?.leaderEX?.name}
-                                             src={project?.leaderEX?.avartar || avartarFAKE}
-                                          />
-                                       </span>
-                                    </div>
-                                    <div className="list-body">
-                                       <span className="message-author">
-                                          {project?.leaderEX?.name}
-                                       </span>
-                                       <div className="clearfix" />
-                                       <span className="message-content">
-                                          {project?.leaderEX?.department}
-                                       </span>
-                                    </div>
-                                 </div>
-                              </Link>
-                           </li>
+                           {project?.userEX?.map(
+                              (item) =>
+                                 item?.role === UserRoleType.LEADER && (
+                                    <li>
+                                       <Link to="#">
+                                          <div className="list-item">
+                                             <div className="list-left">
+                                                <span className="avatar">
+                                                   <img
+                                                      alt={project?.leaderEX?.name}
+                                                      src={
+                                                         project?.leaderEX?.avartar || avartarFAKE
+                                                      }
+                                                   />
+                                                </span>
+                                             </div>
+                                             <div className="list-body">
+                                                <span className="message-author">
+                                                   {project?.leaderEX?.name}
+                                                </span>
+                                                <div className="clearfix" />
+                                                <span className="message-content">
+                                                   {project?.leaderEX?.department}
+                                                </span>
+                                             </div>
+                                          </div>
+                                       </Link>
+                                    </li>
+                                 )
+                           )}
                         </ul>
                         <br />
 
@@ -492,40 +504,44 @@ const ProjectView = () => {
                            <i className="la la-users" /> Nhân viên
                         </h6>
                         <ul className="list-box">
-                           {project?.teamEX?.map((item) => (
-                              <li key={item?._id}>
-                                 <Link to="/app/profile/employee-profile">
-                                    <div className="list-item">
-                                       <div className="list-left">
-                                          <span className="avatar">
-                                             <img
-                                                alt={item?.name}
-                                                src={item?.avartar || avartarFAKE}
-                                             />
-                                          </span>
-                                       </div>
-                                       <div className="list-body">
-                                          <span className="message-author">{item?.name}</span>
-                                          <div className="clearfix" />
-                                          <span className="message-content">
-                                             {item?.department === EmployeeDepartmentType.BUSSINESS
-                                                ? "Kinh doanh"
-                                                : item?.department ===
-                                                  EmployeeDepartmentType.MARKETING
-                                                ? "Marketing"
-                                                : item?.department ===
-                                                  EmployeeDepartmentType.ACCOUNTANT
-                                                ? "Kế toán"
-                                                : item?.department ===
-                                                  EmployeeDepartmentType.RECRUIT
-                                                ? "Tuyển dụng"
-                                                : ""}
-                                          </span>
-                                       </div>
-                                    </div>
-                                 </Link>
-                              </li>
-                           ))}
+                           {project?.userEX?.map(
+                              (item) =>
+                                 item?.role === UserRoleType.EMPLOYEE && (
+                                    <li key={item?._id}>
+                                       <Link to="#">
+                                          <div className="list-item">
+                                             <div className="list-left">
+                                                <span className="avatar">
+                                                   <img
+                                                      alt={item?.name}
+                                                      src={item?.avartar || avartarFAKE}
+                                                   />
+                                                </span>
+                                             </div>
+                                             <div className="list-body">
+                                                <span className="message-author">{item?.name}</span>
+                                                <div className="clearfix" />
+                                                <span className="message-content">
+                                                   {item?.department ===
+                                                   EmployeeDepartmentType.BUSSINESS
+                                                      ? "Kinh doanh"
+                                                      : item?.department ===
+                                                        EmployeeDepartmentType.MARKETING
+                                                      ? "Marketing"
+                                                      : item?.department ===
+                                                        EmployeeDepartmentType.ACCOUNTANT
+                                                      ? "Kế toán"
+                                                      : item?.department ===
+                                                        EmployeeDepartmentType.RECRUIT
+                                                      ? "Tuyển dụng"
+                                                      : ""}
+                                                </span>
+                                             </div>
+                                          </div>
+                                       </Link>
+                                    </li>
+                                 )
+                           )}
                         </ul>
                      </div>
                   </div>

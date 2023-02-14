@@ -49,7 +49,7 @@ const Projects = () => {
    const { setLoading } = useLoading();
    const dispatch = useDispatch();
 
-   const projects = useSelector(projectsRemainingSelector);
+   const { projects } = useSelector((state) => state.project);
 
    const { user } = useSelector((state) => state.auth);
 

@@ -4,34 +4,35 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Avatar_16, Avatar_09, Avatar_10 } from "../../Entryfile/imagepath";
-import { createWorkerProject } from "../../redux/feature/workerProjectSclice";
 import { useLoading } from "../../hook/useLoading";
 import { useEffect } from "react";
 import { useState } from "react";
-import { listWorker, workerNoAssign } from "../../redux/feature/workerSclice";
+import workerSclice, { workerNoAssign } from "../../redux/feature/workerSclice";
+import { createJoinProject } from "../../redux/feature/joinProjectSclice";
+import { UserRoleType } from "../../constant";
 function AssignUser({ show, onHide }) {
    const { workers } = useSelector((state) => state.worker);
    const dispatch = useDispatch();
    const { id } = useParams();
    const { setLoading } = useLoading();
-   const [render, setRender] = useState(0);
+   const [create, setCreate] = useState(false);
 
    function handleAdd(worker) {
       dispatch(
-         createWorkerProject({
-            payload: { worker: worker._id, project: id },
+         createJoinProject({
+            payload: { joinor: worker._id, project: id, role: UserRoleType.WORKER },
             toast,
-            setRender,
+            setCreate,
             setLoading,
             worker,
+            dispatch,
          })
       );
    }
 
    useEffect(() => {
       fetchWorker();
-   }, [render]);
+   }, []);
 
    function fetchWorker() {
       dispatch(workerNoAssign({ setLoading }));
