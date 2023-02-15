@@ -1,4 +1,4 @@
-import { Switch, Table } from "antd";
+import { Checkbox, Switch, Table } from "antd";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -99,8 +99,42 @@ const AssignTask = () => {
    return (
       <div className="card">
          <div className="card-body">
-            <h5 className="card-title m-b-20">Công việc được giao</h5>
-
+            <div className="card-title m-b-20 d-flex">
+               <h4 className="card-title width-title">Công việc được giao</h4>
+               <div className="filter-table-checkbox">
+                  <Checkbox className="text-muted">Chưa hoàn thành</Checkbox>
+                  <Checkbox className="text-muted">Đang thực hiện</Checkbox>
+                  <Checkbox className="text-muted">Hoàn thành</Checkbox>
+               </div>
+            </div>
+            <div className="d-flex">
+               <div>
+                  <label className="text-muted">Từ ngày</label>
+                  <input
+                     type="date"
+                     className="input-custom"
+                     // style={{ background: "rgb(248 191 183)" }}
+                  />
+               </div>
+               <div>
+                  <label className="text-muted">Đến ngày</label>
+                  <input
+                     type="date"
+                     className="input-custom"
+                     // style={{ background: "rgb(248 191 183)" }}
+                  />
+               </div>
+               <div>
+                  <label className="text-muted">Lịch sử</label>
+                  <input
+                     type="text"
+                     className="input-custom"
+                     placeholder="Nhập tên người lao động"
+                     // style={{ background: "rgb(248 191 183)" }}
+                  />
+               </div>
+            </div>
+            <br />
             <div className="table-responsive">
                <Table
                   pagination={{

@@ -44,5 +44,15 @@
   cursor: pointer;
   font-size: 20px;
 }
+ 
+
+.width-title {
+  width: 40%;
+}
+
+.filter-table-checkbox {
+  display: flex;
+  justify-content: flex-end;
+}
 
  
