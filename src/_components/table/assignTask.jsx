@@ -102,7 +102,7 @@ const AssignTask = () => {
             <div className="card-title m-b-20 d-flex">
                <h4 className="card-title width-title">Công việc được giao</h4>
                <div className="filter-table-checkbox">
-                  <Checkbox className="text-muted">Chưa hoàn thành</Checkbox>
+                  <Checkbox className="text-muted">Chưa thực hiện</Checkbox>
                   <Checkbox className="text-muted">Đang thực hiện</Checkbox>
                   <Checkbox className="text-muted">Hoàn thành</Checkbox>
                </div>

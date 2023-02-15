@@ -10,8 +10,8 @@ export const partAPI = {
       return await axios.get(path + id + "/project");
    },
 
-   async checkNotAssignPart(filter = {}) {
-      return await axios.get("worker-project/assign-part/", { params: filter });
+   async checkNotAssignPart(id) {
+      return await axios.get("user/not-assign-part/" + id);
    },
 
    async updateFiledWorkers(id, payload) {

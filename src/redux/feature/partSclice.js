@@ -41,10 +41,10 @@ export const listPartByIdProject = createAsyncThunk(
 
 export const checkNotAssignPart = createAsyncThunk(
    "part/checkNotAssignPart",
-   async ({ query, setLoading }, { rejectWithValue }) => {
+   async ({ id, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await partAPI.checkNotAssignPart(query);
+         const { data } = await partAPI.checkNotAssignPart(id);
          setLoading(false);
          return data;
       } catch (error) {

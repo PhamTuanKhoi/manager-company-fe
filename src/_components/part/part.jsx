@@ -49,14 +49,14 @@ function Part() {
    const { parts } = useSelector((state) => state.part);
    // ======================================== create part ===============================
 
-   // ======================================== modal =====================================
+   // ========================================= modal =====================================
    const handleListUser = (item) => {
       setPart(item);
       setModalShow(true);
    };
 
    useEffect(() => {
-      dispatch(checkNotAssignPart({ query: { project: id }, setLoading }));
+      dispatch(checkNotAssignPart({ id, setLoading }));
    }, [id]);
    // ========================================= modal =======================================
 
