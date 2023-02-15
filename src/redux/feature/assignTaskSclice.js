@@ -258,9 +258,9 @@ const assignTaskSclice = createSlice({
       loading: false,
    },
    reducers: {
-      addAssignTasks: (state, action) => {
-         state.assignTasks = [...state.assignTasks, ...action.payload];
-      },
+      // addAssignTasks: (state, action) => {
+      //    state.assignTasks = [...state.assignTasks, ...action.payload];
+      // },
    },
    extraReducers: {
       //assign

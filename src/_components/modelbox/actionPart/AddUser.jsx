@@ -2,70 +2,43 @@ import React, { memo, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import assignTaskSclice from "../../../redux/feature/assignTaskSclice";
-import {
-   addUserToPart,
-   checkNotAssignPart,
-   removeUserInPart,
-} from "../../../redux/feature/partSclice";
+import { addUserToPart, removeUserInPart } from "../../../redux/feature/partSclice";
 import { CloseOutlined } from "@ant-design/icons";
-import { useMemo } from "react";
 import { useState } from "react";
 
 const AddUserToPart = ({ show, onHide, part, id, setLoading, user }) => {
    // ======================================== add user =====================================
    const dispatch = useDispatch();
+   const [joinpartEX, setJoinpartEX] = useState([]);
 
    const { userNotAssignPart } = useSelector((state) => state.part);
 
    const handleAdd = (item) => {
-      //custom data assign
-      const dataAssign = part.taskEX?.map((val) => ({
-         // _id fake
-         userId: item?._id,
-         name: item?.name,
-         field: item?.field,
-         avartar: item?.avartar,
-         taskId: val._id,
-         taskName: val.name,
-         perform: { status: false, date: Date.now() },
-         finish: { status: false, date: Date.now() },
-         partId: part._id,
-         partName: part.name,
-      }));
-
       if (user._id) {
          dispatch(
             addUserToPart({
                id: part._id,
-               payload: { userId: item.userId, creator: user._id },
-               userData: {
-                  _id: item?.userId,
-                  userId: item?.userId,
-                  name: item?.name,
-                  field: item?.field,
-                  avartar: item?.avartar,
-               },
+               payload: { joinor: item._id, creator: user._id, part: part._id },
+               userData: item,
+               setJoinpartEX,
+               joinpartEX,
                toast,
                setLoading,
-               setUserEX,
-               userEX,
             })
          );
          // add data assign
-         dispatch(assignTaskSclice.actions.addAssignTasks(dataAssign));
+         // dispatch(assignTaskSclice.actions.addAssignTasks(dataAssign));
       }
    };
 
    // ======================================== add user ========================================
    // ======================================== remove user ========================================
-   const [userEX, setUserEX] = useState([]);
 
    useEffect(() => {
-      if (part.userEX) {
-         setUserEX(part.userEX);
+      if (part.joinpartEX) {
+         setJoinpartEX(part.joinpartEX);
       }
-   }, [part.userEX]);
+   }, [part.joinpartEX]);
 
    const handleRemoveUserInPart = (item) => {
       if (!part._id) return;
@@ -73,16 +46,17 @@ const AddUserToPart = ({ show, onHide, part, id, setLoading, user }) => {
 
       dispatch(
          removeUserInPart({
-            partId: part._id,
-            userId: item._id,
+            id: item.joinpartId,
             setLoading,
+            setJoinpartEX,
+            joinpartEX,
             toast,
-            setUserEX,
-            userEX,
             user: item,
          })
       );
    };
+
+   console.log(userNotAssignPart);
    // ======================================== remove user ========================================
 
    return (
@@ -130,7 +104,7 @@ const AddUserToPart = ({ show, onHide, part, id, setLoading, user }) => {
                                        <span className="avatar">{/* <img alt="" src={} /> */}</span>
                                        <div className="media-body align-self-center text-nowrap">
                                           <div className="user-name">{item?.name}</div>
-                                          {/* <span className="designation">{item?.department}</span> */}
+                                          <span className="designation">{item?.field}</span>
                                        </div>
                                     </div>
                                     <div className="import" onClick={() => handleAdd(item)}>
@@ -143,8 +117,8 @@ const AddUserToPart = ({ show, onHide, part, id, setLoading, user }) => {
                      </ul>
                      {/* remove user */}
                      <ul className="chat-user-list tab-pane" id="removeuser">
-                        {userEX?.map((item) => (
-                           <li key={item?._id}>
+                        {joinpartEX?.map((item) => (
+                           <li key={item?.userId}>
                               <a href="#">
                                  <div className="media import-content">
                                     <div className="content-media">

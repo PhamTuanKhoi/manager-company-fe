@@ -14,15 +14,15 @@ export const partAPI = {
       return await axios.get("user/not-assign-part/" + id);
    },
 
-   async updateFiledWorkers(id, payload) {
-      return await axios.patch(path + "workers/" + id, payload);
+   async createUserJoinPart(payload) {
+      return await axios.post("join-part", payload);
    },
 
    async precentPartByIdProject(filter = {}) {
       return await axios.get(path + "precent", { params: filter });
    },
 
-   async removeUserInPart(partId, userId) {
-      return await axios.delete(path + "remove-user/" + partId + "/" + userId);
+   async removeUserInPart(id) {
+      return await axios.delete("join-part/" + id);
    },
 };

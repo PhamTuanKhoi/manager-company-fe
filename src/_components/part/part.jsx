@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -137,7 +137,7 @@ function Part() {
                                     <div className="col-md-6 col-6 text-center">
                                        <div className="stats-box mb-4">
                                           <p>Tổng thành viên</p>
-                                          <h3>{item?.workers?.length}</h3>
+                                          <h3>{item?.joinpartEX?.length}</h3>
                                        </div>
                                     </div>
                                  </div>
@@ -210,4 +210,4 @@ function Part() {
    );
 }
 
-export default Part;
+export default memo(Part);

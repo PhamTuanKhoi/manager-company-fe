@@ -56,11 +56,19 @@ export const checkNotAssignPart = createAsyncThunk(
 
 export const addUserToPart = createAsyncThunk(
    "part/addUserToPart",
-   async ({ id, payload, toast, setLoading, setUserEX, userEX, userData }, { rejectWithValue }) => {
+   async (
+      { payload, toast, setLoading, userData, joinpartEX, setJoinpartEX },
+      { rejectWithValue }
+   ) => {
       try {
          setLoading(true);
-         const { data } = await partAPI.updateFiledWorkers(id, payload);
-         setUserEX([...userEX, userData]);
+         const { data } = await partAPI.createUserJoinPart(payload);
+         // add hoinpartEx
+         setJoinpartEX([
+            ...joinpartEX,
+            { ...userData, userId: userData._id, joinpartId: data._id },
+         ]);
+
          toast.success(`Thêm người lao động vào bộ phận`);
          setLoading(false);
          return { data, userData };
@@ -95,11 +103,12 @@ export const precentPartByIdProject = createAsyncThunk(
 
 export const removeUserInPart = createAsyncThunk(
    "part/removeUserInPart",
-   async ({ partId, userId, setLoading, toast, setUserEX, userEX, user }, { rejectWithValue }) => {
+   async ({ id, setLoading, toast, user, setJoinpartEX, joinpartEX }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await partAPI.removeUserInPart(partId, userId);
-         setUserEX(userEX.filter((val) => val._id !== userId));
+         const { data } = await partAPI.removeUserInPart(id);
+         // delete join part
+         setJoinpartEX(joinpartEX.filter((i) => i.joinpartId !== id));
          toast.success(`removed a user in part ${data?.name}`);
          setLoading(false);
          return { data, user };
@@ -176,22 +185,18 @@ const partSclice = createSlice({
 
          const {
             arg: {
-               id,
-               payload: { userId },
+               payload: { joinor, part },
             },
          } = action.meta;
 
          // delete user
-         state.userNotAssignPart = state.userNotAssignPart.filter((item) => item.userId !== userId);
-
-         // update parts
-         state.parts = state.parts?.map((item) =>
-            item._id === id ? { ...item, workers: [...item.workers, userId] } : item
-         );
+         state.userNotAssignPart = state.userNotAssignPart.filter((item) => item._id !== joinor);
 
          // update userEX
          state.parts = state.parts?.map((item) =>
-            item._id === id ? { ...item, userEX: [...item.userEX, action.payload.userData] } : item
+            item._id === part
+               ? { ...item, joinpartEX: [...item.joinpartEX, action.payload.userData] }
+               : item
          );
       },
       [addUserToPart.rejected]: (state, action) => {
@@ -219,17 +224,19 @@ const partSclice = createSlice({
       [removeUserInPart.fulfilled]: (state, action) => {
          state.loading = false;
 
-         const {
-            arg: { partId, userId },
-         } = action.meta;
+         const { joinor, part } = action.payload.data;
 
+         // remove user in part
          state.parts = state.parts?.map((item) =>
-            item._id === partId
-               ? { ...item, workers: item.workers.filter((i) => i !== userId) }
+            item._id === part
+               ? { ...item, joinpartEX: item.joinpartEX.filter((i) => i.userId !== joinor) }
                : item
          );
 
-         state.userNotAssignPart = [...state.userNotAssignPart, action.payload.user];
+         state.userNotAssignPart = [
+            ...state.userNotAssignPart,
+            { ...action.payload.user, _id: joinor },
+         ];
       },
       [removeUserInPart.rejected]: (state, action) => {
          state.loading = false;
