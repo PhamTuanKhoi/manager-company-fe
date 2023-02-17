@@ -1,4 +1,4 @@
-import { Checkbox, Switch, Table } from "antd";
+import { Checkbox, Switch } from "antd";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -13,6 +13,7 @@ import {
    updateFinish,
    updatePerform,
 } from "../../redux/feature/assignTaskSclice";
+import Table from "react-bootstrap/Table";
 
 const AssignTask = () => {
    const { id } = useParams();
@@ -49,57 +50,10 @@ const AssignTask = () => {
 
    const { assignTasks } = useSelector((state) => state.assignTask);
 
-   const columns = [
-      {
-         title: "#",
-         dataIndex: "id",
-      },
-      {
-         title: "Họ tên",
-         dataIndex: "name",
-         render: (text, record) => (
-            <h2 className="table-avatar">
-               <Link to={`/app/profile/worker-profile/${record?.userId}`} className="avatar">
-                  <img alt={record?.name} src={record?.image || avartarFAKE} />
-               </Link>
-               <Link to={`/app/profile/worker-profile/${record?.userId}`}>
-                  {text} <span>{record?.field}</span>
-               </Link>
-            </h2>
-         ),
-         sorter: (a, b) => a.name.length - b.name.length,
-      },
-      {
-         title: "Bộ phận",
-         dataIndex: "partName",
-         sorter: (a, b) => a.partName.length - b.partName.length,
-      },
-      {
-         title: "Công việc",
-         dataIndex: "taskName",
-         sorter: (a, b) => a.taskName.length - b.taskName.length,
-      },
-      {
-         title: "Thực hiện",
-         dataIndex: "perform",
-         render: (perform, record) => (
-            <Switch defaultChecked={perform.status} onChange={(e) => onPerform(e, record)} />
-         ),
-      },
-
-      {
-         title: "Hoàn thành",
-         dataIndex: "finish",
-         render: (finish, record) => {
-            return <Switch defaultChecked={finish?.status} onChange={(e) => onFinish(e, record)} />;
-         },
-      },
-   ];
-
    return (
       <div className="card">
          <div className="card-body">
-            <div className="card-title m-b-20 d-flex">
+            <div className="card-title m-b-20 title-between">
                <h4 className="card-title width-title">Công việc được giao</h4>
                <div className="filter-table-checkbox">
                   <Checkbox className="text-muted">Chưa thực hiện</Checkbox>
@@ -107,22 +61,14 @@ const AssignTask = () => {
                   <Checkbox className="text-muted">Hoàn thành</Checkbox>
                </div>
             </div>
-            <div className="d-flex">
+            <div className="title-between">
                <div>
                   <label className="text-muted">Từ ngày</label>
-                  <input
-                     type="date"
-                     className="input-custom"
-                     // style={{ background: "rgb(248 191 183)" }}
-                  />
+                  <input type="date" className="input-custom" />
                </div>
                <div>
                   <label className="text-muted">Đến ngày</label>
-                  <input
-                     type="date"
-                     className="input-custom"
-                     // style={{ background: "rgb(248 191 183)" }}
-                  />
+                  <input type="date" className="input-custom" />
                </div>
                <div>
                   <label className="text-muted">Lịch sử</label>
@@ -130,28 +76,42 @@ const AssignTask = () => {
                      type="text"
                      className="input-custom"
                      placeholder="Nhập tên người lao động"
-                     // style={{ background: "rgb(248 191 183)" }}
                   />
                </div>
             </div>
             <br />
             <div className="table-responsive">
-               <Table
-                  pagination={{
-                     total: assignTasks?.length,
-                     showTotal: (total, range) =>
-                        `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                     showSizeChanger: true,
-                     onShowSizeChange: onShowSizeChange,
-                     itemRender: itemRender,
-                  }}
-                  style={{ overflowX: "auto" }}
-                  columns={columns}
-                  bordered
-                  dataSource={assignTasks}
-                  rowKey={(record) => record._id}
-                  // onChange={this.handleTableChange}
-               />
+               <Table striped>
+                  <thead>
+                     <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <td>1</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                     </tr>
+                     <tr>
+                        <td>
+                           <span style={{ width: "100%", marginLeft: "15%" }}>2</span>
+                        </td>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                     </tr>
+                     <tr>
+                        <td>3</td>
+                        <td colSpan={2}>Larry the Bird</td>
+                        <td>@twitter</td>
+                     </tr>
+                  </tbody>
+               </Table>
             </div>
          </div>
       </div>
