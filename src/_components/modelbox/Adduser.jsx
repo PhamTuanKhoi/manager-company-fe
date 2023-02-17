@@ -6,7 +6,7 @@ import { createWorker, updateWorker } from "../../redux/feature/workerSclice";
 import { useLoading } from "../../hook/useLoading";
 import TextArea from "antd/lib/input/TextArea";
 import moment from "moment";
-import { emailrgx, phonergx } from "../../constant";
+import { emailrgx, ExcellentOpition, phonergx } from "../../constant";
 
 const Adduser = ({ show, onHide, editWorker, render }) => {
    const [worker, setWorker] = useState({
@@ -20,6 +20,7 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
       field: "",
       address: "",
       fieldContent: "",
+      excellent: "",
    });
 
    const validatetion = () => {
@@ -125,6 +126,7 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
          field: "",
          address: "",
          fieldContent: "",
+         excellent: "",
       });
 
       setIsEdit("");
@@ -172,6 +174,7 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
                id: editWorker._id,
                payload: {
                   ...worker,
+                  cccd: worker.cccd.toString(),
                   oldEmail: editWorker.email,
                   date: new Date(worker.date).getTime(),
                   creator: user._id,
@@ -347,6 +350,26 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
                                        setWorker({ ...worker, field: e.target.value })
                                     }
                                  />
+                              </div>
+                           </div>
+
+                           <div className="col-sm-6">
+                              <div className="form-group">
+                                 <label className="col-form-label">
+                                    Vai trò <span className="text-danger">*</span>
+                                 </label>
+                                 <select
+                                    className="form-control"
+                                    value={worker.excellent}
+                                    onChange={(e) =>
+                                       setWorker({ ...worker, excellent: e.target.value })
+                                    }
+                                 >
+                                    <option>Chọn vai trò</option>
+                                    {ExcellentOpition?.map((item) => (
+                                       <option value={item?.value}>{item?.label}</option>
+                                    ))}
+                                 </select>
                               </div>
                            </div>
 

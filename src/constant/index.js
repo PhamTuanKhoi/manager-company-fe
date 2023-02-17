@@ -95,3 +95,14 @@ export const EmployeesRoleOpition = [
       label: "Leader",
    },
 ];
+
+export const ExcellentOpition = [
+   {
+      value: false,
+      label: "Người lao dộng",
+   },
+   {
+      value: true,
+      label: "Trưởng nhóm",
+   },
+];
