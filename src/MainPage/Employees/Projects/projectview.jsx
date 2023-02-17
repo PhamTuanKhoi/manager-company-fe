@@ -28,6 +28,7 @@ import AssignTask from "../../../_components/table/assignTask";
 import PerfromTab from "../../../_components/tabs/perform";
 import FinishTab from "../../../_components/tabs/finish";
 import Part from "../../../_components/part/part";
+import MainTask from "../../../_components/modelbox/task/MainTask";
 const { Panel } = Collapse;
 
 const ProjectView = () => {
@@ -183,6 +184,16 @@ const ProjectView = () => {
                               Hoàn thành
                            </a>
                         </li>
+                        <li className="nav-item">
+                           <a
+                              className="nav-link"
+                              href="#completed_tasks"
+                              data-bs-toggle="tab"
+                              aria-expanded="false"
+                           >
+                              Báo cáo
+                           </a>
+                        </li>
                      </ul>
                      <div className="tab-content">
                         <div className="tab-pane show active" id="all_tasks">
@@ -190,40 +201,7 @@ const ProjectView = () => {
                               <div className="task-list-container">
                                  <div className="task-list-body">
                                     <ul id="task-list">
-                                       {/* <li className="task">
-                                          <div className="task-container">
-                                             <span className="task-action-btn task-check">
-                                                <span
-                                                   className="action-circle large complete-btn"
-                                                   title="Mark Complete"
-                                                >
-                                                   <i className="material-icons">check</i>
-                                                </span>
-                                             </span>
-                                             <span
-                                                className="task-label"
-                                                contentEditable="true"
-                                                suppressContentEditableWarning={true}
-                                             >
-                                                Patient appointment booking
-                                             </span>
-                                             <span className="task-action-btn task-btn-right">
-                                                <span
-                                                   className="action-circle large"
-                                                   title="Assign"
-                                                >
-                                                   <i className="material-icons">person_add</i>
-                                                </span>
-                                                <span
-                                                   className="action-circle large delete-btn"
-                                                   title="Delete Task"
-                                                >
-                                                   <i className="material-icons">delete</i>
-                                                </span>
-                                             </span>
-                                          </div>
-                                       </li> */}
-
+                                       <MainTask />
                                        <li className="task">
                                           <Collapse
                                              style={{ fontWeight: "bold" }}
@@ -283,6 +261,7 @@ const ProjectView = () => {
                   <br /> <br />
                   {/* table assign task */}
                   <AssignTask />
+                  {/* table assign task */}
                </div>
                <div className="col-lg-4 col-xl-3">
                   <div className="card">
