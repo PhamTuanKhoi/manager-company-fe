@@ -169,4 +169,12 @@
     background-color: #b5ba36;
   }
   
+  .text-blue {
+    color: #0d6efd; 
+  }
+
+  .title-between {
+    display: flex;
+    justify-content:space-between;
+  }
  

@@ -56,7 +56,6 @@ const AddUserToPart = ({ show, onHide, part, id, setLoading, user }) => {
       );
    };
 
-   console.log(userNotAssignPart);
    // ======================================== remove user ========================================
 
    return (
