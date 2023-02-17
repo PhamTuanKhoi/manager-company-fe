@@ -2,7 +2,7 @@ import React, { memo, useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLoading } from "../../hook/useLoading";
 import {
@@ -12,6 +12,7 @@ import {
    precentPartByIdProject,
 } from "../../redux/feature/partSclice";
 import AddUserToPart from "../modelbox/actionPart/AddUser";
+import AddSubBranch from "../modelbox/AddSubBranch";
 
 function Part() {
    const [create, setCreate] = useState(false);
@@ -21,6 +22,10 @@ function Part() {
    const { id } = useParams();
    const { setLoading } = useLoading();
    const dispatch = useDispatch();
+   const [showAddBranch, setShowAddBranch] = useState(false);
+
+   const handleClose = () => setShowAddBranch(false);
+   const handleShow = () => setShowAddBranch(true);
 
    const { user } = useSelector((state) => state.auth);
    // ======================================== create updated part ===============================
@@ -107,9 +112,14 @@ function Part() {
                         <div className="card flex-fill">
                            <div className="card-body">
                               <div className="part-header">
-                                 <h4 className="card-title">{item?.name}</h4>
+                                 <Link
+                                    to="/app/projects/part-owerview"
+                                    className="card-title text-blue"
+                                 >
+                                    {item?.name}
+                                 </Link>
                                  <div className="dropdown kanban-action">
-                                    <a href="" data-bs-toggle="dropdown">
+                                    <a href="#" data-bs-toggle="dropdown">
                                        <i className="fa fa-ellipsis-v" />
                                     </a>
                                     <div className="dropdown-menu dropdown-menu-right">
@@ -119,6 +129,9 @@ function Part() {
                                           onClick={() => handleListUser(item)}
                                        >
                                           Chỉnh sửa
+                                       </a>
+                                       <a className="dropdown-item" href="#" onClick={handleShow}>
+                                          Thêm nhánh phụ
                                        </a>
                                        <a className="dropdown-item" href="#">
                                           Xóa
@@ -136,9 +149,13 @@ function Part() {
                                     </div>
                                     <div className="col-md-6 col-6 text-center">
                                        <div className="stats-box mb-4">
-                                          <p>Tổng thành viên</p>
+                                          <p>Nhánh phụ</p>
                                           <h3>{item?.joinpartEX?.length}</h3>
                                        </div>
+                                    </div>
+                                    <div className="stats-box mb-4 text-center">
+                                       <p>Tổng thành viên</p>
+                                       <h3>{item?.joinpartEX?.length}</h3>
                                     </div>
                                  </div>
                               </div>
@@ -206,6 +223,10 @@ function Part() {
             setLoading={setLoading}
             user={user}
          />
+
+         {/* add sub branch */}
+         <AddSubBranch show={showAddBranch} onHide={handleClose} />
+         {/* add sub branch */}
       </>
    );
 }
