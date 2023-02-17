@@ -11,6 +11,7 @@ import ProjectList from "./projectlist";
 import Taskboard from "./taskboard";
 import Payslip from "./payslip";
 import AddPayslip from "./addPayslip";
+import PartOverview from "./partoverview";
 
 const ProjectRoute = ({ match }) => (
    <Switch>
@@ -19,6 +20,7 @@ const ProjectRoute = ({ match }) => (
       <Route path={`${match.url}/projects-list`} component={ProjectList} />
       <Route path={`${match.url}/projects-view/:id`} component={ProjectView} />
       <Route path={`${match.url}/task-board/:id`} component={Taskboard} />
+      <Route path={`${match.url}/part-owerview/`} component={PartOverview} />
       <Route path={`${match.url}/phieu-luong`} component={Payslip} />
       <Route path={`${match.url}/them-phieu-luong/:id`} component={AddPayslip} />
       <Route path={`${match.url}/them-phieu-luong`} component={AddPayslip} />
