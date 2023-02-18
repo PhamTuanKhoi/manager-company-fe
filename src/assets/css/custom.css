@@ -178,3 +178,8 @@
     justify-content:space-between;
   }
  
+
+  .overflow {
+    height: 400px;
+    overflow: auto;
+  }

@@ -28,7 +28,6 @@ import AssignTask from "../../../_components/table/assignTask";
 import PerfromTab from "../../../_components/tabs/perform";
 import FinishTab from "../../../_components/tabs/finish";
 import Part from "../../../_components/part/part";
-import MainTask from "../../../_components/modelbox/task/MainTask";
 const { Panel } = Collapse;
 
 const ProjectView = () => {
@@ -201,7 +200,7 @@ const ProjectView = () => {
                               <div className="task-list-container">
                                  <div className="task-list-body">
                                     <ul id="task-list">
-                                       <MainTask />
+                                       {/* <MainTask /> */}
                                        <li className="task">
                                           <Collapse
                                              style={{ fontWeight: "bold" }}
@@ -260,7 +259,7 @@ const ProjectView = () => {
                   </div>
                   <br /> <br />
                   {/* table assign task */}
-                  <AssignTask />
+                  {/* <AssignTask /> */}
                   {/* table assign task */}
                </div>
                <div className="col-lg-4 col-xl-3">

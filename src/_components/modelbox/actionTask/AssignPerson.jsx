@@ -134,7 +134,7 @@ function AssignPerson({ show, onHide, task, load }) {
                      </li>
                   </ul>
                   <div className="body-dialog">
-                     <div className="tab-content">
+                     <div className="tab-content overflow">
                         <ul className="chat-user-list tab-pane show active" id="person">
                            {notAssignTask?.map((item, index) => (
                               <li key={index}>
