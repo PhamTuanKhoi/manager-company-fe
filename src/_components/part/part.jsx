@@ -15,37 +15,27 @@ import AddUserToPart from "../modelbox/actionPart/AddUser";
 import AddSubBranch from "../modelbox/AddSubBranch";
 
 function Part() {
-   const [create, setCreate] = useState(false);
-   const [text, setText] = useState("");
    const [part, setPart] = useState({});
    const [modalShow, setModalShow] = useState(false);
+   const [partItem, setPartItem] = useState({});
+   const [load, setLoad] = useState(0);
    const { id } = useParams();
    const { setLoading } = useLoading();
    const dispatch = useDispatch();
    const [showAddBranch, setShowAddBranch] = useState(false);
 
-   const handleClose = () => setShowAddBranch(false);
-   const handleShow = () => setShowAddBranch(true);
+   const handleClose = () => {
+      setShowAddBranch(false);
+      setPartItem({});
+   };
+
+   const handleShow = () => {
+      setShowAddBranch(true);
+      setLoad((prev) => prev + 1);
+   };
 
    const { user } = useSelector((state) => state.auth);
    // ======================================== create updated part ===============================
-   const handleSave = () => {
-      if (!text) return;
-
-      if (!user._id) {
-         toast.warn("Làm ơn đăng nhập vào hệ thống");
-         return;
-      }
-
-      dispatch(
-         createPart({
-            payload: { project: id, name: text, creator: user._id },
-            toast,
-            setLoading,
-         })
-      );
-      setText("");
-   };
 
    useEffect(() => {
       dispatch(listPartByIdProject({ id, setLoading }));
@@ -79,138 +69,130 @@ function Part() {
             <div className="card-body">
                <div className="part-header">
                   <div className="card-title m-b-20">Bộ phận</div>
-                  {create ? (
-                     <div className="from-part">
-                        <span
-                           className="text-danger close-create-part"
-                           onClick={() => setCreate(!create)}
-                        >
-                           x
-                        </span>
-                        <input
-                           type="text"
-                           className="input-custom"
-                           placeholder="Nhập tên..."
-                           value={text}
-                           onChange={(e) => setText(e.target.value)}
-                        />
-                        <button className="btn btn-primary" onClick={handleSave}>
-                           Lưu
-                        </button>
-                     </div>
-                  ) : (
-                     <div onClick={() => setCreate(!create)}>
-                        <a href="#" className="btn btn-white float-end ml-2 ">
-                           <i className="fa fa-plus" /> Thêm bộ phận
-                        </a>
-                     </div>
-                  )}
+                  <div>
+                     <a href="#" className="btn btn-white float-end ml-2 " onClick={handleShow}>
+                        <i className="fa fa-plus" /> Thêm bộ phận
+                     </a>
+                  </div>
                </div>
                <div className="row">
-                  {parts?.map((item) => (
-                     <div key={item?._id} className="col-md-12 col-lg-6 col-xl-6 d-flex">
-                        <div className="card flex-fill">
-                           <div className="card-body">
-                              <div className="part-header">
-                                 <Link
-                                    to="/app/projects/part-owerview"
-                                    className="card-title text-blue"
-                                 >
-                                    {item?.name}
-                                 </Link>
-                                 <div className="dropdown kanban-action">
-                                    <a href="#" data-bs-toggle="dropdown">
-                                       <i className="fa fa-ellipsis-v" />
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right">
-                                       <a
-                                          className="dropdown-item"
-                                          href="#"
-                                          onClick={() => handleListUser(item)}
+                  {parts?.map(
+                     (item) =>
+                        !item.parent && (
+                           <div key={item?._id} className="col-md-12 col-lg-6 col-xl-6 d-flex">
+                              <div className="card flex-fill">
+                                 <div className="card-body">
+                                    <div className="part-header">
+                                       <Link
+                                          to="/app/projects/part-owerview"
+                                          className="card-title text-blue"
                                        >
-                                          Chỉnh sửa
-                                       </a>
-                                       <a className="dropdown-item" href="#" onClick={handleShow}>
-                                          Thêm nhánh phụ
-                                       </a>
-                                       <a className="dropdown-item" href="#">
-                                          Xóa
-                                       </a>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div className="statistics">
-                                 <div className="row">
-                                    <div className="col-md-6 col-6 text-center">
-                                       <div className="stats-box mb-4">
-                                          <p>Tổng công việc</p>
-                                          <h3>{item?.tasks?.length}</h3>
+                                          {item?.name}
+                                       </Link>
+                                       <div className="dropdown kanban-action">
+                                          <a href="#" data-bs-toggle="dropdown">
+                                             <i className="fa fa-ellipsis-v" />
+                                          </a>
+                                          <div className="dropdown-menu dropdown-menu-right">
+                                             <a
+                                                className="dropdown-item"
+                                                href="#"
+                                                onClick={() => handleListUser(item)}
+                                             >
+                                                Chỉnh sửa
+                                             </a>
+                                             <a
+                                                className="dropdown-item"
+                                                href="#"
+                                                onClick={() => {
+                                                   handleShow();
+                                                   setPartItem(item);
+                                                   setLoad((prev) => prev + 1);
+                                                }}
+                                             >
+                                                Thêm nhánh phụ
+                                             </a>
+                                             <a className="dropdown-item" href="#">
+                                                Xóa
+                                             </a>
+                                          </div>
                                        </div>
                                     </div>
-                                    <div className="col-md-6 col-6 text-center">
-                                       <div className="stats-box mb-4">
-                                          <p>Nhánh phụ</p>
-                                          <h3>{item?.joinpartEX?.length}</h3>
+                                    <div className="statistics">
+                                       <div className="row">
+                                          <div className="col-md-6 col-6 text-center">
+                                             <div className="stats-box mb-4">
+                                                <p>Tổng công việc</p>
+                                                <h3>{item?.tasks?.length}</h3>
+                                             </div>
+                                          </div>
+                                          <div className="col-md-6 col-6 text-center">
+                                             <div className="stats-box mb-4">
+                                                <p>Nhánh phụ</p>
+                                                <h3>{item?.joinpartEX?.length}</h3>
+                                             </div>
+                                          </div>
+                                          <div className="stats-box mb-4 text-center">
+                                             <p>Tổng thành viên</p>
+                                             <h3>{item?.joinpartEX?.length}</h3>
+                                          </div>
                                        </div>
                                     </div>
-                                    <div className="stats-box mb-4 text-center">
-                                       <p>Tổng thành viên</p>
-                                       <h3>{item?.joinpartEX?.length}</h3>
-                                    </div>
-                                 </div>
-                              </div>
-                              {precentPart?.map(
-                                 (precent) =>
-                                    precent?._id === item._id && (
-                                       <div key={precent?._id}>
-                                          <div className="progress mb-4">
-                                             <div
-                                                className="progress-bar bg-warning"
-                                                role="progressbar"
-                                                style={{ width: `${precent?.precentPerform}%` }}
-                                                aria-valuenow={30}
-                                                aria-valuemin={0}
-                                                aria-valuemax={100}
-                                             >
-                                                {precent?.precentPerform || 0}%
-                                             </div>
-                                          </div>
-                                          <div className="progress mb-4">
-                                             <div
-                                                className="progress-bar bg-success"
-                                                role="progressbar"
-                                                style={{ width: `${precent.precentFinish}%` }}
-                                                aria-valuenow={30}
-                                                aria-valuemin={0}
-                                                aria-valuemax={100}
-                                             >
-                                                {precent?.precentFinish || 0}%
-                                             </div>
-                                          </div>
-                                          <div>
-                                             <p>
-                                                <i className="fa fa-dot-circle-o text-warning me-2" />
-                                                Thực hiện{" "}
-                                                <span className="float-end">
-                                                   {precent?.performTrue}
-                                                </span>
-                                             </p>
+                                    {precentPart?.map(
+                                       (precent) =>
+                                          precent?._id === item._id && (
+                                             <div key={precent?._id}>
+                                                <div className="progress mb-4">
+                                                   <div
+                                                      className="progress-bar bg-warning"
+                                                      role="progressbar"
+                                                      style={{
+                                                         width: `${precent?.precentPerform}%`,
+                                                      }}
+                                                      aria-valuenow={30}
+                                                      aria-valuemin={0}
+                                                      aria-valuemax={100}
+                                                   >
+                                                      {precent?.precentPerform || 0}%
+                                                   </div>
+                                                </div>
+                                                <div className="progress mb-4">
+                                                   <div
+                                                      className="progress-bar bg-success"
+                                                      role="progressbar"
+                                                      style={{ width: `${precent.precentFinish}%` }}
+                                                      aria-valuenow={30}
+                                                      aria-valuemin={0}
+                                                      aria-valuemax={100}
+                                                   >
+                                                      {precent?.precentFinish || 0}%
+                                                   </div>
+                                                </div>
+                                                <div>
+                                                   <p>
+                                                      <i className="fa fa-dot-circle-o text-warning me-2" />
+                                                      Thực hiện{" "}
+                                                      <span className="float-end">
+                                                         {precent?.performTrue}
+                                                      </span>
+                                                   </p>
 
-                                             <p>
-                                                <i className="fa fa-dot-circle-o text-success me-2" />
-                                                Hoàn thành{" "}
-                                                <span className="float-end">
-                                                   {precent?.finishTrue}
-                                                </span>
-                                             </p>
-                                          </div>
-                                       </div>
-                                    )
-                              )}
+                                                   <p>
+                                                      <i className="fa fa-dot-circle-o text-success me-2" />
+                                                      Hoàn thành{" "}
+                                                      <span className="float-end">
+                                                         {precent?.finishTrue}
+                                                      </span>
+                                                   </p>
+                                                </div>
+                                             </div>
+                                          )
+                                    )}
+                                 </div>
+                              </div>
                            </div>
-                        </div>
-                     </div>
-                  ))}
+                        )
+                  )}
                </div>
             </div>
          </div>
@@ -225,7 +207,14 @@ function Part() {
          />
 
          {/* add sub branch */}
-         <AddSubBranch show={showAddBranch} onHide={handleClose} />
+         <AddSubBranch
+            show={showAddBranch}
+            onHide={handleClose}
+            part={partItem}
+            user={user}
+            id={id}
+            load={load}
+         />
          {/* add sub branch */}
       </>
    );

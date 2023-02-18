@@ -5,8 +5,27 @@ import { useDispatch } from "react-redux";
 import { listHeador } from "../../redux/feature/workerSclice";
 import { useLoading } from "../../hook/useLoading";
 import { useSelector } from "react-redux";
+import { useState } from "react";
+import { createPart } from "../../redux/feature/partSclice";
+import { toast } from "react-toastify";
 
-const AddSubBranch = ({ show, onHide }) => {
+const AddSubBranch = ({ show, onHide, part, user, id, load }) => {
+   const [parted, setParted] = useState({});
+   const [branch, setBranch] = useState({
+      name: "",
+      heador: "",
+   });
+
+   const empty = () =>
+      setBranch({
+         name: "",
+         heador: "",
+      });
+
+   useEffect(() => {
+      setParted(part);
+   }, [load]);
+
    const dispatch = useDispatch();
 
    const { setLoading } = useLoading();
@@ -17,10 +36,28 @@ const AddSubBranch = ({ show, onHide }) => {
 
    const { headors } = useSelector((state) => state.worker);
 
+   const handleSave = () => {
+      if (!user._id) {
+         toast.warn("Làm ơn đăng nhập vào hệ thống");
+         return;
+      }
+
+      const payload = { ...branch, project: id, creator: user._id };
+
+      dispatch(
+         createPart({
+            payload: part._id ? { ...payload, parent: part._id } : payload,
+            toast,
+            empty,
+            setLoading,
+         })
+      );
+   };
+
    return (
       <Modal show={show} onHide={onHide}>
          <div className="modal-header">
-            <h5 className="modal-title">Thêm nhánh phụ</h5>
+            <h5 className="modal-title">{!part?._id ? "Thêm bộ phận" : "Thêm nhánh phụ"}</h5>
             <button type="button" className="close-x">
                <span aria-hidden="true" onClick={onHide}>
                   ×
@@ -28,12 +65,14 @@ const AddSubBranch = ({ show, onHide }) => {
             </button>
          </div>
          <Modal.Body>
-            <span>Tên nhánh</span>
+            <span>Tên {!part?._id ? "bộ phận" : "nhánh"}</span>
             <div className="input-group m-b-30">
                <input
                   placeholder="Nhập tên nhánh"
                   className="form-control search-input"
                   type="text"
+                  value={branch.name}
+                  onChange={(e) => setBranch({ ...branch, name: e.target.value })}
                />
             </div>
 
@@ -41,7 +80,11 @@ const AddSubBranch = ({ show, onHide }) => {
                <label className="col-form-label">
                   Nhóm trưởng <span className="text-danger">*</span>
                </label>
-               <select className="form-control">
+               <select
+                  className="form-control"
+                  value={branch.heador}
+                  onChange={(e) => setBranch({ ...branch, heador: e.target.value })}
+               >
                   <option>Chọn nhóm trưởng</option>
                   {headors?.map((item) => (
                      <option key={item?._id} value={item?._id}>
@@ -51,7 +94,9 @@ const AddSubBranch = ({ show, onHide }) => {
                </select>
             </div>
             <div className="button-dialog">
-               <button className="primary">Lưu</button>
+               <button className="primary" onClick={handleSave}>
+                  Lưu
+               </button>
             </div>
          </Modal.Body>
       </Modal>

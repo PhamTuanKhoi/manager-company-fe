@@ -3,10 +3,11 @@ import { partAPI } from "../../api/part";
 
 export const createPart = createAsyncThunk(
    "part/createPart",
-   async ({ payload, toast, setLoading }, { rejectWithValue }) => {
+   async ({ payload, toast, empty, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await partAPI.create(payload);
+         empty();
          toast.success("Thêm bộ phận thành công");
          setLoading(false);
          return data;
@@ -143,7 +144,9 @@ const partSclice = createSlice({
       },
       [createPart.fulfilled]: (state, action) => {
          state.loading = false;
-         state.parts.push({ ...action.payload, taskEX: [] });
+
+         // page part parent
+         if (!action.payload.parent) state.parts.push(action.payload);
       },
       [createPart.rejected]: (state, action) => {
          state.loading = false;
