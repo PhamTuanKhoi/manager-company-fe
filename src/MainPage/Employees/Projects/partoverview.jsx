@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import "../../index.css";
-import AssignTask from "../../../_components/table/assignTask";
+import TableTask from "../../../_components/table/tableTask";
 import AddSubBranch from "../../../_components/modelbox/AddSubBranch.jsx";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -175,7 +175,7 @@ const PartOverview = () => {
                </div>
                {/* table assign task */}
                <div className="row">
-                  <AssignTask />
+                  <TableTask />
                </div>
                {/* table assign task */}
                {/* add sub-branch */}

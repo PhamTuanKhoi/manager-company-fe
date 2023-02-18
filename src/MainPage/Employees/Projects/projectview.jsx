@@ -24,7 +24,6 @@ import { listTaskByProject } from "../../../redux/feature/taskSclice";
 import ActionTask from "../../../_components/modelbox/actionTask/ActionTask";
 import CreateTask from "../../../_components/modelbox/assignUserTask";
 import Addproject from "../../../_components/modelbox/Addproject";
-import AssignTask from "../../../_components/table/assignTask";
 import PerfromTab from "../../../_components/tabs/perform";
 import FinishTab from "../../../_components/tabs/finish";
 import Part from "../../../_components/part/part";

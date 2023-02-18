@@ -15,7 +15,7 @@ import {
 } from "../../redux/feature/assignTaskSclice";
 import Table from "react-bootstrap/Table";
 
-const AssignTask = () => {
+const TableTask = () => {
    const { id } = useParams();
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
@@ -85,9 +85,12 @@ const AssignTask = () => {
                   <thead>
                      <tr>
                         <th>#</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Username</th>
+                        <th>Bộ phận</th>
+                        <th>Công việc</th>
+                        <th>Bàn giao</th>
+                        <th>Deadline</th>
+                        <th>Hoàn thành</th>
+                        <th>Thực hiện</th>
                      </tr>
                   </thead>
                   <tbody>
@@ -96,6 +99,9 @@ const AssignTask = () => {
                         <td>Mark</td>
                         <td>Otto</td>
                         <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
                      </tr>
                      <tr>
                         <td>
@@ -103,6 +109,9 @@ const AssignTask = () => {
                         </td>
                         <td>Jacob</td>
                         <td>Thornton</td>
+                        <td>@fat</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
                         <td>@fat</td>
                      </tr>
                   </tbody>
@@ -113,4 +122,4 @@ const AssignTask = () => {
    );
 };
 
-export default AssignTask;
+export default TableTask;
