@@ -9,8 +9,7 @@ import { useState } from "react";
 import { createPart } from "../../redux/feature/partSclice";
 import { toast } from "react-toastify";
 
-const AddSubBranch = ({ show, onHide, part, user, id, load }) => {
-   const [parted, setParted] = useState({});
+const AddSubBranch = ({ show, onHide, part, user, id }) => {
    const [branch, setBranch] = useState({
       name: "",
       heador: "",
@@ -21,10 +20,6 @@ const AddSubBranch = ({ show, onHide, part, user, id, load }) => {
          name: "",
          heador: "",
       });
-
-   useEffect(() => {
-      setParted(part);
-   }, [load]);
 
    const dispatch = useDispatch();
 

@@ -127,6 +127,21 @@ export const removeUserInPart = createAsyncThunk(
    }
 );
 
+export const child = createAsyncThunk(
+   "part/child",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await partAPI.child(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const partSclice = createSlice({
    name: "part",
    initialState: {
@@ -242,6 +257,19 @@ const partSclice = createSlice({
          ];
       },
       [removeUserInPart.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // load part child
+      [child.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [child.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.parts = action.payload;
+      },
+      [child.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
