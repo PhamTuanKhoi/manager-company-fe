@@ -14,6 +14,10 @@ export const userAPI = {
       return axios.get(path + "employees");
    },
 
+   listWorkerExcellent() {
+      return axios.get(path + "worker/excellent");
+   },
+
    listEmployeesByClient(id) {
       return axios.get(path + "employees-role-client/" + id);
    },

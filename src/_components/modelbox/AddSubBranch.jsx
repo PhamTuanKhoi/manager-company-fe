@@ -1,7 +1,22 @@
 import React from "react";
+import { useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
+import { useDispatch } from "react-redux";
+import { listHeador } from "../../redux/feature/workerSclice";
+import { useLoading } from "../../hook/useLoading";
+import { useSelector } from "react-redux";
 
 const AddSubBranch = ({ show, onHide }) => {
+   const dispatch = useDispatch();
+
+   const { setLoading } = useLoading();
+
+   useEffect(() => {
+      dispatch(listHeador({ setLoading }));
+   }, []);
+
+   const { headors } = useSelector((state) => state.worker);
+
    return (
       <Modal show={show} onHide={onHide}>
          <div className="modal-header">
@@ -28,6 +43,11 @@ const AddSubBranch = ({ show, onHide }) => {
                </label>
                <select className="form-control">
                   <option>Chọn nhóm trưởng</option>
+                  {headors?.map((item) => (
+                     <option key={item?._id} value={item?._id}>
+                        {item?.name}
+                     </option>
+                  ))}
                </select>
             </div>
             <div className="button-dialog">

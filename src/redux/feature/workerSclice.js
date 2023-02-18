@@ -141,6 +141,21 @@ export const removeWorker = createAsyncThunk(
    }
 );
 
+export const listHeador = createAsyncThunk(
+   "worker/listHeador",
+   async ({ setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.listWorkerExcellent();
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const workerSclice = createSlice({
    name: "worker",
    initialState: {
@@ -148,6 +163,7 @@ const workerSclice = createSlice({
       searchField: "",
       worker: {},
       workers: [],
+      headors: [],
       error: "",
       loading: false,
    },
@@ -281,6 +297,19 @@ const workerSclice = createSlice({
          state.workers = action.payload;
       },
       [listWorkerByEmployees.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // list heador
+      [listHeador.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listHeador.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.headors = action.payload;
+      },
+      [listHeador.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
