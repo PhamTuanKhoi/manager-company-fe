@@ -84,7 +84,7 @@ function Part() {
                                  <div className="card-body">
                                     <div className="part-header">
                                        <Link
-                                          to={`/app/projects/part-owerview?project=${id}&part=${item?._id}`}
+                                          to={`/app/projects/part-owerview?project=${id}&part=${item?._id}&name=${item?.name}`}
                                           className="card-title text-blue"
                                        >
                                           {item?.name}

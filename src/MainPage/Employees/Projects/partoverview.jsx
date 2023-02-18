@@ -33,6 +33,7 @@ const PartOverview = () => {
       }
    });
 
+   const [part, setPart] = useState({});
    const { search } = useLocation();
    const query = new URLSearchParams(search);
 
@@ -42,11 +43,12 @@ const PartOverview = () => {
    const { user } = useSelector((state) => state.auth);
 
    const projectId = query.get("project");
-   const partId = { _id: query.get("part") };
+   const partId = query.get("part");
+   const name = query.get("name");
 
    useEffect(() => {
-      dispatch(child({ query: { project: projectId, part: partId._id }, setLoading }));
-   }, []);
+      dispatch(child({ query: { project: projectId, part: partId }, setLoading }));
+   }, [projectId, partId]);
 
    const { parts } = useSelector((state) => state.part);
 
@@ -65,7 +67,7 @@ const PartOverview = () => {
                <div className="page-header">
                   <div className="row align-items-center">
                      <div className="col">
-                        <h3 className="page-title">Bộ phận</h3>
+                        <h3 className="page-title">Bộ phận: {name}</h3>
                      </div>
                      <div className="col-auto float-end ml-auto">
                         <a href="#" className="btn btn-white float-end ml-2">
@@ -81,13 +83,25 @@ const PartOverview = () => {
                         <div className="card flex-fill">
                            <div className="card-body">
                               <div className="part-header">
-                                 <h4 className="card-title">{item?.name}</h4>
+                                 <Link
+                                    to={`/app/projects/part-owerview?project=${projectId}&part=${item?._id}&name=${item?.name}`}
+                                    className="card-title"
+                                 >
+                                    {item?.name}
+                                 </Link>
                                  <div className="dropdown kanban-action">
                                     <a href="#" data-bs-toggle="dropdown">
                                        <i className="fa fa-ellipsis-v" />
                                     </a>
                                     <div className="dropdown-menu dropdown-menu-right">
-                                       <a className="dropdown-item" href="#" onClick={handleShow}>
+                                       <a
+                                          className="dropdown-item"
+                                          href="#"
+                                          onClick={() => {
+                                             handleShow();
+                                             setPart(item);
+                                          }}
+                                       >
                                           Thêm nhánh phụ
                                        </a>
                                        <a className="dropdown-item" href="#">
@@ -168,7 +182,7 @@ const PartOverview = () => {
                <AddSubBranch
                   show={showAddBranch}
                   onHide={handleClose}
-                  part={partId}
+                  part={part}
                   id={projectId}
                   user={user}
                />
