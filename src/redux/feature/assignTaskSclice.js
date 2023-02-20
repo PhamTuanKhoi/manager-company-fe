@@ -1,28 +1,28 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { assignTaskAPI } from "../../api/assignTask";
 
-export const createAssignTask = createAsyncThunk(
-   "assignTask/createAssignTask",
-   async ({ payload, toast, setLoading, assignTask }, { rejectWithValue }) => {
-      try {
-         setLoading(true);
-         const { data } = await assignTaskAPI.createAssign(payload);
-         toast.success("Giao công việc thành công");
-         setLoading(false);
-         return { data, assignTask };
-      } catch (error) {
-         setLoading(false);
-         if (typeof error?.response?.data?.message === "string") {
-            toast.error(error?.response?.data?.message);
-         } else {
-            error?.response?.data?.message?.forEach((item) => {
-               toast.error(item);
-            });
-         }
-         return rejectWithValue(error.response.data);
-      }
-   }
-);
+// export const createAssignTask = createAsyncThunk(
+//    "assignTask/createAssignTask",
+//    async ({ payload, toast, setLoading, assignTask }, { rejectWithValue }) => {
+//       try {
+//          setLoading(true);
+//          const { data } = await assignTaskAPI.createAssign(payload);
+//          toast.success("Giao công việc thành công");
+//          setLoading(false);
+//          return { data, assignTask };
+//       } catch (error) {
+//          setLoading(false);
+//          if (typeof error?.response?.data?.message === "string") {
+//             toast.error(error?.response?.data?.message);
+//          } else {
+//             error?.response?.data?.message?.forEach((item) => {
+//                toast.error(item);
+//             });
+//          }
+//          return rejectWithValue(error.response.data);
+//       }
+//    }
+// );
 
 export const listAssignTask = createAsyncThunk(
    "assignTask/listAssignTask",
@@ -202,28 +202,28 @@ export const precentFinishTrue = createAsyncThunk(
    }
 );
 
-export const createAssignTaskByPart = createAsyncThunk(
-   "assignTask/createAssignTaskByPart",
-   async ({ payload, toast, setLoading, assignTask, workers }, { rejectWithValue }) => {
-      try {
-         setLoading(true);
-         const { data } = await assignTaskAPI.createAssignByPart(payload);
-         toast.success("Giao công việc thành công");
-         setLoading(false);
-         return { data, assignTask, task: payload.task, workers };
-      } catch (error) {
-         setLoading(false);
-         if (typeof error?.response?.data?.message === "string") {
-            toast.error(error?.response?.data?.message);
-         } else {
-            error?.response?.data?.message?.forEach((item) => {
-               toast.error(item);
-            });
-         }
-         return rejectWithValue(error.response.data);
-      }
-   }
-);
+// export const createAssignTaskByPart = createAsyncThunk(
+//    "assignTask/createAssignTaskByPart",
+//    async ({ payload, toast, setLoading, assignTask, workers }, { rejectWithValue }) => {
+//       try {
+//          setLoading(true);
+//          const { data } = await assignTaskAPI.createAssignByPart(payload);
+//          toast.success("Giao công việc thành công");
+//          setLoading(false);
+//          return { data, assignTask, task: payload.task, workers };
+//       } catch (error) {
+//          setLoading(false);
+//          if (typeof error?.response?.data?.message === "string") {
+//             toast.error(error?.response?.data?.message);
+//          } else {
+//             error?.response?.data?.message?.forEach((item) => {
+//                toast.error(item);
+//             });
+//          }
+//          return rejectWithValue(error.response.data);
+//       }
+//    }
+// );
 
 export const checkPartNotAssignTask = createAsyncThunk(
    "assignTask/checkPartNotAssignTask",
@@ -264,20 +264,20 @@ const assignTaskSclice = createSlice({
    },
    extraReducers: {
       //assign
-      [createAssignTask.pending]: (state, action) => {
-         state.loading = true;
-      },
-      [createAssignTask.fulfilled]: (state, action) => {
-         state.loading = false;
-         state.notAssignTask = state.notAssignTask.filter(
-            (item) => item._id !== action.payload.data.worker
-         );
-         state.assignTasks.push({ ...action.payload.assignTask, _id: action.payload.data._id });
-      },
-      [createAssignTask.rejected]: (state, action) => {
-         state.loading = false;
-         state.error = action.payload.message;
-      },
+      // [createAssignTask.pending]: (state, action) => {
+      //    state.loading = true;
+      // },
+      // [createAssignTask.fulfilled]: (state, action) => {
+      //    state.loading = false;
+      //    state.notAssignTask = state.notAssignTask.filter(
+      //       (item) => item._id !== action.payload.data.worker
+      //    );
+      //    state.assignTasks.push({ ...action.payload.assignTask, _id: action.payload.data._id });
+      // },
+      // [createAssignTask.rejected]: (state, action) => {
+      //    state.loading = false;
+      //    state.error = action.payload.message;
+      // },
 
       //list
       [listAssignTask.pending]: (state, action) => {
@@ -480,35 +480,35 @@ const assignTaskSclice = createSlice({
       },
 
       //assign by part
-      [createAssignTaskByPart.pending]: (state, action) => {
-         state.loading = true;
-      },
-      [createAssignTaskByPart.fulfilled]: (state, action) => {
-         state.loading = false;
+      // [createAssignTaskByPart.pending]: (state, action) => {
+      //    state.loading = true;
+      // },
+      // [createAssignTaskByPart.fulfilled]: (state, action) => {
+      //    state.loading = false;
 
-         const {
-            arg: {
-               payload: { part },
-            },
-         } = action.meta;
+      //    const {
+      //       arg: {
+      //          payload: { part },
+      //       },
+      //    } = action.meta;
 
-         // remove part
-         state.partNotAssignTask = state.partNotAssignTask.filter((item) => item._id !== part);
+      //    // remove part
+      //    state.partNotAssignTask = state.partNotAssignTask.filter((item) => item._id !== part);
 
-         // push new data
-         state.assignTasks = [...state.assignTasks, ...action.payload.assignTask];
+      //    // push new data
+      //    state.assignTasks = [...state.assignTasks, ...action.payload.assignTask];
 
-         // remove user dialog assign
-         if (action.payload.workers.length > 0) {
-            state.notAssignTask = state.notAssignTask.filter(
-               (item) => !action.payload.workers?.includes(item?._id)
-            );
-         }
-      },
-      [createAssignTaskByPart.rejected]: (state, action) => {
-         state.loading = false;
-         state.error = action.payload.message;
-      },
+      //    // remove user dialog assign
+      //    if (action.payload.workers.length > 0) {
+      //       state.notAssignTask = state.notAssignTask.filter(
+      //          (item) => !action.payload.workers?.includes(item?._id)
+      //       );
+      //    }
+      // },
+      // [createAssignTaskByPart.rejected]: (state, action) => {
+      //    state.loading = false;
+      //    state.error = action.payload.message;
+      // },
    },
 });
 

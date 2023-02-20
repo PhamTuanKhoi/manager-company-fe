@@ -5,5 +5,4 @@ export const partTaskAPI = {
    async create(payload) {
       return await axios.post(path, payload);
    },
-   s,
 };
