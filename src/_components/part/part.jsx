@@ -97,7 +97,7 @@ function Part() {
                                           href="#"
                                           onClick={() => handleListUser(item)}
                                        >
-                                          Chỉnh sửa
+                                          Thêm người lao động
                                        </a>
                                        <a
                                           className="dropdown-item"
@@ -132,7 +132,7 @@ function Part() {
                                     </div>
                                     <div className="stats-box mb-4 text-center">
                                        <p>Tổng thành viên</p>
-                                       <h3>{item?.sizeJoinPart}</h3>
+                                       <h3>{item?.joinpartEX?.length}</h3>
                                     </div>
                                  </div>
                               </div>
