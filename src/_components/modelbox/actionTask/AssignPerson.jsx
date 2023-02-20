@@ -4,11 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLoading } from "../../../hook/useLoading";
+import { checkPartNotAssignTask } from "../../../redux/feature/partSclice";
 
-import {
-   checkPartNotAssignTask,
-   createAssignTaskByPart,
-} from "../../../redux/feature/assignTaskSclice";
 import { createPartTask } from "../../../redux/feature/partTaskSclice";
 function AssignPerson({ show, onHide, task, load }) {
    const dispatch = useDispatch();
@@ -55,19 +52,10 @@ function AssignPerson({ show, onHide, task, load }) {
       }
    }, [id, task._id, load]);
 
-   const { partNotAssignTask } = useSelector((state) => state.assignTask);
+   const { partNotAssignTask } = useSelector((state) => state.part);
 
    const handAddPart = (part, task) => {
       if (!user._id) toast.warn(`Vui lòng đăng nhập vào hệ thống`);
-      const userEX = part?.userEX?.map((item) => ({
-         ...item,
-         taskId: task._id,
-         taskName: task?.name,
-         perform: { status: false, date: Date.now() },
-         finish: { status: false, date: Date.now() },
-         partId: part._id,
-         partName: part.name,
-      }));
 
       dispatch(
          createPartTask({
@@ -78,6 +66,7 @@ function AssignPerson({ show, onHide, task, load }) {
             },
             toast,
             setLoading,
+            dispatch,
          })
       );
    };

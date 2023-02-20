@@ -142,15 +142,44 @@ export const child = createAsyncThunk(
    }
 );
 
+export const checkPartNotAssignTask = createAsyncThunk(
+   "assignTask/checkPartNotAssignTask",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await partAPI.checkPartNotAssignTask(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         console.log(error);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const partSclice = createSlice({
    name: "part",
    initialState: {
       part: {},
       parts: [],
       userNotAssignPart: [],
+      partNotAssignTask: [],
       precentPart: [],
       error: "",
       loading: false,
+   },
+   reducers: {
+      updateSize: (state, action) => {
+         state.parts = state.parts?.map((item) =>
+            item?._id === action.payload ? { ...item, size: +item?.size + 1 } : item
+         );
+      },
+      removePartNotAssignTask: (state, action) => {
+         state.partNotAssignTask = state.partNotAssignTask.filter(
+            (item) => item._id !== action.payload
+         );
+      },
    },
    extraReducers: {
       // create part
@@ -270,6 +299,19 @@ const partSclice = createSlice({
          state.parts = action.payload;
       },
       [child.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // precent finish = true
+      [checkPartNotAssignTask.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [checkPartNotAssignTask.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.partNotAssignTask = action.payload;
+      },
+      [checkPartNotAssignTask.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

@@ -10,6 +10,10 @@ export const partAPI = {
       return await axios.get(path + "child", { params: query });
    },
 
+   async checkPartNotAssignTask(filter = {}) {
+      return await axios.get(path + "not-task?", { params: filter });
+   },
+
    async checkNotAssignPart(id) {
       return await axios.get("user/not-assign-part/" + id);
    },

@@ -225,22 +225,6 @@ export const precentFinishTrue = createAsyncThunk(
 //    }
 // );
 
-export const checkPartNotAssignTask = createAsyncThunk(
-   "assignTask/checkPartNotAssignTask",
-   async ({ query, setLoading }, { rejectWithValue }) => {
-      try {
-         setLoading(true);
-         const { data } = await assignTaskAPI.checkPartNotAssignTask(query);
-         setLoading(false);
-         return data;
-      } catch (error) {
-         setLoading(false);
-         console.log(error);
-         return rejectWithValue(error.response.data);
-      }
-   }
-);
-
 const assignTaskSclice = createSlice({
    name: "assignTask",
    initialState: {
@@ -253,7 +237,7 @@ const assignTaskSclice = createSlice({
       precentTaskPerfrom: [],
       precentTaskFinish: [],
       precentFinish: [],
-      partNotAssignTask: [],
+      // partNotAssignTask: [],
       error: "",
       loading: false,
    },
@@ -462,19 +446,6 @@ const assignTaskSclice = createSlice({
          state.precentFinish = action.payload;
       },
       [precentFinishTrue.rejected]: (state, action) => {
-         state.loading = false;
-         state.error = action.payload.message;
-      },
-
-      // precent finish = true
-      [checkPartNotAssignTask.pending]: (state, action) => {
-         state.loading = true;
-      },
-      [checkPartNotAssignTask.fulfilled]: (state, action) => {
-         state.loading = false;
-         state.partNotAssignTask = action.payload;
-      },
-      [checkPartNotAssignTask.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

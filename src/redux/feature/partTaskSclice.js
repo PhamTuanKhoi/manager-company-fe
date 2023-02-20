@@ -1,12 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { partTaskAPI } from "../../api/partTask";
+import partSclice from "./partSclice";
 
 export const createPartTask = createAsyncThunk(
    "part-task/create",
-   async ({ payload, toast, setLoading }, { rejectWithValue }) => {
+   async ({ payload, toast, setLoading, dispatch }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await partTaskAPI.create(payload);
+         // plus task
+         dispatch(partSclice.actions.updateSize(payload?.part));
+         // remove part not assign task
+         dispatch(partSclice.actions.removePartNotAssignTask(payload?.part));
+         // success
          toast.success(`Giao việc cho bộ phận thành công`);
          setLoading(false);
          return data;

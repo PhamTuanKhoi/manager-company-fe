@@ -53,8 +53,4 @@ export const assignTaskAPI = {
    async precentFinish(id) {
       return await axios.get(path + "precent-finish/" + id + "/project");
    },
-
-   async checkPartNotAssignTask(filter = {}) {
-      return await axios.get("part/not-task?", { params: filter });
-   },
 };
