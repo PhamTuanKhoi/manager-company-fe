@@ -11,9 +11,11 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { child } from "../../../redux/feature/partSclice";
 import { useLoading } from "../../../hook/useLoading";
+import CreateTask from "../../../_components/modelbox/assignUserTask";
 
 const PartOverview = () => {
    const [menu, setMenu] = useState(false);
+   const [modalAssign, setModalAssign] = useState(false);
    const [showAddBranch, setShowAddBranch] = useState(false);
 
    const handleClose = () => setShowAddBranch(false);
@@ -70,7 +72,11 @@ const PartOverview = () => {
                         <h3 className="page-title">Bộ phận: {name}</h3>
                      </div>
                      <div className="col-auto float-end ml-auto">
-                        <a href="#" className="btn btn-white float-end ml-2">
+                        <a
+                           href="#"
+                           className="btn btn-white float-end ml-2"
+                           onClick={() => setModalAssign(true)}
+                        >
                            <i className="fa fa-plus" /> Thêm công việc
                         </a>
                      </div>
@@ -183,6 +189,9 @@ const PartOverview = () => {
                   user={user}
                />
                {/* add sub-branch */}
+               {/* create task */}
+               <CreateTask show={modalAssign} onHide={() => setModalAssign(false)} />
+               {/* create task */}
             </div>
             {/* /Page Content */}
          </div>
