@@ -190,7 +190,11 @@ const partSclice = createSlice({
          state.loading = false;
 
          // page part parent
-         if (!action.payload.parent) state.parts.push(action.payload);
+         state.parts = state.parts?.map((item) =>
+            item._id === action.payload?.parent
+               ? { ...item, sizeChild: +item?.sizeChild + 1 }
+               : item
+         );
       },
       [createPart.rejected]: (state, action) => {
          state.loading = false;

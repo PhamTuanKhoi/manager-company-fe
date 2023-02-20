@@ -114,23 +114,19 @@ const PartOverview = () => {
                                  <div className="row">
                                     <div className="col-md-6 col-6 text-center">
                                        <div className="stats-box mb-4">
-                                          <p>Công việc</p>
-                                          <h3>21</h3>
+                                          <p>Tổng công việc</p>
+                                          <h3>{item?.size}</h3>
                                        </div>
                                     </div>
                                     <div className="col-md-6 col-6 text-center">
                                        <div className="stats-box mb-4">
-                                          <p>Tổ</p>
-                                          <h3>19</h3>
+                                          <p>Nhánh phụ</p>
+                                          <h3>{item?.sizeChild}</h3>
                                        </div>
                                     </div>
-                                 </div>
-                                 <div className="row">
-                                    <div className="text-center">
-                                       <div className="stats-box mb-4">
-                                          <p>Nhân viên</p>
-                                          <h3>12</h3>
-                                       </div>
+                                    <div className="stats-box mb-4 text-center">
+                                       <p>Tổng thành viên</p>
+                                       <h3>{item?.joinpartEX?.length}</h3>
                                     </div>
                                  </div>
                               </div>
