@@ -1,24 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
-import {
-   Avatar_01,
-   Avatar_04,
-   Avatar_05,
-   Avatar_09,
-   Avatar_10,
-   Avatar_11,
-   Avatar_12,
-   Avatar_13,
-   Avatar_16,
-} from "../../../Entryfile/imagepath";
+
 import Tableavatar from "../../../_components/tableavatar/tableavatar";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import Header from "../../../initialpage/Sidebar/header";
 import { WifiOutlined } from "@ant-design/icons";
+import AddWiffi from "../../../_components/modelbox/AddWiffi";
 
 const AttendanceAdmin = () => {
    const [menu, setMenu] = useState(false);
+   const [show, setShow] = useState(false);
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -50,7 +41,14 @@ const AttendanceAdmin = () => {
                      </div>
                      <div className="col-auto float-end ml-auto">
                         <a href="#" className="btn btn-white float-end ml-2">
-                           <WifiOutlined /> Cập nhật thông tin wiffi
+                           <WifiOutlined /> Chấm công
+                        </a>
+                        <a
+                           href="#"
+                           className="btn btn-white float-end ml-2"
+                           onClick={() => setShow(true)}
+                        >
+                           <WifiOutlined /> Cập nhật wiffi chấm công
                         </a>
                      </div>
                   </div>
@@ -265,6 +263,10 @@ const AttendanceAdmin = () => {
                </div>
             </div>
             {/* /Attendance Modal */}
+
+            {/* created wiffi attendance */}
+            <AddWiffi show={show} onHide={() => setShow(false)} />
+            {/* created wiffi attendance */}
          </div>
       </div>
    );
