@@ -12,6 +12,8 @@ import { useDispatch } from "react-redux";
 import { child } from "../../../redux/feature/partSclice";
 import { useLoading } from "../../../hook/useLoading";
 import CreateTask from "../../../_components/modelbox/assignUserTask";
+import TablePart from "../../../_components/table/tablePart";
+import TablePerson from "../../../_components/table/tablePerson";
 
 const PartOverview = () => {
    const [menu, setMenu] = useState(false);
@@ -177,7 +179,43 @@ const PartOverview = () => {
                </div>
                {/* table assign task */}
                <div className="row">
-                  <TableTask />
+                  <div className="card">
+                     <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
+                        <li className="nav-item">
+                           <a
+                              className="nav-link active"
+                              href="#all_part"
+                              data-bs-toggle="tab"
+                              aria-expanded="true"
+                           >
+                              Bộ phận
+                           </a>
+                        </li>
+                        <li className="nav-item">
+                           <a
+                              className="nav-link"
+                              href="#all_task"
+                              data-bs-toggle="tab"
+                              aria-expanded="false"
+                           >
+                              Công việc
+                           </a>
+                        </li>
+                        <li className="nav-item">
+                           <a
+                              className="nav-link"
+                              href="#all_person"
+                              data-bs-toggle="tab"
+                              aria-expanded="false"
+                           >
+                              Người lao động
+                           </a>
+                        </li>
+                     </ul>
+                     <TablePart />
+                     {/* <TableTask /> */}
+                     {/* <TablePerson /> */}
+                  </div>
                </div>
                {/* table assign task */}
                {/* add sub-branch */}

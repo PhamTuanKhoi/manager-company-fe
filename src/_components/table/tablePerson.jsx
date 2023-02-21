@@ -15,7 +15,7 @@ import {
 } from "../../redux/feature/assignTaskSclice";
 import Table from "react-bootstrap/Table";
 
-const TableTask = () => {
+const TablePerson = () => {
    const { id } = useParams();
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
@@ -52,10 +52,10 @@ const TableTask = () => {
 
    return (
       <div className="tab-content">
-         <div className="tab-pane show" id="all_task">
+         <div className="tab-pane show" id="all_person">
             <div className="card-body">
                <div className="card-title m-b-20 title-between">
-                  <h4 className="card-title width-title">Công việc được giao</h4>
+                  <h4 className="card-title width-title">Công việc được giao người lao động</h4>
                   <div className="filter-table-checkbox">
                      <Checkbox className="text-muted">Chưa thực hiện</Checkbox>
                      <Checkbox className="text-muted">Đang thực hiện</Checkbox>
@@ -124,4 +124,4 @@ const TableTask = () => {
    );
 };
 
-export default TableTask;
+export default TablePerson;
