@@ -48,6 +48,9 @@ const ProjectList = () => {
          title: "Dự án",
          dataIndex: "name",
          sorter: (a, b) => a.name.length - b.name.length,
+         render: (text, record) => (
+            <Link to={"/app/projects/projects-view/" + record?._id}>{text}</Link>
+         ),
       },
 
       {
@@ -74,7 +77,7 @@ const ProjectList = () => {
          title: "Độ ưu tiên",
          render: (array, record) => (
             <div className="dropdown action-label">
-               <a href="#" className="btn btn-white btn-sm btn-rounded  " aria-expanded="false">
+               <a href="#" className="text-dark" aria-expanded="false">
                   {record.priority === ProjectPriorityEnum.HIGH ? (
                      <>
                         {" "}
@@ -102,7 +105,7 @@ const ProjectList = () => {
          title: "Trạng thái",
          render: (array, record) => (
             <div className="dropdown action-label">
-               <a href="#" className="btn btn-white btn-sm btn-rounded" aria-expanded="false">
+               <a href="#" className="text-dark" aria-expanded="false">
                   {record.status === ProjectStatusEnum.NEWPROJECTS ? (
                      <>
                         {" "}

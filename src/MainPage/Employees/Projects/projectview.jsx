@@ -83,7 +83,7 @@ const ProjectView = () => {
    return (
       <div className="page-wrapper">
          <Helmet>
-            <title>Projects - HRMS Admin Template</title>
+            <title>Dự án</title>
             <meta name="description" content="Login page" />
          </Helmet>
          {/* Page Content */}
@@ -95,9 +95,16 @@ const ProjectView = () => {
                      <h3 className="page-title">Dự Án</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
+                     <Link
+                        to={`/app/projects/attendance/63eb474515eb0d0c84fab670`}
+                        className="btn btn-primary me-3 boreder border-primary background-blue text-light"
+                     >
+                        Chấm công
+                     </Link>
+
                      <a
                         href="#"
-                        className="btn btn-warning"
+                        className="btn btn-warning me-3"
                         onClick={() => {
                            setRender((prev) => prev + 1);
                            setProjectData(project);

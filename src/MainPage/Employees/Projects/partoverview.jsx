@@ -5,7 +5,6 @@ import { Link, useLocation } from "react-router-dom";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import "../../index.css";
-import TableTask from "../../../_components/table/tableTask";
 import AddSubBranch from "../../../_components/modelbox/AddSubBranch.jsx";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -13,7 +12,6 @@ import { child } from "../../../redux/feature/partSclice";
 import { useLoading } from "../../../hook/useLoading";
 import CreateTask from "../../../_components/modelbox/assignUserTask";
 import TablePart from "../../../_components/table/tablePart";
-import TablePerson from "../../../_components/table/tablePerson";
 
 const PartOverview = () => {
    const [menu, setMenu] = useState(false);
