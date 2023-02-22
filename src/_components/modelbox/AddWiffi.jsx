@@ -9,12 +9,21 @@ import attendanceSclice, { fetchWiffi } from "../../redux/feature/attendanceScli
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import moment from "moment";
+import { createRules } from "../../redux/feature/rulesSclice";
+import { toast } from "react-toastify";
 
 function AddWiffi({ show, onHide }) {
    const [position, setPosition] = useState(-1);
+   const [rules, setReules] = useState({
+      password: "",
+      timeIn: "",
+      timeOut: "",
+   });
    const [text, setText] = useState("");
    const dispatch = useDispatch();
-   const { setLoading, loading } = useLoading();
+   const { setLoading } = useLoading();
+   const { id } = useParams();
 
    const handleOpenWiffi = (e) => {
       if (e) {
@@ -32,17 +41,32 @@ function AddWiffi({ show, onHide }) {
 
    const { wiffi } = useSelector((state) => state.attendance);
 
+   const handleSave = () => {
+      // console.log(rules);
+      const secondsIn = rules.timeIn.slice(0, 2) * 3600 + rules.timeIn.slice(3, 5) * 60;
+      const secondsOut = rules.timeOut.slice(0, 2) * 3600 + rules.timeIn.slice(3, 5) * 60;
+      // let h = Math.floor(da / 3600);
+      // console.log(Math.floor((da - h * 3600) / 60));
+      dispatch(
+         createRules({
+            payload: { ...rules, timeIn: secondsIn, timeOut: secondsOut, wiffi: text, project: id },
+            onHide,
+            setLoading,
+            toast,
+         })
+      );
+   };
    return (
       <Modal show={show} onHide={onHide}>
          <div className="modal-header">
-            <h5 className="modal-title">Cập nhật wiffi chấm công</h5>
+            <h5 className="modal-title">Cài đặt wiffi chấm công</h5>
             <button type="button" className="close-x">
                <span aria-hidden="true" onClick={onHide}>
                   ×
                </span>
             </button>
          </div>
-         <Modal.Body>
+         <Modal.Body style={{ height: "520px" }}>
             <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
                <li className="nav-item">
                   <a
@@ -56,7 +80,7 @@ function AddWiffi({ show, onHide }) {
                </li>
                <li className="nav-item">
                   <a className="nav-link" href="#update" data-bs-toggle="tab" aria-expanded="false">
-                     Cập nhật
+                     Cài đặt
                   </a>
                </li>
             </ul>
@@ -79,9 +103,28 @@ function AddWiffi({ show, onHide }) {
                            placeholder="Nhập mật khẩu wiffi"
                            className="form-control search-input"
                            type="password"
+                           onChange={(e) => setReules({ ...rules, password: e.target.value })}
                         />
                      </div>
-                     <div className="button-dialog">
+                     <span>Giờ vào</span>
+                     <div className="input-group m-b-30">
+                        <input
+                           placeholder="Nhập mật khẩu wiffi"
+                           className="form-control search-input"
+                           type="time"
+                           onChange={(e) => setReules({ ...rules, timeIn: e.target.value })}
+                        />
+                     </div>
+                     <span>Giờ ra</span>
+                     <div className="input-group m-b-30">
+                        <input
+                           placeholder="Nhập mật khẩu wiffi"
+                           className="form-control search-input"
+                           type="time"
+                           onChange={(e) => setReules({ ...rules, timeOut: e.target.value })}
+                        />
+                     </div>
+                     <div className="button-dialog" onClick={handleSave}>
                         <button className="primary">Lưu</button>
                      </div>
                   </div>
