@@ -25,6 +25,21 @@ export const createRules = createAsyncThunk(
    }
 );
 
+export const findRulesByIdProject = createAsyncThunk(
+   "rules/findRulesByIdProject",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await rulesAPI.findOneByIdProject(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const rulesSclice = createSlice({
    name: "rules",
    initialState: {
@@ -34,6 +49,7 @@ const rulesSclice = createSlice({
       loading: false,
    },
    extraReducers: {
+      // created rules
       [createRules.pending]: (state, action) => {
          state.loading = true;
       },
@@ -41,6 +57,19 @@ const rulesSclice = createSlice({
          state.loading = false;
       },
       [createRules.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // fetch rules by id project
+      [findRulesByIdProject.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [findRulesByIdProject.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.rule = action.payload;
+      },
+      [findRulesByIdProject.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

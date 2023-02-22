@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Modal } from "react-bootstrap";
 import { WifiOutlined } from "@ant-design/icons";
 import { Checkbox, Switch } from "antd";
@@ -10,8 +10,9 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import moment from "moment";
-import { createRules } from "../../redux/feature/rulesSclice";
+import { createRules, findRulesByIdProject } from "../../redux/feature/rulesSclice";
 import { toast } from "react-toastify";
+import { useMemo } from "react";
 
 function AddWiffi({ show, onHide }) {
    const [position, setPosition] = useState(-1);
@@ -25,6 +26,7 @@ function AddWiffi({ show, onHide }) {
    const { setLoading } = useLoading();
    const { id } = useParams();
 
+   // ----------------------- fetch wiffi -----------------------
    const handleOpenWiffi = (e) => {
       if (e) {
          dispatch(fetchWiffi({ setLoading }));
@@ -40,22 +42,78 @@ function AddWiffi({ show, onHide }) {
    };
 
    const { wiffi } = useSelector((state) => state.attendance);
+   // ----------------------- fetch wiffi -----------------------
+
+   // ----------------------- fetch rules -----------------------
+   useEffect(() => {
+      dispatch(findRulesByIdProject({ id, setLoading }));
+   }, [id]);
+
+   const { rule } = useSelector((state) => state.rules);
+
+   useEffect(() => {
+      setText(rule?.wiffi);
+      setReules(rule);
+   }, [rule]);
+   // ----------------------- fetch rules -----------------------
+
+   // ----------------------- create rules -----------------------
+   const handleChangeTimeIn = (e) => {
+      setReules({
+         ...rules,
+         timeIn: e.target.value.slice(0, 2) * 3600 + e.target.value.slice(3, 5) * 60,
+      });
+   };
+
+   const handleChangeTimeOut = (e) => {
+      setReules({
+         ...rules,
+         timeOut: e.target.value.slice(0, 2) * 3600 + e.target.value.slice(3, 5) * 60,
+      });
+   };
 
    const handleSave = () => {
-      // console.log(rules);
-      const secondsIn = rules.timeIn.slice(0, 2) * 3600 + rules.timeIn.slice(3, 5) * 60;
-      const secondsOut = rules.timeOut.slice(0, 2) * 3600 + rules.timeIn.slice(3, 5) * 60;
       // let h = Math.floor(da / 3600);
       // console.log(Math.floor((da - h * 3600) / 60));
       dispatch(
          createRules({
-            payload: { ...rules, timeIn: secondsIn, timeOut: secondsOut, wiffi: text, project: id },
+            payload: { ...rules, wiffi: text, project: id },
             onHide,
             setLoading,
             toast,
          })
       );
    };
+   // ----------------------- create rules -----------------------
+
+   const [hourIn, setHourIn] = useState(0);
+   const [minuteIn, setMinuteIn] = useState(0);
+
+   // ----------------------- calculation time in -----------------------
+   useMemo(() => {
+      // calculation
+      const hrIn = Math.floor(+rules.timeIn / 3600);
+      const minuIn = Math.floor((+rules.timeIn - hrIn * 3600) / 60);
+
+      // set state
+      setHourIn(hrIn);
+      setMinuteIn(minuIn);
+   }, [rules.timeIn]);
+
+   const [hourOut, setHourOut] = useState(0);
+   const [minuteOut, setMinuteOut] = useState(0);
+
+   // ----------------------- calculation time out -----------------------
+   useMemo(() => {
+      // calculation
+      const hrOut = Math.floor(+rules.timeOut / 3600);
+      const minuOut = Math.floor((+rules.timeOut - hrOut * 3600) / 60);
+
+      // set state
+      setHourOut(hrOut);
+      setMinuteOut(minuOut);
+   }, [rules.timeOut]);
+
    return (
       <Modal show={show} onHide={onHide}>
          <div className="modal-header">
@@ -92,7 +150,7 @@ function AddWiffi({ show, onHide }) {
                      <div className="input-group m-b-30">
                         <input
                            className="form-control search-input"
-                           value={text}
+                           defaultValue={text}
                            type="text"
                            disabled
                         />
@@ -103,6 +161,7 @@ function AddWiffi({ show, onHide }) {
                            placeholder="Nhập mật khẩu wiffi"
                            className="form-control search-input"
                            type="password"
+                           defaultValue={rules?.password}
                            onChange={(e) => setReules({ ...rules, password: e.target.value })}
                         />
                      </div>
@@ -112,7 +171,12 @@ function AddWiffi({ show, onHide }) {
                            placeholder="Nhập mật khẩu wiffi"
                            className="form-control search-input"
                            type="time"
-                           onChange={(e) => setReules({ ...rules, timeIn: e.target.value })}
+                           value={
+                              hourIn < 10
+                                 ? `0${hourIn}:${minuteIn < 10 ? "0" + minuteIn : minuteIn}`
+                                 : `${hourIn}:${minuteIn < 10 ? "0" + minuteIn : minuteIn}`
+                           }
+                           onChange={handleChangeTimeIn}
                         />
                      </div>
                      <span>Giờ ra</span>
@@ -121,7 +185,12 @@ function AddWiffi({ show, onHide }) {
                            placeholder="Nhập mật khẩu wiffi"
                            className="form-control search-input"
                            type="time"
-                           onChange={(e) => setReules({ ...rules, timeOut: e.target.value })}
+                           value={
+                              hourOut < 10
+                                 ? `0${hourOut}:${minuteOut < 10 ? "0" + minuteOut : minuteOut}`
+                                 : `${hourOut}:${minuteOut < 10 ? "0" + minuteOut : minuteOut}`
+                           }
+                           onChange={handleChangeTimeOut}
                         />
                      </div>
                      <div className="button-dialog" onClick={handleSave}>
@@ -165,4 +234,4 @@ function AddWiffi({ show, onHide }) {
    );
 }
 
-export default AddWiffi;
+export default memo(AddWiffi);
