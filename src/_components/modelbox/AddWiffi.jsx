@@ -2,11 +2,36 @@ import React from "react";
 import { Modal } from "react-bootstrap";
 import { WifiOutlined } from "@ant-design/icons";
 import { Checkbox, Switch } from "antd";
+import { useDispatch } from "react-redux";
+import { useLoading } from "../../hook/useLoading";
+import { useEffect } from "react";
+import attendanceSclice, { fetchWiffi } from "../../redux/feature/attendanceSclice";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
 function AddWiffi({ show, onHide }) {
-   const onChange = (e) => {
-      console.log(`checked = ${e.target.checked}`);
+   const [position, setPosition] = useState(-1);
+   const [text, setText] = useState("");
+   const dispatch = useDispatch();
+   const { setLoading, loading } = useLoading();
+
+   const handleOpenWiffi = (e) => {
+      if (e) {
+         dispatch(fetchWiffi({ setLoading }));
+         return;
+      }
+
+      dispatch(attendanceSclice.actions.learWiffi());
    };
+
+   const onChange = (i, name) => {
+      setPosition(i);
+      setText(name);
+   };
+
+   const { wiffi } = useSelector((state) => state.attendance);
+
    return (
       <Modal show={show} onHide={onHide}>
          <div className="modal-header">
@@ -41,7 +66,12 @@ function AddWiffi({ show, onHide }) {
                   <div className="tab-pane show" id="update">
                      <span>Wiffi đã chọn</span>
                      <div className="input-group m-b-30">
-                        <input className="form-control search-input" type="text" disabled />
+                        <input
+                           className="form-control search-input"
+                           value={text}
+                           type="text"
+                           disabled
+                        />
                      </div>
                      <span>Mật khẩu</span>
                      <div className="input-group m-b-30">
@@ -56,7 +86,7 @@ function AddWiffi({ show, onHide }) {
                      </div>
                   </div>
                   {/* choose wiffi */}
-                  <ul className="chat-user-list tab-pane show active" id="choose">
+                  <ul className="chat-user-list tab-pane show active overflow" id="choose">
                      <div className="media import-content">
                         <div className="content-media">
                            <div className="media-body align-self-center text-nowrap">
@@ -65,21 +95,25 @@ function AddWiffi({ show, onHide }) {
                               </div>
                            </div>
                         </div>
-                        <Switch />
+                        <Switch onChange={handleOpenWiffi} />
                      </div>
-
-                     <li>
-                        <a href="#">
-                           <div className="media import-content">
-                              <div className="content-media">
-                                 <div className="media-body align-self-center text-nowrap">
-                                    <div className="user-name">jnm'</div>
+                     {wiffi?.map((item, index) => (
+                        <li key={index}>
+                           <a href="#">
+                              <div className="media import-content">
+                                 <div className="content-media">
+                                    <div className="media-body align-self-center text-nowrap">
+                                       <div className="user-name">{item?.ssid}</div>
+                                    </div>
                                  </div>
+                                 <Checkbox
+                                    checked={position === index ? true : false}
+                                    onChange={() => onChange(index, item?.ssid)}
+                                 />
                               </div>
-                              <Checkbox onChange={onChange} />
-                           </div>
-                        </a>
-                     </li>
+                           </a>
+                        </li>
+                     ))}
                   </ul>
                </div>
             </div>

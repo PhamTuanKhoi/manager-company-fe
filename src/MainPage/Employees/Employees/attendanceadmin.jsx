@@ -6,6 +6,8 @@ import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import Header from "../../../initialpage/Sidebar/header";
 import { WifiOutlined } from "@ant-design/icons";
 import AddWiffi from "../../../_components/modelbox/AddWiffi";
+import { useDispatch } from "react-redux";
+import attendanceSclice from "../../../redux/feature/attendanceSclice";
 
 const AttendanceAdmin = () => {
    const [menu, setMenu] = useState(false);
@@ -23,6 +25,14 @@ const AttendanceAdmin = () => {
          });
       }
    });
+
+   // use
+   const dispatch = useDispatch();
+
+   const handleClose = () => {
+      dispatch(attendanceSclice.actions.learWiffi());
+      setShow(false);
+   };
    return (
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
          <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -265,7 +275,7 @@ const AttendanceAdmin = () => {
             {/* /Attendance Modal */}
 
             {/* created wiffi attendance */}
-            <AddWiffi show={show} onHide={() => setShow(false)} />
+            <AddWiffi show={show} onHide={handleClose} />
             {/* created wiffi attendance */}
          </div>
       </div>

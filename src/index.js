@@ -9,6 +9,7 @@ import store from "./redux/store";
 //bootrap
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Websocket } from "./context/useSocket";
+import Spinner from "../src/_components/spinner";
 
 window.Popper = require("popper.js").default;
 
@@ -16,8 +17,10 @@ configAxios();
 ReactDOM.render(
    <Websocket>
       <Provider store={store}>
-         <ToastContainer />
-         <Main />
+         <Spinner>
+            <ToastContainer />
+            <Main />
+         </Spinner>
       </Provider>
    </Websocket>,
    document.getElementById("app")

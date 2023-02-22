@@ -25,6 +25,11 @@ const attendanceSclice = createSlice({
       error: "",
       loading: false,
    },
+   reducers: {
+      learWiffi: (state, action) => {
+         state.wiffi = [];
+      },
+   },
    extraReducers: {
       //list wiffi
       [fetchWiffi.pending]: (state, action) => {
@@ -32,7 +37,7 @@ const attendanceSclice = createSlice({
       },
       [fetchWiffi.fulfilled]: (state, action) => {
          state.loading = false;
-         state.tasks = action.payload;
+         state.wiffi = action.payload;
       },
       [fetchWiffi.rejected]: (state, action) => {
          state.loading = false;
