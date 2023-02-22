@@ -9,8 +9,7 @@ import attendanceSclice, { fetchWiffi } from "../../redux/feature/attendanceScli
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import moment from "moment";
-import { createRules, findRulesByIdProject } from "../../redux/feature/rulesSclice";
+import { createRules, findRulesByIdProject, updateRules } from "../../redux/feature/rulesSclice";
 import { toast } from "react-toastify";
 import { useMemo } from "react";
 
@@ -22,6 +21,10 @@ function AddWiffi({ show, onHide }) {
       timeOut: "",
    });
    const [text, setText] = useState("");
+   const [hourIn, setHourIn] = useState(0);
+   const [minuteIn, setMinuteIn] = useState(0);
+   const [hourOut, setHourOut] = useState(0);
+   const [minuteOut, setMinuteOut] = useState(0);
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
    const { id } = useParams();
@@ -52,8 +55,9 @@ function AddWiffi({ show, onHide }) {
    const { rule } = useSelector((state) => state.rules);
 
    useEffect(() => {
-      setText(rule?.wiffi);
       setReules(rule);
+
+      if (position === -1) setText(rule?.wiffi ?? "");
    }, [rule]);
    // ----------------------- fetch rules -----------------------
 
@@ -86,8 +90,20 @@ function AddWiffi({ show, onHide }) {
    };
    // ----------------------- create rules -----------------------
 
-   const [hourIn, setHourIn] = useState(0);
-   const [minuteIn, setMinuteIn] = useState(0);
+   // ----------------------- update rules -----------------------
+   const handleUpdate = () => {
+      console.log(rules, text);
+      dispatch(
+         updateRules({
+            id: rule?._id,
+            payload: { ...rules, wiffiOld: rule?.wiffi, passwordOld: rule?.password, wiffi: text },
+            onHide,
+            setLoading,
+            toast,
+         })
+      );
+   };
+   // ----------------------- update rules -----------------------
 
    // ----------------------- calculation time in -----------------------
    useMemo(() => {
@@ -99,9 +115,6 @@ function AddWiffi({ show, onHide }) {
       setHourIn(hrIn);
       setMinuteIn(minuIn);
    }, [rules.timeIn]);
-
-   const [hourOut, setHourOut] = useState(0);
-   const [minuteOut, setMinuteOut] = useState(0);
 
    // ----------------------- calculation time out -----------------------
    useMemo(() => {
@@ -148,12 +161,7 @@ function AddWiffi({ show, onHide }) {
                   <div className="tab-pane show" id="update">
                      <span>Wiffi đã chọn</span>
                      <div className="input-group m-b-30">
-                        <input
-                           className="form-control search-input"
-                           defaultValue={text}
-                           type="text"
-                           disabled
-                        />
+                        <input className="form-control search-input" value={text} disabled />
                      </div>
                      <span>Mật khẩu</span>
                      <div className="input-group m-b-30">
@@ -193,9 +201,16 @@ function AddWiffi({ show, onHide }) {
                            onChange={handleChangeTimeOut}
                         />
                      </div>
-                     <div className="button-dialog" onClick={handleSave}>
-                        <button className="primary">Lưu</button>
-                     </div>
+
+                     {rule?._id ? (
+                        <div className="button-dialog" onClick={handleUpdate}>
+                           <button className="primary">Lưu ss</button>
+                        </div>
+                     ) : (
+                        <div className="button-dialog" onClick={handleSave}>
+                           <button className="primary">Lưu</button>
+                        </div>
+                     )}
                   </div>
                   {/* choose wiffi */}
                   <ul className="chat-user-list tab-pane show active overflow" id="choose">
