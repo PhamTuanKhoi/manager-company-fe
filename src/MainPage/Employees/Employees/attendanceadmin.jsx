@@ -8,10 +8,12 @@ import { WifiOutlined } from "@ant-design/icons";
 import AddWiffi from "../../../_components/modelbox/AddWiffi";
 import { useDispatch } from "react-redux";
 import attendanceSclice from "../../../redux/feature/attendanceSclice";
+import AddAttendance from "../../../_components/modelbox/AddAttendance";
 
 const AttendanceAdmin = () => {
    const [menu, setMenu] = useState(false);
    const [show, setShow] = useState(false);
+   const [showAttendance, setShowAttendance] = useState(false);
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -33,6 +35,11 @@ const AttendanceAdmin = () => {
       dispatch(attendanceSclice.actions.learWiffi());
       setShow(false);
    };
+
+   const handleCloseAttendance = () => {
+      dispatch(attendanceSclice.actions.learWiffi());
+      setShowAttendance(false);
+   };
    return (
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
          <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -50,7 +57,11 @@ const AttendanceAdmin = () => {
                         <h3 className="page-title">Chấm công</h3>
                      </div>
                      <div className="col-auto float-end ml-auto">
-                        <a href="#" className="btn btn-white float-end ml-2">
+                        <a
+                           href="#"
+                           className="btn btn-white float-end ml-2"
+                           onClick={() => setShowAttendance(true)}
+                        >
                            <WifiOutlined /> Chấm công
                         </a>
                         <a
@@ -277,6 +288,9 @@ const AttendanceAdmin = () => {
             {/* created wiffi attendance */}
             <AddWiffi show={show} onHide={handleClose} />
             {/* created wiffi attendance */}
+            {/* created attendance */}
+            <AddAttendance show={showAttendance} onHide={handleCloseAttendance} />
+            {/* created attendance */}
          </div>
       </div>
    );
