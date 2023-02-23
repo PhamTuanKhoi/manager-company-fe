@@ -3,13 +3,20 @@ import { Modal } from "react-bootstrap";
 import { WifiOutlined } from "@ant-design/icons";
 import { Checkbox, Switch } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import attendanceSclice, { fetchWiffi } from "../../redux/feature/attendanceSclice";
+import attendanceSclice, {
+   createAttendance,
+   fetchWiffi,
+} from "../../redux/feature/attendanceSclice";
 import { useLoading } from "../../hook/useLoading";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AddAttendance = ({ show, onHide }) => {
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
-
+   const { id } = useParams();
+   const { user } = useSelector((state) => state.auth);
+   // ------------------------------- fetch wiffi ------------------------------------
    const handleOpenWiffi = (e) => {
       console.log(e);
       if (e) dispatch(fetchWiffi({ setLoading }));
@@ -18,6 +25,21 @@ const AddAttendance = ({ show, onHide }) => {
    };
 
    const { wiffi } = useSelector((state) => state.attendance);
+   // ------------------------------- fetch wiffi -------------------------------------^
+
+   // ------------------------------- create attendance -------------------------------
+   const handleCreate = (e, wiffi) => {
+      console.log(user);
+      dispatch(
+         createAttendance({
+            payload: { project: id, user: user._id, wiffi },
+            setLoading,
+            onHide,
+            toast,
+         })
+      );
+   };
+   // ------------------------------- create attendance -------------------------------
 
    return (
       <Modal show={show} onHide={onHide}>
@@ -50,7 +72,7 @@ const AddAttendance = ({ show, onHide }) => {
                                  <div className="user-name">{item?.ssid}</div>
                               </div>
                            </div>
-                           <Checkbox />
+                           <Checkbox onChange={(e) => handleCreate(e, item?.ssid)} />
                         </div>
                      </a>
                   </li>
