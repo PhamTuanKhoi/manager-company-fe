@@ -9,11 +9,14 @@ import AddWiffi from "../../../_components/modelbox/AddWiffi";
 import { useDispatch } from "react-redux";
 import attendanceSclice from "../../../redux/feature/attendanceSclice";
 import AddAttendance from "../../../_components/modelbox/AddAttendance";
+import { useMemo } from "react";
 
 const AttendanceAdmin = () => {
    const [menu, setMenu] = useState(false);
    const [show, setShow] = useState(false);
    const [showAttendance, setShowAttendance] = useState(false);
+   const day = new Date().getDate();
+   const [dateInMonth, setDateInMonth] = useState([]);
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -40,6 +43,21 @@ const AttendanceAdmin = () => {
       dispatch(attendanceSclice.actions.learWiffi());
       setShowAttendance(false);
    };
+   // -------------------------------------------- get date in month --------
+   useMemo(() => {
+      const getDaysInMonth = (month, year) =>
+         new Array(31)
+            .fill("")
+            .map((v, i) => new Date(year, month - 1, i + 1))
+            .filter((v) => v.getMonth() === month - 1);
+
+      const dateArray = getDaysInMonth(new Date().getMonth() + 1, new Date().getFullYear());
+
+      const days = dateArray?.map((item) => new Date(item).getDate());
+
+      setDateInMonth(days);
+   }, [day]);
+
    return (
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
          <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -131,36 +149,9 @@ const AttendanceAdmin = () => {
                            <thead>
                               <tr>
                                  <th>Employee</th>
-                                 <th>1</th>
-                                 <th>2</th>
-                                 <th>3</th>
-                                 <th>4</th>
-                                 <th>5</th>
-                                 <th>6</th>
-                                 <th>7</th>
-                                 <th>8</th>
-                                 <th>9</th>
-                                 <th>10</th>
-                                 <th>11</th>
-                                 <th>12</th>
-                                 <th>13</th>
-                                 <th>14</th>
-                                 <th>15</th>
-                                 <th>16</th>
-                                 <th>17</th>
-                                 <th>18</th>
-                                 <th>19</th>
-                                 <th>20</th>
-                                 <th>22</th>
-                                 <th>23</th>
-                                 <th>24</th>
-                                 <th>25</th>
-                                 <th>26</th>
-                                 <th>27</th>
-                                 <th>28</th>
-                                 <th>29</th>
-                                 <th>30</th>
-                                 <th>31</th>
+                                 {dateInMonth?.map((day) => (
+                                    <th key={day}>{day}</th>
+                                 ))}
                               </tr>
                            </thead>
                            <tbody>

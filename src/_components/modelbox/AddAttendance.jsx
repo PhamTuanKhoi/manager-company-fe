@@ -18,7 +18,6 @@ const AddAttendance = ({ show, onHide }) => {
    const { user } = useSelector((state) => state.auth);
    // ------------------------------- fetch wiffi ------------------------------------
    const handleOpenWiffi = (e) => {
-      console.log(e);
       if (e) dispatch(fetchWiffi({ setLoading }));
 
       dispatch(attendanceSclice.actions.learWiffi());
@@ -29,7 +28,6 @@ const AddAttendance = ({ show, onHide }) => {
 
    // ------------------------------- create attendance -------------------------------
    const handleCreate = (e, wiffi) => {
-      console.log(user);
       dispatch(
          createAttendance({
             payload: { project: id, user: user._id, wiffi },
