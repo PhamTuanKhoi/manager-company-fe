@@ -95,12 +95,23 @@ const ProjectView = () => {
                      <h3 className="page-title">Dự Án</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                     <Link
-                        to={`/app/projects/attendance/${id}`}
-                        className="btn btn-primary me-3 boreder border-primary background-blue text-light"
-                     >
-                        Chấm công
-                     </Link>
+                     {user.role === UserRoleType.ADMIN && (
+                        <Link
+                           to={`/app/projects/attendance/${id}`}
+                           className="btn btn-primary me-3 boreder border-primary background-blue text-light"
+                        >
+                           Chấm công
+                        </Link>
+                     )}
+                     {user.role === UserRoleType.EMPLOYEE ||
+                        (user.role === UserRoleType.WORKER && (
+                           <Link
+                              to={`/app/projects/attendance-employee/${id}`}
+                              className="btn btn-primary me-3 boreder border-primary background-blue text-light"
+                           >
+                              Chấm công
+                           </Link>
+                        ))}
 
                      <a
                         href="#"
