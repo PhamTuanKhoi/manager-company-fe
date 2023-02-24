@@ -16,6 +16,36 @@ export const fetchWiffi = createAsyncThunk(
    }
 );
 
+export const attendancePersonal = createAsyncThunk(
+   "attendance/attendancePersonal",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await attendanceAPI.personal(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const todayAttendance = createAsyncThunk(
+   "attendance/todayAttendance",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await attendanceAPI.today(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 export const userAttendance = createAsyncThunk(
    "attendance/userAttendance",
    async ({ query, setLoading }, { rejectWithValue }) => {
@@ -93,6 +123,7 @@ const attendanceSclice = createSlice({
          state.loading = false;
          state.error = action.payload.message;
       },
+
       //create wiffi
       [createAttendance.pending]: (state, action) => {
          state.loading = true;
@@ -101,6 +132,32 @@ const attendanceSclice = createSlice({
          state.loading = false;
       },
       [createAttendance.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // get attendances personal
+      [attendancePersonal.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [attendancePersonal.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.attendances = action.payload;
+      },
+      [attendancePersonal.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // get attendances personal
+      [todayAttendance.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [todayAttendance.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.attendance = action.payload;
+      },
+      [todayAttendance.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

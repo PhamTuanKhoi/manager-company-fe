@@ -1,11 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
+import { WifiOutlined } from "@ant-design/icons";
+import AddAttendance from "../../../_components/modelbox/AddAttendance";
+import attendanceSclice, {
+   attendancePersonal,
+   todayAttendance,
+} from "../../../redux/feature/attendanceSclice";
+import { useDispatch } from "react-redux";
+import { useLoading } from "../../../hook/useLoading";
+import { useSelector } from "react-redux";
+import moment from "moment";
+import { timeCustom } from "../../../constant";
 
 const AttendanceEmployee = () => {
    const [menu, setMenu] = useState(false);
+   const [showAttendance, setShowAttendance] = useState(false);
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -19,6 +31,33 @@ const AttendanceEmployee = () => {
          });
       }
    });
+
+   // ------------------------- close modal attedance ----------
+   const dispatch = useDispatch();
+
+   const handleCloseAttendance = () => {
+      dispatch(attendanceSclice.actions.learWiffi());
+      setShowAttendance(false);
+   };
+
+   // ------------------------- fetch attendance ----------------
+   const { setLoading } = useLoading();
+   const { id } = useParams();
+   const { user } = useSelector((state) => state.auth);
+
+   useEffect(() => {
+      dispatch(attendancePersonal({ query: { project: id, user: user._id }, setLoading }));
+      dispatch(
+         todayAttendance({
+            query: { project: id, user: user._id, date: new Date().getDate() },
+            setLoading,
+         })
+      );
+   }, [id, user]);
+
+   const { attendances } = useSelector((state) => state.attendance);
+   const { attendance } = useSelector((state) => state.attendance);
+
    return (
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
          <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -32,15 +71,18 @@ const AttendanceEmployee = () => {
             <div className="content container-fluid">
                {/* Page Header */}
                <div className="page-header">
-                  <div className="row">
-                     <div className="col-sm-12">
-                        <h3 className="page-title">Attendance</h3>
-                        <ul className="breadcrumb">
-                           <li className="breadcrumb-item">
-                              <Link to="/app/main/dashboard">Dashboard</Link>
-                           </li>
-                           <li className="breadcrumb-item active">Attendance</li>
-                        </ul>
+                  <div className="row align-items-center">
+                     <div className="col">
+                        <h3 className="page-title">Chấm công</h3>
+                     </div>
+                     <div className="col-auto float-end ml-auto">
+                        <a
+                           href="#"
+                           className="btn btn-white float-end ml-2"
+                           onClick={() => setShowAttendance(true)}
+                        >
+                           <WifiOutlined /> Chấm công
+                        </a>
                      </div>
                   </div>
                </div>
@@ -50,11 +92,20 @@ const AttendanceEmployee = () => {
                      <div className="card punch-status">
                         <div className="card-body">
                            <h5 className="card-title">
-                              Timesheet <small className="text-muted">11 Mar 2019</small>
+                              Thời gian biểu{" "}
+                              <small className="text-muted">
+                                 {moment(Date.now()).format("DD/MM/YYYY")}
+                              </small>
                            </h5>
                            <div className="punch-det">
-                              <h6>Punch In at</h6>
-                              <p>Wed, 11th Mar 2019 10.00 AM</p>
+                              <h6>Giờ vào</h6>
+
+                              <p>
+                                 Wed, {moment(Date.now()).format("DD/MM/YYYY")}{" "}
+                                 {attendance.date === new Date().getDate() &&
+                                    timeCustom(attendance?.timein || 0)}
+                              </p>
+                              {/* <p>Wed, 11th Mar 2019 10.00 AM</p> */}
                            </div>
                            <div className="punch-info">
                               <div className="punch-hours">
@@ -88,7 +139,7 @@ const AttendanceEmployee = () => {
                   <div className="col-md-4">
                      <div className="card att-statistics">
                         <div className="card-body">
-                           <h5 className="card-title">Statistics</h5>
+                           <h5 className="card-title">Số liệu thống kê</h5>
                            <div className="stats-list">
                               <div className="stats-info">
                                  <p>
@@ -184,51 +235,25 @@ const AttendanceEmployee = () => {
                   <div className="col-md-4">
                      <div className="card recent-activity">
                         <div className="card-body">
-                           <h5 className="card-title">Today Activity</h5>
-                           <ul className="res-activity-list">
-                              <li>
-                                 <p className="mb-0">Punch In at</p>
-                                 <p className="res-activity-time">
-                                    <i className="fa fa-clock-o" />
-                                    10.00 AM.
-                                 </p>
-                              </li>
-                              <li>
-                                 <p className="mb-0">Punch Out at</p>
-                                 <p className="res-activity-time">
-                                    <i className="fa fa-clock-o" />
-                                    11.00 AM.
-                                 </p>
-                              </li>
-                              <li>
-                                 <p className="mb-0">Punch In at</p>
-                                 <p className="res-activity-time">
-                                    <i className="fa fa-clock-o" />
-                                    11.15 AM.
-                                 </p>
-                              </li>
-                              <li>
-                                 <p className="mb-0">Punch Out at</p>
-                                 <p className="res-activity-time">
-                                    <i className="fa fa-clock-o" />
-                                    1.30 PM.
-                                 </p>
-                              </li>
-                              <li>
-                                 <p className="mb-0">Punch In at</p>
-                                 <p className="res-activity-time">
-                                    <i className="fa fa-clock-o" />
-                                    2.00 PM.
-                                 </p>
-                              </li>
-                              <li>
-                                 <p className="mb-0">Punch Out at</p>
-                                 <p className="res-activity-time">
-                                    <i className="fa fa-clock-o" />
-                                    7.30 PM.
-                                 </p>
-                              </li>
-                           </ul>
+                           <h5 className="card-title">Hoạt động hôm nay</h5>
+                           {attendance?.date === new Date().getDate() && (
+                              <ul className="res-activity-list">
+                                 <li>
+                                    <p className="mb-0">Giờ vào</p>
+                                    <p className="res-activity-time">
+                                       <i className="fa fa-clock-o" />{" "}
+                                       {timeCustom(attendance?.timein || 0)}
+                                    </p>
+                                 </li>
+                                 <li>
+                                    <p className="mb-0">Giờ ra</p>
+                                    <p className="res-activity-time">
+                                       <i className="fa fa-clock-o" />{" "}
+                                       {timeCustom(attendance?.timeout || 0)}
+                                    </p>
+                                 </li>
+                              </ul>
+                           )}
                         </div>
                      </div>
                   </div>
@@ -295,29 +320,27 @@ const AttendanceEmployee = () => {
                                  <th>Giờ vào</th>
                                  <th>Giờ ra</th>
                                  <th>Giờ làm</th>
-                                 <th>Break</th>
-                                 <th>Overtime</th>
                               </tr>
                            </thead>
                            <tbody>
-                              <tr>
-                                 <td>1</td>
-                                 <td>19 Feb 2019</td>
-                                 <td>10 AM</td>
-                                 <td>7 PM</td>
-                                 <td>9 hrs</td>
-                                 <td>1 hrs</td>
-                                 <td>0</td>
-                              </tr>
-                              <tr>
-                                 <td>2</td>
-                                 <td>20 Feb 2019</td>
-                                 <td>10 AM</td>
-                                 <td>7 PM</td>
-                                 <td>9 hrs</td>
-                                 <td>1 hrs</td>
-                                 <td>0</td>
-                              </tr>
+                              {attendances?.map((item, index) => (
+                                 <tr key={item?._id}>
+                                    <td>{index + 1}</td>
+                                    <td>{moment(item?.datetime).format("DD/MM/YYYY")}</td>
+                                    {/* hour in */}
+                                    <td>{timeCustom(item?.timein || 0)} </td>
+                                    {/* hour out */}
+                                    <td>{timeCustom(item?.timeout || 0)} </td>
+                                    {/* hour work */}
+                                    <td>
+                                       {timeCustom(
+                                          item?.timeout - item?.timein < 0
+                                             ? 0
+                                             : item?.timeout - item?.timein
+                                       )}{" "}
+                                    </td>
+                                 </tr>
+                              ))}
                            </tbody>
                         </table>
                      </div>
@@ -325,6 +348,9 @@ const AttendanceEmployee = () => {
                </div>
             </div>
             {/* /Page Content */}
+            {/* modale attendance */}
+            <AddAttendance show={showAttendance} onHide={handleCloseAttendance} />
+            {/* modale attendance */}
          </div>
       </div>
    );

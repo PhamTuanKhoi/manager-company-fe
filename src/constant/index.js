@@ -15,6 +15,17 @@ export var customText = (str) => {
       .replace(/Đ/g, "D");
 };
 
+export const timeCustom = (time) => {
+   const timed = `${
+      Math.floor(time / 3600) < 10 ? "0" + Math.floor(time / 3600) : Math.floor(time / 3600)
+   }:${
+      Math.floor((time - Math.floor(time / 3600) * 3600) / 60) < 10
+         ? "0" + Math.floor((time - Math.floor(time / 3600) * 3600) / 60)
+         : Math.floor((time - Math.floor(time / 3600) * 3600) / 60)
+   }`;
+   return timed === "00:00" ? "..." : timed;
+};
+
 export const avartarFAKE = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 export const logoFAKE =
    "https://fce.com.vn/wp-content/uploads/2022/12/logo_fce_trong_suot-2048x1229.png";
