@@ -7,9 +7,11 @@ import Header from "../../../initialpage/Sidebar/header";
 import { WifiOutlined } from "@ant-design/icons";
 import AddWiffi from "../../../_components/modelbox/AddWiffi";
 import { useDispatch } from "react-redux";
-import attendanceSclice from "../../../redux/feature/attendanceSclice";
+import attendanceSclice, { userAttendance } from "../../../redux/feature/attendanceSclice";
 import AddAttendance from "../../../_components/modelbox/AddAttendance";
 import { useMemo } from "react";
+import { useParams } from "react-router-dom";
+import { useLoading } from "../../../hook/useLoading";
 
 const AttendanceAdmin = () => {
    const [menu, setMenu] = useState(false);
@@ -17,6 +19,8 @@ const AttendanceAdmin = () => {
    const [showAttendance, setShowAttendance] = useState(false);
    const day = new Date().getDate();
    const [dateInMonth, setDateInMonth] = useState([]);
+   const { id } = useParams();
+   const { setLoading } = useLoading();
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -43,7 +47,7 @@ const AttendanceAdmin = () => {
       dispatch(attendanceSclice.actions.learWiffi());
       setShowAttendance(false);
    };
-   // -------------------------------------------- get date in month --------
+   // ------------------------------ get date in month ---------------------------
    useMemo(() => {
       const getDaysInMonth = (month, year) =>
          new Array(31)
@@ -58,6 +62,12 @@ const AttendanceAdmin = () => {
       setDateInMonth(days);
    }, [day]);
 
+   // ------------------------------ get date in month ---------------------------
+   useEffect(() => {
+      dispatch(
+         userAttendance({ query: { project: id, date: JSON.stringify(dateInMonth) }, setLoading })
+      );
+   }, [id]);
    return (
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
          <Header onMenuClick={(value) => toggleMobileMenu()} />

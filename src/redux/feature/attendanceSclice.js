@@ -16,6 +16,21 @@ export const fetchWiffi = createAsyncThunk(
    }
 );
 
+export const userAttendance = createAsyncThunk(
+   "attendance/userAttendance",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await attendanceAPI.userAttendance(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 export const createAttendance = createAsyncThunk(
    "attendance/createAttendance",
    async ({ payload, toast, onHide, setLoading }, { rejectWithValue }) => {
@@ -64,6 +79,17 @@ const attendanceSclice = createSlice({
          state.wiffi = action.payload;
       },
       [fetchWiffi.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+      //list wiffi
+      [userAttendance.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [userAttendance.fulfilled]: (state, action) => {
+         state.loading = false;
+      },
+      [userAttendance.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
