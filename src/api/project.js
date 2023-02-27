@@ -10,13 +10,13 @@ export const projectAPI = {
       return await axios.get(path + "admin/");
    },
 
-   async listByClient(id) {
-      return await axios.get(path + "client/" + id);
-   },
+   // async listByClient(id) {
+   //    return await axios.get(path + "client/" + id);
+   // },
 
-   async listByEmployees(id) {
-      return await axios.get(path + "employees/" + id);
-   },
+   // async listByEmployees(id) {
+   //    return await axios.get(path + "employees/" + id);
+   // },
 
    async listByWorker(id) {
       return await axios.get(path + "worker/" + id);

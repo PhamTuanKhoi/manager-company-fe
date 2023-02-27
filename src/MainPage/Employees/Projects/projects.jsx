@@ -54,26 +54,20 @@ const Projects = () => {
    const { user } = useSelector((state) => state.auth);
 
    useEffect(() => {
-      fetchProject();
+      if (user._id) {
+         fetchProject();
+      }
 
       // fetch employees
       dispatch(listEmployees({ setLoading }));
-   }, [user._id]);
+   }, [user._id, user.role]);
 
    const fetchProject = () => {
       if (user.role === UserRoleType.ADMIN) {
          dispatch(listProjectByAdmin({ setLoading }));
       }
 
-      if (user.role === UserRoleType.CLIENT) {
-         dispatch(listProjectByClient({ id: user._id, setLoading }));
-      }
-
-      if (user.role === UserRoleType.EMPLOYEE) {
-         dispatch(listProjectByEmployees({ id: user._id, setLoading }));
-      }
-
-      if (user.role === UserRoleType.WORKER) {
+      if (user.role !== UserRoleType.ADMIN) {
          dispatch(listProjectByWorker({ id: user._id, setLoading }));
       }
    };

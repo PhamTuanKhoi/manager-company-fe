@@ -77,35 +77,35 @@ export const listProjectByAdmin = createAsyncThunk(
    }
 );
 
-export const listProjectByClient = createAsyncThunk(
-   "project/listProjectByClient",
-   async ({ id, setLoading }, { rejectWithValue }) => {
-      try {
-         setLoading(true);
-         const { data } = await projectAPI.listByClient(id);
-         setLoading(false);
-         return data;
-      } catch (error) {
-         setLoading(false);
-         return rejectWithValue(error.response.data);
-      }
-   }
-);
+// export const listProjectByClient = createAsyncThunk(
+//    "project/listProjectByClient",
+//    async ({ id, setLoading }, { rejectWithValue }) => {
+//       try {
+//          setLoading(true);
+//          const { data } = await projectAPI.listByClient(id);
+//          setLoading(false);
+//          return data;
+//       } catch (error) {
+//          setLoading(false);
+//          return rejectWithValue(error.response.data);
+//       }
+//    }
+// );
 
-export const listProjectByEmployees = createAsyncThunk(
-   "project/listProjectByEmployees",
-   async ({ id, setLoading }, { rejectWithValue }) => {
-      try {
-         setLoading(true);
-         const { data } = await projectAPI.listByEmployees(id);
-         setLoading(false);
-         return data;
-      } catch (error) {
-         setLoading(false);
-         return rejectWithValue(error.response.data);
-      }
-   }
-);
+// export const listProjectByEmployees = createAsyncThunk(
+//    "project/listProjectByEmployees",
+//    async ({ id, setLoading }, { rejectWithValue }) => {
+//       try {
+//          setLoading(true);
+//          const { data } = await projectAPI.listByEmployees(id);
+//          setLoading(false);
+//          return data;
+//       } catch (error) {
+//          setLoading(false);
+//          return rejectWithValue(error.response.data);
+//       }
+//    }
+// );
 
 export const listProjectByWorker = createAsyncThunk(
    "project/listProjectByWorker",
@@ -262,17 +262,17 @@ const projectSclice = createSlice({
       },
 
       // list by client
-      [listProjectByClient.pending]: (state, action) => {
-         state.loading = true;
-      },
-      [listProjectByClient.fulfilled]: (state, action) => {
-         state.loading = false;
-         state.projects = action.payload;
-      },
-      [listProjectByClient.rejected]: (state, action) => {
-         state.loading = false;
-         state.error = action.payload.message;
-      },
+      // [listProjectByClient.pending]: (state, action) => {
+      //    state.loading = true;
+      // },
+      // [listProjectByClient.fulfilled]: (state, action) => {
+      //    state.loading = false;
+      //    state.projects = action.payload;
+      // },
+      // [listProjectByClient.rejected]: (state, action) => {
+      //    state.loading = false;
+      //    state.error = action.payload.message;
+      // },
 
       // list by admin
       [listProjectByAdmin.pending]: (state, action) => {
@@ -343,17 +343,17 @@ const projectSclice = createSlice({
       },
 
       // list by employees
-      [listProjectByEmployees.pending]: (state, action) => {
-         state.loading = true;
-      },
-      [listProjectByEmployees.fulfilled]: (state, action) => {
-         state.loading = false;
-         state.projects = action.payload;
-      },
-      [listProjectByEmployees.rejected]: (state, action) => {
-         state.loading = false;
-         state.error = action.payload.message;
-      },
+      // [listProjectByEmployees.pending]: (state, action) => {
+      //    state.loading = true;
+      // },
+      // [listProjectByEmployees.fulfilled]: (state, action) => {
+      //    state.loading = false;
+      //    state.projects = action.payload;
+      // },
+      // [listProjectByEmployees.rejected]: (state, action) => {
+      //    state.loading = false;
+      //    state.error = action.payload.message;
+      // },
    },
 });
 
