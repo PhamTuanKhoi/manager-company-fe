@@ -12,11 +12,17 @@ import { useSelector } from "react-redux";
 import { Table } from "antd";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import moment from "moment";
-import { prioritys, ProjectPriorityEnum, ProjectStatusEnum } from "../../../constant";
+import { prioritys, ProjectPriorityEnum, ProjectStatusEnum, UserRoleType } from "../../../constant";
 import DeleteProject from "../../../_components/modelbox/DeleteProject";
-import projectSclice from "../../../redux/feature/projectSclice";
+import projectSclice, {
+   listProjectByAdmin,
+   listProjectByWorker,
+} from "../../../redux/feature/projectSclice";
 import { projectsRemainingSelector } from "../../../redux/selectors/projectSelector";
 import { useDispatch } from "react-redux";
+import { listEmployees } from "../../../redux/feature/employeesSclice";
+import { listClient } from "../../../redux/feature/clientSclice";
+import { useLoading } from "../../../hook/useLoading";
 
 const ProjectList = () => {
    const onImageUpload = (fileList) => {
@@ -34,8 +40,31 @@ const ProjectList = () => {
    const [priority, setPriority] = useState("all");
    const [text, setText] = useState("");
    const dispatch = useDispatch();
+   const { setLoading } = useLoading();
 
+   const { user } = useSelector((state) => state.auth);
    const projects = useSelector(projectsRemainingSelector);
+
+   // ----------------------------- fetch data ----------------------
+   useEffect(() => {
+      if (user._id) {
+         fetchProject();
+      }
+
+      // fetch employees
+      dispatch(listEmployees({ setLoading }));
+      dispatch(listClient({ setLoading }));
+   }, [user._id, user.role]);
+
+   const fetchProject = () => {
+      if (user.role === UserRoleType.ADMIN) {
+         dispatch(listProjectByAdmin({ setLoading }));
+      }
+
+      if (user.role !== UserRoleType.ADMIN) {
+         dispatch(listProjectByWorker({ id: user._id, setLoading }));
+      }
+   };
 
    // filter search
    useEffect(() => {

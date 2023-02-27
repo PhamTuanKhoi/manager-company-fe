@@ -19,8 +19,6 @@ import Addproject from "../../../_components/modelbox/Addproject";
 import { useDispatch } from "react-redux";
 import projectSclice, {
    listProjectByAdmin,
-   listProjectByClient,
-   listProjectByEmployees,
    listProjectByWorker,
 } from "../../../redux/feature/projectSclice";
 import { useSelector } from "react-redux";
@@ -31,6 +29,7 @@ import { toast } from "react-toastify";
 import DeleteProject from "../../../_components/modelbox/DeleteProject";
 import { listEmployees } from "../../../redux/feature/employeesSclice";
 import { projectsRemainingSelector } from "../../../redux/selectors/projectSelector";
+import { listClient } from "../../../redux/feature/clientSclice";
 const Projects = () => {
    const [modalShow, setModalShow] = useState(false);
    const [modalDelete, setModalDelete] = useState(false);
@@ -38,13 +37,6 @@ const Projects = () => {
    const [projectData, setProjectData] = useState({});
    const [priority, setPriority] = useState("all");
    const [text, setText] = useState("");
-   const onImageUpload = (fileList) => {
-      const reader = new FileReader();
-      // reader.onloadend = () => {
-      //    ReactSummernote.insertImage(reader.result);
-      // };
-      reader.readAsDataURL(fileList[0]);
-   };
 
    const { setLoading } = useLoading();
    const dispatch = useDispatch();
@@ -60,6 +52,7 @@ const Projects = () => {
 
       // fetch employees
       dispatch(listEmployees({ setLoading }));
+      dispatch(listClient({ setLoading }));
    }, [user._id, user.role]);
 
    const fetchProject = () => {

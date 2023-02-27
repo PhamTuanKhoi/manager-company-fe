@@ -6,7 +6,7 @@ export const projectAPI = {
       return await axios.get(path);
    },
 
-   async listByAdmin(id) {
+   async listByAdmin() {
       return await axios.get(path + "admin/");
    },
 

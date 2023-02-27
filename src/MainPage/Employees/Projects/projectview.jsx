@@ -428,32 +428,27 @@ const ProjectView = () => {
                            <i className="la la-users" /> Khách hàng{" "}
                         </h6>
                         <ul className="list-box">
-                           {project?.userEX?.map(
-                              (item) =>
-                                 item?.role === UserRoleType.CLIENT && (
-                                    <li key={item?._id}>
-                                       <Link to="#">
-                                          <div className="list-item">
-                                             <div className="list-left">
-                                                <span className="avatar">
-                                                   <img
-                                                      alt={item?.name}
-                                                      src={item?.avartar || avartarFAKE}
-                                                   />
-                                                </span>
-                                             </div>
-                                             <div className="list-body">
-                                                <span className="message-author">{item?.name}</span>
-                                                <div className="clearfix" />
-                                                <span className="message-content">
-                                                   {item?.company}
-                                                </span>
-                                             </div>
-                                          </div>
-                                       </Link>
-                                    </li>
-                                 )
-                           )}
+                           {project?.clients?.map((item) => (
+                              <li key={item?._id}>
+                                 <Link to="#">
+                                    <div className="list-item">
+                                       <div className="list-left">
+                                          <span className="avatar">
+                                             <img
+                                                alt={item?.name}
+                                                src={item?.avartar || avartarFAKE}
+                                             />
+                                          </span>
+                                       </div>
+                                       <div className="list-body">
+                                          <span className="message-author">{item?.name}</span>
+                                          <div className="clearfix" />
+                                          <span className="message-content">{item?.company}</span>
+                                       </div>
+                                    </div>
+                                 </Link>
+                              </li>
+                           ))}
                         </ul>
                         <br />
                         {/* lead */}
@@ -499,44 +494,40 @@ const ProjectView = () => {
                            <i className="la la-users" /> Nhân viên
                         </h6>
                         <ul className="list-box">
-                           {project?.userEX?.map(
-                              (item) =>
-                                 item?.role === UserRoleType.EMPLOYEE && (
-                                    <li key={item?._id}>
-                                       <Link to="#">
-                                          <div className="list-item">
-                                             <div className="list-left">
-                                                <span className="avatar">
-                                                   <img
-                                                      alt={item?.name}
-                                                      src={item?.avartar || avartarFAKE}
-                                                   />
-                                                </span>
-                                             </div>
-                                             <div className="list-body">
-                                                <span className="message-author">{item?.name}</span>
-                                                <div className="clearfix" />
-                                                <span className="message-content">
-                                                   {item?.department ===
-                                                   EmployeeDepartmentType.BUSSINESS
-                                                      ? "Kinh doanh"
-                                                      : item?.department ===
-                                                        EmployeeDepartmentType.MARKETING
-                                                      ? "Marketing"
-                                                      : item?.department ===
-                                                        EmployeeDepartmentType.ACCOUNTANT
-                                                      ? "Kế toán"
-                                                      : item?.department ===
-                                                        EmployeeDepartmentType.RECRUIT
-                                                      ? "Tuyển dụng"
-                                                      : ""}
-                                                </span>
-                                             </div>
-                                          </div>
-                                       </Link>
-                                    </li>
-                                 )
-                           )}
+                           {project?.employees?.map((item) => (
+                              <li key={item?._id}>
+                                 <Link to="#">
+                                    <div className="list-item">
+                                       <div className="list-left">
+                                          <span className="avatar">
+                                             <img
+                                                alt={item?.name}
+                                                src={item?.avartar || avartarFAKE}
+                                             />
+                                          </span>
+                                       </div>
+                                       <div className="list-body">
+                                          <span className="message-author">{item?.name}</span>
+                                          <div className="clearfix" />
+                                          <span className="message-content">
+                                             {item?.department === EmployeeDepartmentType.BUSSINESS
+                                                ? "Kinh doanh"
+                                                : item?.department ===
+                                                  EmployeeDepartmentType.MARKETING
+                                                ? "Marketing"
+                                                : item?.department ===
+                                                  EmployeeDepartmentType.ACCOUNTANT
+                                                ? "Kế toán"
+                                                : item?.department ===
+                                                  EmployeeDepartmentType.RECRUIT
+                                                ? "Tuyển dụng"
+                                                : ""}
+                                          </span>
+                                       </div>
+                                    </div>
+                                 </Link>
+                              </li>
+                           ))}
                         </ul>
                      </div>
                   </div>
@@ -554,32 +545,27 @@ const ProjectView = () => {
                            </button>
                         </h6>
                         <ul className="list-box">
-                           {project?.userEX?.map(
-                              (item, index) =>
-                                 item?.role === UserRoleType?.WORKER && (
-                                    <li key={index}>
-                                       <Link to="/app/profile/employee-profile">
-                                          <div className="list-item">
-                                             <div className="list-left">
-                                                <span className="avatar">
-                                                   <img
-                                                      alt={item?.name}
-                                                      src={item?.avartar || avartarFAKE}
-                                                   />
-                                                </span>
-                                             </div>
-                                             <div className="list-body">
-                                                <span className="message-author">{item?.name}</span>
-                                                <div className="clearfix" />
-                                                <span className="message-content">
-                                                   {item?.field}
-                                                </span>
-                                             </div>
-                                          </div>
-                                       </Link>
-                                    </li>
-                                 )
-                           )}
+                           {project?.workers?.map((item, index) => (
+                              <li key={index}>
+                                 <Link to="/app/profile/employee-profile">
+                                    <div className="list-item">
+                                       <div className="list-left">
+                                          <span className="avatar">
+                                             <img
+                                                alt={item?.name}
+                                                src={item?.avartar || avartarFAKE}
+                                             />
+                                          </span>
+                                       </div>
+                                       <div className="list-body">
+                                          <span className="message-author">{item?.name}</span>
+                                          <div className="clearfix" />
+                                          <span className="message-content">{item?.field}</span>
+                                       </div>
+                                    </div>
+                                 </Link>
+                              </li>
+                           ))}
                         </ul>
                      </div>
                   </div>

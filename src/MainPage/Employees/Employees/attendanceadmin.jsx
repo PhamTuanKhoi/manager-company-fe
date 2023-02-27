@@ -22,7 +22,7 @@ const AttendanceAdmin = () => {
    const [dateInMonth, setDateInMonth] = useState([]);
    const { id } = useParams();
    const { setLoading } = useLoading();
-   const [limit] = useState(1);
+   const [limit] = useState(10);
    const [page, setPage] = useState(1);
    const [count, setCount] = useState(0);
 

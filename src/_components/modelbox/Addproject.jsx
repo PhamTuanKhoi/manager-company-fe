@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { createProject, updateProject } from "../../redux/feature/projectSclice";
 import { useLoading } from "../../hook/useLoading";
 import moment from "moment";
+import { useMemo } from "react";
 
 const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
    const [project, setProject] = useState({
@@ -36,6 +37,7 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
    const { clients } = useSelector((state) => state.client);
    const [optionTeam, setOptionTeam] = useState([]);
    const [optionEmployees, setOptionEmployees] = useState([]);
+   const [optionClient, setOptionClient] = useState([]);
    //edit
    const [isEdit, setIsEdit] = useState("");
 
@@ -64,32 +66,34 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
    // select
 
    const options = [];
-   const optionClient = [];
-
-   employees?.map((item) => options.push({ value: item._id, label: item.name }));
-   clients?.map((item) => optionClient.push({ value: item._id, label: item.name }));
-
+   const arrayOpitionClient = [];
    // filter value muti select
    let valueSelectClient = [];
    let valueSelectTeam = [];
 
-   projectData?.client?.map((item) =>
-      optionClient.filter((i) => {
-         if (i.value === item) {
-            valueSelectClient.push(i);
-         }
-      })
-   );
-   projectData?.team?.map((item) =>
-      options.filter((i) => {
-         if (i.value === item) {
-            valueSelectTeam.push(i);
-         }
-      })
-   );
+   useMemo(() => {
+      employees?.map((item) => options.push({ value: item._id, label: item.name }));
+      clients?.map((item) => arrayOpitionClient.push({ value: item._id, label: item.name }));
 
+      projectData?.clients?.map((item) =>
+         arrayOpitionClient.filter((i) => {
+            if (i.value === item._id) {
+               valueSelectClient.push(i);
+            }
+         })
+      );
+      projectData?.employees?.map((item) =>
+         options.filter((i) => {
+            if (i.value === item._id) {
+               valueSelectTeam.push(i);
+            }
+         })
+      );
+   }, [employees, clients, render]);
+
+   console.log(projectData);
    useEffect(() => {
-      if (projectData.client) {
+      if (projectData) {
          setClient(valueSelectClient);
          setTeams(valueSelectTeam);
       }
@@ -105,6 +109,7 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
    useEffect(() => {
       setOptionEmployees(employees);
       setOptionTeam(options);
+      setOptionClient(arrayOpitionClient);
    }, [employees]);
 
    const changeLeader = (e) => {
