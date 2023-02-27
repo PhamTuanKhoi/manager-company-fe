@@ -165,7 +165,7 @@ const AttendanceAdmin = () => {
                               </tr>
                            </thead>
                            <tbody>
-                              <Tableavatar />
+                              <Tableavatar dateInMonth={dateInMonth} />
                            </tbody>
                         </table>
                      </div>

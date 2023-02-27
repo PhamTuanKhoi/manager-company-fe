@@ -90,6 +90,7 @@ const attendanceSclice = createSlice({
    initialState: {
       attendance: {},
       attendances: [],
+      allUserAttendance: [],
       wiffi: [],
       error: "",
       loading: false,
@@ -117,6 +118,7 @@ const attendanceSclice = createSlice({
          state.loading = true;
       },
       [userAttendance.fulfilled]: (state, action) => {
+         state.allUserAttendance = action.payload;
          state.loading = false;
       },
       [userAttendance.rejected]: (state, action) => {
