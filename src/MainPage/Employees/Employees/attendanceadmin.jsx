@@ -6,12 +6,13 @@ import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import Header from "../../../initialpage/Sidebar/header";
 import { WifiOutlined } from "@ant-design/icons";
 import AddWiffi from "../../../_components/modelbox/AddWiffi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import attendanceSclice, { userAttendance } from "../../../redux/feature/attendanceSclice";
 import AddAttendance from "../../../_components/modelbox/AddAttendance";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useLoading } from "../../../hook/useLoading";
+import { Pagination } from "antd";
 
 const AttendanceAdmin = () => {
    const [menu, setMenu] = useState(false);
@@ -21,6 +22,9 @@ const AttendanceAdmin = () => {
    const [dateInMonth, setDateInMonth] = useState([]);
    const { id } = useParams();
    const { setLoading } = useLoading();
+   const [limit] = useState(1);
+   const [page, setPage] = useState(1);
+   const [count, setCount] = useState(0);
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -65,9 +69,33 @@ const AttendanceAdmin = () => {
    // ------------------------------ get date in month ---------------------------
    useEffect(() => {
       dispatch(
-         userAttendance({ query: { project: id, date: JSON.stringify(dateInMonth) }, setLoading })
+         userAttendance({
+            query: { project: id, date: JSON.stringify(dateInMonth), limit: limit, page: page },
+            setLoading,
+         })
       );
-   }, [id]);
+   }, [id, page, limit]);
+
+   const { allUserAttendance } = useSelector((state) => state.attendance);
+
+   useMemo(() => {
+      setCount(allUserAttendance?.paginate?.count);
+   }, [allUserAttendance]);
+   // ------------------------------- paging -------------------------------------
+   const itemRender = (_, type, originalElement) => {
+      if (type === "prev") {
+         return <a>Previous</a>;
+      }
+      if (type === "next") {
+         return <a>Next</a>;
+      }
+      return originalElement;
+   };
+
+   const handlePaging = (page) => {
+      setPage(page);
+   };
+
    return (
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
          <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -165,13 +193,24 @@ const AttendanceAdmin = () => {
                               </tr>
                            </thead>
                            <tbody>
-                              <Tableavatar dateInMonth={dateInMonth} />
+                              <Tableavatar
+                                 setCount={setCount}
+                                 allUserAttendance={allUserAttendance}
+                                 dateInMonth={dateInMonth}
+                              />
                            </tbody>
                         </table>
                      </div>
                   </div>
                </div>
             </div>
+            <Pagination
+               total={count}
+               defaultPageSize={limit}
+               itemRender={itemRender}
+               onChange={handlePaging}
+               // onShowSizeChange={(current, size) => handlePaging(current, size)}
+            />
             {/* /Page Content */}
             {/* Attendance Modal */}
             <div className="modal custom-modal fade" id="attendance_info" role="dialog">

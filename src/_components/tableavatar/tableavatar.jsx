@@ -1,18 +1,15 @@
 import React, { memo } from "react";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Avatar_04 } from "../../Entryfile/imagepath";
 
-const Tableavatar = ({ dateInMonth }) => {
+const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
    // ------------------------------ get user attendance ---------------------------
-
-   const { allUserAttendance } = useSelector((state) => state.attendance);
 
    let array = new Set();
 
    return (
       <>
-         {allUserAttendance.map((item) => {
+         {allUserAttendance.items?.map((item) => {
             return (
                <tr key={item._id}>
                   <td>
