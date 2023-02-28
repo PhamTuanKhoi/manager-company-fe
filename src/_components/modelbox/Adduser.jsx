@@ -155,10 +155,9 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
                toast,
                onHide,
                setLoading,
+               empty,
             })
          );
-
-         empty();
       }
    };
 
@@ -182,10 +181,9 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
                toast,
                onHide,
                setLoading,
+               empty,
             })
          );
-
-         empty();
       }
    };
 

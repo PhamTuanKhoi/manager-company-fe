@@ -141,15 +141,23 @@ const Sidebar = (props) => {
                                  >
                                     Nhiệm vụ
                                  </Link>
+                              </li> */}
+                              <li>
+                                 <Link
+                                    className={pathname.includes("allowance") ? "active" : ""}
+                                    to="/app/projects/allowance"
+                                 >
+                                    Lương và phụ cấp
+                                 </Link>
                               </li>
                               <li>
                                  <Link
-                                    className={pathname.includes("task-board") ? "active" : ""}
-                                    to="/app/projects/task-board"
+                                    className={pathname.includes("salary") ? "active" : ""}
+                                    to="/app/projects/salary"
                                  >
-                                    Task Board
+                                    Lương người lao động
                                  </Link>
-                              </li> */}
+                              </li>
                            </ul>
                         ) : (
                            ""

@@ -85,12 +85,12 @@ const Payslip = () => {
                   <i className="material-icons">more_vert</i>
                </a>
                <div className="dropdown-menu dropdown-menu-right">
-                  <a
+                  <Link
                      className="dropdown-item"
-                     href={`/app/projects/them-phieu-luong/${record?._id}`}
+                     to={`/app/projects/them-phieu-luong/${record?._id}`}
                   >
                      <i className="fa fa-pencil m-r-5" /> Sửa
-                  </a>
+                  </Link>
                   <a
                      className="dropdown-item"
                      href="#"
@@ -121,9 +121,9 @@ const Payslip = () => {
                      <h3 className="page-title">Phiếu lương</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                     <a href="/app/projects/them-phieu-luong" className="btn add-btn">
+                     <Link to={"/app/projects/them-phieu-luong"} className="btn add-btn">
                         <i className="fa fa-plus" /> Thêm phiếu lương
-                     </a>
+                     </Link>
                   </div>
                </div>
             </div>

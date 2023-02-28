@@ -14,6 +14,8 @@ import AddPayslip from "./addPayslip";
 import PartOverview from "./partoverview";
 import AttendanceAdmin from "./../Employees/attendanceadmin";
 import AttendanceEmployee from "./../Employees/attendanceemployee";
+import Allowance from "./allowance";
+import Salary from "./salary";
 
 const ProjectRoute = ({ match }) => (
    <Switch>
@@ -25,6 +27,8 @@ const ProjectRoute = ({ match }) => (
       <Route path={`${match.url}/attendance/:id`} component={AttendanceAdmin} />
       <Route path={`${match.url}/attendance-employee/:id`} component={AttendanceEmployee} />
       <Route path={`${match.url}/part-owerview/`} component={PartOverview} />
+      <Route path={`${match.url}/allowance`} component={Allowance} />
+      <Route path={`${match.url}/salary`} component={Salary} />
       <Route path={`${match.url}/phieu-luong`} component={Payslip} />
       <Route path={`${match.url}/them-phieu-luong/:id`} component={AddPayslip} />
       <Route path={`${match.url}/them-phieu-luong`} component={AddPayslip} />
