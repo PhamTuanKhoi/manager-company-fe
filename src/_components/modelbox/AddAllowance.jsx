@@ -54,8 +54,6 @@ const AddAllowance = ({ show, handleClose }) => {
       );
    };
 
-   console.log(salary);
-
    return (
       <Modal
          show={show}
@@ -66,7 +64,7 @@ const AddAllowance = ({ show, handleClose }) => {
       >
          <div className="modal-content">
             <div className="modal-header">
-               <h5 className="modal-title">{"Khách hàng mới"}</h5>
+               <h5 className="modal-title">{"Thêm nhóm thụ hưởng"}</h5>
                <button type="button" className="close-x">
                   <span aria-hidden="true" onClick={handleClosed}>
                      ×
@@ -94,7 +92,7 @@ const AddAllowance = ({ show, handleClose }) => {
                      <div className="col-sm-6">
                         <div className="form-group">
                            <label className="col-form-label">
-                              Lương <span className="text-danger">*</span>
+                              Lương / ngày <span className="text-danger">*</span>
                            </label>
                            <div className="input-box">
                               <input
@@ -110,7 +108,7 @@ const AddAllowance = ({ show, handleClose }) => {
                      </div>
                      <div className="col-sm-6">
                         <div className="form-group">
-                           <label className="col-form-label">Đi lại</label>
+                           <label className="col-form-label">Đi lại / tháng</label>
                            <div className="input-box">
                               <input
                                  prefix="￥"
@@ -125,7 +123,7 @@ const AddAllowance = ({ show, handleClose }) => {
                      </div>
                      <div className="col-sm-6">
                         <div className="form-group">
-                           <label className="col-form-label">Nhà ở</label>
+                           <label className="col-form-label">Nhà ở / tháng</label>
                            <div className="input-box">
                               <input
                                  prefix="￥"
@@ -140,7 +138,7 @@ const AddAllowance = ({ show, handleClose }) => {
                      </div>
                      <div className="col-sm-6">
                         <div className="form-group">
-                           <label className="col-form-label">Nặng nhọc/ độc hại</label>
+                           <label className="col-form-label">Nặng nhọc/ độc hại / ngày</label>
                            <div className="input-box">
                               <input
                                  prefix="￥"
@@ -155,7 +153,7 @@ const AddAllowance = ({ show, handleClose }) => {
                      </div>
                      <div className="col-sm-6">
                         <div className="form-group">
-                           <label className="col-form-label">Ăn uống</label>
+                           <label className="col-form-label">Ăn uống / ngày</label>
                            <div className="input-box">
                               <input
                                  prefix="￥"
@@ -170,7 +168,7 @@ const AddAllowance = ({ show, handleClose }) => {
                      </div>
                      <div className="col-sm-6">
                         <div className="form-group">
-                           <label className="col-form-label">Chuyên cần</label>
+                           <label className="col-form-label">Chuyên cần / tháng</label>
                            <div className="input-box">
                               <input
                                  prefix="￥"

@@ -15,6 +15,10 @@ export var customText = (str) => {
       .replace(/Đ/g, "D");
 };
 
+export const formatMoney = (money) => {
+   return money?.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
+};
+
 export const timeCustom = (time) => {
    const timed = `${
       Math.floor(time / 3600) < 10 ? "0" + Math.floor(time / 3600) : Math.floor(time / 3600)

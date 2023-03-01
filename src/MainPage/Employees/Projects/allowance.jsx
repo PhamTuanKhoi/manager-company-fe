@@ -16,6 +16,10 @@ import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
 import AddAllowance from "../../../_components/modelbox/AddAllowance";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoading } from "../../../hook/useLoading";
+import { listSalary } from "../../../redux/feature/salarySclice";
+import { formatMoney } from "../../../constant";
 
 const Allowance = () => {
    const [data, setData] = useState([
@@ -29,50 +33,6 @@ const Allowance = () => {
          salary: "100.000",
          joindate: "100.000",
          roles: "Software Engineer",
-      },
-      {
-         id: 2,
-         image: Avatar_05,
-         name: "Richard Miles",
-         role: "Web Developer",
-         employee_id: "100.000",
-         email: "1.500.000",
-         salary: "100.000",
-         joindate: "100.000",
-         roles: "Web Developer",
-      },
-      {
-         id: 3,
-         image: Avatar_11,
-         name: "John Smith",
-         role: "Android Developer",
-         employee_id: "100.000",
-         email: "1.500.000",
-         salary: "100.000",
-         joindate: "100.000",
-         roles: "Web Designer",
-      },
-      {
-         id: 4,
-         image: Avatar_12,
-         name: "Mike Litorus",
-         role: "IOS Developer",
-         employee_id: "100.000",
-         email: "1.500.000",
-         salary: "100.000",
-         joindate: "100.000",
-         roles: "Team Leader",
-      },
-      {
-         id: 5,
-         image: Avatar_09,
-         name: "Wilmer Deluna",
-         role: "Team Leader",
-         employee_id: "100.000",
-         email: "1.500.000",
-         salary: "100.000",
-         joindate: "100.000",
-         roles: "Android Developer",
       },
    ]);
    useEffect(() => {
@@ -90,77 +50,67 @@ const Allowance = () => {
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
 
+   // -------------------------- list ------------------------
+   const dispatch = useDispatch();
+   const { setLoading } = useLoading();
+
+   useEffect(() => {
+      dispatch(listSalary({ setLoading }));
+   }, []);
+
+   const { salarys } = useSelector((state) => state.salary);
+
+   console.log(salarys);
+
    const columns = [
       {
          title: "Nhóm thụ hưởng",
-         dataIndex: "roles",
-         render: (text, record) => (
-            <div className="dropdown">
-               <a
-                  href=""
-                  className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-               >
-                  {text}{" "}
-               </a>
-               <div className="dropdown-menu">
-                  <a className="dropdown-item" href="#">
-                     Software Engineer
-                  </a>
-                  <a className="dropdown-item" href="#">
-                     Software Tester
-                  </a>
-                  <a className="dropdown-item" href="#">
-                     Frontend Developer
-                  </a>
-                  <a className="dropdown-item" href="#">
-                     UI/UX Developer
-                  </a>
-               </div>
-            </div>
-         ),
+         dataIndex: "beneficiary",
+         sorter: (a, b) => a.beneficiary.length - b.beneficiary.length,
       },
       {
          title: "Đi lại",
-         dataIndex: "employee_id",
-         sorter: (a, b) => a.employee_id.length - b.employee_id.length,
+         dataIndex: "go",
+         sorter: (a, b) => a.go.length - b.go.length,
+         render: (text, record) => formatMoney(text),
       },
 
       {
          title: "Nhà ở",
-         dataIndex: "email",
-         sorter: (a, b) => a.email.length - b.email.length,
+         dataIndex: "home",
+         sorter: (a, b) => a.home.length - b.home.length,
+         render: (text, record) => formatMoney(text),
       },
 
       {
          title: "Nặng nhọc/ độc hại",
-         dataIndex: "joindate",
-         sorter: (a, b) => a.joindate.length - b.joindate.length,
+         dataIndex: "toxic",
+         sorter: (a, b) => a.toxic.length - b.toxic.length,
+         render: (text, record) => formatMoney(text),
       },
       {
          title: "Ăn uống",
-         render: (text, record) => <div>100.000</div>,
+         dataIndex: "eat",
+         sorter: (a, b) => a.eat.length - b.eat.length,
+         render: (text, record) => formatMoney(text),
       },
       {
          title: "Chuyên cần",
-         dataIndex: "joindate",
-         sorter: (a, b) => a.joindate.length - b.joindate.length,
+         dataIndex: "diligence",
+         sorter: (a, b) => a.diligence.length - b.diligence.length,
+         render: (text, record) => formatMoney(text),
+      },
+      {
+         title: "Lương",
+         dataIndex: "salary",
+         sorter: (a, b) => a.salary.length - b.salary.length,
+         render: (text, record) => formatMoney(text),
       },
       {
          title: "Dự án",
-         dataIndex: "salary",
-         render: (text, record) => <span>${text}</span>,
-         sorter: (a, b) => a.salary.length - b.salary.length,
-      },
-
-      {
-         title: "Lương",
-         render: (text, record) => (
-            <Link className="btn btn-sm btn-primary" to="/app/payroll/salary-view">
-               Generate Slip
-            </Link>
-         ),
+         dataIndex: "projectEX.name",
+         render: (text, record) => record?.projectEX.name,
+         sorter: (a, b) => a.projectEX.name.length - b.projectEX.name.length,
       },
       {
          title: "Action",
@@ -245,7 +195,7 @@ const Allowance = () => {
                      <Table
                         className="table-striped"
                         pagination={{
-                           total: data.length,
+                           total: salarys.length,
                            showTotal: (total, range) =>
                               `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                            showSizeChanger: true,
@@ -255,8 +205,8 @@ const Allowance = () => {
                         style={{ overflowX: "auto" }}
                         columns={columns}
                         // bordered
-                        dataSource={data}
-                        rowKey={(record) => record.id}
+                        dataSource={salarys}
+                        rowKey={(record) => record._id}
                         // onChange={this.handleTableChange}
                      />
                   </div>

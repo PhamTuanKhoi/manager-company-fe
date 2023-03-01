@@ -25,6 +25,21 @@ export const createSalary = createAsyncThunk(
    }
 );
 
+export const listSalary = createAsyncThunk(
+   "salary/listSalary",
+   async ({ setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await salaryAPI.list();
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const salarySclice = createSlice({
    name: "salary",
    initialState: {
@@ -42,6 +57,19 @@ const salarySclice = createSlice({
          state.loading = false;
       },
       [createSalary.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // created salary
+      [listSalary.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listSalary.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.salarys = action.payload;
+      },
+      [listSalary.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
