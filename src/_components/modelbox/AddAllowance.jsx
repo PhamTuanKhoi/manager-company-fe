@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
-
+import { useDispatch, useSelector } from "react-redux";
+import { useLoading } from "../../hook/useLoading";
+import { listProjectByAdmin, listProjectByUser } from "../../redux/feature/projectSclice";
+import { UserRoleType } from "../../constant/index";
+import { createSalary } from "../../redux/feature/salarySclice";
+import { toast } from "react-toastify";
 const AddAllowance = ({ show, handleClose }) => {
    const handleClosed = () => {
       handleClose();
@@ -9,14 +14,48 @@ const AddAllowance = ({ show, handleClose }) => {
    const [salary, setSalary] = useState({
       beneficiary: "",
       salary: 0,
-      go: "",
-      home: "",
-      toxic: "",
-      diligence: "",
-      eat: "",
+      go: 0,
+      home: 0,
+      toxic: 0,
+      diligence: 0,
+      eat: 0,
+      project: "",
    });
 
+   const dispatch = useDispatch();
+   const { setLoading } = useLoading();
+   const { user } = useSelector((state) => state.auth);
+
+   // ------------------- fetch project ----------------------
+   useEffect(() => {
+      if (user.role) {
+         if (user.role === UserRoleType.ADMIN) {
+            dispatch(listProjectByAdmin({ setLoading }));
+         }
+
+         if (user.role !== UserRoleType.ADMIN) {
+            dispatch(listProjectByUser({ id: user._id, setLoading }));
+         }
+      }
+   }, [user._id]);
+
+   const { projects } = useSelector((state) => state.project);
+
+   // -------------------------- create ----------------------
+
+   const handleSave = () => {
+      dispatch(
+         createSalary({
+            payload: { ...salary, creator: user._id },
+            toast,
+            onHide: handleClose,
+            setLoading,
+         })
+      );
+   };
+
    console.log(salary);
+
    return (
       <Modal
          show={show}
@@ -151,15 +190,25 @@ const AddAllowance = ({ show, handleClose }) => {
                            <label className="col-form-label">
                               Dự án <span className="text-danger">*</span>
                            </label>
-                           <select className="form-control">
+                           <select
+                              className="form-control"
+                              value={salary?.project}
+                              onChange={(e) => setSalary({ ...salary, project: e.target.value })}
+                           >
                               <option>Chọn dự án</option>
-                              <option>s</option>
+                              {projects?.map((item) => (
+                                 <option key={item?._id} value={item?._id}>
+                                    {item?.name}
+                                 </option>
+                              ))}
                            </select>
                         </div>
                      </div>
                   </div>
                   <div className="submit-section">
-                     <button className="btn btn-primary submit-btn">Lưu</button>
+                     <button className="btn btn-primary submit-btn" onClick={handleSave}>
+                        Lưu
+                     </button>
                   </div>
                </div>
             </div>
