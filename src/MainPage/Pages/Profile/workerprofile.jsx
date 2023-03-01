@@ -18,9 +18,9 @@ import { useLoading } from "../../../hook/useLoading";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import Adduser from "../../../_components/modelbox/Adduser";
-import { listProjectByWorker } from "../../../redux/feature/projectSclice";
 import Addproject from "../../../_components/modelbox/Addproject";
 import DeleteProject from "../../../_components/modelbox/DeleteProject";
+import { listProjectByUser } from "../../../redux/feature/projectSclice";
 
 const WorkerProfile = () => {
    useEffect(() => {
@@ -55,7 +55,7 @@ const WorkerProfile = () => {
    }, [id]);
 
    const fetchProject = () => {
-      dispatch(listProjectByWorker({ id: id, setLoading }));
+      dispatch(listProjectByUser({ id: id, setLoading }));
    };
 
    const { projects } = useSelector((state) => state.project);

@@ -91,7 +91,6 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
       );
    }, [employees, clients, render]);
 
-   console.log(projectData);
    useEffect(() => {
       if (projectData) {
          setClient(valueSelectClient);

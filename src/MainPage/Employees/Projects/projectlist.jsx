@@ -16,7 +16,7 @@ import { prioritys, ProjectPriorityEnum, ProjectStatusEnum, UserRoleType } from 
 import DeleteProject from "../../../_components/modelbox/DeleteProject";
 import projectSclice, {
    listProjectByAdmin,
-   listProjectByWorker,
+   listProjectByUser,
 } from "../../../redux/feature/projectSclice";
 import { projectsRemainingSelector } from "../../../redux/selectors/projectSelector";
 import { useDispatch } from "react-redux";
@@ -62,7 +62,7 @@ const ProjectList = () => {
       }
 
       if (user.role !== UserRoleType.ADMIN) {
-         dispatch(listProjectByWorker({ id: user._id, setLoading }));
+         dispatch(listProjectByUser({ id: user._id, setLoading }));
       }
    };
 

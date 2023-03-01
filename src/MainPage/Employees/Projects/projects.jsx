@@ -19,7 +19,7 @@ import Addproject from "../../../_components/modelbox/Addproject";
 import { useDispatch } from "react-redux";
 import projectSclice, {
    listProjectByAdmin,
-   listProjectByWorker,
+   listProjectByUser,
 } from "../../../redux/feature/projectSclice";
 import { useSelector } from "react-redux";
 import moment from "moment";
@@ -61,7 +61,7 @@ const Projects = () => {
       }
 
       if (user.role !== UserRoleType.ADMIN) {
-         dispatch(listProjectByWorker({ id: user._id, setLoading }));
+         dispatch(listProjectByUser({ id: user._id, setLoading }));
       }
    };
 

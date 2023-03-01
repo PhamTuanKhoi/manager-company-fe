@@ -107,12 +107,12 @@ export const listProjectByAdmin = createAsyncThunk(
 //    }
 // );
 
-export const listProjectByWorker = createAsyncThunk(
-   "project/listProjectByWorker",
+export const listProjectByUser = createAsyncThunk(
+   "project/listProjectByUser",
    async ({ id, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await projectAPI.listBy(id);
+         const { data } = await projectAPI.listByUser(id);
          setLoading(false);
          return data;
       } catch (error) {
@@ -330,14 +330,14 @@ const projectSclice = createSlice({
       },
 
       // list by worker
-      [listProjectByWorker.pending]: (state, action) => {
+      [listProjectByUser.pending]: (state, action) => {
          state.loading = true;
       },
-      [listProjectByWorker.fulfilled]: (state, action) => {
+      [listProjectByUser.fulfilled]: (state, action) => {
          state.loading = false;
          state.projects = action.payload;
       },
-      [listProjectByWorker.rejected]: (state, action) => {
+      [listProjectByUser.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
