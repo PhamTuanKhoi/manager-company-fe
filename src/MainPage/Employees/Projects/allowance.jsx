@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import {
-   Avatar_02,
-   Avatar_09,
-   Avatar_10,
-   Avatar_05,
-   Avatar_11,
-   Avatar_12,
-   Avatar_13,
-} from "../../../Entryfile/imagepath";
+import { Avatar_02 } from "../../../Entryfile/imagepath";
 
 import { Table } from "antd";
 import "antd/dist/antd.css";
@@ -22,19 +14,6 @@ import { listSalary } from "../../../redux/feature/salarySclice";
 import { formatMoney } from "../../../constant";
 
 const Allowance = () => {
-   const [data, setData] = useState([
-      {
-         id: 1,
-         image: Avatar_02,
-         name: "John Doe",
-         role: "Web Designer",
-         employee_id: "100.000",
-         email: "1.500.000",
-         salary: "100.000",
-         joindate: "100.000",
-         roles: "Software Engineer",
-      },
-   ]);
    useEffect(() => {
       if ($(".select").length > 0) {
          $(".select").select2({
@@ -46,11 +25,13 @@ const Allowance = () => {
 
    // ----------------------------------- use --------------------------------------
    const [show, setShow] = useState(false);
+   const [load, setLoad] = useState(0);
 
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
 
    // -------------------------- list ------------------------
+   const [isSalary, setIsSalary] = useState({});
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
 
@@ -59,8 +40,6 @@ const Allowance = () => {
    }, []);
 
    const { salarys } = useSelector((state) => state.salary);
-
-   console.log(salarys);
 
    const columns = [
       {
@@ -128,10 +107,13 @@ const Allowance = () => {
                   <a
                      className="dropdown-item"
                      href="#"
-                     data-bs-toggle="modal"
-                     data-bs-target="#edit_salary"
+                     onClick={() => {
+                        handleShow();
+                        setIsSalary(record);
+                        setLoad((prev) => prev + 1);
+                     }}
                   >
-                     <i className="fa fa-pencil m-r-5" /> Edit
+                     <i className="fa fa-pencil m-r-5" /> Chỉnh sửa
                   </a>
                   <a
                      className="dropdown-item"
@@ -139,7 +121,7 @@ const Allowance = () => {
                      data-bs-toggle="modal"
                      data-bs-target="#delete_salary"
                   >
-                     <i className="fa fa-trash-o m-r-5" /> Delete
+                     <i className="fa fa-trash-o m-r-5" /> Xóa
                   </a>
                </div>
             </div>
@@ -215,7 +197,7 @@ const Allowance = () => {
          </div>
          {/* /Page Content */}
          {/* Add Salary Modal */}
-         <AddAllowance show={show} handleClose={handleClose} />
+         <AddAllowance show={show} handleClose={handleClose} isSalary={isSalary} load={load} />
          {/* /Add Salary Modal */}
          {/* Delete Salary Modal */}
          <div className="modal custom-modal fade" id="delete_salary" role="dialog">

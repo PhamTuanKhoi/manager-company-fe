@@ -9,4 +9,8 @@ export const salaryAPI = {
    async create(payload) {
       return await axios.post(path, payload);
    },
+
+   async update(id, payload) {
+      return await axios.patch(path + id, payload);
+   },
 };

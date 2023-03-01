@@ -1,15 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { salaryAPI } from "../../api/salary";
+import { formatMoney } from "../../constant";
 
 export const createSalary = createAsyncThunk(
    "salary/createSalary",
-   async ({ payload, toast, onHide, setLoading }, { rejectWithValue }) => {
+   async ({ payload, toast, onHide, setLoading, empty }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await salaryAPI.create(payload);
-         toast.success("Cài đặt nhóm thụ hưởng thành công");
+         toast.success("Thêm nhóm thụ hưởng thành công");
          setLoading(false);
          onHide();
+         empty();
          return data;
       } catch (error) {
          setLoading(false);
@@ -35,6 +37,31 @@ export const listSalary = createAsyncThunk(
          return data;
       } catch (error) {
          setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const updateSalary = createAsyncThunk(
+   "salary/updateSalary",
+   async ({ id, payload, toast, onHide, setLoading, empty }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await salaryAPI.update(id, payload);
+         toast.success("Chỉnh sửa nhóm thụ hưởng thành công");
+         setLoading(false);
+         onHide();
+         empty();
+         return data;
+      } catch (error) {
+         setLoading(false);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
          return rejectWithValue(error.response.data);
       }
    }
@@ -70,6 +97,24 @@ const salarySclice = createSlice({
          state.salarys = action.payload;
       },
       [listSalary.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // created salary
+      [updateSalary.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [updateSalary.fulfilled]: (state, action) => {
+         state.loading = false;
+
+         const {
+            arg: { id, payload },
+         } = action.meta;
+
+         state.salarys = state.salarys?.map((item) => (item._id === id ? { ...payload } : item));
+      },
+      [updateSalary.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

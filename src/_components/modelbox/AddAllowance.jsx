@@ -1,26 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoading } from "../../hook/useLoading";
 import { listProjectByAdmin, listProjectByUser } from "../../redux/feature/projectSclice";
 import { UserRoleType } from "../../constant/index";
-import { createSalary } from "../../redux/feature/salarySclice";
+import { createSalary, updateSalary } from "../../redux/feature/salarySclice";
 import { toast } from "react-toastify";
-const AddAllowance = ({ show, handleClose }) => {
+const AddAllowance = ({ show, handleClose, isSalary, load }) => {
    const handleClosed = () => {
       handleClose();
+      empty();
    };
 
    const [salary, setSalary] = useState({
       beneficiary: "",
-      salary: 0,
-      go: 0,
-      home: 0,
-      toxic: 0,
-      diligence: 0,
-      eat: 0,
+      salary: "0",
+      go: "0",
+      home: "0",
+      toxic: "0",
+      diligence: "0",
+      eat: "0",
       project: "",
    });
+
+   const empty = () => {
+      setSalary({
+         beneficiary: "",
+         salary: "",
+         go: "",
+         home: "",
+         toxic: "",
+         diligence: "",
+         eat: "",
+         project: "",
+      });
+   };
 
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
@@ -44,14 +58,74 @@ const AddAllowance = ({ show, handleClose }) => {
    // -------------------------- create ----------------------
 
    const handleSave = () => {
-      dispatch(
-         createSalary({
-            payload: { ...salary, creator: user._id },
-            toast,
-            onHide: handleClose,
-            setLoading,
-         })
-      );
+      if (validate()) {
+         dispatch(
+            createSalary({
+               payload: { ...salary, creator: user._id },
+               toast,
+               onHide: handleClose,
+               setLoading,
+               empty,
+            })
+         );
+      }
+   };
+
+   //  ----------------------------- edit --------------------------
+
+   useEffect(() => {
+      if (isSalary._id) setSalary(isSalary);
+   }, [isSalary, load]);
+
+   const handleUpdate = () => {
+      if (validate()) {
+         dispatch(
+            updateSalary({
+               id: salary?._id,
+               payload: { ...salary, creator: user._id },
+               toast,
+               onHide: handleClose,
+               setLoading,
+               empty,
+            })
+         );
+      }
+   };
+
+   const validate = () => {
+      if (!salary.beneficiary) {
+         toast.warn("Làm ơn nhập tên nhóm thụ hưởng");
+         return false;
+      }
+      if (!salary.salary) {
+         toast.warn("Làm ơn nhập mức lương");
+         return false;
+      }
+      if (!salary.go) {
+         toast.warn("Làm ơn nhập mức phụ cấp đi lại");
+         return false;
+      }
+      if (!salary.home) {
+         toast.warn("Làm ơn nhập mức phụ cấp nhà ở");
+         return false;
+      }
+      if (!salary.toxic) {
+         toast.warn("Làm ơn nhập mức phụ cấp nặng nhọc/ độc hai");
+         return false;
+      }
+      if (!salary.eat) {
+         toast.warn("Làm ơn nhập mức phụ cấp ăn uống");
+         return false;
+      }
+      if (!salary.diligence) {
+         toast.warn("Làm ơn nhập mức phụ cấp chuyên cần");
+         return false;
+      }
+      if (!salary.project) {
+         toast.warn("Làm ơn chọn dự án");
+         return false;
+      }
+      return true;
    };
 
    return (
@@ -64,7 +138,9 @@ const AddAllowance = ({ show, handleClose }) => {
       >
          <div className="modal-content">
             <div className="modal-header">
-               <h5 className="modal-title">{"Thêm nhóm thụ hưởng"}</h5>
+               <h5 className="modal-title">
+                  {salary?._id ? "Chỉnh sửa nhóm thụ hưởng" : "Thêm nhóm thụ hưởng"}
+               </h5>
                <button type="button" className="close-x">
                   <span aria-hidden="true" onClick={handleClosed}>
                      ×
@@ -99,7 +175,7 @@ const AddAllowance = ({ show, handleClose }) => {
                                  prefix="￥"
                                  className="form-control tel"
                                  type="number"
-                                 value={salary.salary}
+                                 defaultValue={salary.salary}
                                  onChange={(e) => setSalary({ ...salary, salary: e.target.value })}
                               />
                               <span className="prefix">VND</span>
@@ -114,7 +190,7 @@ const AddAllowance = ({ show, handleClose }) => {
                                  prefix="￥"
                                  className="form-control tel"
                                  type="number"
-                                 value={salary.go}
+                                 defaultValue={salary.go}
                                  onChange={(e) => setSalary({ ...salary, go: e.target.value })}
                               />
                               <span className="prefix">VND</span>
@@ -129,7 +205,7 @@ const AddAllowance = ({ show, handleClose }) => {
                                  prefix="￥"
                                  className="form-control tel"
                                  type="number"
-                                 value={salary.home}
+                                 defaultValue={salary.home}
                                  onChange={(e) => setSalary({ ...salary, home: e.target.value })}
                               />
                               <span className="prefix">VND</span>
@@ -144,7 +220,7 @@ const AddAllowance = ({ show, handleClose }) => {
                                  prefix="￥"
                                  className="form-control tel"
                                  type="number"
-                                 value={salary.toxic}
+                                 defaultValue={salary.toxic}
                                  onChange={(e) => setSalary({ ...salary, toxic: e.target.value })}
                               />
                               <span className="prefix">VND</span>
@@ -159,7 +235,7 @@ const AddAllowance = ({ show, handleClose }) => {
                                  prefix="￥"
                                  className="form-control tel"
                                  type="number"
-                                 value={salary.eat}
+                                 defaultValue={salary.eat}
                                  onChange={(e) => setSalary({ ...salary, eat: e.target.value })}
                               />
                               <span className="prefix">VND</span>
@@ -174,7 +250,7 @@ const AddAllowance = ({ show, handleClose }) => {
                                  prefix="￥"
                                  className="form-control tel"
                                  type="number"
-                                 value={salary.diligence}
+                                 defaultValue={salary.diligence}
                                  onChange={(e) =>
                                     setSalary({ ...salary, diligence: e.target.value })
                                  }
@@ -204,9 +280,15 @@ const AddAllowance = ({ show, handleClose }) => {
                      </div>
                   </div>
                   <div className="submit-section">
-                     <button className="btn btn-primary submit-btn" onClick={handleSave}>
-                        Lưu
-                     </button>
+                     {salary?._id ? (
+                        <button className="btn btn-primary submit-btn" onClick={handleUpdate}>
+                           Sửa
+                        </button>
+                     ) : (
+                        <button className="btn btn-primary submit-btn" onClick={handleSave}>
+                           Lưu
+                        </button>
+                     )}
                   </div>
                </div>
             </div>
@@ -215,4 +297,4 @@ const AddAllowance = ({ show, handleClose }) => {
    );
 };
 
-export default AddAllowance;
+export default memo(AddAllowance);
