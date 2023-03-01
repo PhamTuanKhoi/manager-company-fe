@@ -112,7 +112,7 @@ export const listProjectByWorker = createAsyncThunk(
    async ({ id, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await projectAPI.listByWorker(id);
+         const { data } = await projectAPI.listBy(id);
          setLoading(false);
          return data;
       } catch (error) {

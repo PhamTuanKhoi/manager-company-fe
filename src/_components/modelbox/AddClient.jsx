@@ -53,10 +53,9 @@ const AddClient = ({ show, handleClose, editClient, render }) => {
                toast,
                handleClose,
                setLoading,
+               empty,
             })
          );
-
-         empty();
       }
    };
 
@@ -70,9 +69,9 @@ const AddClient = ({ show, handleClose, editClient, render }) => {
                toast,
                handleClose,
                setLoading,
+               empty,
             })
          );
-         empty();
       }
    };
 

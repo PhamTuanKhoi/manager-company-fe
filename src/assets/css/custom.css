@@ -14,7 +14,7 @@
   
   .input-box .prefix {
     font-weight: 300;
- 
+    width: 50px;
     color: #999;
   }
   

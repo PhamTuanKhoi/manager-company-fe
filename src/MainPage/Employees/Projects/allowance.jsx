@@ -15,6 +15,7 @@ import { Table } from "antd";
 import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
+import AddAllowance from "../../../_components/modelbox/AddAllowance";
 
 const Allowance = () => {
    const [data, setData] = useState([
@@ -82,6 +83,12 @@ const Allowance = () => {
          });
       }
    });
+
+   // ----------------------------------- use --------------------------------------
+   const [show, setShow] = useState(false);
+
+   const handleClose = () => setShow(false);
+   const handleShow = () => setShow(true);
 
    const columns = [
       {
@@ -205,12 +212,7 @@ const Allowance = () => {
                      <h3 className="page-title">Phụ cấp</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                     <a
-                        href="#"
-                        className="btn add-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#add_salary"
-                     >
+                     <a href="#" className="btn add-btn" onClick={handleShow}>
                         <i className="fa fa-plus" /> Thêm phụ cấp
                      </a>
                   </div>
@@ -263,229 +265,8 @@ const Allowance = () => {
          </div>
          {/* /Page Content */}
          {/* Add Salary Modal */}
-         <div id="add_salary" className="modal custom-modal fade" role="dialog">
-            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
-               <div className="modal-content">
-                  <div className="modal-header">
-                     <h5 className="modal-title">Add Staff Salary</h5>
-                     <button
-                        type="button"
-                        className="close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                     >
-                        <span aria-hidden="true">×</span>
-                     </button>
-                  </div>
-                  <div className="modal-body">
-                     <form>
-                        <div className="row">
-                           <div className="col-sm-6">
-                              <div className="form-group">
-                                 <label>Select Staff</label>
-                                 <select className="select">
-                                    <option>John Doe</option>
-                                    <option>Richard Miles</option>
-                                 </select>
-                              </div>
-                           </div>
-                           <div className="col-sm-6">
-                              <label>Net Salary</label>
-                              <input className="form-control" type="text" />
-                           </div>
-                        </div>
-                        <div className="row">
-                           <div className="col-sm-6">
-                              <h4 className="text-primary">Earnings</h4>
-                              <div className="form-group">
-                                 <label>Basic</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>DA(40%)</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>HRA(15%)</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Conveyance</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Allowance</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Medical Allowance</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Others</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="add-more">
-                                 <a href="#">
-                                    <i className="fa fa-plus-circle" /> Add More
-                                 </a>
-                              </div>
-                           </div>
-                           <div className="col-sm-6">
-                              <h4 className="text-primary">Deductions</h4>
-                              <div className="form-group">
-                                 <label>TDS</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>ESI</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>PF</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Leave</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Prof. Tax</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Labour Allowance</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Others</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="add-more">
-                                 <a href="#">
-                                    <i className="fa fa-plus-circle" /> Add More
-                                 </a>
-                              </div>
-                           </div>
-                        </div>
-                        <div className="submit-section">
-                           <button className="btn btn-primary submit-btn">Submit</button>
-                        </div>
-                     </form>
-                  </div>
-               </div>
-            </div>
-         </div>
+         <AddAllowance show={show} handleClose={handleClose} />
          {/* /Add Salary Modal */}
-         {/* Edit Salary Modal */}
-         <div id="edit_salary" className="modal custom-modal fade" role="dialog">
-            <div className="modal-dialog modal-dialog-centered modal-md" role="document">
-               <div className="modal-content">
-                  <div className="modal-header">
-                     <h5 className="modal-title">Edit Staff Salary</h5>
-                     <button
-                        type="button"
-                        className="close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                     >
-                        <span aria-hidden="true">×</span>
-                     </button>
-                  </div>
-                  <div className="modal-body">
-                     <form>
-                        <div className="row">
-                           <div className="col-sm-6">
-                              <div className="form-group">
-                                 <label>Select Staff</label>
-                                 <select className="select">
-                                    <option>John Doe</option>
-                                    <option>Richard Miles</option>
-                                 </select>
-                              </div>
-                           </div>
-                           <div className="col-sm-6">
-                              <label>Net Salary</label>
-                              <input className="form-control" type="text" defaultValue="$4000" />
-                           </div>
-                        </div>
-                        <div className="row">
-                           <div className="col-sm-6">
-                              <h4 className="text-primary">Earnings</h4>
-                              <div className="form-group">
-                                 <label>Basic</label>
-                                 <input className="form-control" type="text" defaultValue="$6500" />
-                              </div>
-                              <div className="form-group">
-                                 <label>DA(40%)</label>
-                                 <input className="form-control" type="text" defaultValue="$2000" />
-                              </div>
-                              <div className="form-group">
-                                 <label>HRA(15%)</label>
-                                 <input className="form-control" type="text" defaultValue="$700" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Conveyance</label>
-                                 <input className="form-control" type="text" defaultValue="$70" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Allowance</label>
-                                 <input className="form-control" type="text" defaultValue="$30" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Medical Allowance</label>
-                                 <input className="form-control" type="text" defaultValue="$20" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Others</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                           </div>
-                           <div className="col-sm-6">
-                              <h4 className="text-primary">Deductions</h4>
-                              <div className="form-group">
-                                 <label>TDS</label>
-                                 <input className="form-control" type="text" defaultValue="$300" />
-                              </div>
-                              <div className="form-group">
-                                 <label>ESI</label>
-                                 <input className="form-control" type="text" defaultValue="$20" />
-                              </div>
-                              <div className="form-group">
-                                 <label>PF</label>
-                                 <input className="form-control" type="text" defaultValue="$20" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Leave</label>
-                                 <input className="form-control" type="text" defaultValue="$250" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Prof. Tax</label>
-                                 <input className="form-control" type="text" defaultValue="$110" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Labour Allowance</label>
-                                 <input className="form-control" type="text" defaultValue="$10" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Fund</label>
-                                 <input className="form-control" type="text" defaultValue="$40" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Others</label>
-                                 <input className="form-control" type="text" defaultValue="$15" />
-                              </div>
-                           </div>
-                        </div>
-                        <div className="submit-section">
-                           <button className="btn btn-primary submit-btn">Save</button>
-                        </div>
-                     </form>
-                  </div>
-               </div>
-            </div>
-         </div>
-         {/* /Edit Salary Modal */}
          {/* Delete Salary Modal */}
          <div className="modal custom-modal fade" id="delete_salary" role="dialog">
             <div className="modal-dialog modal-dialog-centered">

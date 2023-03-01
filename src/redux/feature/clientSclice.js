@@ -3,13 +3,14 @@ import { userAPI } from "../../api/user";
 
 export const createClient = createAsyncThunk(
    "client/createClient",
-   async ({ payload, toast, handleClose, setLoading }, { rejectWithValue }) => {
+   async ({ payload, toast, handleClose, setLoading, empty }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await userAPI.createClient(payload);
          toast.success("Thêm khách hàng thành công");
          handleClose();
          setLoading(false);
+         empty();
          return data;
       } catch (error) {
          setLoading(false);
@@ -57,13 +58,14 @@ export const listClientByEmployees = createAsyncThunk(
 
 export const updateClient = createAsyncThunk(
    "client/updateClient",
-   async ({ id, payload, toast, handleClose, setLoading }, { rejectWithValue }) => {
+   async ({ id, payload, toast, handleClose, setLoading, empty }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await userAPI.updateClient(id, payload);
          toast.success("Cập nhật khách hàng thành công");
          handleClose();
          setLoading(false);
+         empty();
          return data;
       } catch (error) {
          setLoading(false);
