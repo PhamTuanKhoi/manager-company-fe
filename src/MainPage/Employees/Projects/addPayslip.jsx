@@ -19,19 +19,12 @@ const AddPayslip = () => {
       //
       leave: "",
       reward: "",
-      rice: "",
       bonus: "",
       overtime: "",
       sunday: "",
       holiday: "",
       service: "",
-      //
-      go: "",
-      home: "",
-      toxic: "",
-      diligence: "",
-      effectively: "",
-      eat: "",
+
       //
       medican: "",
       society: "",
@@ -131,24 +124,7 @@ const AddPayslip = () => {
       if (!paysplip.service) {
          delete paysplip.service;
       }
-      if (!paysplip.go) {
-         delete paysplip.go;
-      }
-      if (!paysplip.home) {
-         delete paysplip.home;
-      }
-      if (!paysplip.toxic) {
-         delete paysplip.toxic;
-      }
-      if (!paysplip.diligence) {
-         delete paysplip.diligence;
-      }
-      if (!paysplip.effectively) {
-         delete paysplip.effectively;
-      }
-      if (!paysplip.eat) {
-         delete paysplip.eat;
-      }
+
       if (!paysplip.medican) {
          delete paysplip.medican;
       }
@@ -195,7 +171,7 @@ const AddPayslip = () => {
                                  <div className="col-sm-6">
                                     <div className="form-group">
                                        <label className="col-form-label">
-                                          Tên phiếu lương
+                                          Tên phúc lợi bảo hiểm
                                           <span className="text-danger">*</span>
                                        </label>
                                        <input
@@ -249,26 +225,6 @@ const AddPayslip = () => {
                                              setPaysplip({
                                                 ...paysplip,
                                                 reward: e.target.value,
-                                             })
-                                          }
-                                       />
-                                    </div>
-                                 </div>
-
-                                 <div className="col-md-6">
-                                    <div className="form-group">
-                                       <label className="col-form-label">
-                                          Cơm Ca <span className="text-danger">*</span>
-                                       </label>{" "}
-                                       <br />
-                                       <input
-                                          className="form-control"
-                                          type="number"
-                                          defaultValue={paysplip?.rice}
-                                          onChange={(e) =>
-                                             setPaysplip({
-                                                ...paysplip,
-                                                rice: e.target.value,
                                              })
                                           }
                                        />
@@ -386,125 +342,7 @@ const AddPayslip = () => {
                                     </div>
                                  </div>
                               </div>
-                              <h3>Phụ cấp</h3>
-                              <div className="row">
-                                 <div className="col-sm-6">
-                                    <div className="form-group">
-                                       <label className="col-form-label">
-                                          Phụ Cấp Đi Lại
-                                          <span className="text-danger">*</span>
-                                       </label>
-                                       <input
-                                          className="form-control"
-                                          type="number"
-                                          defaultValue={paysplip?.go}
-                                          onChange={(e) =>
-                                             setPaysplip({
-                                                ...paysplip,
-                                                go: e.target.value,
-                                             })
-                                          }
-                                       />
-                                    </div>
-                                 </div>
 
-                                 <div className="col-sm-6">
-                                    <div className="form-group">
-                                       <label className="col-form-label">
-                                          Phụ Cấp Nhà Ở <span className="text-danger">*</span>
-                                       </label>
-                                       <input
-                                          className="form-control"
-                                          type="number"
-                                          defaultValue={paysplip?.home}
-                                          onChange={(e) =>
-                                             setPaysplip({
-                                                ...paysplip,
-                                                home: e.target.value,
-                                             })
-                                          }
-                                       />
-                                    </div>
-                                 </div>
-
-                                 <div className="col-md-6">
-                                    <div className="form-group">
-                                       <label className="col-form-label">
-                                          Phụ cấp nặng nhọc/ độc hại{" "}
-                                          <span className="text-danger">*</span>
-                                       </label>{" "}
-                                       <br />
-                                       <input
-                                          className="form-control"
-                                          type="number"
-                                          defaultValue={paysplip?.toxic}
-                                          onChange={(e) =>
-                                             setPaysplip({
-                                                ...paysplip,
-                                                toxic: e.target.value,
-                                             })
-                                          }
-                                       />
-                                    </div>
-                                 </div>
-
-                                 <div className="col-sm-6">
-                                    <div className="form-group">
-                                       <label className="col-form-label">
-                                          Chuyên Cần <span className="text-danger">*</span>
-                                       </label>
-                                       <input
-                                          className="form-control"
-                                          type="number"
-                                          defaultValue={paysplip?.diligence}
-                                          onChange={(e) =>
-                                             setPaysplip({
-                                                ...paysplip,
-                                                diligence: e.target.value,
-                                             })
-                                          }
-                                       />
-                                    </div>
-                                 </div>
-
-                                 <div className="col-sm-6">
-                                    <div className="form-group">
-                                       <label className="col-form-label">
-                                          Hiệu quả công việc <span className="text-danger">*</span>
-                                       </label>
-                                       <input
-                                          className="form-control"
-                                          type="number"
-                                          defaultValue={paysplip?.effectively}
-                                          onChange={(e) =>
-                                             setPaysplip({
-                                                ...paysplip,
-                                                effectively: e.target.value,
-                                             })
-                                          }
-                                       />
-                                    </div>
-                                 </div>
-
-                                 <div className="col-sm-6">
-                                    <div className="form-group">
-                                       <label className="col-form-label">
-                                          Phụ cấp ăn uống<span className="text-danger">*</span>
-                                       </label>
-                                       <input
-                                          className="form-control"
-                                          type="number"
-                                          defaultValue={paysplip?.eat}
-                                          onChange={(e) =>
-                                             setPaysplip({
-                                                ...paysplip,
-                                                eat: e.target.value,
-                                             })
-                                          }
-                                       />
-                                    </div>
-                                 </div>
-                              </div>
                               <h3>Bảo hiểm</h3>
                               <div className="row">
                                  <div className="col-sm-6">

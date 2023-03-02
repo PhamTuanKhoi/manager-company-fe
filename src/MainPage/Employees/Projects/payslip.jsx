@@ -146,7 +146,7 @@ const Payslip = () => {
                         // bordered
                         dataSource={payslips}
                         rowKey={(record) => record._id}
-                        onChange={console.log("change value")}
+                        // onChange={console.log("change value")}
                      />
                   </div>
                </div>
