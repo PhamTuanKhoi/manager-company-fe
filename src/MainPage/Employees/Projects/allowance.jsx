@@ -10,8 +10,11 @@ import "../../antdstyle.css";
 import AddAllowance from "../../../_components/modelbox/AddAllowance";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoading } from "../../../hook/useLoading";
-import { listSalary } from "../../../redux/feature/salarySclice";
+import { listSalary, removeSalary } from "../../../redux/feature/salarySclice";
 import { formatMoney } from "../../../constant";
+import Delete from "../../../_components/modelbox/DeleteAllowance";
+import { useMemo } from "react";
+import { toast } from "react-toastify";
 
 const Allowance = () => {
    useEffect(() => {
@@ -32,14 +35,21 @@ const Allowance = () => {
 
    // -------------------------- list ------------------------
    const [isSalary, setIsSalary] = useState({});
+   const [deleted, setDelete] = useState(false);
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
+   const [hide, setHide] = useState(false);
+   const [item, setItem] = useState({});
 
    useEffect(() => {
       dispatch(listSalary({ setLoading }));
    }, []);
 
    const { salarys } = useSelector((state) => state.salary);
+
+   const handleRemove = () => {
+      dispatch(removeSalary({ id: item?._id, toast, onHide: setHide, setLoading }));
+   };
 
    const columns = [
       {
@@ -88,7 +98,7 @@ const Allowance = () => {
       {
          title: "Dự án",
          dataIndex: "projectEX.name",
-         render: (text, record) => record?.projectEX.name,
+         render: (text, record) => record?.projectEX?.name,
          sorter: (a, b) => a.projectEX.name.length - b.projectEX.name.length,
       },
       {
@@ -118,8 +128,10 @@ const Allowance = () => {
                   <a
                      className="dropdown-item"
                      href="#"
-                     data-bs-toggle="modal"
-                     data-bs-target="#delete_salary"
+                     onClick={() => {
+                        setHide(true);
+                        setItem(record);
+                     }}
                   >
                      <i className="fa fa-trash-o m-r-5" /> Xóa
                   </a>
@@ -200,36 +212,13 @@ const Allowance = () => {
          <AddAllowance show={show} handleClose={handleClose} isSalary={isSalary} load={load} />
          {/* /Add Salary Modal */}
          {/* Delete Salary Modal */}
-         <div className="modal custom-modal fade" id="delete_salary" role="dialog">
-            <div className="modal-dialog modal-dialog-centered">
-               <div className="modal-content">
-                  <div className="modal-body">
-                     <div className="form-header">
-                        <h3>Delete Salary</h3>
-                        <p>Are you sure want to delete?</p>
-                     </div>
-                     <div className="modal-btn delete-action">
-                        <div className="row">
-                           <div className="col-6">
-                              <a href="" className="btn btn-primary continue-btn">
-                                 Delete
-                              </a>
-                           </div>
-                           <div className="col-6">
-                              <a
-                                 href=""
-                                 data-bs-dismiss="modal"
-                                 className="btn btn-primary cancel-btn"
-                              >
-                                 Cancel
-                              </a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
+         <Delete
+            handleRemove={handleRemove}
+            name={item?.beneficiary}
+            title={"Nhóm thụ hưởng"}
+            show={hide}
+            onHide={() => setHide(false)}
+         />
          {/* /Delete Salary Modal */}
       </div>
    );

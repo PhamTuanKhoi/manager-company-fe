@@ -12,7 +12,7 @@ export const createSalary = createAsyncThunk(
          setLoading(false);
          onHide();
          empty();
-         return data;
+         return { ...data, projectEX: payload?.projectEX };
       } catch (error) {
          setLoading(false);
          if (typeof error?.response?.data?.message === "string") {
@@ -67,6 +67,30 @@ export const updateSalary = createAsyncThunk(
    }
 );
 
+export const removeSalary = createAsyncThunk(
+   "salary/removeSalary",
+   async ({ id, toast, onHide, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await salaryAPI.remove(id);
+         toast.success("xóa nhóm thụ hưởng thành công");
+         setLoading(false);
+         onHide();
+         return data;
+      } catch (error) {
+         setLoading(false);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const salarySclice = createSlice({
    name: "salary",
    initialState: {
@@ -82,6 +106,7 @@ const salarySclice = createSlice({
       },
       [createSalary.fulfilled]: (state, action) => {
          state.loading = false;
+         state.salarys.push(action.payload);
       },
       [createSalary.rejected]: (state, action) => {
          state.loading = false;
@@ -115,6 +140,24 @@ const salarySclice = createSlice({
          state.salarys = state.salarys?.map((item) => (item._id === id ? { ...payload } : item));
       },
       [updateSalary.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // delete salary
+      [removeSalary.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [removeSalary.fulfilled]: (state, action) => {
+         state.loading = false;
+
+         const {
+            arg: { id },
+         } = action.meta;
+
+         state.salarys = state.salarys?.filter((i) => i._id !== id);
+      },
+      [removeSalary.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

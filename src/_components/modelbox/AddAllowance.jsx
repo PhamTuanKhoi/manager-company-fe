@@ -61,7 +61,13 @@ const AddAllowance = ({ show, handleClose, isSalary, load }) => {
       if (validate()) {
          dispatch(
             createSalary({
-               payload: { ...salary, creator: user._id },
+               payload: {
+                  ...salary,
+                  creator: user._id,
+                  projectEX: projects?.find((item) =>
+                     item._id === salary?.project ? { name: item?.name, _id: item?._id } : ""
+                  ),
+               },
                toast,
                onHide: handleClose,
                setLoading,
@@ -97,27 +103,27 @@ const AddAllowance = ({ show, handleClose, isSalary, load }) => {
          toast.warn("Làm ơn nhập tên nhóm thụ hưởng");
          return false;
       }
-      if (!salary.salary) {
+      if (salary.salary === undefined) {
          toast.warn("Làm ơn nhập mức lương");
          return false;
       }
-      if (!salary.go) {
+      if (salary.go === undefined) {
          toast.warn("Làm ơn nhập mức phụ cấp đi lại");
          return false;
       }
-      if (!salary.home) {
+      if (salary.home === undefined) {
          toast.warn("Làm ơn nhập mức phụ cấp nhà ở");
          return false;
       }
-      if (!salary.toxic) {
+      if (salary.toxic === undefined) {
          toast.warn("Làm ơn nhập mức phụ cấp nặng nhọc/ độc hai");
          return false;
       }
-      if (!salary.eat) {
+      if (salary.eat === undefined) {
          toast.warn("Làm ơn nhập mức phụ cấp ăn uống");
          return false;
       }
-      if (!salary.diligence) {
+      if (salary.diligence === undefined) {
          toast.warn("Làm ơn nhập mức phụ cấp chuyên cần");
          return false;
       }
@@ -267,7 +273,12 @@ const AddAllowance = ({ show, handleClose, isSalary, load }) => {
                            <select
                               className="form-control"
                               value={salary?.project}
-                              onChange={(e) => setSalary({ ...salary, project: e.target.value })}
+                              onChange={(e) =>
+                                 setSalary({
+                                    ...salary,
+                                    project: e.target.value,
+                                 })
+                              }
                            >
                               <option>Chọn dự án</option>
                               {projects?.map((item) => (
