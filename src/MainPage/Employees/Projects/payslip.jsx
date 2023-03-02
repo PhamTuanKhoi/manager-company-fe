@@ -54,7 +54,7 @@ const Payslip = () => {
 
    const columns = [
       {
-         title: "Tên phiếu lương",
+         title: "Tên phúc lợi bảo hiểm",
          dataIndex: "name",
          render: (text, record) => (
             <h2 className="table-avatar">
@@ -118,11 +118,11 @@ const Payslip = () => {
             <div className="page-header">
                <div className="row align-items-center">
                   <div className="col">
-                     <h3 className="page-title">Phiếu lương</h3>
+                     <h3 className="page-title">Phúc lợi và bảo hiểm</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
                      <Link to={"/app/projects/them-phieu-luong"} className="btn add-btn">
-                        <i className="fa fa-plus" /> Thêm phiếu lương
+                        <i className="fa fa-plus" /> Thêm phúc lợi và bảo hiểm
                      </Link>
                   </div>
                </div>

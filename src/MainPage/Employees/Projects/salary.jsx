@@ -11,31 +11,11 @@ import { useDispatch } from "react-redux";
 import { useLoading } from "../../../hook/useLoading";
 import { listUserSalary } from "../../../redux/feature/workerSclice";
 import { useSelector } from "react-redux";
+import { createOrUpdateContract } from "../../../redux/feature/contractSclice";
+import { toast } from "react-toastify";
+import { formatMoney } from "../../../constant/index";
+
 const Salary = () => {
-   const [data, setData] = useState([
-      {
-         id: 1,
-         image: Avatar_02,
-         name: "John Doe",
-         role: "Web Designer",
-         employee_id: "100.000",
-         email: "1.500.000",
-         salary: "100.000",
-         joindate: "100.000",
-         roles: "Software Engineer",
-      },
-      {
-         id: 2,
-         image: Avatar_05,
-         name: "Richard Miles",
-         role: "Web Developer",
-         employee_id: "100.000",
-         email: "1.500.000",
-         salary: "100.000",
-         joindate: "100.000",
-         roles: "Web Developer",
-      },
-   ]);
    useEffect(() => {
       if ($(".select").length > 0) {
          $(".select").select2({
@@ -47,17 +27,39 @@ const Salary = () => {
 
    // --------------------------- handle --------------------------
 
+   const [render, setRender] = useState(0);
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
+   const { user } = useSelector((state) => state.auth);
 
    useEffect(() => {
       dispatch(listUserSalary({ setLoading }));
-   }, []);
+   }, [render]);
 
    const { workers } = useSelector((state) => state.worker);
-   console.log(workers);
 
-   // ---------------------------column ----------------------------
+   const handleSelect = (record, salary, userId) => {
+      if (!user._id) {
+         toast.warn(`please login !`);
+         return;
+      }
+
+      dispatch(
+         createOrUpdateContract({
+            payload: {
+               salary: salary._id,
+               user: userId,
+               project: record.projectId,
+               creator: user._id,
+            },
+            toast,
+            setLoading,
+            setRender,
+         })
+      );
+   };
+
+   // -------------------------- column ----------------------------
 
    const columns = [
       {
@@ -77,33 +79,38 @@ const Salary = () => {
       },
       {
          title: "Đi lại",
-         dataIndex: "employee_id",
-         sorter: (a, b) => a.employee_id.length - b.employee_id.length,
+         render: (text, record) =>
+            record?.salary?.go !== undefined ? formatMoney(+record?.salary?.go) : "...",
+         sorter: (a, b) => a?.salary?.go?.length - b?.salary?.go?.length,
       },
 
       {
          title: "Nhà ở",
-         dataIndex: "email",
-         sorter: (a, b) => a.email.length - b.email.length,
+         render: (text, record) =>
+            record?.salary?.home !== undefined ? formatMoney(+record?.salary?.home) : "...",
       },
 
       {
-         title: "Nặng nhọc/ độc hại",
-         dataIndex: "joindate",
-         sorter: (a, b) => a.joindate.length - b.joindate.length,
+         title: "Nặng / độc",
+         render: (text, record) =>
+            record?.salary?.toxic !== undefined ? formatMoney(+record?.salary?.toxic) : "...",
       },
       {
          title: "Ăn uống",
-         render: (text, record) => <div>100.000</div>,
+         render: (text, record) =>
+            record?.salary?.eat !== undefined ? formatMoney(+record?.salary?.eat) : "...",
       },
       {
          title: "Chuyên cần",
-         dataIndex: "joindate",
-         sorter: (a, b) => a.joindate.length - b.joindate.length,
+         render: (text, record) =>
+            record?.salary?.diligence !== undefined
+               ? formatMoney(+record?.salary?.diligence)
+               : "...",
       },
       {
          title: "Lương",
-         render: (text, record) => 15000,
+         render: (text, record) =>
+            record?.salary?.salary !== undefined ? formatMoney(+record?.salary?.salary) : "...",
       },
       {
          title: "Dự án",
@@ -115,18 +122,26 @@ const Salary = () => {
          dataIndex: "salary.name",
          sorter: (a, b) => a?.salary?.name?.length - b?.salary?.name?.length,
          render: (text, record) => (
-            <div className="dropdown">
+            <div className="dropdown ">
                <a
                   href=""
-                  className="btn btn-white btn-sm btn-rounded dropdown-toggle"
+                  className={`btn btn-white btn-sm btn-rounded dropdown-toggle ${
+                     record?.salary?.beneficiary
+                        ? `bg-success text-light fw-bold`
+                        : `text-danger bg-warning`
+                  }`}
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                >
-                  {record?.salary?.name || "chọn nhóm thụ hưởng"}
+                  {record?.salary?.beneficiary || "chọn nhóm thụ hưởng"}
                </a>
                <div className="dropdown-menu">
                   {record?.salarys?.map((item) => (
-                     <button key={item?._id} className="dropdown-item">
+                     <button
+                        key={item?._id}
+                        className="dropdown-item"
+                        onClick={() => handleSelect(record, item, record._id)}
+                     >
                         {item?.beneficiary}
                      </button>
                   ))}
@@ -135,10 +150,10 @@ const Salary = () => {
          ),
       },
       {
-         title: "phieu luong",
+         title: "Phiếu lương",
          render: (text, record) => (
             <Link className="btn btn-sm btn-primary" to="/app/payroll/salary-view">
-               Generate Slip
+               Phiếu lương
             </Link>
          ),
       },
@@ -189,17 +204,7 @@ const Salary = () => {
             <div className="page-header">
                <div className="row align-items-center">
                   <div className="col">
-                     <h3 className="page-title">Phụ cấp</h3>
-                  </div>
-                  <div className="col-auto float-end ml-auto">
-                     <a
-                        href="#"
-                        className="btn add-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#add_salary"
-                     >
-                        <i className="fa fa-plus" /> Thêm phụ cấp
-                     </a>
+                     <h3 className="page-title">Lương người lao động</h3>
                   </div>
                </div>
             </div>
@@ -241,7 +246,7 @@ const Salary = () => {
                         columns={columns}
                         // bordered
                         dataSource={workers}
-                        rowKey={(record) => record._id}
+                        rowKey={(record, index) => index}
                         // onChange={this.handleTableChange}
                      />
                   </div>

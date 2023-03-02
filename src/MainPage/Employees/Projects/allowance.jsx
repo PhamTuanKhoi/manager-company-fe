@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
-import { Avatar_02 } from "../../../Entryfile/imagepath";
 
 import { Table } from "antd";
 import "antd/dist/antd.css";
@@ -13,7 +11,6 @@ import { useLoading } from "../../../hook/useLoading";
 import { listSalary, removeSalary } from "../../../redux/feature/salarySclice";
 import { formatMoney } from "../../../constant";
 import Delete from "../../../_components/modelbox/DeleteAllowance";
-import { useMemo } from "react";
 import { toast } from "react-toastify";
 
 const Allowance = () => {
@@ -33,9 +30,8 @@ const Allowance = () => {
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
 
-   // -------------------------- list ------------------------
+   // ----------------------------------- list -------------------------------------
    const [isSalary, setIsSalary] = useState({});
-   const [deleted, setDelete] = useState(false);
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
    const [hide, setHide] = useState(false);
@@ -153,11 +149,11 @@ const Allowance = () => {
             <div className="page-header">
                <div className="row align-items-center">
                   <div className="col">
-                     <h3 className="page-title">Phụ cấp</h3>
+                     <h3 className="page-title">Lương và phụ cấp</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
                      <a href="#" className="btn add-btn" onClick={handleShow}>
-                        <i className="fa fa-plus" /> Thêm phụ cấp
+                        <i className="fa fa-plus" /> Thêm nhóm thụ hưởng
                      </a>
                   </div>
                </div>

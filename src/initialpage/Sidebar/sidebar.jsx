@@ -128,10 +128,10 @@ const Sidebar = (props) => {
                               </li>
                               <li>
                                  <Link
-                                    onClick={() => localStorage.setItem("minheight", "true")}
+                                    className={pathname.includes("phieu-luong") ? "active" : ""}
                                     to="/app/projects/phieu-luong"
                                  >
-                                    Phiếu lương
+                                    Phúc lợi và bảo hiểm
                                  </Link>
                               </li>
                               {/* <li>
@@ -152,8 +152,8 @@ const Sidebar = (props) => {
                               </li>
                               <li>
                                  <Link
-                                    className={pathname.includes("salary") ? "active" : ""}
-                                    to="/app/projects/salary"
+                                    className={pathname.includes("user-salary") ? "active" : ""}
+                                    to="/app/projects/user-salary"
                                  >
                                     Lương người lao động
                                  </Link>

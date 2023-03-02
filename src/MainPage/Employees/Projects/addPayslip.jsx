@@ -187,12 +187,8 @@ const AddPayslip = () => {
                   <div className="col-md-12">
                      <div className="card">
                         <div className="card-body">
-                           {" "}
-                           <div className="back" onClick={() => history.goBack()}>
-                              {"<Back"}
-                           </div>
                            <h2 className="payslip-title">
-                              {id ? "Chỉnh sửa phiếu lương" : "Thêm phiếu lương"}
+                              {id ? "Chỉnh sửa phúc lợi và bảo hiểm" : "Thêm phúc lợi và bảo hiểm"}
                            </h2>
                            <div>
                               <div className="row">
