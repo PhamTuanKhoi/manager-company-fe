@@ -158,6 +158,21 @@ export const listHeador = createAsyncThunk(
    }
 );
 
+export const listUserSalary = createAsyncThunk(
+   "worker/listUserSalary",
+   async ({ setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.listUserSalary();
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const workerSclice = createSlice({
    name: "worker",
    initialState: {
@@ -312,6 +327,19 @@ const workerSclice = createSlice({
          state.headors = action.payload;
       },
       [listHeador.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // list user salary
+      [listUserSalary.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listUserSalary.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.workers = action.payload;
+      },
+      [listUserSalary.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

@@ -38,6 +38,10 @@ export const userAPI = {
       return axios.get(path + "worker-role-employees/" + id);
    },
 
+   listUserSalary() {
+      return axios.get(path + "salary");
+   },
+
    workerNoAssign() {
       return axios.get(path + "worker-no-assign");
    },

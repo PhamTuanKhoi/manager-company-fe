@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { salaryAPI } from "../../api/salary";
-import { formatMoney } from "../../constant";
 
 export const createSalary = createAsyncThunk(
    "salary/createSalary",

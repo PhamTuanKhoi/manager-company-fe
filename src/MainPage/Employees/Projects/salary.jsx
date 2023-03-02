@@ -1,21 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import {
-   Avatar_02,
-   Avatar_09,
-   Avatar_10,
-   Avatar_05,
-   Avatar_11,
-   Avatar_12,
-   Avatar_13,
-} from "../../../Entryfile/imagepath";
+import { Avatar_02, Avatar_05 } from "../../../Entryfile/imagepath";
 
 import { Table } from "antd";
 import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
-
+import { useDispatch } from "react-redux";
+import { useLoading } from "../../../hook/useLoading";
+import { listUserSalary } from "../../../redux/feature/workerSclice";
+import { useSelector } from "react-redux";
 const Salary = () => {
    const [data, setData] = useState([
       {
@@ -40,39 +35,6 @@ const Salary = () => {
          joindate: "100.000",
          roles: "Web Developer",
       },
-      {
-         id: 3,
-         image: Avatar_11,
-         name: "John Smith",
-         role: "Android Developer",
-         employee_id: "100.000",
-         email: "1.500.000",
-         salary: "100.000",
-         joindate: "100.000",
-         roles: "Web Designer",
-      },
-      {
-         id: 4,
-         image: Avatar_12,
-         name: "Mike Litorus",
-         role: "IOS Developer",
-         employee_id: "100.000",
-         email: "1.500.000",
-         salary: "100.000",
-         joindate: "100.000",
-         roles: "Team Leader",
-      },
-      {
-         id: 5,
-         image: Avatar_09,
-         name: "Wilmer Deluna",
-         role: "Team Leader",
-         employee_id: "100.000",
-         email: "1.500.000",
-         salary: "100.000",
-         joindate: "100.000",
-         roles: "Android Developer",
-      },
    ]);
    useEffect(() => {
       if ($(".select").length > 0) {
@@ -83,6 +45,20 @@ const Salary = () => {
       }
    });
 
+   // --------------------------- handle --------------------------
+
+   const dispatch = useDispatch();
+   const { setLoading } = useLoading();
+
+   useEffect(() => {
+      dispatch(listUserSalary({ setLoading }));
+   }, []);
+
+   const { workers } = useSelector((state) => state.worker);
+   console.log(workers);
+
+   // ---------------------------column ----------------------------
+
    const columns = [
       {
          title: "Tên",
@@ -90,10 +66,10 @@ const Salary = () => {
          render: (text, record) => (
             <h2 className="table-avatar">
                <Link to="/app/profile/employee-profile" className="avatar">
-                  <img alt="" src={record.image} />
+                  <img alt="" src={record?.image} />
                </Link>
                <Link to="/app/profile/employee-profile">
-                  {text} <span>{record.role}</span>
+                  {text} <span>{record?.field}</span>
                </Link>
             </h2>
          ),
@@ -126,14 +102,18 @@ const Salary = () => {
          sorter: (a, b) => a.joindate.length - b.joindate.length,
       },
       {
+         title: "Lương",
+         render: (text, record) => 15000,
+      },
+      {
          title: "Dự án",
-         dataIndex: "salary",
-         render: (text, record) => <span>${text}</span>,
-         sorter: (a, b) => a.salary.length - b.salary.length,
+         dataIndex: "projectName",
+         sorter: (a, b) => a.projectName.length - b.projectName.length,
       },
       {
          title: "Nhóm thụ hưởng",
-         dataIndex: "roles",
+         dataIndex: "salary.name",
+         sorter: (a, b) => a?.salary?.name?.length - b?.salary?.name?.length,
          render: (text, record) => (
             <div className="dropdown">
                <a
@@ -142,27 +122,20 @@ const Salary = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                >
-                  {text}{" "}
+                  {record?.salary?.name || "chọn nhóm thụ hưởng"}
                </a>
                <div className="dropdown-menu">
-                  <a className="dropdown-item" href="#">
-                     Software Engineer
-                  </a>
-                  <a className="dropdown-item" href="#">
-                     Software Tester
-                  </a>
-                  <a className="dropdown-item" href="#">
-                     Frontend Developer
-                  </a>
-                  <a className="dropdown-item" href="#">
-                     UI/UX Developer
-                  </a>
+                  {record?.salarys?.map((item) => (
+                     <button key={item?._id} className="dropdown-item">
+                        {item?.beneficiary}
+                     </button>
+                  ))}
                </div>
             </div>
          ),
       },
       {
-         title: "Lương",
+         title: "phieu luong",
          render: (text, record) => (
             <Link className="btn btn-sm btn-primary" to="/app/payroll/salary-view">
                Generate Slip
@@ -257,7 +230,7 @@ const Salary = () => {
                      <Table
                         className="table-striped"
                         pagination={{
-                           total: data.length,
+                           total: workers.length,
                            showTotal: (total, range) =>
                               `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                            showSizeChanger: true,
@@ -267,8 +240,8 @@ const Salary = () => {
                         style={{ overflowX: "auto" }}
                         columns={columns}
                         // bordered
-                        dataSource={data}
-                        rowKey={(record) => record.id}
+                        dataSource={workers}
+                        rowKey={(record) => record._id}
                         // onChange={this.handleTableChange}
                      />
                   </div>
@@ -276,262 +249,6 @@ const Salary = () => {
             </div>
          </div>
          {/* /Page Content */}
-         {/* Add Salary Modal */}
-         <div id="add_salary" className="modal custom-modal fade" role="dialog">
-            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
-               <div className="modal-content">
-                  <div className="modal-header">
-                     <h5 className="modal-title">Add Staff Salary</h5>
-                     <button
-                        type="button"
-                        className="close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                     >
-                        <span aria-hidden="true">×</span>
-                     </button>
-                  </div>
-                  <div className="modal-body">
-                     <form>
-                        <div className="row">
-                           <div className="col-sm-6">
-                              <div className="form-group">
-                                 <label>Select Staff</label>
-                                 <select className="select">
-                                    <option>John Doe</option>
-                                    <option>Richard Miles</option>
-                                 </select>
-                              </div>
-                           </div>
-                           <div className="col-sm-6">
-                              <label>Net Salary</label>
-                              <input className="form-control" type="text" />
-                           </div>
-                        </div>
-                        <div className="row">
-                           <div className="col-sm-6">
-                              <h4 className="text-primary">Earnings</h4>
-                              <div className="form-group">
-                                 <label>Basic</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>DA(40%)</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>HRA(15%)</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Conveyance</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Salary</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Medical Salary</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Others</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="add-more">
-                                 <a href="#">
-                                    <i className="fa fa-plus-circle" /> Add More
-                                 </a>
-                              </div>
-                           </div>
-                           <div className="col-sm-6">
-                              <h4 className="text-primary">Deductions</h4>
-                              <div className="form-group">
-                                 <label>TDS</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>ESI</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>PF</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Leave</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Prof. Tax</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Labour Salary</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Others</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                              <div className="add-more">
-                                 <a href="#">
-                                    <i className="fa fa-plus-circle" /> Add More
-                                 </a>
-                              </div>
-                           </div>
-                        </div>
-                        <div className="submit-section">
-                           <button className="btn btn-primary submit-btn">Submit</button>
-                        </div>
-                     </form>
-                  </div>
-               </div>
-            </div>
-         </div>
-         {/* /Add Salary Modal */}
-         {/* Edit Salary Modal */}
-         <div id="edit_salary" className="modal custom-modal fade" role="dialog">
-            <div className="modal-dialog modal-dialog-centered modal-md" role="document">
-               <div className="modal-content">
-                  <div className="modal-header">
-                     <h5 className="modal-title">Edit Staff Salary</h5>
-                     <button
-                        type="button"
-                        className="close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                     >
-                        <span aria-hidden="true">×</span>
-                     </button>
-                  </div>
-                  <div className="modal-body">
-                     <form>
-                        <div className="row">
-                           <div className="col-sm-6">
-                              <div className="form-group">
-                                 <label>Select Staff</label>
-                                 <select className="select">
-                                    <option>John Doe</option>
-                                    <option>Richard Miles</option>
-                                 </select>
-                              </div>
-                           </div>
-                           <div className="col-sm-6">
-                              <label>Net Salary</label>
-                              <input className="form-control" type="text" defaultValue="$4000" />
-                           </div>
-                        </div>
-                        <div className="row">
-                           <div className="col-sm-6">
-                              <h4 className="text-primary">Earnings</h4>
-                              <div className="form-group">
-                                 <label>Basic</label>
-                                 <input className="form-control" type="text" defaultValue="$6500" />
-                              </div>
-                              <div className="form-group">
-                                 <label>DA(40%)</label>
-                                 <input className="form-control" type="text" defaultValue="$2000" />
-                              </div>
-                              <div className="form-group">
-                                 <label>HRA(15%)</label>
-                                 <input className="form-control" type="text" defaultValue="$700" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Conveyance</label>
-                                 <input className="form-control" type="text" defaultValue="$70" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Salary</label>
-                                 <input className="form-control" type="text" defaultValue="$30" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Medical Salary</label>
-                                 <input className="form-control" type="text" defaultValue="$20" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Others</label>
-                                 <input className="form-control" type="text" />
-                              </div>
-                           </div>
-                           <div className="col-sm-6">
-                              <h4 className="text-primary">Deductions</h4>
-                              <div className="form-group">
-                                 <label>TDS</label>
-                                 <input className="form-control" type="text" defaultValue="$300" />
-                              </div>
-                              <div className="form-group">
-                                 <label>ESI</label>
-                                 <input className="form-control" type="text" defaultValue="$20" />
-                              </div>
-                              <div className="form-group">
-                                 <label>PF</label>
-                                 <input className="form-control" type="text" defaultValue="$20" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Leave</label>
-                                 <input className="form-control" type="text" defaultValue="$250" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Prof. Tax</label>
-                                 <input className="form-control" type="text" defaultValue="$110" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Labour Salary</label>
-                                 <input className="form-control" type="text" defaultValue="$10" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Fund</label>
-                                 <input className="form-control" type="text" defaultValue="$40" />
-                              </div>
-                              <div className="form-group">
-                                 <label>Others</label>
-                                 <input className="form-control" type="text" defaultValue="$15" />
-                              </div>
-                           </div>
-                        </div>
-                        <div className="submit-section">
-                           <button className="btn btn-primary submit-btn">Save</button>
-                        </div>
-                     </form>
-                  </div>
-               </div>
-            </div>
-         </div>
-         {/* /Edit Salary Modal */}
-         {/* Delete Salary Modal */}
-         <div className="modal custom-modal fade" id="delete_salary" role="dialog">
-            <div className="modal-dialog modal-dialog-centered">
-               <div className="modal-content">
-                  <div className="modal-body">
-                     <div className="form-header">
-                        <h3>Delete Salary</h3>
-                        <p>Are you sure want to delete?</p>
-                     </div>
-                     <div className="modal-btn delete-action">
-                        <div className="row">
-                           <div className="col-6">
-                              <a href="" className="btn btn-primary continue-btn">
-                                 Delete
-                              </a>
-                           </div>
-                           <div className="col-6">
-                              <a
-                                 href=""
-                                 data-bs-dismiss="modal"
-                                 className="btn btn-primary cancel-btn"
-                              >
-                                 Cancel
-                              </a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         {/* /Delete Salary Modal */}
       </div>
    );
 };
