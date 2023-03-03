@@ -14,7 +14,7 @@ const ReportsRoute = ({ match }) => (
       <Redirect exact from={`${match.url}/`} to={`${match.url}/_salary`} />
       <Route path={`${match.url}/_salary`} component={EmployeeSalary} />
       <Route path={`${match.url}/payroll-items`} component={Payrollitem} />
-      <Route path={`${match.url}/salary-view/:id`} component={Payslip} />
+      <Route path={`${match.url}/salary-view`} component={Payslip} />
    </Switch>
 );
 

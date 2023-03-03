@@ -102,7 +102,10 @@ const Payslip = () => {
          dataIndex: "name",
          render: (text, record) => (
             <h2 className="table-avatar">
-               <Link style={{ color: "#0d6efd" }} to={`/app/payroll/salary-view/${record?._id}`}>
+               <Link
+                  style={{ color: "#0d6efd" }}
+                  to={`/app/payroll/salary-view?payslip=${record?._id}`}
+               >
                   {text}
                </Link>
             </h2>

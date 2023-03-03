@@ -3,29 +3,28 @@ import { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
-import { Applogo } from "../../../Entryfile/imagepath";
+import { useLocation } from "react-router-dom";
 import payslipSclice from "../../../redux/feature/payslipSclice";
 
 const Payslip = () => {
-   const { id } = useParams();
+   // get query
+   const { search } = useLocation();
+   const query = useMemo(() => new URLSearchParams(search), [search]);
+   const payslipId = query.get("payslip");
+   const projectId = query.get("project");
+
    const dispatch = useDispatch();
 
-   const { payslip } = useSelector((state) => state.payslip);
-
-   // get query
-   // const { search } = useLocation();
-   // const query = useMemo(() => new URLSearchParams(search), [search]);
-   // const editId = query.get("edit");
-
    useEffect(() => {
-      dispatch(payslipSclice.actions.payslipDetail(id));
+      dispatch(payslipSclice.actions.payslipDetail(payslipId));
    }, []);
+
+   const { payslip } = useSelector((state) => state.payslip);
 
    return (
       <div className="page-wrapper">
          <Helmet>
-            <title>Payslip - HRMS Admin Template</title>
+            <title>Phiếu lương</title>
             <meta name="description" content="Login page" />
          </Helmet>
          {/* Page Content */}
@@ -81,12 +80,6 @@ const Payslip = () => {
                                        </tr>
                                        <tr>
                                           <td>
-                                             <span>Cơm ca</span>{" "}
-                                             <span className="float-end">{payslip?.rice} VND</span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
                                              <span>Lương tháng 13</span>{" "}
                                              <span className="float-end">
                                                 {payslip?.bonus} tháng/năm
@@ -121,59 +114,67 @@ const Payslip = () => {
                                  </table>
                               </div>
                            </div>
-                           <div className="col-sm-6">
-                              <div>
-                                 <h4 className="m-b-10">
-                                    <strong>Phụ cấp</strong>
-                                 </h4>
-                                 <table className="table table-bordered">
-                                    <tbody>
-                                       <tr>
-                                          <td>
-                                             <span>Phụ cấp đi lại</span>{" "}
-                                             <span className="float-end">{payslip?.go} VND</span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <span>Phụ cấp nhà ở</span>{" "}
-                                             <span className="float-end">{payslip?.home} VND</span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <span>Phụ cấp nặng nhọc/ độc hại</span>{" "}
-                                             <span className="float-end">{payslip?.toxic} VND</span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <span>Chuyên cần</span>{" "}
-                                             <span className="float-end">
-                                                {payslip?.diligence} VND
-                                             </span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <span>Hiệu quả công việc</span>{" "}
-                                             <span className="float-end">
-                                                {payslip?.effectively} VND
-                                             </span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <span>Phụ cấp ăn uống</span>{" "}
-                                             <span className="float-end">{payslip?.eat} VND</span>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
+                           {projectId && (
+                              <div className="col-sm-6">
+                                 <div>
+                                    <h4 className="m-b-10">
+                                       <strong>Phụ cấp</strong>
+                                    </h4>
+                                    <table className="table table-bordered">
+                                       <tbody>
+                                          <tr>
+                                             <td>
+                                                <span>Phụ cấp đi lại</span>{" "}
+                                                <span className="float-end">{payslip?.go} VND</span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>Phụ cấp nhà ở</span>{" "}
+                                                <span className="float-end">
+                                                   {payslip?.home} VND
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>Phụ cấp nặng nhọc/ độc hại</span>{" "}
+                                                <span className="float-end">
+                                                   {payslip?.toxic} VND
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>Chuyên cần</span>{" "}
+                                                <span className="float-end">
+                                                   {payslip?.diligence} VND
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>Hiệu quả công việc</span>{" "}
+                                                <span className="float-end">
+                                                   {payslip?.effectively} VND
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>Phụ cấp ăn uống</span>{" "}
+                                                <span className="float-end">
+                                                   {payslip?.eat} VND
+                                                </span>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
                               </div>
-                           </div>
+                           )}
 
-                           <div className="col-sm-6">
+                           <div className={`${!projectId ? "col-sm-12" : "col-sm-6"}`}>
                               <div>
                                  <h4 className="m-b-10">
                                     <strong>Bảo hiểm</strong>
