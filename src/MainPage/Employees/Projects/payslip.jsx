@@ -15,20 +15,29 @@ import {
    listPayslipByWorker,
 } from "../../../redux/feature/payslipSclice";
 import moment from "moment";
-import { UserRoleType } from "../../../constant";
+import { formatMoney, UserRoleType } from "../../../constant";
 import { useLoading } from "../../../hook/useLoading";
 import DeletePayslip from "../../../_components/modelbox/DeletePayslip";
+import {
+   listProjectByAdmin,
+   listProjectByUser,
+   updateProjectPayslip,
+} from "../../../redux/feature/projectSclice";
+import { toast } from "react-toastify";
 
 const Payslip = () => {
    const [payslip, setPayslip] = useState({});
    const [modalDelete, setModalDelete] = useState(false);
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
+   const [render, setRender] = useState(0);
    const { user } = useSelector((state) => state.auth);
+
+   // -------------------------- fetch payslip ---------------------------
 
    useEffect(() => {
       fetchPayslip();
-   }, [user?.role]);
+   }, [user?.role, render]);
 
    function fetchPayslip() {
       if (user._id) {
@@ -50,7 +59,42 @@ const Payslip = () => {
       }
    }
 
+   // ---------------------- fetch project ------------------------
+
+   useEffect(() => {
+      if (user._id) {
+         fetchProject();
+      }
+   }, [user._id, user.role]);
+
+   const fetchProject = () => {
+      if (user.role === UserRoleType.ADMIN) {
+         dispatch(listProjectByAdmin({ setLoading }));
+      }
+
+      if (user.role !== UserRoleType.ADMIN) {
+         dispatch(listProjectByUser({ id: user._id, setLoading }));
+      }
+   };
+
+   const { projects } = useSelector((state) => state.project);
+
    const { payslips } = useSelector((state) => state.payslip);
+
+   const handleSelect = (id, payslip) => {
+      dispatch(
+         updateProjectPayslip({
+            id,
+            payload: { payslip: payslip._id },
+            toast,
+            onHide: () => setRender((prev) => prev + 1),
+            setLoading,
+            payslip,
+         })
+      );
+   };
+
+   // ----------------------------- column --------------------------
 
    const columns = [
       {
@@ -58,19 +102,78 @@ const Payslip = () => {
          dataIndex: "name",
          render: (text, record) => (
             <h2 className="table-avatar">
-               <Link className="text-primary" to={`/app/payroll/salary-view/${record?._id}`}>
+               <Link style={{ color: "#0d6efd" }} to={`/app/payroll/salary-view/${record?._id}`}>
                   {text}
                </Link>
             </h2>
          ),
          sorter: (a, b) => a.name.length - b.name.length,
       },
-
       {
-         title: "Ngày tạo",
-         dataIndex: "createdAt",
-         render: (text) => moment(text).format("DD/MM/YYYY"),
-         sorter: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+         title: "BHYT",
+         dataIndex: "medican",
+         render: (text, record) => +record?.medican + "%",
+         sorter: (a, b) => a.medican - b.medican,
+      },
+      {
+         title: "BHXH",
+         dataIndex: "society",
+         render: (text, record) => +record?.society + "%",
+         sorter: (a, b) => a.society - b.medican,
+      },
+      {
+         title: "BH Thất Nghiệp",
+         dataIndex: "unemployment",
+         render: (text, record) => +record?.unemployment + "%",
+         sorter: (a, b) => a.unemployment - b.medican,
+      },
+      {
+         title: "BH Công Đoàn",
+         dataIndex: "medican",
+         render: (text, record) => +record?.medican + "%",
+         sorter: (a, b) => a.medican - b.medican,
+      },
+      {
+         title: "BH Tai Nạn",
+         dataIndex: "medican",
+         render: (text, record) => +record?.medican + "%",
+         sorter: (a, b) => a.medican - b.medican,
+      },
+      {
+         title: "Sức Khỏe Định Kỳ",
+         dataIndex: "medican",
+         render: (text, record) => +record?.medican + "%",
+         sorter: (a, b) => a.medican - b.medican,
+      },
+      {
+         title: "Thuộc dự án",
+         render: (text, record) => (
+            <div className="dropdown ">
+               <a
+                  href="#"
+                  className={`btn btn-white btn-sm btn-rounded dropdown-toggle ${
+                     record?.projectEX?.name
+                        ? `bg-success text-light fw-bold`
+                        : `text-danger bg-warning`
+                  }`}
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+               >
+                  {record?.projectEX?.name || "Chọn dự án"}
+               </a>
+               <div className="dropdown-menu">
+                  {projects.map((item) => (
+                     <button
+                        key={item?._id}
+                        className="dropdown-item"
+                        onClick={() => handleSelect(item._id, record)}
+                     >
+                        {item?.name}
+                     </button>
+                  ))}
+               </div>
+            </div>
+         ),
       },
       {
          title: "Action",
@@ -145,7 +248,7 @@ const Payslip = () => {
                         columns={columns}
                         // bordered
                         dataSource={payslips}
-                        rowKey={(record) => record._id}
+                        rowKey={(record) => record?.projectEX?._id || record?._id}
                         // onChange={console.log("change value")}
                      />
                   </div>

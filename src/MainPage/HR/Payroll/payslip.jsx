@@ -12,7 +12,6 @@ const Payslip = () => {
    const dispatch = useDispatch();
 
    const { payslip } = useSelector((state) => state.payslip);
-   const history = useHistory();
 
    // get query
    // const { search } = useLocation();
@@ -54,9 +53,6 @@ const Payslip = () => {
                <div className="col-md-12">
                   <div className="card">
                      <div className="card-body">
-                        <div onClick={() => history.goBack()} className="back">
-                           {"<Back"}
-                        </div>
                         <h4 className="payslip-title">{payslip?.name}</h4>
 
                         <div className="row">

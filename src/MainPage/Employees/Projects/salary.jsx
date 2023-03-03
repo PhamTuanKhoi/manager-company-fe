@@ -246,7 +246,7 @@ const Salary = () => {
                         columns={columns}
                         // bordered
                         dataSource={workers}
-                        rowKey={(record, index) => index}
+                        rowKey={(record) => record._id}
                         // onChange={this.handleTableChange}
                      />
                   </div>
