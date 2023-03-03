@@ -180,9 +180,9 @@ const Salary = () => {
                   </Link>
                   <Link
                      className="dropdown-item"
-                     to={`/app/payroll/salary-view?payslip=${record?.payslip?._id}&project=${record?.projectId}&salary=${record?.salary?._id}`}
+                     to={`/app/payroll/export?payslip=${record?.payslip?._id}&project=${record?.projectId}&salary=${record?.salary?._id}`}
                   >
-                     Xuất
+                     Phiếu lương
                   </Link>
                   <a className="dropdown-item" href="#">
                      <i className="fa fa-pencil m-r-5" /> Edit

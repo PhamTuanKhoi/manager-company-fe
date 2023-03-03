@@ -6,6 +6,7 @@ import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import EmployeeSalary from "./employeesalary";
+import Payroll from "./payroll";
 import Payrollitem from "./payrollitem";
 import Payslip from "./payslip";
 
@@ -15,6 +16,7 @@ const ReportsRoute = ({ match }) => (
       <Route path={`${match.url}/_salary`} component={EmployeeSalary} />
       <Route path={`${match.url}/payroll-items`} component={Payrollitem} />
       <Route path={`${match.url}/salary-view`} component={Payslip} />
+      <Route path={`${match.url}/export`} component={Payroll} />
    </Switch>
 );
 
