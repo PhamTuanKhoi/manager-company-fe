@@ -6,6 +6,10 @@ export const payslipAPI = {
       return await axios.get(path);
    },
 
+   async detail(query) {
+      return await axios.get(path + "detail?", { params: query });
+   },
+
    async findOne(id) {
       return await axios.get(path + id);
    },

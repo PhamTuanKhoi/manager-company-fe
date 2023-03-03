@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import { Avatar_02, Avatar_05 } from "../../../Entryfile/imagepath";
 
 import { Table } from "antd";
 import "antd/dist/antd.css";
@@ -40,7 +39,7 @@ const Salary = () => {
 
    const handleSelect = (record, salary, userId) => {
       if (!user._id) {
-         toast.warn(`please login !`);
+         toast.warn(`Please login !`);
          return;
       }
 
@@ -149,14 +148,17 @@ const Salary = () => {
             </div>
          ),
       },
-      {
-         title: "Phiếu lương",
-         render: (text, record) => (
-            <Link className="btn btn-sm btn-primary" to="/app/payroll/salary-view">
-               Phiếu lương
-            </Link>
-         ),
-      },
+      // {
+      //    title: "Phiếu lương",
+      //    render: (text, record) => (
+      //       <Link
+      //          className="btn btn-sm btn-primary"
+      //          to={`/app/payroll/salary-view?payslip=${record?.payslip?._id}&project=${record?.projectId}&salary=${record?.salary?._id}`}
+      //       >
+      //          {record?.payslip?.name}
+      //       </Link>
+      //    ),
+      // },
       {
          title: "Action",
          render: (text, record) => (
@@ -170,20 +172,22 @@ const Salary = () => {
                   <i className="material-icons">more_vert</i>
                </a>
                <div className="dropdown-menu dropdown-menu-right">
-                  <a
+                  <Link
                      className="dropdown-item"
-                     href="#"
-                     data-bs-toggle="modal"
-                     data-bs-target="#edit_salary"
+                     to={`/app/payroll/salary-view?payslip=${record?.payslip?._id}&project=${record?.projectId}&salary=${record?.salary?._id}`}
                   >
+                     Chi tiết
+                  </Link>
+                  <Link
+                     className="dropdown-item"
+                     to={`/app/payroll/salary-view?payslip=${record?.payslip?._id}&project=${record?.projectId}&salary=${record?.salary?._id}`}
+                  >
+                     Xuất
+                  </Link>
+                  <a className="dropdown-item" href="#">
                      <i className="fa fa-pencil m-r-5" /> Edit
                   </a>
-                  <a
-                     className="dropdown-item"
-                     href="#"
-                     data-bs-toggle="modal"
-                     data-bs-target="#delete_salary"
-                  >
+                  <a className="dropdown-item" href="#">
                      <i className="fa fa-trash-o m-r-5" /> Delete
                   </a>
                </div>

@@ -4,7 +4,9 @@ import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import payslipSclice from "../../../redux/feature/payslipSclice";
+import payslipSclice, { payslipDetail } from "../../../redux/feature/payslipSclice";
+import { useLoading } from "../../../hook/useLoading";
+import { formatMoneyVND } from "../../../constant";
 
 const Payslip = () => {
    // get query
@@ -12,14 +14,21 @@ const Payslip = () => {
    const query = useMemo(() => new URLSearchParams(search), [search]);
    const payslipId = query.get("payslip");
    const projectId = query.get("project");
+   const salaryId = query.get("salary");
 
    const dispatch = useDispatch();
+   const { setLoading } = useLoading();
 
    useEffect(() => {
-      dispatch(payslipSclice.actions.payslipDetail(payslipId));
-   }, []);
+      dispatch(
+         payslipDetail({
+            query: { payslip: payslipId, project: projectId, salary: salaryId },
+            setLoading,
+         })
+      );
+   }, [payslipId, projectId]);
 
-   const { payslip } = useSelector((state) => state.payslip);
+   const { detail } = useSelector((state) => state.payslip);
 
    return (
       <div className="page-wrapper">
@@ -52,8 +61,7 @@ const Payslip = () => {
                <div className="col-md-12">
                   <div className="card">
                      <div className="card-body">
-                        <h4 className="payslip-title">{payslip?.name}</h4>
-
+                        <h4 className="payslip-title">{detail[0]?.name}</h4>
                         <div className="row">
                            <div className="col-sm-12">
                               <div>
@@ -66,7 +74,7 @@ const Payslip = () => {
                                           <td>
                                              <span>Nghỉ phép</span>{" "}
                                              <span className="float-end">
-                                                {payslip?.leave} ngày/năm
+                                                {detail[0]?.leave} ngày/năm
                                              </span>
                                           </td>
                                        </tr>
@@ -74,7 +82,7 @@ const Payslip = () => {
                                           <td>
                                              <span>Thưởng lể/tết</span>{" "}
                                              <span className="float-end">
-                                                {payslip?.reward} VND
+                                                {formatMoneyVND(detail[0]?.reward)}
                                              </span>
                                           </td>
                                        </tr>
@@ -82,32 +90,38 @@ const Payslip = () => {
                                           <td>
                                              <span>Lương tháng 13</span>{" "}
                                              <span className="float-end">
-                                                {payslip?.bonus} tháng/năm
+                                                {detail[0]?.bonus} tháng/năm
                                              </span>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td>
                                              <span>Làm ngoài giờ</span>{" "}
-                                             <span className="float-end">{payslip?.overtime}%</span>
+                                             <span className="float-end">
+                                                {detail[0]?.overtime}%
+                                             </span>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td>
                                              <span>Làm chủ nhật</span>{" "}
-                                             <span className="float-end">{payslip?.sunday}%</span>
+                                             <span className="float-end">{detail[0]?.sunday}%</span>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td>
                                              <span>Làm lể tết</span>{" "}
-                                             <span className="float-end">{payslip?.holiday}%</span>
+                                             <span className="float-end">
+                                                {detail[0]?.holiday}%
+                                             </span>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td>
                                              <span>Phí dịch vụ</span>{" "}
-                                             <span className="float-end">{payslip?.service}%</span>
+                                             <span className="float-end">
+                                                {detail[0]?.service}%
+                                             </span>
                                           </td>
                                        </tr>
                                     </tbody>
@@ -118,21 +132,23 @@ const Payslip = () => {
                               <div className="col-sm-6">
                                  <div>
                                     <h4 className="m-b-10">
-                                       <strong>Phụ cấp</strong>
+                                       <strong>Lương và phụ cấp</strong>
                                     </h4>
                                     <table className="table table-bordered">
                                        <tbody>
                                           <tr>
                                              <td>
                                                 <span>Phụ cấp đi lại</span>{" "}
-                                                <span className="float-end">{payslip?.go} VND</span>
+                                                <span className="float-end">
+                                                   {formatMoneyVND(detail[0]?.salary?.go)}
+                                                </span>
                                              </td>
                                           </tr>
                                           <tr>
                                              <td>
                                                 <span>Phụ cấp nhà ở</span>{" "}
                                                 <span className="float-end">
-                                                   {payslip?.home} VND
+                                                   {formatMoneyVND(detail[0]?.salary?.home)}
                                                 </span>
                                              </td>
                                           </tr>
@@ -140,7 +156,7 @@ const Payslip = () => {
                                              <td>
                                                 <span>Phụ cấp nặng nhọc/ độc hại</span>{" "}
                                                 <span className="float-end">
-                                                   {payslip?.toxic} VND
+                                                   {formatMoneyVND(detail[0]?.salary?.toxic)}
                                                 </span>
                                              </td>
                                           </tr>
@@ -148,15 +164,8 @@ const Payslip = () => {
                                              <td>
                                                 <span>Chuyên cần</span>{" "}
                                                 <span className="float-end">
-                                                   {payslip?.diligence} VND
-                                                </span>
-                                             </td>
-                                          </tr>
-                                          <tr>
-                                             <td>
-                                                <span>Hiệu quả công việc</span>{" "}
-                                                <span className="float-end">
-                                                   {payslip?.effectively} VND
+                                                   {formatMoneyVND(detail[0]?.salary?.diligence)}{" "}
+                                                   VND
                                                 </span>
                                              </td>
                                           </tr>
@@ -164,7 +173,15 @@ const Payslip = () => {
                                              <td>
                                                 <span>Phụ cấp ăn uống</span>{" "}
                                                 <span className="float-end">
-                                                   {payslip?.eat} VND
+                                                   {formatMoneyVND(detail[0]?.salary?.eat)}
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span className="fw-bold">Lương</span>{" "}
+                                                <span className="float-end fw-bold">
+                                                   {formatMoneyVND(detail[0]?.salary?.salary)}
                                                 </span>
                                              </td>
                                           </tr>
@@ -184,46 +201,66 @@ const Payslip = () => {
                                        <tr>
                                           <td>
                                              <span>Bảo Hiểm Y Tế</span>{" "}
-                                             <span className="float-end">{payslip?.medican}%</span>
+                                             <span className="float-end">
+                                                {detail[0]?.medican}%
+                                             </span>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td>
                                              <span>Bảo Hiểm Xã Hội</span>{" "}
-                                             <span className="float-end">{payslip?.society}%</span>
+                                             <span className="float-end">
+                                                {detail[0]?.society}%
+                                             </span>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td>
                                              <span>Bảo Hiểm Thất Nghiệp</span>{" "}
                                              <span className="float-end">
-                                                {payslip?.unemployment}%
+                                                {detail[0]?.unemployment}%
                                              </span>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td>
                                              <span>Công Đoàn</span>{" "}
-                                             <span className="float-end">{payslip?.union}%</span>
+                                             <span className="float-end">{detail[0]?.union}%</span>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td>
                                              <span>Bảo Hiểm Tai Nạn</span>{" "}
-                                             <span className="float-end">{payslip?.accident}%</span>
+                                             <span className="float-end">
+                                                {detail[0]?.accident}%
+                                             </span>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td>
                                              <span>Khám Sức Khỏe Định Kỳ</span>{" "}
-                                             <span className="float-end">{payslip?.health}%</span>
+                                             <span className="float-end">{detail[0]?.health}%</span>
                                           </td>
                                        </tr>
                                     </tbody>
                                  </table>
                               </div>
                            </div>
-                        </div>
+                        </div>{" "}
+                        <hr />
+                        {/* <div className="row">
+                           <div className="col-sm-12">
+                              <h4 className="m-b-10">
+                                 <strong>Phụ cấp khác</strong>
+                              </h4>
+                           </div>
+                           <div>
+                              <label htmlFor="">sss</label>
+                              <input type="text" className="input-custom" />
+                              <label htmlFor="">sss</label>
+                              <input type="text" className="input-custom" />
+                           </div>
+                        </div> */}
                      </div>
                   </div>
                </div>
