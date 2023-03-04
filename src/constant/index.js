@@ -34,6 +34,10 @@ export const timeCustom = (time) => {
    return timed === "00:00" ? "..." : timed;
 };
 
+export const formatHourToSecond = (time) => {
+   return time?.slice(0, 2) * 3600 + time?.slice(3, 5) * 60;
+};
+
 export const avartarFAKE = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 export const logoFAKE =
    "https://fce.com.vn/wp-content/uploads/2022/12/logo_fce_trong_suot-2048x1229.png";

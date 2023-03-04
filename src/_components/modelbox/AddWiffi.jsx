@@ -12,13 +12,16 @@ import { useState } from "react";
 import { createRules, findRulesByIdProject, updateRules } from "../../redux/feature/rulesSclice";
 import { toast } from "react-toastify";
 import { useMemo } from "react";
+import { formatHourToSecond, timeCustom } from "../../constant";
 
 function AddWiffi({ show, onHide }) {
    const [position, setPosition] = useState(-1);
-   const [rules, setReules] = useState({
+   const [rules, setRules] = useState({
       password: "",
       timeIn: "",
       timeOut: "",
+      lunchIn: "",
+      lunchOut: "",
    });
    const [text, setText] = useState("");
    const [hourIn, setHourIn] = useState(0);
@@ -55,7 +58,7 @@ function AddWiffi({ show, onHide }) {
    const { rule } = useSelector((state) => state.rules);
 
    useEffect(() => {
-      setReules(rule);
+      setRules(rule);
 
       if (position === -1) setText(rule?.wiffi ?? "");
    }, [rule]);
@@ -63,14 +66,14 @@ function AddWiffi({ show, onHide }) {
 
    // ----------------------- create rules -----------------------
    const handleChangeTimeIn = (e) => {
-      setReules({
+      setRules({
          ...rules,
          timeIn: e.target.value.slice(0, 2) * 3600 + e.target.value.slice(3, 5) * 60,
       });
    };
 
    const handleChangeTimeOut = (e) => {
-      setReules({
+      setRules({
          ...rules,
          timeOut: e.target.value.slice(0, 2) * 3600 + e.target.value.slice(3, 5) * 60,
       });
@@ -79,29 +82,37 @@ function AddWiffi({ show, onHide }) {
    const handleSave = () => {
       // let h = Math.floor(da / 3600);
       // console.log(Math.floor((da - h * 3600) / 60));
-      dispatch(
-         createRules({
-            payload: { ...rules, wiffi: text, project: id },
-            onHide,
-            setLoading,
-            toast,
-         })
-      );
+      if (validate()) {
+         dispatch(
+            createRules({
+               payload: { ...rules, wiffi: text, project: id },
+               onHide,
+               setLoading,
+               toast,
+            })
+         );
+      }
    };
    // ----------------------- create rules -----------------------
 
    // ----------------------- update rules -----------------------
    const handleUpdate = () => {
-      console.log(rules, text);
-      dispatch(
-         updateRules({
-            id: rule?._id,
-            payload: { ...rules, wiffiOld: rule?.wiffi, passwordOld: rule?.password, wiffi: text },
-            onHide,
-            setLoading,
-            toast,
-         })
-      );
+      if (validate()) {
+         dispatch(
+            updateRules({
+               id: rule?._id,
+               payload: {
+                  ...rules,
+                  wiffiOld: rule?.wiffi,
+                  passwordOld: rule?.password,
+                  wiffi: text,
+               },
+               onHide,
+               setLoading,
+               toast,
+            })
+         );
+      }
    };
    // ----------------------- update rules -----------------------
 
@@ -127,6 +138,42 @@ function AddWiffi({ show, onHide }) {
       setMinuteOut(minuOut);
    }, [rules.timeOut]);
 
+   // ----------------------- validate -----------------------------------
+   const validate = () => {
+      if (!rules.timeIn) {
+         toast.warn("Làm ơn chọn giờ vào");
+         return false;
+      }
+
+      if (!rules.timeOut) {
+         toast.warn("Làm ơn chọn giờ ra");
+         return false;
+      }
+
+      if (rules.timeOut - rules.timeIn <= 0) {
+         toast.warn("Giờ ra phải lớn hơn giờ vào");
+         return false;
+      }
+
+      if (rules.lunchOut && !rules.lunchIn) {
+         toast.warn("Làm ơn chọn giờ ăn vào");
+         return false;
+      }
+
+      if (!rules.lunchOut && rules.lunchIn) {
+         toast.warn("Làm ơn chọn giờ ăn ra");
+         return false;
+      }
+
+      if (rules.lunchIn && rules.lunchOut) {
+         if (rules.lunchIn - rules.lunchOut <= 0) {
+            toast.warn("Giờ ăn vào phải lớn hơn giờ ăn ra");
+            return false;
+         }
+      }
+      return true;
+   };
+
    return (
       <Modal show={show} onHide={onHide}>
          <div className="modal-header">
@@ -137,7 +184,7 @@ function AddWiffi({ show, onHide }) {
                </span>
             </button>
          </div>
-         <Modal.Body style={{ height: "520px" }}>
+         <Modal.Body style={{ height: "730px" }}>
             <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
                <li className="nav-item">
                   <a
@@ -170,7 +217,7 @@ function AddWiffi({ show, onHide }) {
                            className="form-control search-input"
                            type="password"
                            defaultValue={rules?.password}
-                           onChange={(e) => setReules({ ...rules, password: e.target.value })}
+                           onChange={(e) => setRules({ ...rules, password: e.target.value })}
                         />
                      </div>
                      <span>Giờ vào</span>
@@ -202,9 +249,35 @@ function AddWiffi({ show, onHide }) {
                         />
                      </div>
 
+                     <span>Giờ ăn trưa ra</span>
+                     <div className="input-group m-b-30">
+                        <input
+                           placeholder="Nhập mật khẩu wiffi"
+                           className="form-control search-input"
+                           type="time"
+                           value={timeCustom(rules.lunchOut)}
+                           onChange={(e) =>
+                              setRules({ ...rules, lunchOut: formatHourToSecond(e.target.value) })
+                           }
+                        />
+                     </div>
+
+                     <span>Giờ ăn trưa vào</span>
+                     <div className="input-group m-b-30">
+                        <input
+                           placeholder="Nhập mật khẩu wiffi"
+                           className="form-control search-input"
+                           type="time"
+                           value={timeCustom(rules.lunchIn)}
+                           onChange={(e) =>
+                              setRules({ ...rules, lunchIn: formatHourToSecond(e.target.value) })
+                           }
+                        />
+                     </div>
+
                      {rule?._id ? (
                         <div className="button-dialog" onClick={handleUpdate}>
-                           <button className="primary">Lưu ss</button>
+                           <button className="primary">Lưu</button>
                         </div>
                      ) : (
                         <div className="button-dialog" onClick={handleSave}>
@@ -213,7 +286,7 @@ function AddWiffi({ show, onHide }) {
                      )}
                   </div>
                   {/* choose wiffi */}
-                  <ul className="chat-user-list tab-pane show active overflow" id="choose">
+                  <ul className="chat-user-list tab-pane show active overflow-setting" id="choose">
                      <div className="media import-content">
                         <div className="content-media">
                            <div className="media-body align-self-center text-nowrap">

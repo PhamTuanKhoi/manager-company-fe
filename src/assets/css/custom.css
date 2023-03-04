@@ -184,6 +184,12 @@
     overflow: auto;
   }
 
+  .overflow-setting {
+    height: 600px;
+    overflow: auto;
+  }
+
+
   .background-blue {
     background-color: #0d6efd;
   }
