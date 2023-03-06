@@ -4,7 +4,7 @@ import { timeCustom } from "../../constant";
 import { Checkbox } from "antd";
 import { useState } from "react";
 
-const Tableavatar = ({ dateInMonth, allUserAttendance, checked, setChecked }) => {
+const Tableavatar = ({ dateInMonth, allUserAttendance, checked, setChecked, setCheckedAll }) => {
    // ------------------------------ get user attendance ---------------------------
 
    let array = new Set();

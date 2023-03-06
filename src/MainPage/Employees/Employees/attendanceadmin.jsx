@@ -14,10 +14,12 @@ import { useLoading } from "../../../hook/useLoading";
 import { Pagination } from "antd";
 import { Checkbox } from "antd";
 import { ClockCircleOutlined } from "@ant-design/icons";
+import AddOvertime from "../../../_components/modelbox/AddOvertime";
 
 const AttendanceAdmin = () => {
    const [menu, setMenu] = useState(false);
    const [show, setShow] = useState(false);
+   const [showOvertime, setShowOvertime] = useState(false);
    const day = new Date().getDate();
    const [dateInMonth, setDateInMonth] = useState([]);
    const { id } = useParams();
@@ -136,7 +138,11 @@ const AttendanceAdmin = () => {
                         </a>
                         {checked.length > 0 && (
                            <>
-                              <a href="#" className="btn btn-danger ml-2 me-2">
+                              <a
+                                 href="#"
+                                 className="btn btn-danger ml-2 me-2"
+                                 onClick={() => setShowOvertime(true)}
+                              >
                                  <span>Tăng ca</span>
                               </a>
                               <a href="#" className="btn btn-warning ml-2 me-2">
@@ -180,6 +186,7 @@ const AttendanceAdmin = () => {
                                  dateInMonth={dateInMonth}
                                  setChecked={setChecked}
                                  checked={checked}
+                                 setCheckedAll={setCheckedAll}
                               />
                            </tbody>
                         </table>
@@ -310,6 +317,13 @@ const AttendanceAdmin = () => {
             {/* created wiffi attendance */}
             <AddWiffi show={show} onHide={handleClose} />
             {/* created wiffi attendance */}
+            {/* created overtime attendance */}
+            <AddOvertime
+               show={showOvertime}
+               onHide={() => setShowOvertime(false)}
+               checked={checked}
+            />
+            {/* created overtime attendance */}
          </div>
       </div>
    );
