@@ -194,4 +194,8 @@
     background-color: #0d6efd;
   }
 
+  .underline-red {
+    text-decoration: underline;
+    text-decoration-color: red;
+  }
  

@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { Link } from "react-router-dom";
+import { timeCustom } from "../../constant";
 import { Avatar_04 } from "../../Entryfile/imagepath";
 
 const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
@@ -400,10 +401,12 @@ const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
                      : dateInMonth?.map((val, index) => (
                           <td key={index}>
                              <a href="" data-bs-toggle="modal" data-bs-target="#attendance_info">
-                                <i className="fa fa-close text-danger" />
+                                <i className="fa fa-close text-secondary" />
                              </a>
                           </td>
                        ))}
+
+                  <td>dccd</td>
                </tr>
             );
          })}
@@ -416,13 +419,17 @@ const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
 function Td({ val }) {
    return (
       <td>
-         <a href="" data-bs-toggle="modal" data-bs-target="#attendance_info">
-            {val?.status === false ? (
-               <i className="fa fa-close text-danger" />
-            ) : val.status === true ? (
-               <i className="fa fa-check text-success" />
+         <a href="#" className="fw-bold" data-bs-toggle="modal" data-bs-target="#attendance_info">
+            {val?.status === "redundant" ? (
+               <span className="text-info">{timeCustom(val?.workHour)}</span>
+            ) : val.status === "lack" ? (
+               <span className="underline-red">{timeCustom(val?.workHour)}</span>
+            ) : val.status === "enough" ? (
+               <span className="">{timeCustom(val?.workHour)}</span>
+            ) : val.timein > 0 && val.timeout === 0 ? (
+               <span>o</span>
             ) : (
-               "o"
+               <i className="fa fa-close text-secondary" />
             )}
          </a>
       </td>
