@@ -1,12 +1,21 @@
 import React, { memo } from "react";
 import { Link } from "react-router-dom";
 import { timeCustom } from "../../constant";
-import { Avatar_04 } from "../../Entryfile/imagepath";
+import { Checkbox } from "antd";
+import { useState } from "react";
 
-const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
+const Tableavatar = ({ dateInMonth, allUserAttendance, checked, setChecked }) => {
    // ------------------------------ get user attendance ---------------------------
 
    let array = new Set();
+
+   const handleChange = (e, item) => {
+      setChecked([...checked, item._id]);
+
+      if (!e.target.checked) {
+         setChecked(checked.filter((i) => i !== item._id));
+      }
+   };
 
    return (
       <>
@@ -14,12 +23,13 @@ const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
             return (
                <tr key={item._id}>
                   <td>
-                     <h2 className="table-avatar">
-                        <Link className="avatar avatar-xs" to="/app/profile/employee-profile">
-                           <img alt="" src={Avatar_04} />
-                        </Link>
-                        <Link to="/app/profile/employee-profile">{item.name}</Link>
-                     </h2>
+                     <Checkbox
+                        checked={checked.includes(item._id)}
+                        onChange={(e) => handleChange(e, item)}
+                     />
+                     <Link to={`/app/profile/worker-profile/${item?._id}`}>
+                        <span className="ms-3 text-dark">{item?.name}</span>
+                     </Link>
                   </td>
 
                   {/* Tableavatar */}
@@ -401,7 +411,7 @@ const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
                      : dateInMonth?.map((val, index) => (
                           <td key={index}>
                              <a href="" data-bs-toggle="modal" data-bs-target="#attendance_info">
-                                <i className="fa fa-close text-secondary" />
+                                <i className="fa fa-close text-danger" />
                              </a>
                           </td>
                        ))}
@@ -429,7 +439,7 @@ function Td({ val }) {
             ) : val.timein > 0 && val.timeout === 0 ? (
                <span>o</span>
             ) : (
-               <i className="fa fa-close text-secondary" />
+               <i className="fa fa-close text-danger" />
             )}
          </a>
       </td>

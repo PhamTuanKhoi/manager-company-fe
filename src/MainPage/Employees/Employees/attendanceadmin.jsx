@@ -8,11 +8,12 @@ import { WifiOutlined } from "@ant-design/icons";
 import AddWiffi from "../../../_components/modelbox/AddWiffi";
 import { useDispatch, useSelector } from "react-redux";
 import attendanceSclice, { userAttendance } from "../../../redux/feature/attendanceSclice";
-import AddAttendance from "../../../_components/modelbox/AddAttendance";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useLoading } from "../../../hook/useLoading";
 import { Pagination } from "antd";
+import { Checkbox } from "antd";
+import { ClockCircleOutlined } from "@ant-design/icons";
 
 const AttendanceAdmin = () => {
    const [menu, setMenu] = useState(false);
@@ -24,6 +25,8 @@ const AttendanceAdmin = () => {
    const [limit] = useState(10);
    const [page, setPage] = useState(1);
    const [count, setCount] = useState(0);
+   const [checked, setChecked] = useState([]);
+   const [checkedAll, setCheckedAll] = useState(false);
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -76,6 +79,22 @@ const AttendanceAdmin = () => {
    useMemo(() => {
       setCount(allUserAttendance?.paginate?.count);
    }, [allUserAttendance]);
+
+   // ------------------------------- select -------------------------------------
+
+   const handleChangeAll = (e) => {
+      setCheckedAll(!checkedAll);
+      setChecked(allUserAttendance?.items.map((i) => i._id));
+      if (checkedAll) {
+         setChecked([]);
+      }
+   };
+
+   useEffect(() => {
+      if (checkedAll) setCheckedAll(false);
+      setChecked([]);
+   }, [page]);
+
    // ------------------------------- paging -------------------------------------
    const itemRender = (_, type, originalElement) => {
       if (type === "prev") {
@@ -110,11 +129,21 @@ const AttendanceAdmin = () => {
                      <div className="col-auto float-end ml-auto">
                         <a
                            href="#"
-                           className="btn btn-white float-end ml-2"
+                           className="btn btn-success float-end ml-2 me-2"
                            onClick={() => setShow(true)}
                         >
                            <WifiOutlined /> Cập nhật wiffi chấm công
                         </a>
+                        {checked.length > 0 && (
+                           <>
+                              <a href="#" className="btn btn-danger ml-2 me-2">
+                                 <span>Tăng ca</span>
+                              </a>
+                              <a href="#" className="btn btn-warning ml-2 me-2">
+                                 <span>Ca gãy</span>
+                              </a>
+                           </>
+                        )}
                      </div>
                   </div>
                </div>
@@ -127,45 +156,6 @@ const AttendanceAdmin = () => {
                         <label className="focus-label">Employee Name</label>
                      </div>
                   </div>
-                  <div className="col-sm-6 col-md-3">
-                     <div className="form-group form-focus select-focus">
-                        <select className="select floating">
-                           <option>-</option>
-                           <option>Jan</option>
-                           <option>Feb</option>
-                           <option>Mar</option>
-                           <option>Apr</option>
-                           <option>May</option>
-                           <option>Jun</option>
-                           <option>Jul</option>
-                           <option>Aug</option>
-                           <option>Sep</option>
-                           <option>Oct</option>
-                           <option>Nov</option>
-                           <option>Dec</option>
-                        </select>
-                        <label className="focus-label">Select Month</label>
-                     </div>
-                  </div>
-                  <div className="col-sm-6 col-md-3">
-                     <div className="form-group form-focus select-focus">
-                        <select className="select floating">
-                           <option>-</option>
-                           <option>2019</option>
-                           <option>2018</option>
-                           <option>2017</option>
-                           <option>2016</option>
-                           <option>2015</option>
-                        </select>
-                        <label className="focus-label">Select Year</label>
-                     </div>
-                  </div>
-                  <div className="col-sm-6 col-md-3">
-                     <a href="#" className="btn btn-success btn-block w-100">
-                        {" "}
-                        Search{" "}
-                     </a>
-                  </div>
                </div>
                {/* /Search Filter */}
                <div className="row">
@@ -174,7 +164,10 @@ const AttendanceAdmin = () => {
                         <table className="table table-striped custom-table table-nowrap mb-0">
                            <thead>
                               <tr>
-                                 <th>Người lao động</th>
+                                 <th>
+                                    <Checkbox onChange={handleChangeAll} checked={checkedAll} />
+                                    <span className="ms-3">Người lao động</span>
+                                 </th>
                                  {dateInMonth?.map((day) => (
                                     <th key={day}>{day}</th>
                                  ))}
@@ -185,6 +178,8 @@ const AttendanceAdmin = () => {
                                  setCount={setCount}
                                  allUserAttendance={allUserAttendance}
                                  dateInMonth={dateInMonth}
+                                 setChecked={setChecked}
+                                 checked={checked}
                               />
                            </tbody>
                         </table>
