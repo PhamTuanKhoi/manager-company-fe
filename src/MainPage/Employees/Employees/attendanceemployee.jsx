@@ -49,7 +49,13 @@ const AttendanceEmployee = () => {
       dispatch(attendancePersonal({ query: { project: id, user: user._id }, setLoading }));
       dispatch(
          todayAttendance({
-            query: { project: id, user: user._id, date: new Date().getDate() },
+            query: {
+               project: id,
+               user: user._id,
+               date: new Date().getDate(),
+               month: new Date().getMonth() + 1,
+               year: new Date().getFullYear(),
+            },
             setLoading,
          })
       );

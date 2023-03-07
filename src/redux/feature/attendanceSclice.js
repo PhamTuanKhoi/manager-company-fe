@@ -66,7 +66,7 @@ export const createAttendance = createAsyncThunk(
    async ({ payload, toast, onHide, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await attendanceAPI.create(payload);
+         const { data } = await attendanceAPI.createOrUpdate(payload);
          toast.success(`Đã chấm công wiffi ${payload?.wiffi}`);
          onHide();
          setLoading(false);
@@ -132,6 +132,7 @@ const attendanceSclice = createSlice({
       },
       [createAttendance.fulfilled]: (state, action) => {
          state.loading = false;
+         // state.attendances.push(action.payload);
       },
       [createAttendance.rejected]: (state, action) => {
          state.loading = false;

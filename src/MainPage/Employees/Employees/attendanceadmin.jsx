@@ -97,6 +97,12 @@ const AttendanceAdmin = () => {
       setChecked([]);
    }, [page]);
 
+   useMemo(() => {
+      if (checked?.length === allUserAttendance.items?.length) {
+         setCheckedAll(true);
+      }
+   }, [checked]);
+
    // ------------------------------- paging -------------------------------------
    const itemRender = (_, type, originalElement) => {
       if (type === "prev") {

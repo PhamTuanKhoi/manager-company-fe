@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { timeCustom } from "../../constant";
 import { Checkbox } from "antd";
@@ -13,6 +13,7 @@ const Tableavatar = ({ dateInMonth, allUserAttendance, checked, setChecked, setC
       setChecked([...checked, item._id]);
 
       if (!e.target.checked) {
+         setCheckedAll(false);
          setChecked(checked.filter((i) => i !== item._id));
       }
    };
