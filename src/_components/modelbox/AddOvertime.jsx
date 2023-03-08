@@ -35,12 +35,6 @@ function AddOvertime({ show, onHide, checked }) {
       );
    };
 
-   // let date = new Date(overtime.date).getDate();
-   // let month = new Date(overtime.date).getMonth() + 1;
-   // let year = new Date(overtime.date).getFullYear();
-
-   // console.log(new Date(`${year}-0${month}-0${date}`).getTime(), "test");
-   // console.log(new Date(overtime.date).getTime(), "t");
    return (
       <Modal show={show} onHide={onHide}>
          <div className="modal-header">
