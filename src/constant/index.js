@@ -77,6 +77,16 @@ export const TaskStatusType = {
    COMPLETED: 2,
 };
 
+export const overtimeType = {
+   MORNING: "morning",
+   EVERNINGS: "evernings",
+};
+
+export const overtimeOpition = [
+   { value: overtimeType.MORNING, label: "Ca sáng" },
+   { value: overtimeType.EVERNINGS, label: "Ca tối" },
+];
+
 export const prioritys = [
    { value: 0, label: "Thấp" },
    { value: 1, label: "Trung bình" },

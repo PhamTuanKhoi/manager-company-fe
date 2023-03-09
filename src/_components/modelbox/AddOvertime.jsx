@@ -3,15 +3,17 @@ import { Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { formatHourToSecond } from "../../constant";
+import { formatHourToSecond, overtimeOpition, overtimeType } from "../../constant";
 import { useLoading } from "../../hook/useLoading";
 import { createOvertime } from "../../redux/feature/overtimeSclice";
+import { Radio } from "antd";
 
 function AddOvertime({ show, onHide, checked }) {
    const [overtime, setOvertime] = useState({
       date: "",
       timein: "",
       timeout: "",
+      type: overtimeType.EVERNINGS,
    });
 
    const { id } = useParams();
@@ -22,6 +24,7 @@ function AddOvertime({ show, onHide, checked }) {
       dispatch(
          createOvertime({
             payload: {
+               ...overtime,
                date: new Date(overtime.date).getTime(),
                timein: formatHourToSecond(overtime.timein),
                timeout: formatHourToSecond(overtime.timeout),
@@ -35,6 +38,12 @@ function AddOvertime({ show, onHide, checked }) {
       );
    };
 
+   // -------------------------------- radio ---------------------------------
+   const [value, setValue] = useState(1);
+   const onChange = (e) => {
+      console.log("radio checked", e.target.value);
+      setOvertime({ ...overtime, type: e.target.value });
+   };
    return (
       <Modal show={show} onHide={onHide}>
          <div className="modal-header">
@@ -76,6 +85,17 @@ function AddOvertime({ show, onHide, checked }) {
                      onChange={(e) => setOvertime({ ...overtime, timeout: e.target.value })}
                   />
                </div>
+
+               <span>Kiểu tăng ca:</span>
+               <br />
+               <Radio.Group onChange={onChange} value={overtime.type}>
+                  {overtimeOpition?.map((item) => (
+                     <Radio key={item?.value} value={item?.value}>
+                        {item?.label}
+                     </Radio>
+                  ))}
+               </Radio.Group>
+               <div className="input-group m-b-30"></div>
 
                <span>Số lượng: {checked.length} người.</span>
 
