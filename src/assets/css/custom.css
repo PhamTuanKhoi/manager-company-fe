@@ -198,4 +198,16 @@
     text-decoration: underline;
     text-decoration-color: red;
   }
+
+  .round-span {
+    width: 25px;
+    height: 25px; 
+    display: inline-flex;
+    justify-content: center;
+    align-items: center; 
+    border-radius: 20px;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+  }
  
