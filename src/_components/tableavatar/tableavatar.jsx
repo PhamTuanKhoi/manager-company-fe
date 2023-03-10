@@ -431,12 +431,10 @@ function Td({ val }) {
    return (
       <td>
          <a href="#" className="fw-bold" data-bs-toggle="modal" data-bs-target="#attendance_info">
-            {val?.status === "redundant" ? (
-               <span className="text-info">{timeCustom(val?.workHour)}</span>
-            ) : val.status === "lack" ? (
-               <span className="underline-red">{timeCustom(val?.workHour)}</span>
+            {val.status === "lack" ? (
+               <span className="underline-red">{timeCustom(val?.workHourPerson)}</span>
             ) : val.status === "enough" ? (
-               <span className="">{timeCustom(val?.workHour)}</span>
+               <span className="">{timeCustom(val?.workHourPerson)}</span>
             ) : val.timein > 0 && val.timeout === 0 ? (
                <span>o</span>
             ) : (

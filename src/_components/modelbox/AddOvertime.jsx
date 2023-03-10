@@ -10,7 +10,7 @@ import { Radio } from "antd";
 
 function AddOvertime({ show, onHide, checked }) {
    const [overtime, setOvertime] = useState({
-      date: "",
+      datetime: "",
       timein: "",
       timeout: "",
       type: overtimeType.EVERNINGS,
@@ -25,7 +25,10 @@ function AddOvertime({ show, onHide, checked }) {
          createOvertime({
             payload: {
                ...overtime,
-               date: new Date(overtime.date).getTime(),
+               datetime: new Date(overtime.datetime).getTime(),
+               year: new Date(overtime.datetime).getFullYear(),
+               month: new Date(overtime.datetime).getMonth() + 1,
+               date: new Date(overtime.datetime).getDate(),
                timein: formatHourToSecond(overtime.timein),
                timeout: formatHourToSecond(overtime.timeout),
                userIds: checked,
@@ -39,7 +42,7 @@ function AddOvertime({ show, onHide, checked }) {
    };
 
    // -------------------------------- radio ---------------------------------
-   const [value, setValue] = useState(1);
+   // const [value, setValue] = useState(1);
    const onChange = (e) => {
       console.log("radio checked", e.target.value);
       setOvertime({ ...overtime, type: e.target.value });
@@ -61,8 +64,8 @@ function AddOvertime({ show, onHide, checked }) {
                   <input
                      className="form-control search-input"
                      type="date"
-                     value={overtime.date}
-                     onChange={(e) => setOvertime({ ...overtime, date: e.target.value })}
+                     value={overtime.datetime}
+                     onChange={(e) => setOvertime({ ...overtime, datetime: e.target.value })}
                   />
                </div>
 

@@ -121,7 +121,7 @@ const Sidebar = (props) => {
                                           ? "active"
                                           : ""
                                     }
-                                    to="/app/projects/projects-list"
+                                    to="/app/projects/project_dashboard"
                                  >
                                     Tất cả dự án
                                  </Link>
