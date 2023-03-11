@@ -195,27 +195,35 @@ const Projects = () => {
                            <div className="pro-deadline m-b-15">
                               <div className="sub-title">
                                  Số lượng làm:
-                                 <span class="round-span background-blue ms-2">
+                                 <span className="round-span background-blue ms-2">
                                     {item?.attendanceToDay > 0
                                        ? "+" + item?.attendanceToDay
                                        : item?.attendanceToDay}
                                  </span>
-                                 <span class="round-span bg-warning ms-2">
-                                    <LoginOutlined />
-                                 </span>
+                                 <Link
+                                    to={`/app/projects/today-worker?project=${item?._id}&status=true`}
+                                 >
+                                    <span className="round-span bg-warning ms-2">
+                                       <LoginOutlined />
+                                    </span>
+                                 </Link>
                               </div>
                            </div>
                            <div className="pro-deadline m-b-15">
                               <div className="sub-title">
                                  Số lượng nghỉ:
-                                 <span class="round-span background-blue ms-2">
+                                 <span className="round-span background-blue ms-2">
                                     {item?.workers?.length - item?.attendanceToDay > 0
                                        ? "+" + (item?.workers?.length - item?.attendanceToDay)
                                        : item?.workers?.length - item?.attendanceToDay}
                                  </span>
-                                 <span class="round-span bg-warning ms-2">
-                                    <LoginOutlined />
-                                 </span>
+                                 <Link
+                                    to={`/app/projects/today-worker?project=${item?._id}&status=false`}
+                                 >
+                                    <span className="round-span bg-warning ms-2">
+                                       <LoginOutlined />
+                                    </span>
+                                 </Link>
                               </div>
                            </div>
                            <div className="pro-deadline m-b-15">
@@ -237,10 +245,10 @@ const Projects = () => {
                            <div className="pro-deadline m-b-15">
                               <div className="sub-title">
                                  Team:
-                                 <span class="round-span background-blue ms-2">
+                                 <span className="round-span background-blue ms-2">
                                     +{item?.employees?.length}
                                  </span>
-                                 <span class="round-span bg-warning ms-2">
+                                 <span className="round-span bg-warning ms-2">
                                     <LoginOutlined />
                                  </span>
                               </div>

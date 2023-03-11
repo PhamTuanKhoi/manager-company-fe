@@ -12,14 +12,10 @@ import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useLoading } from "../../../hook/useLoading";
 import { Pagination } from "antd";
-import { Checkbox } from "antd";
-import { ClockCircleOutlined } from "@ant-design/icons";
-import AddOvertime from "../../../_components/modelbox/AddOvertime";
 
 const AttendanceAdmin = () => {
    const [menu, setMenu] = useState(false);
    const [show, setShow] = useState(false);
-   const [showOvertime, setShowOvertime] = useState(false);
    const day = new Date().getDate();
    const [dateInMonth, setDateInMonth] = useState([]);
    const { id } = useParams();
@@ -27,8 +23,6 @@ const AttendanceAdmin = () => {
    const [limit] = useState(10);
    const [page, setPage] = useState(1);
    const [count, setCount] = useState(0);
-   const [checked, setChecked] = useState([]);
-   const [checkedAll, setCheckedAll] = useState(false);
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -82,27 +76,6 @@ const AttendanceAdmin = () => {
       setCount(allUserAttendance?.paginate?.count);
    }, [allUserAttendance]);
 
-   // ------------------------------- select -------------------------------------
-
-   const handleChangeAll = (e) => {
-      setCheckedAll(!checkedAll);
-      setChecked(allUserAttendance?.items.map((i) => i._id));
-      if (checkedAll) {
-         setChecked([]);
-      }
-   };
-
-   useEffect(() => {
-      if (checkedAll) setCheckedAll(false);
-      setChecked([]);
-   }, [page]);
-
-   useMemo(() => {
-      if (checked?.length === allUserAttendance.items?.length) {
-         setCheckedAll(true);
-      }
-   }, [checked]);
-
    // ------------------------------- paging -------------------------------------
    const itemRender = (_, type, originalElement) => {
       if (type === "prev") {
@@ -142,20 +115,6 @@ const AttendanceAdmin = () => {
                         >
                            <WifiOutlined /> Cập nhật wiffi chấm công
                         </a>
-                        {checked.length > 0 && (
-                           <>
-                              <a
-                                 href="#"
-                                 className="btn btn-danger ml-2 me-2"
-                                 onClick={() => setShowOvertime(true)}
-                              >
-                                 <span>Tăng ca</span>
-                              </a>
-                              <a href="#" className="btn btn-warning ml-2 me-2">
-                                 <span>Ca gãy</span>
-                              </a>
-                           </>
-                        )}
                      </div>
                   </div>
                </div>
@@ -177,7 +136,6 @@ const AttendanceAdmin = () => {
                            <thead>
                               <tr>
                                  <th>
-                                    <Checkbox onChange={handleChangeAll} checked={checkedAll} />
                                     <span className="ms-3">Người lao động</span>
                                  </th>
                                  {dateInMonth?.map((day) => (
@@ -187,12 +145,8 @@ const AttendanceAdmin = () => {
                            </thead>
                            <tbody>
                               <Tableavatar
-                                 setCount={setCount}
                                  allUserAttendance={allUserAttendance}
                                  dateInMonth={dateInMonth}
-                                 setChecked={setChecked}
-                                 checked={checked}
-                                 setCheckedAll={setCheckedAll}
                               />
                            </tbody>
                         </table>
@@ -323,13 +277,6 @@ const AttendanceAdmin = () => {
             {/* created wiffi attendance */}
             <AddWiffi show={show} onHide={handleClose} />
             {/* created wiffi attendance */}
-            {/* created overtime attendance */}
-            <AddOvertime
-               show={showOvertime}
-               onHide={() => setShowOvertime(false)}
-               checked={checked}
-            />
-            {/* created overtime attendance */}
          </div>
       </div>
    );

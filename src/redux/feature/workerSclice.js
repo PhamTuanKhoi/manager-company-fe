@@ -71,6 +71,21 @@ export const listWorkerByEmployees = createAsyncThunk(
    }
 );
 
+export const listWorkerAttendanceToday = createAsyncThunk(
+   "worker/listWorkerAttendanceToday",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.listTodayAttendance(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 export const profileWorker = createAsyncThunk(
    "worker/profileWorker",
    async ({ id, setLoading }, { rejectWithValue }) => {
@@ -340,6 +355,19 @@ const workerSclice = createSlice({
          state.workers = action.payload;
       },
       [listUserSalary.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // list user salary
+      [listWorkerAttendanceToday.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listWorkerAttendanceToday.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.workers = action.payload;
+      },
+      [listWorkerAttendanceToday.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

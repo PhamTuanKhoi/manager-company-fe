@@ -42,6 +42,10 @@ export const userAPI = {
       return axios.get(path + "salary");
    },
 
+   listTodayAttendance(query) {
+      return axios.get(path + "today-attendance", { params: query });
+   },
+
    workerNoAssign() {
       return axios.get(path + "worker-no-assign");
    },

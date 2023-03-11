@@ -1,14 +1,13 @@
 import React, { memo, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { formatHourToSecond, overtimeOpition, overtimeType } from "../../constant";
 import { useLoading } from "../../hook/useLoading";
 import { createOvertime } from "../../redux/feature/overtimeSclice";
 import { Radio } from "antd";
 
-function AddOvertime({ show, onHide, checked }) {
+function AddOvertime({ show, onHide, checked, projectId }) {
    const [overtime, setOvertime] = useState({
       datetime: "",
       timein: "",
@@ -16,7 +15,6 @@ function AddOvertime({ show, onHide, checked }) {
       type: overtimeType.EVERNINGS,
    });
 
-   const { id } = useParams();
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
 
@@ -32,7 +30,7 @@ function AddOvertime({ show, onHide, checked }) {
                timein: formatHourToSecond(overtime.timein),
                timeout: formatHourToSecond(overtime.timeout),
                userIds: checked,
-               project: id,
+               project: projectId,
             },
             setLoading,
             onHide,

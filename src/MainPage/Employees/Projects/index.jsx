@@ -16,6 +16,7 @@ import AttendanceAdmin from "./../Employees/attendanceadmin";
 import AttendanceEmployee from "./../Employees/attendanceemployee";
 import Allowance from "./allowance";
 import Salary from "./salary";
+import ToDayWork from "./todaywork";
 
 const ProjectRoute = ({ match }) => (
    <Switch>
@@ -32,6 +33,7 @@ const ProjectRoute = ({ match }) => (
       <Route path={`${match.url}/phieu-luong`} component={Payslip} />
       <Route path={`${match.url}/them-phieu-luong/:id`} component={AddPayslip} />
       <Route path={`${match.url}/them-phieu-luong`} component={AddPayslip} />
+      <Route path={`${match.url}/today-worker`} component={ToDayWork} />
    </Switch>
 );
 

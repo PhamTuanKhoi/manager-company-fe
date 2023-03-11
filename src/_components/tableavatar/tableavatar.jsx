@@ -4,19 +4,10 @@ import { timeCustom } from "../../constant";
 import { Checkbox } from "antd";
 import { useState } from "react";
 
-const Tableavatar = ({ dateInMonth, allUserAttendance, checked, setChecked, setCheckedAll }) => {
+const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
    // ------------------------------ get user attendance ---------------------------
 
    let array = new Set();
-
-   const handleChange = (e, item) => {
-      setChecked([...checked, item._id]);
-
-      if (!e.target.checked) {
-         setCheckedAll(false);
-         setChecked(checked.filter((i) => i !== item._id));
-      }
-   };
 
    return (
       <>
@@ -24,10 +15,6 @@ const Tableavatar = ({ dateInMonth, allUserAttendance, checked, setChecked, setC
             return (
                <tr key={item._id}>
                   <td>
-                     <Checkbox
-                        checked={checked.includes(item._id)}
-                        onChange={(e) => handleChange(e, item)}
-                     />
                      <Link to={`/app/profile/worker-profile/${item?._id}`}>
                         <span className="ms-3 text-dark">{item?.name}</span>
                      </Link>
