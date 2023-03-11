@@ -225,9 +225,7 @@ const Projects = () => {
                            <div className="pro-deadline m-b-15">
                               <div className="sub-title">
                                  Số lượng tăng ca:
-                                 <Link
-                                    to={`/app/projects/today-worker?project=${item?._id}&status=false`}
-                                 >
+                                 <Link to={`/app/projects/overtime?project=${item?._id}`}>
                                     <span className="round-span bg-warning ms-2">1</span>
                                  </Link>
                               </div>

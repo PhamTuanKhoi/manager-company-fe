@@ -17,6 +17,7 @@ import AttendanceEmployee from "./../Employees/attendanceemployee";
 import Allowance from "./allowance";
 import Salary from "./salary";
 import ToDayWork from "./todaywork";
+import ListOvertime from "./listOvertime";
 
 const ProjectRoute = ({ match }) => (
    <Switch>
@@ -34,6 +35,7 @@ const ProjectRoute = ({ match }) => (
       <Route path={`${match.url}/them-phieu-luong/:id`} component={AddPayslip} />
       <Route path={`${match.url}/them-phieu-luong`} component={AddPayslip} />
       <Route path={`${match.url}/today-worker`} component={ToDayWork} />
+      <Route path={`${match.url}/overtime`} component={ListOvertime} />
    </Switch>
 );
 
