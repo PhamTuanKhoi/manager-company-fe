@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import "antd/dist/antd.css";
 import { useDispatch } from "react-redux";
 import { useLoading } from "../../../hook/useLoading";
-import { listWorkerAttendanceToday } from "../../../redux/feature/workerSclice";
+import { listToDayOvertime, listWorkerAttendanceToday } from "../../../redux/feature/workerSclice";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import moment from "moment";
@@ -18,7 +18,24 @@ const ListOvertime = () => {
    const query = new URLSearchParams(search);
 
    const project = query.get("project");
-   const status = query.get("status");
+
+   useEffect(() => {
+      dispatch(
+         listToDayOvertime({
+            query: {
+               project,
+               year: new Date().getFullYear(),
+               month: new Date().getMonth() + 1,
+               date: new Date().getDate(),
+            },
+            setLoading,
+         })
+      );
+   }, [project]);
+
+   const { workers } = useSelector((state) => state.worker);
+
+   console.log(workers);
 
    return (
       <div className="page-wrapper">
@@ -52,10 +69,15 @@ const ListOvertime = () => {
                            </tr>
                         </thead>
                         <tbody>
-                           <tr>
-                              <td>okay</td>
-                              <td>okay</td>
-                           </tr>
+                           {workers?.map((item) => (
+                              <tr key={item?._id}>
+                                 <td>{item?.name}</td>
+                                 <td>{item?.mobile}</td>
+                                 <td>{timeCustom(item?.overtime?.timein)}</td>
+                                 <td>{timeCustom(item?.overtime?.timeout)}</td>
+                                 <td>{moment(item?.overtime?.datetime).format("DD/MM/YYYY")}</td>
+                              </tr>
+                           ))}
                         </tbody>
                      </table>
                   </div>

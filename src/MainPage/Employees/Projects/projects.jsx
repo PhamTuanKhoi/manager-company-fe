@@ -6,14 +6,6 @@ import Editproject from "../../../_components/modelbox/Editproject";
 // import "react-summernote/dist/react-summernote.css"; // import styles
 
 import "../../index.css";
-import {
-   Avatar_16,
-   Avatar_02,
-   Avatar_11,
-   Avatar_12,
-   Avatar_13,
-   Avatar_01,
-} from "../../../Entryfile/imagepath";
 
 import Addproject from "../../../_components/modelbox/Addproject";
 import { useDispatch } from "react-redux";
@@ -28,7 +20,6 @@ import { prioritys, UserRoleType } from "../../../constant";
 import DeleteProject from "../../../_components/modelbox/DeleteProject";
 import { listEmployees } from "../../../redux/feature/employeesSclice";
 import { listClient } from "../../../redux/feature/clientSclice";
-import { LoginOutlined } from "@ant-design/icons";
 
 const Projects = () => {
    const [modalShow, setModalShow] = useState(false);
@@ -70,6 +61,8 @@ const Projects = () => {
       dispatch(projectSclice.actions.searchNameProject(text));
       dispatch(projectSclice.actions.filterPriority(priority));
    }, [priority, text]);
+
+   console.log(projects);
 
    return (
       <div className="page-wrapper">
@@ -226,7 +219,11 @@ const Projects = () => {
                               <div className="sub-title">
                                  Số lượng tăng ca:
                                  <Link to={`/app/projects/overtime?project=${item?._id}`}>
-                                    <span className="round-span bg-warning ms-2">1</span>
+                                    <span className="round-span bg-warning ms-2">
+                                       {item?.overtimeToDay > 0
+                                          ? "+" + item?.overtimeToDay
+                                          : item?.overtimeToDay}
+                                    </span>
                                  </Link>
                               </div>
                            </div>

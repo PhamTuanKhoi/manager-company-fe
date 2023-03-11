@@ -64,7 +64,12 @@ const AttendanceAdmin = () => {
    useEffect(() => {
       dispatch(
          userAttendance({
-            query: { project: id, date: JSON.stringify(dateInMonth), limit: limit, page: page },
+            query: {
+               project: id,
+               dateStringify: JSON.stringify(dateInMonth),
+               limit: limit,
+               page: page,
+            },
             setLoading,
          })
       );
