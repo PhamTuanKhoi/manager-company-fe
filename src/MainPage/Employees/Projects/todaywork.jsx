@@ -82,7 +82,7 @@ const ToDayWork = () => {
                      <h3 className="page-title">
                         {status === "true"
                            ? "Số lượng người đi làm hôm nay"
-                           : "số lượng người nghĩ hôm nay"}
+                           : "Số lượng người nghĩ hôm nay"}
                      </h3>
                   </div>
                   <div className="col-auto float-end ml-auto">

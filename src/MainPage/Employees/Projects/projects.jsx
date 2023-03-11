@@ -188,23 +188,22 @@ const Projects = () => {
                               <span className="text-muted">tasks completed</span>
                            </small>
                            {/* <p className="text-muted">{item?.content}</p> */}
-                           <div className="pro-deadline m-b-15">
+                           <div className="pro-deadline m-b-15 d-flex">
                               <div className="sub-title">Tổng số:</div>
-                              <div className="text-muted">70 Người</div>
+                              <span className="text-muted ms-2">
+                                 {item?.workers?.length + " Người"}
+                              </span>
                            </div>
                            <div className="pro-deadline m-b-15">
                               <div className="sub-title">
                                  Số lượng làm:
-                                 <span className="round-span background-blue ms-2">
-                                    {item?.attendanceToDay > 0
-                                       ? "+" + item?.attendanceToDay
-                                       : item?.attendanceToDay}
-                                 </span>
                                  <Link
                                     to={`/app/projects/today-worker?project=${item?._id}&status=true`}
                                  >
-                                    <span className="round-span bg-warning ms-2">
-                                       <LoginOutlined />
+                                    <span className="round-span bg-success ms-2">
+                                       {item?.attendanceToDay > 0
+                                          ? "+" + item?.attendanceToDay
+                                          : item?.attendanceToDay}
                                     </span>
                                  </Link>
                               </div>
@@ -212,45 +211,47 @@ const Projects = () => {
                            <div className="pro-deadline m-b-15">
                               <div className="sub-title">
                                  Số lượng nghỉ:
-                                 <span className="round-span background-blue ms-2">
-                                    {item?.workers?.length - item?.attendanceToDay > 0
-                                       ? "+" + (item?.workers?.length - item?.attendanceToDay)
-                                       : item?.workers?.length - item?.attendanceToDay}
-                                 </span>
                                  <Link
                                     to={`/app/projects/today-worker?project=${item?._id}&status=false`}
                                  >
-                                    <span className="round-span bg-warning ms-2">
-                                       <LoginOutlined />
+                                    <span className="round-span bg-danger ms-2">
+                                       {item?.workers?.length - item?.attendanceToDay > 0
+                                          ? "+" + (item?.workers?.length - item?.attendanceToDay)
+                                          : item?.workers?.length - item?.attendanceToDay}
                                     </span>
                                  </Link>
                               </div>
                            </div>
                            <div className="pro-deadline m-b-15">
-                              <div className="sub-title">Deadline:</div>
-                              <div className="text-muted">
-                                 {moment(item?.end).format("DD-MM-YYYY")}
+                              <div className="sub-title">
+                                 Số lượng tăng ca:
+                                 <Link
+                                    to={`/app/projects/today-worker?project=${item?._id}&status=false`}
+                                 >
+                                    <span className="round-span bg-warning ms-2">1</span>
+                                 </Link>
                               </div>
                            </div>
+                           <div className="pro-deadline m-b-15 d-flex">
+                              <div className="sub-title">Deadline:</div>
+                              <span className="text-muted ms-2">
+                                 {moment(item?.end).format("DD-MM-YYYY")}
+                              </span>
+                           </div>
                            <div className="project-members m-b-15">
-                              <div>Project Leader :</div>
-                              <ul className="team-members">
-                                 <li>
-                                    <a href="#" data-bs-toggle="tooltip" title="Jeffery Lalor">
-                                       <img alt="" src={Avatar_16} />
-                                    </a>
-                                 </li>
-                              </ul>
+                              <div className="sub-title">
+                                 Leader :<span className="round-span background-info ms-2">1</span>
+                              </div>
                            </div>
                            <div className="pro-deadline m-b-15">
                               <div className="sub-title">
                                  Team:
-                                 <span className="round-span background-blue ms-2">
+                                 <span className="round-span background-info ms-2">
                                     +{item?.employees?.length}
                                  </span>
-                                 <span className="round-span bg-warning ms-2">
+                                 {/* <span className="round-span ms-2 btn btn-outline-warning text-danger">
                                     <LoginOutlined />
-                                 </span>
+                                 </span> */}
                               </div>
                            </div>
                            <p className="m-b-5">
