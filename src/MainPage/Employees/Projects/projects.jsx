@@ -62,8 +62,6 @@ const Projects = () => {
       dispatch(projectSclice.actions.filterPriority(priority));
    }, [priority, text]);
 
-   console.log(projects);
-
    return (
       <div className="page-wrapper">
          <Helmet>

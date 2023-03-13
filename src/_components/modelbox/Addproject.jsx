@@ -50,7 +50,6 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
          end: "",
          status: "",
          content: "",
-         leader: "",
       });
 
       setIsEdit("");
@@ -100,7 +99,7 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
 
    // fetch muti select
    useEffect(() => {
-      setProject(projectData);
+      setProject({ ...projectData, leader: projectData?.leader?._id });
       setIsEdit(projectData._id);
    }, [render]);
 
@@ -109,7 +108,7 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
       setOptionEmployees(employees);
       setOptionTeam(options);
       setOptionClient(arrayOpitionClient);
-   }, [employees]);
+   }, [employees, render]);
 
    const changeLeader = (e) => {
       setProject({ ...project, leader: e.target.value });
@@ -144,10 +143,9 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
                toast,
                onHide,
                setLoading,
+               empty,
             })
          );
-
-         empty();
       }
    }
 
@@ -190,8 +188,6 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
                setLoad,
             })
          );
-
-         empty();
       }
    };
 
