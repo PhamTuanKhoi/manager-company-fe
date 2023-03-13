@@ -18,11 +18,7 @@ import moment from "moment";
 import { formatMoney, UserRoleType } from "../../../constant";
 import { useLoading } from "../../../hook/useLoading";
 import DeletePayslip from "../../../_components/modelbox/DeletePayslip";
-import {
-   listProjectByAdmin,
-   listProjectByUser,
-   updateProjectPayslip,
-} from "../../../redux/feature/projectSclice";
+import { listProjectByAllLevel, updateProjectPayslip } from "../../../redux/feature/projectSclice";
 import { toast } from "react-toastify";
 
 const Payslip = () => {
@@ -69,11 +65,11 @@ const Payslip = () => {
 
    const fetchProject = () => {
       if (user.role === UserRoleType.ADMIN) {
-         dispatch(listProjectByAdmin({ setLoading }));
+         dispatch(listProjectByAllLevel({ setLoading }));
       }
 
       if (user.role !== UserRoleType.ADMIN) {
-         dispatch(listProjectByUser({ id: user._id, setLoading }));
+         dispatch(listProjectByAllLevel({ userId: user._id, setLoading }));
       }
    };
 

@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoading } from "../../hook/useLoading";
-import { listProjectByAdmin, listProjectByUser } from "../../redux/feature/projectSclice";
+import { listProjectByAllLevel } from "../../redux/feature/projectSclice";
 import { UserRoleType } from "../../constant/index";
 import { createSalary, updateSalary } from "../../redux/feature/salarySclice";
 import { toast } from "react-toastify";
@@ -44,11 +44,11 @@ const AddAllowance = ({ show, handleClose, isSalary, load }) => {
    useEffect(() => {
       if (user.role) {
          if (user.role === UserRoleType.ADMIN) {
-            dispatch(listProjectByAdmin({ setLoading }));
+            dispatch(listProjectByAllLevel({ setLoading }));
          }
 
          if (user.role !== UserRoleType.ADMIN) {
-            dispatch(listProjectByUser({ id: user._id, setLoading }));
+            dispatch(listProjectByAllLevel({ userId: user._id, setLoading }));
          }
       }
    }, [user._id]);
