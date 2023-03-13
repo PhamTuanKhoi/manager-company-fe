@@ -65,8 +65,6 @@ const ToDayWork = () => {
       }
    };
 
-   console.log(checked);
-
    return (
       <div className="page-wrapper">
          <Helmet>
@@ -93,10 +91,7 @@ const ToDayWork = () => {
                               className="btn btn-danger ml-2 me-2"
                               onClick={() => setShow(true)}
                            >
-                              <span>Tăng ca</span>
-                           </a>
-                           <a href="#" className="btn btn-warning ml-2 me-2">
-                              <span>Ca gãy</span>
+                              <span>Cài đặt ca làm việc</span>
                            </a>
                         </>
                      )}

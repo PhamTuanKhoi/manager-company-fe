@@ -80,11 +80,13 @@ export const TaskStatusType = {
 export const overtimeType = {
    MORNING: "morning",
    EVERNINGS: "evernings",
+   SHIFTS: "shifts",
 };
 
 export const overtimeOpition = [
    { value: overtimeType.MORNING, label: "Ca sáng" },
    { value: overtimeType.EVERNINGS, label: "Ca tối" },
+   { value: overtimeType.SHIFTS, label: "Ca gãy" },
 ];
 
 export const prioritys = [

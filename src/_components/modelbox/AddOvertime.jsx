@@ -48,7 +48,7 @@ function AddOvertime({ show, onHide, checked, projectId }) {
    return (
       <Modal show={show} onHide={onHide}>
          <div className="modal-header">
-            <h5 className="modal-title">Cài đặt giờ tăng ca</h5>
+            <h5 className="modal-title">Cài đặt ca làm việc</h5>
             <button type="button" className="close-x">
                <span aria-hidden="true" onClick={onHide}>
                   ×
