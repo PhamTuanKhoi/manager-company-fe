@@ -9,10 +9,7 @@ import "../../index.css";
 
 import Addproject from "../../../_components/modelbox/Addproject";
 import { useDispatch } from "react-redux";
-import projectSclice, {
-   listProjectByAdmin,
-   listProjectByUser,
-} from "../../../redux/feature/projectSclice";
+import projectSclice, { listProjectByAllLevel } from "../../../redux/feature/projectSclice";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { useLoading } from "../../../hook/useLoading";
@@ -28,6 +25,7 @@ const Projects = () => {
    const [projectData, setProjectData] = useState({});
    const [priority, setPriority] = useState("all");
    const [text, setText] = useState("");
+   const [load, setLoad] = useState(0);
 
    const { setLoading } = useLoading();
    const dispatch = useDispatch();
@@ -44,15 +42,15 @@ const Projects = () => {
       // fetch employees
       dispatch(listEmployees({ setLoading }));
       dispatch(listClient({ setLoading }));
-   }, [user._id, user.role]);
+   }, [user._id, user.role, load]);
 
    const fetchProject = () => {
       if (user.role === UserRoleType.ADMIN) {
-         dispatch(listProjectByAdmin({ setLoading }));
+         dispatch(listProjectByAllLevel({ setLoading }));
       }
 
       if (user.role !== UserRoleType.ADMIN) {
-         dispatch(listProjectByUser({ id: user._id, setLoading }));
+         dispatch(listProjectByAllLevel({ query: { userId: user._id }, setLoading }));
       }
    };
 
@@ -272,6 +270,7 @@ const Projects = () => {
             onHide={() => setModalShow(false)}
             projectData={projectData}
             render={render}
+            setLoad={setLoad}
          />
          {/* /Create Project Modal */}
          {/* Edit Project Modal */}

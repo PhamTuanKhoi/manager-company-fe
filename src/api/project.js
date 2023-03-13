@@ -6,8 +6,8 @@ export const projectAPI = {
       return await axios.get(path);
    },
 
-   async listByAdmin() {
-      return await axios.get(path + "admin/");
+   async listByAllLever(query = {}) {
+      return await axios.get(path + "all", { params: query });
    },
 
    // async listByClient(id) {
@@ -18,9 +18,9 @@ export const projectAPI = {
    //    return await axios.get(path + "employees/" + id);
    // },
 
-   async listByUser(id) {
-      return await axios.get(path + "user/" + id);
-   },
+   // async listByUser(id) {
+   //    return await axios.get(path + "user/" + id);
+   // },
 
    async detail(id) {
       return await axios.get(path + id);

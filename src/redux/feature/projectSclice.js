@@ -63,12 +63,12 @@ export const listProject = createAsyncThunk(
    }
 );
 
-export const listProjectByAdmin = createAsyncThunk(
-   "project/listProjectByAdmin",
-   async ({ setLoading }, { rejectWithValue }) => {
+export const listProjectByAllLevel = createAsyncThunk(
+   "project/listProjectByAllLevel",
+   async ({ query, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await projectAPI.listByAdmin();
+         const { data } = await projectAPI.listByAllLever(query);
          setLoading(false);
          return data;
       } catch (error) {
@@ -108,20 +108,20 @@ export const listProjectByAdmin = createAsyncThunk(
 //    }
 // );
 
-export const listProjectByUser = createAsyncThunk(
-   "project/listProjectByUser",
-   async ({ id, setLoading }, { rejectWithValue }) => {
-      try {
-         setLoading(true);
-         const { data } = await projectAPI.listByUser(id);
-         setLoading(false);
-         return data;
-      } catch (error) {
-         setLoading(false);
-         return rejectWithValue(error.response.data);
-      }
-   }
-);
+// export const listProjectByUser = createAsyncThunk(
+//    "project/listProjectByUser",
+//    async ({ id, setLoading }, { rejectWithValue }) => {
+//       try {
+//          setLoading(true);
+//          const { data } = await projectAPI.listByUser(id);
+//          setLoading(false);
+//          return data;
+//       } catch (error) {
+//          setLoading(false);
+//          return rejectWithValue(error.response.data);
+//       }
+//    }
+// );
 
 export const projectDetail = createAsyncThunk(
    "project/projectDetail",
@@ -276,14 +276,14 @@ const projectSclice = createSlice({
       // },
 
       // list by admin
-      [listProjectByAdmin.pending]: (state, action) => {
+      [listProjectByAllLevel.pending]: (state, action) => {
          state.loading = true;
       },
-      [listProjectByAdmin.fulfilled]: (state, action) => {
+      [listProjectByAllLevel.fulfilled]: (state, action) => {
          state.loading = false;
          state.projects = action.payload;
       },
-      [listProjectByAdmin.rejected]: (state, action) => {
+      [listProjectByAllLevel.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
@@ -331,17 +331,17 @@ const projectSclice = createSlice({
       },
 
       // list by worker
-      [listProjectByUser.pending]: (state, action) => {
-         state.loading = true;
-      },
-      [listProjectByUser.fulfilled]: (state, action) => {
-         state.loading = false;
-         state.projects = action.payload;
-      },
-      [listProjectByUser.rejected]: (state, action) => {
-         state.loading = false;
-         state.error = action.payload.message;
-      },
+      // [listProjectByUser.pending]: (state, action) => {
+      //    state.loading = true;
+      // },
+      // [listProjectByUser.fulfilled]: (state, action) => {
+      //    state.loading = false;
+      //    state.projects = action.payload;
+      // },
+      // [listProjectByUser.rejected]: (state, action) => {
+      //    state.loading = false;
+      //    state.error = action.payload.message;
+      // },
 
       // list by employees
       // [listProjectByEmployees.pending]: (state, action) => {
