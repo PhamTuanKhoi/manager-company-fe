@@ -60,6 +60,12 @@ export const userAPI = {
       });
    },
 
+   sumWorkHourInMonthOfWorker(query = {}) {
+      return axios.get(path + "sum-workhour-in-month?", {
+         params: query,
+      });
+   },
+
    profile(id) {
       return axios.get(path + id);
    },

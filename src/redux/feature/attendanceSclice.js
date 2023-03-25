@@ -68,7 +68,7 @@ export const createAttendance = createAsyncThunk(
          setLoading(true);
          const { data } = await attendanceAPI.createOrUpdate(payload);
          toast.success(`Đã chấm công wiffi ${payload?.wiffi}`);
-         onHide();
+         // onHide();
          setLoading(false);
          return data;
       } catch (error) {

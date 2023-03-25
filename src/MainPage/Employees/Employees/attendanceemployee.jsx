@@ -334,17 +334,19 @@ const AttendanceEmployee = () => {
                                     <td>{index + 1}</td>
                                     <td>{moment(item?.datetime).format("DD/MM/YYYY")}</td>
                                     {/* hour in */}
-                                    <td>{timeCustom(item?.timein || 0)} </td>
+                                    <td>{timeCustom(item?.timeinShifts || item?.timein)} </td>
+                                    <td>{item?._id}</td>
                                     {/* hour out */}
-                                    <td>{timeCustom(item?.timeout || 0)} </td>
+                                    <td>{timeCustom(item?.timeoutShifts)} </td>
                                     {/* hour work */}
-                                    <td>
+                                    {/* <td>
                                        {timeCustom(
                                           item?.timeout - item?.timein < 0
                                              ? 0
                                              : item?.timeout - item?.timein
                                        )}{" "}
-                                    </td>
+                                    </td> */}
+                                    <td>{timeCustom(item?.workHour)} </td>
                                  </tr>
                               ))}
                            </tbody>

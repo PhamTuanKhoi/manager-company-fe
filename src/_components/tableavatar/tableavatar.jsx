@@ -1,14 +1,31 @@
 import React, { memo, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 import { timeCustom } from "../../constant";
-import { Checkbox } from "antd";
-import { useState } from "react";
-
+import { useLoading } from "../../hook/useLoading";
+import { sumWorkHourInMonthOfWorker } from "../../redux/feature/workerSclice";
 const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
-   // ------------------------------ get user attendance ---------------------------
+   const dispatch = useDispatch();
+   const { setLoading } = useLoading();
+   const { id } = useParams();
 
-   let array = new Set();
+   useEffect(() => {
+      dispatch(
+         sumWorkHourInMonthOfWorker({
+            query: {
+               project: id,
+               year: new Date().getFullYear(),
+               month: new Date().getMonth() + 1,
+            },
+            setLoading,
+         })
+      );
+   }, []);
+   const { sumWorkHourInMonth } = useSelector((state) => state.worker);
 
+   console.log({ sumWorkHourInMonth });
    return (
       <>
          {allUserAttendance.items?.map((item) => {
@@ -22,389 +39,66 @@ const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
 
                   {/* Tableavatar */}
                   {item.attendance.length > 0
-                     ? item.attendance.map((val, index) => {
-                          if (val?.date === 1) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 2) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 3) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 4) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 5) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 6) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 7) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 8) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 9) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 10) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 11) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 12) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 13) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 14) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 15) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 16) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 17) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 18) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 19) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 20) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 21) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 22) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 23) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 24) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 25) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 26) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 27) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-                          if (val?.date === 28) {
-                             if (!array.has(val?.date + item._id)) {
-                                array.add(val?.date + item._id);
-                                return <Td key={index} val={val} index={index} />;
-                             }
-                             if (array.has(val?.date + item._id)) {
-                                if (val.timein > 0) {
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                             }
-                          }
-
-                          if (item?.attendance.length >= 29) {
-                             if (val?.date === 29) {
-                                if (!array.has(val?.date + item._id)) {
-                                   array.add(val?.date + item._id);
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                                if (array.has(val?.date + item._id)) {
-                                   if (val.timein > 0) {
-                                      return <Td key={index} val={val} index={index} />;
-                                   }
-                                }
-                             }
-                          }
-
-                          if (item?.attendance.length >= 30) {
-                             if (val?.date === 30) {
-                                if (!array.has(val?.date + item._id)) {
-                                   array.add(val?.date + item._id);
-                                   return <Td key={index} val={val} index={index} />;
-                                }
-                                if (array.has(val?.date + item._id)) {
-                                   if (val.timein > 0) {
-                                      return <Td key={index} val={val} index={index} />;
-                                   }
-                                }
-                             }
-
-                             if (item?.attendance.length >= 31) {
-                                if (val?.date === 31) {
-                                   if (!array.has(val?.date + item._id)) {
-                                      array.add(val?.date + item._id);
-                                      return <Td key={index} val={val} index={index} />;
-                                   }
-                                   if (array.has(val?.date + item._id)) {
-                                      if (val.timein > 0) {
-                                         return <Td key={index} val={val} index={index} />;
-                                      }
-                                   }
-                                }
-                             }
-                          }
-                       })
+                     ? item.attendance.map((val, index) => (
+                          <td key={index}>
+                             <a
+                                href="#"
+                                className="fw-bold"
+                                data-bs-toggle="modal"
+                                data-bs-target="#attendance_info"
+                             >
+                                {val.status === false && val.workhour > 0 ? (
+                                   <span className="text-warning">{timeCustom(val?.workhour)}</span>
+                                ) : val.status === true && val.workhour > 0 ? (
+                                   <span className="">{timeCustom(val?.workhour)}</span>
+                                ) : val.workhour < 0 ? (
+                                   <i className="fa fa-close text-danger" />
+                                ) : (
+                                   <i className="fa fa-close text-secondary" />
+                                )}
+                             </a>
+                          </td>
+                       ))
                      : dateInMonth?.map((val, index) => (
                           <td key={index}>
                              <a href="" data-bs-toggle="modal" data-bs-target="#attendance_info">
-                                <i className="fa fa-close text-danger" />
+                                <i className="fa fa-close text-secondary" />
                              </a>
                           </td>
                        ))}
 
-                  <td>dccd</td>
+                  {sumWorkHourInMonth?.map(
+                     (sum) =>
+                        sum?._id === item?._id && (
+                           <td className="text-center bg-success text-light fw-bold">
+                              {sum?.ratioWork || 0}
+                           </td>
+                        )
+                  )}
+                  {sumWorkHourInMonth?.map(
+                     (sum) =>
+                        sum?._id === item?._id && (
+                           <td className="text-center text-primary fw-bold">
+                              {timeCustom(sum?.totalShifts) || 0}
+                           </td>
+                        )
+                  )}
+                  {sumWorkHourInMonth?.map(
+                     (sum) =>
+                        sum?._id === item?._id && (
+                           <td className="text-center text-primary fw-bold">
+                              {timeCustom(sum?.totalOvertimeMorning) || 0}
+                           </td>
+                        )
+                  )}
+                  {sumWorkHourInMonth?.map(
+                     (sum) =>
+                        sum?._id === item?._id && (
+                           <td className="text-center text-primary fw-bold">
+                              {timeCustom(sum?.totalOvertimeEverming) || 0}
+                           </td>
+                        )
+                  )}
                </tr>
             );
          })}
@@ -413,23 +107,5 @@ const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
       </>
    );
 };
-
-function Td({ val }) {
-   return (
-      <td>
-         <a href="#" className="fw-bold" data-bs-toggle="modal" data-bs-target="#attendance_info">
-            {val.status === "lack" ? (
-               <span className="underline-red">{timeCustom(val?.workHourPerson)}</span>
-            ) : val.status === "enough" ? (
-               <span className="">{timeCustom(val?.workHourPerson)}</span>
-            ) : val.timein > 0 && val.timeout === 0 ? (
-               <span>o</span>
-            ) : (
-               <i className="fa fa-close text-danger" />
-            )}
-         </a>
-      </td>
-   );
-}
 
 export default memo(Tableavatar);

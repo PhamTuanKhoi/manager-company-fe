@@ -146,6 +146,10 @@ const AttendanceAdmin = () => {
                                  {dateInMonth?.map((day) => (
                                     <th key={day}>{day}</th>
                                  ))}
+                                 <th>Công làm</th>
+                                 <th>Ca gãy</th>
+                                 <th>Tăng ca sáng</th>
+                                 <th>Tăng ca tối</th>
                               </tr>
                            </thead>
                            <tbody>

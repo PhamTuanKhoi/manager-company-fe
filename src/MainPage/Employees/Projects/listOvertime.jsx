@@ -10,6 +10,7 @@ import moment from "moment";
 import { timeCustom } from "../../../constant";
 import { Checkbox } from "antd";
 import AddOvertime from "../../../_components/modelbox/AddOvertime";
+import axios from "axios";
 
 const ListOvertime = () => {
    const dispatch = useDispatch();
@@ -35,7 +36,23 @@ const ListOvertime = () => {
 
    const { workers } = useSelector((state) => state.worker);
 
-   console.log(workers);
+   // okoxb
+   const [data, setDate] = useState([]);
+
+   // useEffect(() => {
+   //    test();
+   // }, []);
+
+   // async function test() {
+   //    const { data } = await axios.get("join-part/");
+   //    setDate(data);
+   // }
+
+   // console.log("workers");
+
+   const sum = data.reduce((a, b) => {
+      return a + b.result;
+   }, 0);
 
    return (
       <div className="page-wrapper">

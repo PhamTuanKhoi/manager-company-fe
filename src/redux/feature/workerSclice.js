@@ -203,6 +203,21 @@ export const listToDayOvertime = createAsyncThunk(
    }
 );
 
+export const sumWorkHourInMonthOfWorker = createAsyncThunk(
+   "worker/sumWorkHourInMonthOfWorker",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.sumWorkHourInMonthOfWorker(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const workerSclice = createSlice({
    name: "worker",
    initialState: {
@@ -211,6 +226,7 @@ const workerSclice = createSlice({
       worker: {},
       workers: [],
       headors: [],
+      sumWorkHourInMonth: [],
       error: "",
       loading: false,
    },
@@ -396,6 +412,19 @@ const workerSclice = createSlice({
          state.workers = action.payload;
       },
       [listToDayOvertime.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // list user sum Work Hour In Month
+      [sumWorkHourInMonthOfWorker.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [sumWorkHourInMonthOfWorker.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.sumWorkHourInMonth = action.payload;
+      },
+      [sumWorkHourInMonthOfWorker.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
