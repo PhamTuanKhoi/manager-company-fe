@@ -111,8 +111,7 @@ const ToDayWork = () => {
                               </th>
                               <th>Người lao động</th>
                               <th>Số điện thoại</th>
-                              <th>Giờ vào</th>
-                              <th>Giờ ra</th>
+                              <th>Chuyên môn</th>
                               <th>Ngày</th>
                            </tr>
                         </thead>
@@ -127,8 +126,7 @@ const ToDayWork = () => {
                                  </td>
                                  <td>{item?.name}</td>
                                  <td>{item?.mobile}</td>
-                                 <td>{timeCustom(item?.attendance?.timein || 0)}</td>
-                                 <td>{timeCustom(item?.attendance?.timeout || 0)}</td>
+                                 <td>{item?.field}</td>
                                  <td>{moment(item?.attendance?.datetime).format("DD/MM/YYYY")}</td>
                               </tr>
                            ))}

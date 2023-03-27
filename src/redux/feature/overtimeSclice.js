@@ -26,7 +26,7 @@ export const createOvertime = createAsyncThunk(
 );
 
 const overtimeSclice = createSlice({
-   name: "salary",
+   name: "overtime",
    initialState: {
       overtime: {},
       overtimes: [],
@@ -34,7 +34,6 @@ const overtimeSclice = createSlice({
       loading: false,
    },
    extraReducers: {
-      // created salary
       [createOvertime.pending]: (state, action) => {
          state.loading = true;
       },
