@@ -245,6 +245,9 @@ const workerSclice = createSlice({
             return i._id !== action.payload;
          });
       },
+      lear: (state) => {
+         state.workers = [];
+      },
    },
    extraReducers: {
       [createWorker.pending]: (state, action) => {

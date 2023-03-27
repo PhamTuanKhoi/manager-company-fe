@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import "antd/dist/antd.css";
 import { useDispatch } from "react-redux";
 import { useLoading } from "../../../hook/useLoading";
-import { listWorkerAttendanceToday } from "../../../redux/feature/workerSclice";
+import workerSclice, { listWorkerAttendanceToday } from "../../../redux/feature/workerSclice";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import moment from "moment";
@@ -24,6 +24,7 @@ const ToDayWork = () => {
    const status = query.get("status");
 
    useEffect(() => {
+      dispatch(workerSclice.actions.lear());
       dispatch(
          listWorkerAttendanceToday({
             query: {
@@ -116,8 +117,8 @@ const ToDayWork = () => {
                            </tr>
                         </thead>
                         <tbody>
-                           {workers?.map((item) => (
-                              <tr key={item?._id}>
+                           {workers?.map((item, index) => (
+                              <tr key={index}>
                                  <td>
                                     <Checkbox
                                        checked={checked?.includes(item?._id)}
