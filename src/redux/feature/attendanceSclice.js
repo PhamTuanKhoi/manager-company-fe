@@ -85,6 +85,21 @@ export const createAttendance = createAsyncThunk(
    }
 );
 
+export const getAttendanceByUser = createAsyncThunk(
+   "attendance/getAttendanceByUser",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await attendanceAPI.getAttendanceByUser(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const attendanceSclice = createSlice({
    name: "attendance",
    initialState: {
@@ -161,6 +176,19 @@ const attendanceSclice = createSlice({
          state.attendance = action.payload;
       },
       [todayAttendance.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // get attendances by user in date query
+      [getAttendanceByUser.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [getAttendanceByUser.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.attendance = action.payload;
+      },
+      [getAttendanceByUser.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

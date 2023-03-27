@@ -6,7 +6,7 @@ import { Link, useParams } from "react-router-dom";
 import { timeCustom } from "../../constant";
 import { useLoading } from "../../hook/useLoading";
 import { sumWorkHourInMonthOfWorker } from "../../redux/feature/workerSclice";
-const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
+const Tableavatar = ({ dateInMonth, allUserAttendance, setQuery }) => {
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
    const { id } = useParams();
@@ -25,7 +25,6 @@ const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
    }, []);
    const { sumWorkHourInMonth } = useSelector((state) => state.worker);
 
-   console.log({ sumWorkHourInMonth });
    return (
       <>
          {allUserAttendance.items?.map((item) => {
@@ -38,30 +37,71 @@ const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
                   </td>
 
                   {/* Tableavatar */}
-                  {item.attendance.length > 0
-                     ? item.attendance.map((val, index) => (
+                  {item?.attendance?.length > 0
+                     ? item?.attendance?.map((val, index) => (
                           <td key={index}>
-                             <a
-                                href="#"
-                                className="fw-bold"
-                                data-bs-toggle="modal"
-                                data-bs-target="#attendance_info"
-                             >
-                                {val.status === false && val.workhour > 0 ? (
+                             {val.status === false && val.workhour > 0 ? (
+                                <a
+                                   href="#"
+                                   className="fw-bold"
+                                   data-bs-toggle="modal"
+                                   data-bs-target={val.workhour !== 0 ? `#attendance_info` : ""}
+                                   onClick={() =>
+                                      setQuery({
+                                         date: val?.date,
+                                         month: val?.month,
+                                         year: val?.year,
+                                         user: item?._id,
+                                      })
+                                   }
+                                   //   data-bs-target="#attendance_info"
+                                >
                                    <span className="text-warning">{timeCustom(val?.workhour)}</span>
-                                ) : val.status === true && val.workhour > 0 ? (
-                                   <span className="">{timeCustom(val?.workhour)}</span>
-                                ) : val.workhour < 0 ? (
+                                </a>
+                             ) : val.status === true && val.workhour > 0 ? (
+                                <a
+                                   href="#"
+                                   className="fw-bold"
+                                   data-bs-toggle="modal"
+                                   data-bs-target={val.workhour !== 0 ? `#attendance_info` : ""}
+                                   onClick={() =>
+                                      setQuery({
+                                         date: val?.date,
+                                         month: val?.month,
+                                         year: val?.year,
+                                         user: item?._id,
+                                      })
+                                   }
+                                   //   data-bs-target="#attendance_info"
+                                >
+                                   <span>{timeCustom(val?.workhour)}</span>
+                                </a>
+                             ) : val.workhour < 0 ? (
+                                <a
+                                   href="#"
+                                   className="fw-bold"
+                                   data-bs-toggle="modal"
+                                   data-bs-target={val.workhour !== 0 ? `#attendance_info` : ""}
+                                   onClick={() =>
+                                      setQuery({
+                                         date: val?.date,
+                                         month: val?.month,
+                                         year: val?.year,
+                                         user: item?._id,
+                                      })
+                                   }
+                                   //   data-bs-target="#attendance_info"
+                                >
                                    <i className="fa fa-close text-danger" />
-                                ) : (
-                                   <i className="fa fa-close text-secondary" />
-                                )}
-                             </a>
+                                </a>
+                             ) : (
+                                <i className="fa fa-close text-secondary" />
+                             )}
                           </td>
                        ))
                      : dateInMonth?.map((val, index) => (
                           <td key={index}>
-                             <a href="" data-bs-toggle="modal" data-bs-target="#attendance_info">
+                             <a href="#">
                                 <i className="fa fa-close text-secondary" />
                              </a>
                           </td>
@@ -70,7 +110,7 @@ const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
                   {sumWorkHourInMonth?.map(
                      (sum) =>
                         sum?._id === item?._id && (
-                           <td className="text-center bg-success text-light fw-bold">
+                           <td key={sum?._id} className="text-center bg-success text-light fw-bold">
                               {sum?.ratioWork || 0}
                            </td>
                         )
@@ -78,7 +118,7 @@ const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
                   {sumWorkHourInMonth?.map(
                      (sum) =>
                         sum?._id === item?._id && (
-                           <td className="text-center text-primary fw-bold">
+                           <td key={sum?._id} className="text-center text-primary fw-bold">
                               {timeCustom(sum?.totalShifts) || 0}
                            </td>
                         )
@@ -86,7 +126,7 @@ const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
                   {sumWorkHourInMonth?.map(
                      (sum) =>
                         sum?._id === item?._id && (
-                           <td className="text-center text-primary fw-bold">
+                           <td key={sum?._id} className="text-center text-primary fw-bold">
                               {timeCustom(sum?.totalOvertimeMorning) || 0}
                            </td>
                         )
@@ -94,7 +134,7 @@ const Tableavatar = ({ dateInMonth, allUserAttendance }) => {
                   {sumWorkHourInMonth?.map(
                      (sum) =>
                         sum?._id === item?._id && (
-                           <td className="text-center text-primary fw-bold">
+                           <td key={sum?._id} className="text-center text-primary fw-bold">
                               {timeCustom(sum?.totalOvertimeEverming) || 0}
                            </td>
                         )

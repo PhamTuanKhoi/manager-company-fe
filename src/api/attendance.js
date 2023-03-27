@@ -21,4 +21,8 @@ export const attendanceAPI = {
    async createOrUpdate(payload) {
       return await axios.post(path + "create-or-update", payload);
    },
+
+   async getAttendanceByUser(query = {}) {
+      return await axios.get(path + "detail-to-user", { params: query });
+   },
 };
