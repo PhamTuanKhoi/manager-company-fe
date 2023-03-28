@@ -14,10 +14,7 @@ import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import moment from "moment";
 import { prioritys, ProjectPriorityEnum, ProjectStatusEnum, UserRoleType } from "../../../constant";
 import DeleteProject from "../../../_components/modelbox/DeleteProject";
-import projectSclice, {
-   listProjectByAdmin,
-   listProjectByUser,
-} from "../../../redux/feature/projectSclice";
+import projectSclice, { listProjectByAllLevel } from "../../../redux/feature/projectSclice";
 import { projectsRemainingSelector } from "../../../redux/selectors/projectSelector";
 import { useDispatch } from "react-redux";
 import { listEmployees } from "../../../redux/feature/employeesSclice";
@@ -58,11 +55,11 @@ const ProjectList = () => {
 
    const fetchProject = () => {
       if (user.role === UserRoleType.ADMIN) {
-         dispatch(listProjectByAdmin({ setLoading }));
+         dispatch(listProjectByAllLevel({ setLoading }));
       }
 
       if (user.role !== UserRoleType.ADMIN) {
-         dispatch(listProjectByUser({ id: user._id, setLoading }));
+         dispatch(listProjectByAllLevel({ query: { userId: user._id }, setLoading }));
       }
    };
 

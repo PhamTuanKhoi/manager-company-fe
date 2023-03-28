@@ -11,7 +11,7 @@ import Addemployee from "../../../_components/modelbox/Addemployee";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import { useSelector } from "react-redux";
-import { EmployeeDepartmentOpition, EmployeeDepartmentType } from "../../../constant";
+import { EmployeeDepartmentOpition, EmployeeDepartmentType, UserRoleType } from "../../../constant";
 import moment from "moment";
 import DeleteUser from "../../../_components/modelbox/DeleteUser";
 import employeesSclice from "../../../redux/feature/employeesSclice";
@@ -42,6 +42,7 @@ const Employeeslist = () => {
    });
 
    const employees = useSelector(employeesRemainingSelector);
+   const { user } = useSelector((state) => state.auth);
 
    useEffect(() => {
       dispatch(employeesSclice.actions.searchNameEmployees(text));
@@ -173,9 +174,12 @@ const Employeeslist = () => {
                         <h3 className="page-title"> Nhân viên</h3>
                      </div>
                      <div className="col-auto float-end ml-auto">
-                        <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
-                           <i className="fa fa-plus" /> Thêm nhân viên
-                        </a>
+                        {(user?.role === UserRoleType.ADMIN ||
+                           user?.role === UserRoleType.EMPLOYEE) && (
+                           <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
+                              <i className="fa fa-plus" /> Thêm nhân viên
+                           </a>
+                        )}
                         <div className="view-icons">
                            <Link
                               to="/app/employee/allemployees"

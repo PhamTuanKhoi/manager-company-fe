@@ -18,25 +18,25 @@ export const userAPI = {
       return axios.get(path + "worker/excellent");
    },
 
-   listEmployeesByClient(id) {
-      return axios.get(path + "employees-role-client/" + id);
+   listEmployeesByUserId(id) {
+      return axios.get(path + "employees-by-user/" + id);
    },
 
-   listEmployeesByWorker(id) {
-      return axios.get(path + "employees-role-worker/" + id);
-   },
+   // listEmployeesByWorker(id) {
+   //    return axios.get(path + "employees-role-worker/" + id);
+   // },
 
    listWorker() {
       return axios.get(path + "worker");
    },
 
    listWorkerByClient(id) {
-      return axios.get(path + "worker-role-client/" + id);
+      return axios.get(path + "worker-by-role/" + id);
    },
 
-   listWorkerByEmployees(id) {
-      return axios.get(path + "worker-role-employees/" + id);
-   },
+   // listWorkerByEmployees(id) {
+   //    return axios.get(path + "worker-role-employees/" + id);
+   // },
 
    listUserSalary() {
       return axios.get(path + "salary");

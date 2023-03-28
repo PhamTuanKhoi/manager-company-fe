@@ -83,12 +83,12 @@ export const removeEmployees = createAsyncThunk(
    }
 );
 
-export const listEmployeesByClient = createAsyncThunk(
-   "employees/listEmployeesByClient",
+export const listEmployeesByUserId = createAsyncThunk(
+   "employees/listEmployeesByUserId",
    async ({ id, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await userAPI.listEmployeesByClient(id);
+         const { data } = await userAPI.listEmployeesByUserId(id);
          setLoading(false);
          return data;
       } catch (error) {
@@ -98,20 +98,20 @@ export const listEmployeesByClient = createAsyncThunk(
    }
 );
 
-export const listEmployeesByWorker = createAsyncThunk(
-   "employees/listEmployeesByWorker",
-   async ({ id, setLoading }, { rejectWithValue }) => {
-      try {
-         setLoading(true);
-         const { data } = await userAPI.listEmployeesByWorker(id);
-         setLoading(false);
-         return data;
-      } catch (error) {
-         setLoading(false);
-         return rejectWithValue(error.response.data);
-      }
-   }
-);
+// export const listEmployeesByWorker = createAsyncThunk(
+//    "employees/listEmployeesByWorker",
+//    async ({ id, setLoading }, { rejectWithValue }) => {
+//       try {
+//          setLoading(true);
+// const { data } = await userAPI.listEmployeesByWorker(id);
+//          setLoading(false);
+//          return data;
+//       } catch (error) {
+//          setLoading(false);
+//          return rejectWithValue(error.response.data);
+//       }
+//    }
+// );
 
 export const employeesProfile = createAsyncThunk(
    "worker/employeesProfile",
@@ -216,30 +216,30 @@ const employeesSclice = createSlice({
       },
 
       // list by client
-      [listEmployeesByClient.pending]: (state, action) => {
+      [listEmployeesByUserId.pending]: (state, action) => {
          state.loading = true;
       },
-      [listEmployeesByClient.fulfilled]: (state, action) => {
+      [listEmployeesByUserId.fulfilled]: (state, action) => {
          state.loading = false;
          state.employees = action.payload;
       },
-      [listEmployeesByClient.rejected]: (state, action) => {
+      [listEmployeesByUserId.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
 
       // list employees worker
-      [listEmployeesByWorker.pending]: (state, action) => {
-         state.loading = true;
-      },
-      [listEmployeesByWorker.fulfilled]: (state, action) => {
-         state.loading = false;
-         state.employees = action.payload;
-      },
-      [listEmployeesByWorker.rejected]: (state, action) => {
-         state.loading = false;
-         state.error = action.payload.message;
-      },
+      // [listEmployeesByWorker.pending]: (state, action) => {
+      //    state.loading = true;
+      // },
+      // [listEmployeesByWorker.fulfilled]: (state, action) => {
+      //    state.loading = false;
+      //    state.employees = action.payload;
+      // },
+      // [listEmployeesByWorker.rejected]: (state, action) => {
+      //    state.loading = false;
+      //    state.error = action.payload.message;
+      // },
 
       // list employees worker
       [employeesProfile.pending]: (state, action) => {

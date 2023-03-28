@@ -326,8 +326,10 @@ const Addemployee = ({ show, onHide, employee, render }) => {
                                  }
                               >
                                  <option>Chọn vai trò</option>
-                                 {EmployeesRoleOpition?.map((item) => (
-                                    <option value={item?.value}>{item?.label}</option>
+                                 {EmployeesRoleOpition?.map((item, index) => (
+                                    <option key={index} value={item?.value}>
+                                       {item?.label}
+                                    </option>
                                  ))}
                               </select>
                            </div>

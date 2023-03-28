@@ -12,9 +12,6 @@ import { avartarFAKE } from "../../../constant";
 import {
    Avatar_01,
    Avatar_02,
-   Avatar_05,
-   Avatar_09,
-   Avatar_10,
    Avatar_11,
    Avatar_12,
    Avatar_13,
@@ -22,7 +19,7 @@ import {
 } from "../../../Entryfile/imagepath";
 import { useLoading } from "../../../hook/useLoading";
 import { clientProfile } from "../../../redux/feature/clientSclice";
-import { listProjectByClient } from "../../../redux/feature/projectSclice";
+import { listProjectByAllLevel } from "../../../redux/feature/projectSclice";
 import Addproject from "../../../_components/modelbox/Addproject";
 import DeleteProject from "../../../_components/modelbox/DeleteProject";
 
@@ -50,7 +47,7 @@ const ClientProfile = () => {
    }, [id]);
 
    const fetchProject = () => {
-      dispatch(listProjectByClient({ id: id, setLoading }));
+      dispatch(listProjectByAllLevel({ query: { userId: id }, setLoading }));
    };
 
    const { projects } = useSelector((state) => state.project);
@@ -222,241 +219,73 @@ const ClientProfile = () => {
                               <span className="text-muted">tasks completed</span>
                            </small>
                            {/* <p className="text-muted">{item?.content}</p> */}
-                           <div className="pro-deadline m-b-15">
+                           <div className="pro-deadline m-b-15 d-flex">
                               <div className="sub-title">Tổng số:</div>
-                              <div className="text-muted">70 Người</div>
+                              <span className="text-muted ms-2">
+                                 {item?.workers?.length + " Người"}
+                              </span>
                            </div>
                            <div className="pro-deadline m-b-15">
-                              <div className="sub-title">Số lượng làm:</div>
-                              <div className="text-muted">
-                                 <ul className="team-members">
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="John Doe">
-                                          <img alt="" src={Avatar_02} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="John Doe">
-                                          <img alt="" src={Avatar_16} />
-                                       </a>
-                                    </li>
-
-                                    <li className="dropdown avatar-dropdown">
-                                       <a
-                                          href="#"
-                                          className="all-users dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                       >
-                                          +48
-                                       </a>
-                                       <div className="dropdown-menu dropdown-menu-right">
-                                          <div className="avatar-group">
-                                             <a className="avatar avatar-xs" href="#">
-                                                <img alt="" src={Avatar_16} />
-                                             </a>
-                                          </div>
-                                          <div className="avatar-pagination">
-                                             <ul className="pagination">
-                                                <li className="page-item">
-                                                   <a
-                                                      className="page-link"
-                                                      href="#"
-                                                      aria-label="Previous"
-                                                   >
-                                                      <span aria-hidden="true">«</span>
-                                                      <span className="sr-only">Previous</span>
-                                                   </a>
-                                                </li>
-                                                <li className="page-item">
-                                                   <a className="page-link" href="#">
-                                                      1
-                                                   </a>
-                                                </li>
-                                                <li className="page-item">
-                                                   <a className="page-link" href="#">
-                                                      2
-                                                   </a>
-                                                </li>
-                                                <li className="page-item">
-                                                   <a
-                                                      className="page-link"
-                                                      href="#"
-                                                      aria-label="Next"
-                                                   >
-                                                      <span aria-hidden="true">»</span>
-                                                      <span className="sr-only">Next</span>
-                                                   </a>
-                                                </li>
-                                             </ul>
-                                          </div>
-                                       </div>
-                                    </li>
-                                 </ul>
+                              <div className="sub-title">
+                                 Số lượng làm:
+                                 <Link
+                                    to={`/app/projects/today-worker?project=${item?._id}&status=true`}
+                                 >
+                                    <span className="round-span bg-success ms-2">
+                                       {item?.attendanceToDay > 0
+                                          ? "+" + item?.attendanceToDay
+                                          : item?.attendanceToDay}
+                                    </span>
+                                 </Link>
                               </div>
                            </div>
                            <div className="pro-deadline m-b-15">
-                              <div className="sub-title">Số lượng nghỉ:</div>
-                              <div className="text-muted">
-                                 <ul className="team-members">
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="John Doe">
-                                          <img alt="" src={Avatar_02} />
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="John Doe">
-                                          <img alt="" src={Avatar_16} />
-                                       </a>
-                                    </li>
-
-                                    <li className="dropdown avatar-dropdown">
-                                       <a
-                                          href="#"
-                                          className="all-users dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                       >
-                                          +1
-                                       </a>
-                                       <div className="dropdown-menu dropdown-menu-right">
-                                          <div className="avatar-group">
-                                             <a className="avatar avatar-xs" href="#">
-                                                <img alt="" src={Avatar_16} />
-                                             </a>
-                                          </div>
-                                          <div className="avatar-pagination">
-                                             <ul className="pagination">
-                                                <li className="page-item">
-                                                   <a
-                                                      className="page-link"
-                                                      href="#"
-                                                      aria-label="Previous"
-                                                   >
-                                                      <span aria-hidden="true">«</span>
-                                                      <span className="sr-only">Previous</span>
-                                                   </a>
-                                                </li>
-                                                <li className="page-item">
-                                                   <a className="page-link" href="#">
-                                                      1
-                                                   </a>
-                                                </li>
-                                                <li className="page-item">
-                                                   <a className="page-link" href="#">
-                                                      2
-                                                   </a>
-                                                </li>
-                                                <li className="page-item">
-                                                   <a
-                                                      className="page-link"
-                                                      href="#"
-                                                      aria-label="Next"
-                                                   >
-                                                      <span aria-hidden="true">»</span>
-                                                      <span className="sr-only">Next</span>
-                                                   </a>
-                                                </li>
-                                             </ul>
-                                          </div>
-                                       </div>
-                                    </li>
-                                 </ul>
+                              <div className="sub-title">
+                                 Số lượng nghỉ:
+                                 <Link
+                                    to={`/app/projects/today-worker?project=${item?._id}&status=false`}
+                                 >
+                                    <span className="round-span bg-danger ms-2">
+                                       {item?.workers?.length - item?.attendanceToDay > 0
+                                          ? "+" + (item?.workers?.length - item?.attendanceToDay)
+                                          : item?.workers?.length - item?.attendanceToDay}
+                                    </span>
+                                 </Link>
                               </div>
                            </div>
                            <div className="pro-deadline m-b-15">
+                              <div className="sub-title">
+                                 Số lượng tăng ca:
+                                 <Link to={`/app/projects/overtime?project=${item?._id}`}>
+                                    <span className="round-span bg-warning ms-2">
+                                       {item?.overtimeToDay > 0
+                                          ? "+" + item?.overtimeToDay
+                                          : item?.overtimeToDay}
+                                    </span>
+                                 </Link>
+                              </div>
+                           </div>
+                           <div className="pro-deadline m-b-15 d-flex">
                               <div className="sub-title">Deadline:</div>
-                              <div className="text-muted">
+                              <span className="text-muted ms-2">
                                  {moment(item?.end).format("DD-MM-YYYY")}
+                              </span>
+                           </div>
+                           <div className="project-members m-b-15">
+                              <div className="sub-title">
+                                 Leader :<span className="round-span background-info ms-2">1</span>
                               </div>
                            </div>
-                           <div className="project-members m-b-15">
-                              <div>Project Leader :</div>
-                              <ul className="team-members">
-                                 <li>
-                                    <a href="#" data-bs-toggle="tooltip" title="Jeffery Lalor">
-                                       <img alt="" src={Avatar_16} />
-                                    </a>
-                                 </li>
-                              </ul>
-                           </div>
-                           <div className="project-members m-b-15">
-                              <div>Team :</div>
-                              <ul className="team-members">
-                                 {/* {item?.team((elemyees) => (
-                                    <li>
-                                       <a href="#" data-bs-toggle="tooltip" title="John Doe">
-                                          <img alt="" src={elemyees?.avartar || Avatar_02} />
-                                       </a>
-                                    </li>
-                                 ))} */}
-
-                                 <li>
-                                    <a href="#" data-bs-toggle="tooltip" title="John Doe">
-                                       <img alt="" src={Avatar_02} />
-                                    </a>
-                                 </li>
-
-                                 <li className="dropdown avatar-dropdown">
-                                    <a
-                                       href="#"
-                                       className="all-users dropdown-toggle"
-                                       data-bs-toggle="dropdown"
-                                       aria-expanded="false"
-                                    >
-                                       +15
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right">
-                                       <div className="avatar-group">
-                                          <a className="avatar avatar-xs" href="#">
-                                             <img alt="" src={Avatar_11} />
-                                          </a>
-                                          <a className="avatar avatar-xs" href="#">
-                                             <img alt="" src={Avatar_12} />
-                                          </a>
-                                          <a className="avatar avatar-xs" href="#">
-                                             <img alt="" src={Avatar_13} />
-                                          </a>
-                                          <a className="avatar avatar-xs" href="#">
-                                             <img alt="" src={Avatar_01} />
-                                          </a>
-                                          <a className="avatar avatar-xs" href="#">
-                                             <img alt="" src={Avatar_16} />
-                                          </a>
-                                       </div>
-                                       <div className="avatar-pagination">
-                                          <ul className="pagination">
-                                             <li className="page-item">
-                                                <a
-                                                   className="page-link"
-                                                   href="#"
-                                                   aria-label="Previous"
-                                                >
-                                                   <span aria-hidden="true">«</span>
-                                                   <span className="sr-only">Previous</span>
-                                                </a>
-                                             </li>
-                                             <li className="page-item">
-                                                <a className="page-link" href="#">
-                                                   1
-                                                </a>
-                                             </li>
-                                             <li className="page-item">
-                                                <a className="page-link" href="#">
-                                                   2
-                                                </a>
-                                             </li>
-                                             <li className="page-item">
-                                                <a className="page-link" href="#" aria-label="Next">
-                                                   <span aria-hidden="true">»</span>
-                                                   <span className="sr-only">Next</span>
-                                                </a>
-                                             </li>
-                                          </ul>
-                                       </div>
-                                    </div>
-                                 </li>
-                              </ul>
+                           <div className="pro-deadline m-b-15">
+                              <div className="sub-title">
+                                 Team:
+                                 <span className="round-span background-info ms-2">
+                                    +{item?.employees?.length}
+                                 </span>
+                                 {/* <span className="round-span ms-2 btn btn-outline-warning text-danger">
+                                    <LoginOutlined />
+                                 </span> */}
+                              </div>
                            </div>
                            <p className="m-b-5">
                               Progress <span className="text-success float-end">40%</span>

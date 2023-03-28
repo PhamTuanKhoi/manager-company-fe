@@ -9,8 +9,7 @@ import Header from "../../../initialpage/Sidebar/header";
 import { useDispatch } from "react-redux";
 import employeesSclice, {
    listEmployees,
-   listEmployeesByClient,
-   listEmployeesByWorker,
+   listEmployeesByUserId,
 } from "../../../redux/feature/employeesSclice";
 import { useSelector } from "react-redux";
 import { EmployeeDepartmentType, UserRoleType } from "../../../constant";
@@ -51,12 +50,8 @@ const AllEmployees = () => {
          dispatch(listEmployees({ setLoading }));
       }
 
-      if (user?.role === UserRoleType.CLIENT) {
-         dispatch(listEmployeesByClient({ id: user._id, setLoading }));
-      }
-
-      if (user?.role === UserRoleType.WORKER) {
-         dispatch(listEmployeesByWorker({ id: user._id, setLoading }));
+      if (user?.role === UserRoleType.CLIENT || user?.role === UserRoleType.WORKER) {
+         dispatch(listEmployeesByUserId({ id: user._id, setLoading }));
       }
    }
    const [text, setText] = useState("");

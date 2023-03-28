@@ -364,8 +364,10 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
                                     }
                                  >
                                     <option>Chọn vai trò</option>
-                                    {ExcellentOpition?.map((item) => (
-                                       <option value={item?.value}>{item?.label}</option>
+                                    {ExcellentOpition?.map((item, index) => (
+                                       <option key={index} value={item?.value}>
+                                          {item?.label}
+                                       </option>
                                     ))}
                                  </select>
                               </div>
