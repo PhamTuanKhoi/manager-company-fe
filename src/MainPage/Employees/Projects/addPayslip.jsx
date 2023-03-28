@@ -25,6 +25,8 @@ const AddPayslip = () => {
       holiday: "",
       service: "",
 
+      // salary paid for social insurance
+      salary_paid_social: "",
       //
       medican: "",
       society: "",
@@ -124,7 +126,11 @@ const AddPayslip = () => {
       if (!paysplip.service) {
          delete paysplip.service;
       }
-
+      //
+      if (!paysplip.salary_paid_social) {
+         toast.warn(`Làm ơn nhập lương đóng bảo hiểm xã hội`);
+         return false;
+      }
       if (!paysplip.medican) {
          delete paysplip.medican;
       }
@@ -175,6 +181,7 @@ const AddPayslip = () => {
                                           <span className="text-danger">*</span>
                                        </label>
                                        <input
+                                          min={0}
                                           className="form-control"
                                           type="text"
                                           defaultValue={paysplip?.name}
@@ -197,6 +204,7 @@ const AddPayslip = () => {
                                           <span className="text-danger">*</span>
                                        </label>
                                        <input
+                                          min={0}
                                           className="form-control"
                                           type="number"
                                           defaultValue={paysplip?.leave}
@@ -217,6 +225,7 @@ const AddPayslip = () => {
                                        </label>
 
                                        <input
+                                          min={0}
                                           prefix="￥"
                                           className="form-control"
                                           type="number"
@@ -237,6 +246,7 @@ const AddPayslip = () => {
                                           Lương Tháng 13 <span className="text-danger">*</span>
                                        </label>
                                        <input
+                                          min={0}
                                           className="form-control"
                                           type="number"
                                           defaultValue={paysplip?.bonus}
@@ -258,6 +268,7 @@ const AddPayslip = () => {
                                        <div className="input-box">
                                           <span className="prefix">%</span>
                                           <input
+                                             min={0}
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
@@ -281,6 +292,7 @@ const AddPayslip = () => {
                                        <div className="input-box">
                                           <span className="prefix">%</span>
                                           <input
+                                             min={0}
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
@@ -304,6 +316,7 @@ const AddPayslip = () => {
                                        <div className="input-box">
                                           <span className="prefix">%</span>
                                           <input
+                                             min={0}
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
@@ -327,6 +340,7 @@ const AddPayslip = () => {
                                        <div className="input-box">
                                           <span className="prefix">%</span>
                                           <input
+                                             min={0}
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
@@ -338,6 +352,29 @@ const AddPayslip = () => {
                                                 })
                                              }
                                           />
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div className="col-sm-6">
+                                    <div className="form-group">
+                                       <label className="col-form-label">
+                                          Lương đóng bảo hiểm xã hội
+                                       </label>
+                                       <div className="input-box">
+                                          <input
+                                             min={0}
+                                             prefix="￥"
+                                             className="form-control tel"
+                                             type="number"
+                                             defaultValue={paysplip.salary_paid_social}
+                                             onChange={(e) =>
+                                                setPaysplip({
+                                                   ...paysplip,
+                                                   salary_paid_social: e.target.value,
+                                                })
+                                             }
+                                          />
+                                          <span className="prefix">VND</span>
                                        </div>
                                     </div>
                                  </div>
@@ -354,6 +391,7 @@ const AddPayslip = () => {
                                        <div className="input-box">
                                           <span className="prefix">%</span>
                                           <input
+                                             min={0}
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
@@ -377,6 +415,7 @@ const AddPayslip = () => {
                                        <div className="input-box">
                                           <span className="prefix">%</span>
                                           <input
+                                             min={0}
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
@@ -402,6 +441,7 @@ const AddPayslip = () => {
                                        <div className="input-box">
                                           <span className="prefix">%</span>
                                           <input
+                                             min={0}
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
@@ -425,6 +465,7 @@ const AddPayslip = () => {
                                        <div className="input-box">
                                           <span className="prefix">%</span>
                                           <input
+                                             min={0}
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
@@ -448,6 +489,7 @@ const AddPayslip = () => {
                                        <div className="input-box">
                                           <span className="prefix">%</span>
                                           <input
+                                             min={0}
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
@@ -472,6 +514,7 @@ const AddPayslip = () => {
                                        <div className="input-box">
                                           <span className="prefix">%</span>
                                           <input
+                                             min={0}
                                              prefix="￥"
                                              className="form-control tel"
                                              type="number"
