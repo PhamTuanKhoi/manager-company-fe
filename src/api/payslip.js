@@ -14,17 +14,17 @@ export const payslipAPI = {
       return await axios.get(path + id);
    },
 
-   async listByEmployees(id) {
-      return await axios.get(path + "employees/" + id);
+   // async listByEmployees(id) {
+   //    return await axios.get(path + "employees/" + id);
+   // },
+
+   async findByUserId(id) {
+      return await axios.get(path + "by-user/" + id);
    },
 
-   async listByClient(id) {
-      return await axios.get(path + "client/" + id);
-   },
-
-   async listByWorker(id) {
-      return await axios.get(path + "worker/" + id);
-   },
+   // async listByWorker(id) {
+   //    return await axios.get(path + "worker/" + id);
+   // },
 
    async ListByUser(id) {
       return await axios.get(path + "user/" + id);

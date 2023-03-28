@@ -8,14 +8,8 @@ import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-   listPayslip,
-   listPayslipByClient,
-   listPayslipByEmployees,
-   listPayslipByWorker,
-} from "../../../redux/feature/payslipSclice";
-import moment from "moment";
-import { formatMoney, UserRoleType } from "../../../constant";
+import { listPayslip, listPayslipByUserId } from "../../../redux/feature/payslipSclice";
+import { UserRoleType } from "../../../constant";
 import { useLoading } from "../../../hook/useLoading";
 import DeletePayslip from "../../../_components/modelbox/DeletePayslip";
 import { listProjectByAllLevel, updateProjectPayslip } from "../../../redux/feature/projectSclice";
@@ -41,16 +35,8 @@ const Payslip = () => {
             dispatch(listPayslip({ setLoading }));
          }
 
-         if (user?.role === UserRoleType.EMPLOYEE) {
-            dispatch(listPayslipByEmployees({ id: user._id, setLoading }));
-         }
-
-         if (user?.role === UserRoleType.CLIENT) {
-            dispatch(listPayslipByClient({ id: user._id, setLoading }));
-         }
-
-         if (user?.role === UserRoleType.WORKER) {
-            dispatch(listPayslipByWorker({ id: user._id, setLoading }));
+         if (user?.role !== UserRoleType.ADMIN) {
+            dispatch(listPayslipByUserId({ id: user._id, setLoading }));
          }
       }
    }

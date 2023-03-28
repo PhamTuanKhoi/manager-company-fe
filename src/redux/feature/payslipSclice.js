@@ -53,12 +53,27 @@ export const listPayslipByUser = createAsyncThunk(
    }
 );
 
-export const listPayslipByEmployees = createAsyncThunk(
-   "paySlip/listPayslipByEmployees",
+// export const listPayslipByEmployees = createAsyncThunk(
+//    "paySlip/listPayslipByEmployees",
+//    async ({ id, setLoading }, { rejectWithValue }) => {
+//       try {
+//          setLoading(true);
+//          const { data } = await payslipAPI.listByEmployees(id);
+//          setLoading(false);
+//          return data;
+//       } catch (error) {
+//          setLoading(false);
+//          return rejectWithValue(error.response.data);
+//       }
+//    }
+// );
+
+export const listPayslipByUserId = createAsyncThunk(
+   "paySlip/listPayslipByUserId",
    async ({ id, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await payslipAPI.listByEmployees(id);
+         const { data } = await payslipAPI.findByUserId(id);
          setLoading(false);
          return data;
       } catch (error) {
@@ -68,35 +83,20 @@ export const listPayslipByEmployees = createAsyncThunk(
    }
 );
 
-export const listPayslipByClient = createAsyncThunk(
-   "paySlip/listPayslipByClient",
-   async ({ id, setLoading }, { rejectWithValue }) => {
-      try {
-         setLoading(true);
-         const { data } = await payslipAPI.listByClient(id);
-         setLoading(false);
-         return data;
-      } catch (error) {
-         setLoading(false);
-         return rejectWithValue(error.response.data);
-      }
-   }
-);
-
-export const listPayslipByWorker = createAsyncThunk(
-   "paySlip/listPayslipByWorker",
-   async ({ id, setLoading }, { rejectWithValue }) => {
-      try {
-         setLoading(true);
-         const { data } = await payslipAPI.listByWorker(id);
-         setLoading(false);
-         return data;
-      } catch (error) {
-         setLoading(false);
-         return rejectWithValue(error.response.data);
-      }
-   }
-);
+// export const listPayslipByWorker = createAsyncThunk(
+//    "paySlip/listPayslipByWorker",
+//    async ({ id, setLoading }, { rejectWithValue }) => {
+//       try {
+//          setLoading(true);
+//          const { data } = await payslipAPI.listByWorker(id);
+//          setLoading(false);
+//          return data;
+//       } catch (error) {
+//          setLoading(false);
+//          return rejectWithValue(error.response.data);
+//       }
+//    }
+// );
 
 export const payslipDetail = createAsyncThunk(
    "paySlip/payslipDetail",
@@ -224,43 +224,43 @@ const payslipSclice = createSlice({
       },
 
       // list by employees
-      [listPayslipByEmployees.pending]: (state, action) => {
-         state.loading = true;
-      },
-      [listPayslipByEmployees.fulfilled]: (state, action) => {
-         state.loading = false;
-         state.payslips = action.payload;
-      },
-      [listPayslipByEmployees.rejected]: (state, action) => {
-         state.loading = false;
-         state.error = action.payload.message;
-      },
+      // [listPayslipByEmployees.pending]: (state, action) => {
+      //    state.loading = true;
+      // },
+      // [listPayslipByEmployees.fulfilled]: (state, action) => {
+      //    state.loading = false;
+      //    state.payslips = action.payload;
+      // },
+      // [listPayslipByEmployees.rejected]: (state, action) => {
+      //    state.loading = false;
+      //    state.error = action.payload.message;
+      // },
 
       // list by employees
-      [listPayslipByClient.pending]: (state, action) => {
+      [listPayslipByUserId.pending]: (state, action) => {
          state.loading = true;
       },
-      [listPayslipByClient.fulfilled]: (state, action) => {
+      [listPayslipByUserId.fulfilled]: (state, action) => {
          state.loading = false;
          state.payslips = action.payload;
       },
-      [listPayslipByClient.rejected]: (state, action) => {
+      [listPayslipByUserId.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
 
-      // list by worker
-      [listPayslipByWorker.pending]: (state, action) => {
-         state.loading = true;
-      },
-      [listPayslipByWorker.fulfilled]: (state, action) => {
-         state.loading = false;
-         state.payslips = action.payload;
-      },
-      [listPayslipByWorker.rejected]: (state, action) => {
-         state.loading = false;
-         state.error = action.payload.message;
-      },
+      // // list by worker
+      // [listPayslipByWorker.pending]: (state, action) => {
+      //    state.loading = true;
+      // },
+      // [listPayslipByWorker.fulfilled]: (state, action) => {
+      //    state.loading = false;
+      //    state.payslips = action.payload;
+      // },
+      // [listPayslipByWorker.rejected]: (state, action) => {
+      //    state.loading = false;
+      //    state.error = action.payload.message;
+      // },
 
       // payslip by detail
       [payslipDetail.pending]: (state, action) => {
