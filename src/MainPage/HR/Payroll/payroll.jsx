@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import { payslipDetail } from "../../../redux/feature/payslipSclice";
 import { useLoading } from "../../../hook/useLoading";
 import { formatMoneyVND } from "../../../constant";
+import { payrollByWorker } from "../../../redux/feature/workerSclice";
 
 const Payroll = () => {
    // get query
@@ -15,20 +16,24 @@ const Payroll = () => {
    const payslipId = query.get("payslip");
    const projectId = query.get("project");
    const salaryId = query.get("salary");
+   const user = query.get("user");
+   const contract = query.get("contract");
 
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
 
    useEffect(() => {
       dispatch(
-         payslipDetail({
-            query: { payslip: payslipId, project: projectId, salary: salaryId },
+         payrollByWorker({
+            query: { payslip: payslipId, project: projectId, salary: salaryId, user, contract },
             setLoading,
          })
       );
    }, [payslipId, projectId]);
 
-   const { detail } = useSelector((state) => state.payslip);
+   const { payroll } = useSelector((state) => state.worker);
+
+   console.log(payroll);
 
    return (
       <div className="page-wrapper">
@@ -70,46 +75,40 @@ const Payroll = () => {
                                        <tr>
                                           <td>
                                              <span>Họ và tên</span>
-                                             <span className="float-end">
-                                                {detail[0]?.leave} ngày/năm
-                                             </span>
+                                             <span className="float-end">{payroll?.name}</span>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td>
                                              <span>Chức vụ</span>
-                                             <span className="float-end">
-                                                {formatMoneyVND(detail[0]?.reward)}
-                                             </span>
+                                             <span className="float-end">{payroll?.field}</span>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td>
                                              <span>Số Tài Khoản</span>
-                                             <span className="float-end">
-                                                {detail[0]?.bonus} tháng/năm
-                                             </span>
+                                             <span className="float-end"></span>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td>
                                              <span>Tên Ngân hàng</span>
-                                             <span className="float-end">
-                                                {detail[0]?.overtime}%
-                                             </span>
+                                             <span className="float-end"> </span>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td>
                                              <span>Thu nhập thoả thuận</span>
-                                             <span className="float-end">{detail[0]?.sunday}%</span>
+                                             <span className="float-end">
+                                                {formatMoneyVND(payroll?.salary)}
+                                             </span>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td>
                                              <span>Lương đóng BHXH</span>
                                              <span className="float-end">
-                                                {detail[0]?.holiday}%
+                                                {formatMoneyVND(payroll?.salary_paid_social)}
                                              </span>
                                           </td>
                                        </tr>
@@ -117,7 +116,7 @@ const Payroll = () => {
                                           <td>
                                              <span>Ngày công tính lương</span>
                                              <span className="float-end">
-                                                {detail[0]?.service}%
+                                                {payroll?.workMain} Ngày
                                              </span>
                                           </td>
                                        </tr>
@@ -133,7 +132,7 @@ const Payroll = () => {
                                        <td>
                                           <span className="fw-bold">CÁC KHOẢN THU NHẬP</span>
                                           <span className="float-end fw-bold">
-                                             {formatMoneyVND(detail[0]?.salary?.go)}
+                                             {formatMoneyVND(payroll?.income)}
                                           </span>
                                        </td>
                                     </tr>
@@ -141,7 +140,7 @@ const Payroll = () => {
                                        <td>
                                           <span>1. Thu nhập từ ngày công</span>
                                           <span className="float-end">
-                                             {formatMoneyVND(detail[0]?.salary?.home)}
+                                             {formatMoneyVND(payroll?.moneyMain)}
                                           </span>
                                        </td>
                                     </tr>
@@ -149,24 +148,22 @@ const Payroll = () => {
                                        <td>
                                           <span>2. Lương tăng ca</span>
                                           <span className="float-end">
-                                             {formatMoneyVND(detail[0]?.salary?.toxic)}
+                                             {formatMoneyVND(payroll?.moneyOvertime)}
                                           </span>
                                        </td>
                                     </tr>
                                     <tr>
                                        <td>
-                                          <span>3. Thưởng: (Kinh Doanh, Tháng 13, KPI, ...)</span>
+                                          <span>3. Phụ cấp</span>
                                           <span className="float-end">
-                                             {formatMoneyVND(detail[0]?.salary?.diligence)}
+                                             {formatMoneyVND(payroll?.allowance)}
                                           </span>
                                        </td>
                                     </tr>
                                     <tr>
                                        <td>
                                           <span>4. Cộng khác</span>
-                                          <span className="float-end">
-                                             {formatMoneyVND(detail[0]?.salary?.eat)}
-                                          </span>
+                                          <span className="float-end">{formatMoneyVND(0)}</span>
                                        </td>
                                     </tr>
                                  </tbody>
@@ -180,34 +177,36 @@ const Payroll = () => {
                                        <td>
                                           <span className="fw-bold">CÁC KHOẢN TRỪ VÀO LƯƠNG</span>
                                           <span className="float-end fw-bold">
-                                             {detail[0]?.medican}%
+                                             {formatMoneyVND(payroll?.deduct)}
                                           </span>
                                        </td>
                                     </tr>
                                     <tr>
                                        <td>
-                                          <span>1. Bảo hiểm bắt buộc (10,5%)</span>
-                                          <span className="float-end">{detail[0]?.society}%</span>
+                                          <span>
+                                             1. Bảo hiểm bắt buộc ({payroll?.precent_insurance}%)
+                                          </span>
+                                          <span className="float-end">
+                                             {formatMoneyVND(payroll?.insurance)}
+                                          </span>
                                        </td>
                                     </tr>
                                     <tr>
                                        <td>
                                           <span>2. Thuế TNCN</span>
-                                          <span className="float-end">
-                                             {detail[0]?.unemployment}%
-                                          </span>
+                                          <span className="float-end">{formatMoneyVND(0)}</span>
                                        </td>
                                     </tr>
                                     <tr>
                                        <td>
                                           <span>3. Tạm ứng</span>
-                                          <span className="float-end">{detail[0]?.union}%</span>
+                                          <span className="float-end">{formatMoneyVND(0)}</span>
                                        </td>
                                     </tr>
                                     <tr>
                                        <td>
                                           <span>4. Trừ khác</span>
-                                          <span className="float-end">{detail[0]?.accident}%</span>
+                                          <span className="float-end">{formatMoneyVND(0)}</span>
                                        </td>
                                     </tr>
                                  </tbody>
@@ -235,7 +234,7 @@ const Payroll = () => {
                                        <tr>
                                           <td className="fw-bold text-primary">
                                              <span className="me-5">THỰC LÃNH</span>
-                                             <span>12.000.000 VND</span>
+                                             <span>{formatMoneyVND(payroll?.receive_real)}</span>
                                           </td>
                                        </tr>
                                     </tbody>

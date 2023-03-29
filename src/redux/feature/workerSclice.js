@@ -218,6 +218,21 @@ export const sumWorkHourInMonthOfWorker = createAsyncThunk(
    }
 );
 
+export const payrollByWorker = createAsyncThunk(
+   "worker/payrollByWorker",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.payroll(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const workerSclice = createSlice({
    name: "worker",
    initialState: {
@@ -226,6 +241,7 @@ const workerSclice = createSlice({
       worker: {},
       workers: [],
       headors: [],
+      payroll: {},
       sumWorkHourInMonth: [],
       error: "",
       loading: false,
@@ -428,6 +444,19 @@ const workerSclice = createSlice({
          state.sumWorkHourInMonth = action.payload;
       },
       [sumWorkHourInMonthOfWorker.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // payrollByWorker
+      [payrollByWorker.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [payrollByWorker.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.payroll = action.payload;
+      },
+      [payrollByWorker.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

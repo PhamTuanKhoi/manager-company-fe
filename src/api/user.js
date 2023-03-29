@@ -70,6 +70,12 @@ export const userAPI = {
       return axios.get(path + id);
    },
 
+   payroll(query = {}) {
+      return axios.get(path + "payroll", {
+         params: query,
+      });
+   },
+
    async createClient(payload) {
       return await axios.post(path + "client", payload);
    },
