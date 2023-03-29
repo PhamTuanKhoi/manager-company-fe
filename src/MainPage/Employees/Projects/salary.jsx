@@ -180,7 +180,7 @@ const Salary = () => {
                   </Link>
                   <Link
                      className="dropdown-item"
-                     to={`/app/payroll/export?payslip=${record?.payslip?._id}&project=${record?.projectId}&salary=${record?.salary?._id}&user=${record?._id}`}
+                     to={`/app/payroll/export?payslip=${record?.payslip?._id}&project=${record?.projectId}&salary=${record?.salary?._id}&user=${record?._id}&contract=${record?.contract}`}
                   >
                      Phiếu lương
                   </Link>

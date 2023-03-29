@@ -95,16 +95,16 @@ const Payslip = () => {
          sorter: (a, b) => a.name.length - b.name.length,
       },
       {
-         title: "BHYT",
-         dataIndex: "medican",
-         render: (text, record) => +record?.medican + "%",
-         sorter: (a, b) => a.medican - b.medican,
-      },
-      {
          title: "BHXH",
          dataIndex: "society",
          render: (text, record) => +record?.society + "%",
          sorter: (a, b) => a.society - b.medican,
+      },
+      {
+         title: "BHYT",
+         dataIndex: "medican",
+         render: (text, record) => +record?.medican + "%",
+         sorter: (a, b) => a.medican - b.medican,
       },
       {
          title: "BH Thất Nghiệp",
@@ -114,18 +114,6 @@ const Payslip = () => {
       },
       {
          title: "BH Công Đoàn",
-         dataIndex: "medican",
-         render: (text, record) => +record?.medican + "%",
-         sorter: (a, b) => a.medican - b.medican,
-      },
-      {
-         title: "BH Tai Nạn",
-         dataIndex: "medican",
-         render: (text, record) => +record?.medican + "%",
-         sorter: (a, b) => a.medican - b.medican,
-      },
-      {
-         title: "Sức Khỏe Định Kỳ",
          dataIndex: "medican",
          render: (text, record) => +record?.medican + "%",
          sorter: (a, b) => a.medican - b.medican,
@@ -223,8 +211,6 @@ const Payslip = () => {
                         className="table-striped"
                         pagination={{
                            total: payslips.length,
-                           showTotal: (total, range) =>
-                              `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                            showSizeChanger: true,
                            onShowSizeChange: onShowSizeChange,
                            itemRender: itemRender,

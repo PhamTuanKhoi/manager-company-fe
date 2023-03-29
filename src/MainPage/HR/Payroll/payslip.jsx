@@ -124,6 +124,14 @@ const Payslip = () => {
                                              </span>
                                           </td>
                                        </tr>
+                                       <tr>
+                                          <td>
+                                             <span>Lương đóng BHXH</span>{" "}
+                                             <span className="float-end">
+                                                {formatMoneyVND(detail[0]?.salary_paid_social)}
+                                             </span>
+                                          </td>
+                                       </tr>
                                     </tbody>
                                  </table>
                               </div>
@@ -200,17 +208,17 @@ const Payslip = () => {
                                     <tbody>
                                        <tr>
                                           <td>
-                                             <span>Bảo Hiểm Y Tế</span>{" "}
+                                             <span>Bảo Hiểm Xã Hội</span>{" "}
                                              <span className="float-end">
-                                                {detail[0]?.medican}%
+                                                {detail[0]?.society}%
                                              </span>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td>
-                                             <span>Bảo Hiểm Xã Hội</span>{" "}
+                                             <span>Bảo Hiểm Y Tế</span>{" "}
                                              <span className="float-end">
-                                                {detail[0]?.society}%
+                                                {detail[0]?.medican}%
                                              </span>
                                           </td>
                                        </tr>
@@ -226,20 +234,6 @@ const Payslip = () => {
                                           <td>
                                              <span>Công Đoàn</span>{" "}
                                              <span className="float-end">{detail[0]?.union}%</span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <span>Bảo Hiểm Tai Nạn</span>{" "}
-                                             <span className="float-end">
-                                                {detail[0]?.accident}%
-                                             </span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <span>Khám Sức Khỏe Định Kỳ</span>{" "}
-                                             <span className="float-end">{detail[0]?.health}%</span>
                                           </td>
                                        </tr>
                                     </tbody>

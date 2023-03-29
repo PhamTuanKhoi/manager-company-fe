@@ -28,12 +28,10 @@ const AddPayslip = () => {
       // salary paid for social insurance
       salary_paid_social: "",
       //
-      medican: "",
       society: "",
+      medican: "",
       unemployment: "",
       union: "",
-      accident: "",
-      health: "",
    });
 
    const dispatch = useDispatch();
@@ -385,6 +383,30 @@ const AddPayslip = () => {
                                  <div className="col-sm-6">
                                     <div className="form-group">
                                        <label className="col-form-label">
+                                          Bảo Hiểm Xã Hội <span className="text-danger">*</span>
+                                       </label>
+                                       <div className="input-box">
+                                          <span className="prefix">%</span>
+                                          <input
+                                             min={0}
+                                             prefix="￥"
+                                             className="form-control tel"
+                                             type="number"
+                                             defaultValue={paysplip?.society}
+                                             onChange={(e) =>
+                                                setPaysplip({
+                                                   ...paysplip,
+                                                   society: e.target.value,
+                                                })
+                                             }
+                                          />
+                                       </div>
+                                    </div>
+                                 </div>
+
+                                 <div className="col-sm-6">
+                                    <div className="form-group">
+                                       <label className="col-form-label">
                                           Bảo Hiểm Y Tế
                                           <span className="text-danger">*</span>
                                        </label>
@@ -400,30 +422,6 @@ const AddPayslip = () => {
                                                 setPaysplip({
                                                    ...paysplip,
                                                    medican: e.target.value,
-                                                })
-                                             }
-                                          />
-                                       </div>
-                                    </div>
-                                 </div>
-
-                                 <div className="col-sm-6">
-                                    <div className="form-group">
-                                       <label className="col-form-label">
-                                          Bảo Hiểm Xã Hội <span className="text-danger">*</span>
-                                       </label>
-                                       <div className="input-box">
-                                          <span className="prefix">%</span>
-                                          <input
-                                             min={0}
-                                             prefix="￥"
-                                             className="form-control tel"
-                                             type="number"
-                                             defaultValue={paysplip?.society}
-                                             onChange={(e) =>
-                                                setPaysplip({
-                                                   ...paysplip,
-                                                   society: e.target.value,
                                                 })
                                              }
                                           />
@@ -474,55 +472,6 @@ const AddPayslip = () => {
                                                 setPaysplip({
                                                    ...paysplip,
                                                    union: e.target.value,
-                                                })
-                                             }
-                                          />
-                                       </div>
-                                    </div>
-                                 </div>
-
-                                 <div className="col-sm-6">
-                                    <div className="form-group">
-                                       <label className="col-form-label">
-                                          Bảo Hiểm Tai Nạn <span className="text-danger">*</span>
-                                       </label>
-                                       <div className="input-box">
-                                          <span className="prefix">%</span>
-                                          <input
-                                             min={0}
-                                             prefix="￥"
-                                             className="form-control tel"
-                                             type="number"
-                                             defaultValue={paysplip?.accident}
-                                             onChange={(e) =>
-                                                setPaysplip({
-                                                   ...paysplip,
-                                                   accident: e.target.value,
-                                                })
-                                             }
-                                          />
-                                       </div>
-                                    </div>
-                                 </div>
-
-                                 <div className="col-sm-6">
-                                    <div className="form-group">
-                                       <label className="col-form-label">
-                                          Khám Sức Khỏe Định Kỳ{" "}
-                                          <span className="text-danger">*</span>
-                                       </label>
-                                       <div className="input-box">
-                                          <span className="prefix">%</span>
-                                          <input
-                                             min={0}
-                                             prefix="￥"
-                                             className="form-control tel"
-                                             type="number"
-                                             defaultValue={paysplip?.health}
-                                             onChange={(e) =>
-                                                setPaysplip({
-                                                   ...paysplip,
-                                                   health: e.target.value,
                                                 })
                                              }
                                           />
