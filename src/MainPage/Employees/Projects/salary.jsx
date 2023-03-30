@@ -66,10 +66,15 @@ const Salary = () => {
          dataIndex: "name",
          render: (text, record) => (
             <h2 className="table-avatar">
-               <Link to="/app/profile/employee-profile" className="avatar">
+               <Link
+                  to={`/app/payroll/export?payslip=${record?.payslip?._id}&project=${record?.projectId}&salary=${record?.salary?._id}&user=${record?._id}&contract=${record?.contract}`}
+                  className="avatar"
+               >
                   <img alt="" src={record?.image} />
                </Link>
-               <Link to="/app/profile/employee-profile">
+               <Link
+                  to={`/app/payroll/export?payslip=${record?.payslip?._id}&project=${record?.projectId}&salary=${record?.salary?._id}&user=${record?._id}&contract=${record?.contract}`}
+               >
                   {text} <span>{record?.field}</span>
                </Link>
             </h2>
@@ -240,8 +245,6 @@ const Salary = () => {
                         className="table-striped"
                         pagination={{
                            total: workers.length,
-                           showTotal: (total, range) =>
-                              `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                            showSizeChanger: true,
                            onShowSizeChange: onShowSizeChange,
                            itemRender: itemRender,
