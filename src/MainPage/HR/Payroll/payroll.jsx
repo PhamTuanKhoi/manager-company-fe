@@ -8,9 +8,12 @@ import { payslipDetail } from "../../../redux/feature/payslipSclice";
 import { useLoading } from "../../../hook/useLoading";
 import { formatMoneyVND } from "../../../constant";
 import { payrollByWorker } from "../../../redux/feature/workerSclice";
+import { useState } from "react";
 
 const Payroll = () => {
    // get query
+   const [months, setMonths] = useState([]);
+   const [month, setMonth] = useState(new Date().getMonth() + 1);
    const { search } = useLocation();
    const query = useMemo(() => new URLSearchParams(search), [search]);
    const payslipId = query.get("payslip");
@@ -25,15 +28,29 @@ const Payroll = () => {
    useEffect(() => {
       dispatch(
          payrollByWorker({
-            query: { payslip: payslipId, project: projectId, salary: salaryId, user, contract },
+            query: {
+               payslip: payslipId,
+               project: projectId,
+               salary: salaryId,
+               user,
+               contract,
+               month,
+            },
             setLoading,
          })
       );
-   }, [payslipId, projectId]);
+   }, [payslipId, projectId, month]);
 
    const { payroll } = useSelector((state) => state.worker);
 
-   console.log(payroll);
+   useMemo(() => {
+      let array = [];
+      for (let i = 1; i <= 12; i++) {
+         array.push(i);
+      }
+
+      setMonths(array);
+   }, []);
 
    return (
       <div className="page-wrapper">
@@ -62,190 +79,222 @@ const Payroll = () => {
                </div>
             </div>
             {/* /Page Header */}
+            {/* Search Filter */}
+            <div className="row filter-row">
+               <div className="col-sm-6 col-md-3">
+                  <div className="form-group form-focus select-focus">
+                     <select
+                        className="form-control floating"
+                        defaultValue={month}
+                        onChange={(e) => setMonth(e.target.value)}
+                     >
+                        {months?.map((item) => (
+                           <option key={item} value={item}>
+                              Tháng {item}
+                           </option>
+                        ))}
+                     </select>
+                     <label className="focus-label">Tháng</label>
+                  </div>
+               </div>
+            </div>
+            {/* Search Filter */}
             <div className="row">
                <div className="col-md-12">
                   <div className="card">
                      <div className="card-body">
-                        <h4 className="payslip-title">Phiếu lương</h4>
-                        <div className="row">
-                           <div className="col-sm-12">
-                              <div>
-                                 <table className="table table-bordered table-striped ">
-                                    <tbody>
-                                       <tr>
-                                          <td>
-                                             <span>Họ và tên</span>
-                                             <span className="float-end">{payroll?.name}</span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <span>Chức vụ</span>
-                                             <span className="float-end">{payroll?.field}</span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <span>Số Tài Khoản</span>
-                                             <span className="float-end"></span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <span>Tên Ngân hàng</span>
-                                             <span className="float-end"> </span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <span>Thu nhập thoả thuận</span>
-                                             <span className="float-end">
-                                                {formatMoneyVND(payroll?.salary)}
-                                             </span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <span>Lương đóng BHXH</span>
-                                             <span className="float-end">
-                                                {formatMoneyVND(payroll?.salary_paid_social)}
-                                             </span>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <span>Ngày công tính lương</span>
-                                             <span className="float-end">
-                                                {payroll?.workMain} Ngày
-                                             </span>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div>
+                        {payroll?.workMain ? (
+                           <>
+                              <h4 className="payslip-title">Phiếu lương</h4>
+                              <div className="row">
+                                 <div className="col-sm-12">
+                                    <div>
+                                       <table className="table table-bordered table-striped ">
+                                          <tbody>
+                                             <tr>
+                                                <td>
+                                                   <span>Họ và tên</span>
+                                                   <span className="float-end">
+                                                      {payroll?.name}
+                                                   </span>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>
+                                                   <span>Chức vụ</span>
+                                                   <span className="float-end">
+                                                      {payroll?.field}
+                                                   </span>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>
+                                                   <span>Số Tài Khoản</span>
+                                                   <span className="float-end"></span>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>
+                                                   <span>Tên Ngân hàng</span>
+                                                   <span className="float-end"> </span>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>
+                                                   <span>Thu nhập thoả thuận</span>
+                                                   <span className="float-end">
+                                                      {formatMoneyVND(payroll?.salary)}
+                                                   </span>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>
+                                                   <span>Lương đóng BHXH</span>
+                                                   <span className="float-end">
+                                                      {formatMoneyVND(payroll?.salary_paid_social)}
+                                                   </span>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>
+                                                   <span>Ngày công tính lương</span>
+                                                   <span className="float-end">
+                                                      {payroll?.workMain} Ngày
+                                                   </span>
+                                                </td>
+                                             </tr>
+                                          </tbody>
+                                       </table>
+                                    </div>
+                                 </div>
 
-                           <div className="col-sm-6">
-                              <table className="table table-bordered table-striped">
-                                 <tbody>
-                                    <tr>
-                                       <td>
-                                          <span className="fw-bold">CÁC KHOẢN THU NHẬP</span>
-                                          <span className="float-end fw-bold">
-                                             {formatMoneyVND(payroll?.income)}
-                                          </span>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td>
-                                          <span>1. Thu nhập từ ngày công</span>
-                                          <span className="float-end">
-                                             {formatMoneyVND(payroll?.moneyMain)}
-                                          </span>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td>
-                                          <span>2. Lương tăng ca</span>
-                                          <span className="float-end">
-                                             {formatMoneyVND(payroll?.moneyOvertime)}
-                                          </span>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td>
-                                          <span>3. Phụ cấp</span>
-                                          <span className="float-end">
-                                             {formatMoneyVND(payroll?.allowance)}
-                                          </span>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td>
-                                          <span>4. Cộng khác</span>
-                                          <span className="float-end">{formatMoneyVND(0)}</span>
-                                       </td>
-                                    </tr>
-                                 </tbody>
-                              </table>
-                           </div>
+                                 <div className="col-sm-6">
+                                    <table className="table table-bordered table-striped">
+                                       <tbody>
+                                          <tr>
+                                             <td>
+                                                <span className="fw-bold">CÁC KHOẢN THU NHẬP</span>
+                                                <span className="float-end fw-bold">
+                                                   {formatMoneyVND(payroll?.income)}
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>1. Thu nhập từ ngày công</span>
+                                                <span className="float-end">
+                                                   {formatMoneyVND(payroll?.moneyMain)}
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>2. Lương tăng ca</span>
+                                                <span className="float-end">
+                                                   {formatMoneyVND(payroll?.moneyOvertime)}
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>3. Phụ cấp</span>
+                                                <span className="float-end">
+                                                   {formatMoneyVND(payroll?.allowance)}
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>4. Cộng khác</span>
+                                                <span className="float-end">
+                                                   {formatMoneyVND(0)}
+                                                </span>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
 
-                           <div className={`${!projectId ? "col-sm-12" : "col-sm-6"}`}>
-                              <table className="table table-bordered table-striped">
-                                 <tbody>
-                                    <tr>
-                                       <td>
-                                          <span className="fw-bold">CÁC KHOẢN TRỪ VÀO LƯƠNG</span>
-                                          <span className="float-end fw-bold">
-                                             {formatMoneyVND(payroll?.deduct)}
-                                          </span>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td>
-                                          <span>
-                                             1. Bảo hiểm bắt buộc ({payroll?.precent_insurance}%)
-                                          </span>
-                                          <span className="float-end">
-                                             {formatMoneyVND(payroll?.insurance)}
-                                          </span>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td>
-                                          <span>2. Thuế TNCN</span>
-                                          <span className="float-end">{formatMoneyVND(0)}</span>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td>
-                                          <span>3. Tạm ứng</span>
-                                          <span className="float-end">{formatMoneyVND(0)}</span>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td>
-                                          <span>4. Trừ khác</span>
-                                          <span className="float-end">{formatMoneyVND(0)}</span>
-                                       </td>
-                                    </tr>
-                                 </tbody>
-                              </table>
-                           </div>
-                        </div>{" "}
-                        {/* <div className="row">
-                           <div className="col-sm-12">
-                              <h4 className="m-b-10">
-                                 <strong>Phụ cấp khác</strong>
-                              </h4>
-                           </div>
-                           <div>
-                              <label htmlFor="">sss</label>
-                              <input type="text" className="input-custom" />
-                              <label htmlFor="">sss</label>
-                              <input type="text" className="input-custom" />
-                           </div>
-                        </div> */}
-                        <div className="row">
-                           <div className="col-sm-12">
-                              <div>
-                                 <table className="table table-bordered table-striped ">
-                                    <tbody>
-                                       <tr>
-                                          <td className="fw-bold text-primary">
-                                             <span className="me-5">THỰC LÃNH</span>
-                                             <span>{formatMoneyVND(payroll?.receive_real)}</span>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                                 <p>
-                                    Bằng chữ: Sáu triệu ba trăm năm mươi lăm ngàn ba trăm tám mươi
-                                    bốn đồng chẵn.
-                                 </p>
+                                 <div className={`${!projectId ? "col-sm-12" : "col-sm-6"}`}>
+                                    <table className="table table-bordered table-striped">
+                                       <tbody>
+                                          <tr>
+                                             <td>
+                                                <span className="fw-bold">
+                                                   CÁC KHOẢN TRỪ VÀO LƯƠNG
+                                                </span>
+                                                <span className="float-end fw-bold">
+                                                   {formatMoneyVND(payroll?.deduct)}
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>
+                                                   1. Bảo hiểm bắt buộc (
+                                                   {payroll?.precent_insurance}%)
+                                                </span>
+                                                <span className="float-end">
+                                                   {formatMoneyVND(payroll?.insurance)}
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>2. Thuế TNCN</span>
+                                                <span className="float-end">
+                                                   {formatMoneyVND(0)}
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>3. Tạm ứng</span>
+                                                <span className="float-end">
+                                                   {formatMoneyVND(0)}
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>4. Trừ khác</span>
+                                                <span className="float-end">
+                                                   {formatMoneyVND(0)}
+                                                </span>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                              </div>{" "}
+                              <div className="row">
+                                 <div className="col-sm-12">
+                                    <div>
+                                       <table className="table table-bordered table-striped ">
+                                          <tbody>
+                                             <tr>
+                                                <td className="fw-bold text-primary">
+                                                   <span className="me-5">THỰC LÃNH</span>
+                                                   <span>
+                                                      {formatMoneyVND(payroll?.receive_real)}
+                                                   </span>
+                                                </td>
+                                             </tr>
+                                          </tbody>
+                                       </table>
+                                       <p>
+                                          Bằng chữ: Sáu triệu ba trăm năm mươi lăm ngàn ba trăm tám
+                                          mươi bốn đồng chẵn.
+                                       </p>
+                                    </div>
+                                 </div>
                               </div>
-                           </div>
-                        </div>
+                           </>
+                        ) : (
+                           <p className="text-center fs-3 fw-bold text-danger">
+                              Bạn không có đi làm !
+                           </p>
+                        )}
                      </div>
                   </div>
                </div>
