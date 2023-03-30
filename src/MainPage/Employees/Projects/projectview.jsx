@@ -19,11 +19,12 @@ import { listWorkerProjectByProject } from "../../../redux/feature/workerProject
 import AssignUser from "../../../_components/modelbox/assignUser";
 import Editproject from "../../../_components/modelbox/Editproject";
 import LinkProject from "../../../_components/modelbox/linkProject";
-import { Collapse } from "antd";
+import { Collapse, Table } from "antd";
 import { listTaskByProject } from "../../../redux/feature/taskSclice";
 import ActionTask from "../../../_components/modelbox/actionTask/ActionTask";
 import CreateTask from "../../../_components/modelbox/assignUserTask";
 import Addproject from "../../../_components/modelbox/Addproject";
+import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import PerfromTab from "../../../_components/tabs/perform";
 import FinishTab from "../../../_components/tabs/finish";
 import Part from "../../../_components/part/part";
@@ -79,6 +80,43 @@ const ProjectView = () => {
    const { tasks } = useSelector((state) => state.task);
 
    const Action = ({ item }) => <ActionTask item={item} />;
+
+   const columns = [
+      {
+         title: "Họ và tên",
+         dataIndex: "name",
+         render: (text, record) => (
+            <h2 className="table-avatar">
+               <Link to={`/app/profile/worker-profile/${record?._id}`} className="avatar">
+                  <img alt={record?.name} src={record?.image || avartarFAKE} />
+               </Link>
+               <Link to={`/app/profile/worker-profile/${record?._id}`}>
+                  {text} <span>{record?.field}</span>
+               </Link>
+            </h2>
+         ),
+         sorter: (a, b) => a.name.length - b.name.length,
+      },
+      {
+         title: "Số điện thoại",
+         dataIndex: "mobile",
+         render: (text) => "0" + text,
+         sorter: (a, b) => a.mobile - b.mobile,
+      },
+
+      {
+         title: "Căn cước công dân",
+         dataIndex: "cccd",
+         sorter: (a, b) => a.cccd - b.cccd,
+      },
+
+      {
+         title: "Ngày sinh",
+         dataIndex: "date",
+         render: (text) => moment(text).format("DD/MM/YYYY"),
+         sorter: (a, b) => a.date - b.date,
+      },
+   ];
 
    return (
       <div className="page-wrapper">
@@ -165,10 +203,10 @@ const ProjectView = () => {
                      </div>
                   </div>
                   {/* part project */}
-                  <Part />
+                  {/* <Part /> */}
                   {/* part project */}
                   {/* assign work */}
-                  <div className="project-task">
+                  {/* <div className="project-task">
                      <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
                         <li className="nav-item">
                            <a
@@ -216,8 +254,7 @@ const ProjectView = () => {
                            <div className="task-wrapper">
                               <div className="task-list-container">
                                  <div className="task-list-body">
-                                    <ul id="task-list">
-                                       {/* <MainTask /> */}
+                                    <ul id="task-list"> 
                                        <li className="task">
                                           <Collapse
                                              style={{ fontWeight: "bold" }}
@@ -231,8 +268,7 @@ const ProjectView = () => {
                                                    key={item?._id}
                                                    header={item?.name}
                                                    extra={Action({ item })}
-                                                >
-                                                   {/* <div>{item?.content}</div> */}
+                                                > 
                                                 </Panel>
                                              ))}
                                           </Collapse>
@@ -269,10 +305,37 @@ const ProjectView = () => {
                               </div>
                            </div>
                         </div>
-                        {/* tab */}
+                     
                         <PerfromTab />
                         <FinishTab />
                      </div>
+                  </div> */}
+                  <div className="table-responsive shadow-lg">
+                     <h6 className="card-title m-b-20 worker-name mt-2 ms-2 me-2">
+                        Người lao động
+                        <button
+                           type="button"
+                           className="float-end btn btn-primary btn-sm"
+                           onClick={() => setAddWorker(true)}
+                        >
+                           Thêm
+                        </button>
+                     </h6>
+                     <Table
+                        className="table-striped"
+                        pagination={{
+                           total: project?.workers?.length,
+                           showSizeChanger: true,
+                           onShowSizeChange: onShowSizeChange,
+                           itemRender: itemRender,
+                        }}
+                        style={{ overflowX: "auto" }}
+                        columns={columns}
+                        // bordered
+                        dataSource={project?.workers}
+                        rowKey={(record) => record._id}
+                        // onChange={this.handleTableChange}
+                     />
                   </div>
                   <br /> <br />
                   {/* table assign task */}
@@ -456,36 +519,41 @@ const ProjectView = () => {
                            <i className="la la-users" /> Leader{" "}
                         </h6>
                         <ul className="list-box">
-                           {project?.userEX?.map(
-                              (item) =>
-                                 item?.role === UserRoleType.LEADER && (
-                                    <li>
-                                       <Link to="#">
-                                          <div className="list-item">
-                                             <div className="list-left">
-                                                <span className="avatar">
-                                                   <img
-                                                      alt={project?.leaderEX?.name}
-                                                      src={
-                                                         project?.leaderEX?.avartar || avartarFAKE
-                                                      }
-                                                   />
-                                                </span>
-                                             </div>
-                                             <div className="list-body">
-                                                <span className="message-author">
-                                                   {project?.leaderEX?.name}
-                                                </span>
-                                                <div className="clearfix" />
-                                                <span className="message-content">
-                                                   {project?.leaderEX?.department}
-                                                </span>
-                                             </div>
-                                          </div>
-                                       </Link>
-                                    </li>
-                                 )
-                           )}
+                           <li>
+                              <Link to="#">
+                                 <div className="list-item">
+                                    <div className="list-left">
+                                       <span className="avatar">
+                                          <img
+                                             alt={project?.leader?.name}
+                                             src={project?.leader?.avartar || avartarFAKE}
+                                          />
+                                       </span>
+                                    </div>
+                                    <div className="list-body">
+                                       <span className="message-author">
+                                          {project?.leader?.name}
+                                       </span>
+                                       <div className="clearfix" />
+                                       <span className="message-content">
+                                          {project?.leader?.department ===
+                                          EmployeeDepartmentType.BUSSINESS
+                                             ? "Kinh doanh"
+                                             : project?.leader?.department ===
+                                               EmployeeDepartmentType.MARKETING
+                                             ? "Marketing"
+                                             : project?.leader?.department ===
+                                               EmployeeDepartmentType.ACCOUNTANT
+                                             ? "Kế toán"
+                                             : project?.leader?.department ===
+                                               EmployeeDepartmentType.RECRUIT
+                                             ? "Tuyển dụng"
+                                             : ""}
+                                       </span>
+                                    </div>
+                                 </div>
+                              </Link>
+                           </li>
                         </ul>
                         <br />
 
@@ -532,7 +600,7 @@ const ProjectView = () => {
                      </div>
                   </div>
 
-                  <div className="card project-user">
+                  {/* <div className="card project-user">
                      <div className="card-body">
                         <h6 className="card-title m-b-20 worker-name">
                            Người lao động
@@ -568,7 +636,7 @@ const ProjectView = () => {
                            ))}
                         </ul>
                      </div>
-                  </div>
+                  </div> */}
                </div>
             </div>
          </div>

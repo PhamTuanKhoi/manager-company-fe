@@ -186,8 +186,6 @@ const Allowance = () => {
                         className="table-striped"
                         pagination={{
                            total: salarys.length,
-                           showTotal: (total, range) =>
-                              `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                            showSizeChanger: true,
                            onShowSizeChange: onShowSizeChange,
                            itemRender: itemRender,
