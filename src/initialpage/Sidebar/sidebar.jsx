@@ -7,6 +7,9 @@ import { Link } from "react-router-dom";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useSelector } from "react-redux";
 import { UserRoleType } from "../../constant";
+import { useDispatch } from "react-redux";
+import { useLoading } from "../../hook/useLoading";
+import { getIdLinkPayroll } from "../../redux/feature/workerSclice";
 
 const Sidebar = (props) => {
    const [isSideMenu, setSideMenu] = useState("");
@@ -17,6 +20,16 @@ const Sidebar = (props) => {
    const toggleSidebar = (value) => {
       setSideMenu(value);
    };
+
+   const dispatch = useDispatch();
+   const { setLoading } = useLoading();
+
+   useEffect(() => {
+      if (user && user.role === UserRoleType.WORKER)
+         dispatch(getIdLinkPayroll({ id: user._id, setLoading }));
+   }, [user]);
+
+   const { worker } = useSelector((state) => state.worker);
 
    return (
       <div className="sidebar" id="sidebar">
@@ -150,14 +163,27 @@ const Sidebar = (props) => {
                                     Lương và phụ cấp
                                  </Link>
                               </li>
-                              <li>
-                                 <Link
-                                    className={pathname.includes("user-salary") ? "active" : ""}
-                                    to="/app/projects/user-salary"
-                                 >
-                                    Lương người lao động
-                                 </Link>
-                              </li>
+                              {(user?.role === UserRoleType.EMPLOYEE ||
+                                 user?.role === UserRoleType.ADMIN) && (
+                                 <li>
+                                    <Link
+                                       className={pathname.includes("user-salary") ? "active" : ""}
+                                       to="/app/projects/user-salary"
+                                    >
+                                       Lương người lao động
+                                    </Link>
+                                 </li>
+                              )}
+                              {user?.role === UserRoleType.WORKER && (
+                                 <li>
+                                    <Link
+                                       className={pathname.includes("export") ? "active" : ""}
+                                       to={`/app/payroll/export?payslip=${worker?.payslipId}&project=${worker?.projectId}&salary=${worker?.salaryId}&user=${user?._id}&contract=${worker?.contractId}`}
+                                    >
+                                       Phiếu lương
+                                    </Link>
+                                 </li>
+                              )}
                            </ul>
                         ) : (
                            ""

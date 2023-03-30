@@ -218,6 +218,21 @@ export const sumWorkHourInMonthOfWorker = createAsyncThunk(
    }
 );
 
+export const getIdLinkPayroll = createAsyncThunk(
+   "worker/getIdLinkPayroll",
+   async ({ id, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.getIdLinkPayroll(id);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 export const payrollByWorker = createAsyncThunk(
    "worker/payrollByWorker",
    async ({ query, setLoading }, { rejectWithValue }) => {
@@ -457,6 +472,19 @@ const workerSclice = createSlice({
          state.payroll = action.payload;
       },
       [payrollByWorker.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // link payroll
+      [getIdLinkPayroll.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [getIdLinkPayroll.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.worker = action.payload;
+      },
+      [getIdLinkPayroll.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

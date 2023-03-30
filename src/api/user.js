@@ -66,6 +66,10 @@ export const userAPI = {
       });
    },
 
+   getIdLinkPayroll(id) {
+      return axios.get(path + "link-payroll/" + id);
+   },
+
    profile(id) {
       return axios.get(path + id);
    },
