@@ -202,25 +202,14 @@ const WorkerProfile = () => {
                                        </div>
                                        <div className="experience-content">
                                           <div className="timeline-content">
-                                             <a href="/" className="name">
+                                             {/* truong hoc */}
+                                             {/* <a href="/" className="name">
                                                 International College of Arts and Science (UG)
-                                             </a>
-                                             <div>Bsc Computer Science</div>
-                                             <span className="time">2000 - 2003</span>
-                                          </div>
-                                       </div>
-                                    </li>
-                                    <li>
-                                       <div className="experience-user">
-                                          <div className="before-circle" />
-                                       </div>
-                                       <div className="experience-content">
-                                          <div className="timeline-content">
-                                             <a href="/" className="name">
-                                                International College of Arts and Science (PG)
-                                             </a>
-                                             <div>Msc Computer Science</div>
-                                             <span className="time">2000 - 2003</span>
+                                             </a> */}
+                                             {/* chuyen nganh */}
+                                             {/* <div>Bsc Computer Science</div> */}
+                                             {/* thoi gian hoc */}
+                                             {/* <span className="time">2000 - 2003</span> */}
                                           </div>
                                        </div>
                                     </li>

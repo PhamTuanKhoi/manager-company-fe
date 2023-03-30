@@ -163,8 +163,9 @@ const Sidebar = (props) => {
                                     Lương và phụ cấp
                                  </Link>
                               </li>
-                              {(user?.role === UserRoleType.EMPLOYEE ||
-                                 user?.role === UserRoleType.ADMIN) && (
+                              {(user?.role === UserRoleType.ADMIN ||
+                                 user?.role === UserRoleType.EMPLOYEE ||
+                                 user?.role === UserRoleType.CLIENT) && (
                                  <li>
                                     <Link
                                        className={pathname.includes("user-salary") ? "active" : ""}
