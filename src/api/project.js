@@ -10,18 +10,6 @@ export const projectAPI = {
       return await axios.get(path + "all", { params: query });
    },
 
-   // async listByClient(id) {
-   //    return await axios.get(path + "client/" + id);
-   // },
-
-   // async listByEmployees(id) {
-   //    return await axios.get(path + "employees/" + id);
-   // },
-
-   // async listByUser(id) {
-   //    return await axios.get(path + "user/" + id);
-   // },
-
    async detail(id) {
       return await axios.get(path + id);
    },

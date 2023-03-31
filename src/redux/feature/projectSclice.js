@@ -78,51 +78,6 @@ export const listProjectByAllLevel = createAsyncThunk(
    }
 );
 
-// export const listProjectByClient = createAsyncThunk(
-//    "project/listProjectByClient",
-//    async ({ id, setLoading }, { rejectWithValue }) => {
-//       try {
-//          setLoading(true);
-//          const { data } = await projectAPI.listByClient(id);
-//          setLoading(false);
-//          return data;
-//       } catch (error) {
-//          setLoading(false);
-//          return rejectWithValue(error.response.data);
-//       }
-//    }
-// );
-
-// export const listProjectByEmployees = createAsyncThunk(
-//    "project/listProjectByEmployees",
-//    async ({ id, setLoading }, { rejectWithValue }) => {
-//       try {
-//          setLoading(true);
-//          const { data } = await projectAPI.listByEmployees(id);
-//          setLoading(false);
-//          return data;
-//       } catch (error) {
-//          setLoading(false);
-//          return rejectWithValue(error.response.data);
-//       }
-//    }
-// );
-
-// export const listProjectByUser = createAsyncThunk(
-//    "project/listProjectByUser",
-//    async ({ id, setLoading }, { rejectWithValue }) => {
-//       try {
-//          setLoading(true);
-//          const { data } = await projectAPI.listByUser(id);
-//          setLoading(false);
-//          return data;
-//       } catch (error) {
-//          setLoading(false);
-//          return rejectWithValue(error.response.data);
-//       }
-//    }
-// );
-
 export const projectDetail = createAsyncThunk(
    "project/projectDetail",
    async ({ id, setLoading }, { rejectWithValue }) => {
@@ -329,32 +284,6 @@ const projectSclice = createSlice({
          state.loading = false;
          state.error = action.payload.message;
       },
-
-      // list by worker
-      // [listProjectByUser.pending]: (state, action) => {
-      //    state.loading = true;
-      // },
-      // [listProjectByUser.fulfilled]: (state, action) => {
-      //    state.loading = false;
-      //    state.projects = action.payload;
-      // },
-      // [listProjectByUser.rejected]: (state, action) => {
-      //    state.loading = false;
-      //    state.error = action.payload.message;
-      // },
-
-      // list by employees
-      // [listProjectByEmployees.pending]: (state, action) => {
-      //    state.loading = true;
-      // },
-      // [listProjectByEmployees.fulfilled]: (state, action) => {
-      //    state.loading = false;
-      //    state.projects = action.payload;
-      // },
-      // [listProjectByEmployees.rejected]: (state, action) => {
-      //    state.loading = false;
-      //    state.error = action.payload.message;
-      // },
    },
 });
 
