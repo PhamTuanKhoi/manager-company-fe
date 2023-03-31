@@ -129,17 +129,14 @@ const Salary = () => {
             <div className="dropdown ">
                <a
                   href=""
-                  className={`btn btn-white btn-sm btn-rounded dropdown-toggle ${
-                     record?.salary?.beneficiary
-                        ? `bg-success text-light fw-bold`
-                        : `text-danger bg-warning`
-                  }`}
+                  style={{ minWidth: "200px" }}
+                  className={`btn btn-white dropdown-toggle fw-bold text-secondary`}
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                >
                   {record?.salary?.beneficiary || "chọn nhóm thụ hưởng"}
                </a>
-               <div className="dropdown-menu">
+               <div className="dropdown-menu" style={{ minWidth: "200px" }}>
                   {record?.salarys?.map((item) => (
                      <button
                         key={item?._id}
@@ -153,17 +150,6 @@ const Salary = () => {
             </div>
          ),
       },
-      // {
-      //    title: "Phiếu lương",
-      //    render: (text, record) => (
-      //       <Link
-      //          className="btn btn-sm btn-primary"
-      //          to={`/app/payroll/salary-view?payslip=${record?.payslip?._id}&project=${record?.projectId}&salary=${record?.salary?._id}`}
-      //       >
-      //          {record?.payslip?.name}
-      //       </Link>
-      //    ),
-      // },
       {
          title: "Action",
          render: (text, record) => (
@@ -189,12 +175,6 @@ const Salary = () => {
                   >
                      Phiếu lương
                   </Link>
-                  <a className="dropdown-item" href="#">
-                     <i className="fa fa-pencil m-r-5" /> Edit
-                  </a>
-                  <a className="dropdown-item" href="#">
-                     <i className="fa fa-trash-o m-r-5" /> Delete
-                  </a>
                </div>
             </div>
          ),
