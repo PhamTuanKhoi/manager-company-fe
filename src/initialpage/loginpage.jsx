@@ -41,9 +41,14 @@ const Loginpage = (props) => {
    const onSubmit = async (payload) => {
       try {
          dispatch(
-            login({ payload: { ...payload, username: payload.email }, toast, props, setLoading })
+            login({
+               payload: { password: payload.password, username: payload.email },
+               toast,
+               props,
+               setLoading,
+            })
          );
-         clearErrors("password");
+         // clearErrors("password");
       } catch (error) {
          console.log(error);
          if (typeof error?.response?.data?.message === "string") {
