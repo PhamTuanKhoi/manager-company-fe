@@ -82,7 +82,8 @@ const AllEmployees = () => {
                      </div>
                      <div className="col-auto float-end ml-auto">
                         {(user?.role === UserRoleType.ADMIN ||
-                           user?.role === UserRoleType.EMPLOYEE) && (
+                           user?.role === UserRoleType.EMPLOYEE ||
+                           user?.role === UserRoleType.LEADER) && (
                            <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
                               <i className="fa fa-plus" /> Thêm nhân viên
                            </a>
@@ -149,42 +150,43 @@ const AllEmployees = () => {
                                  <img src={item?.avartar || avartarFAKE} alt={item?.name} />
                               </Link>
                            </div>
-                           {user?.role === UserRoleType.EMPLOYEE ||
-                              (user?.role === UserRoleType.ADMIN && (
-                                 <div className="dropdown profile-action">
+                           {(user?.role === UserRoleType.EMPLOYEE ||
+                              user?.role === UserRoleType.ADMIN ||
+                              user?.role === UserRoleType.LEADER) && (
+                              <div className="dropdown profile-action">
+                                 <a
+                                    href="#"
+                                    className="action-icon dropdown-toggle"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                 >
+                                    <i className="material-icons">more_vert</i>
+                                 </a>
+                                 <div className="dropdown-menu dropdown-menu-right">
                                     <a
+                                       className="dropdown-item"
                                        href="#"
-                                       className="action-icon dropdown-toggle"
-                                       data-bs-toggle="dropdown"
-                                       aria-expanded="false"
+                                       onClick={() => {
+                                          setRender((prev) => prev + 1);
+                                          setEmployee(item);
+                                          setModalShow(true);
+                                       }}
                                     >
-                                       <i className="material-icons">more_vert</i>
+                                       <i className="fa fa-pencil m-r-5" /> Sửa
                                     </a>
-                                    <div className="dropdown-menu dropdown-menu-right">
-                                       <a
-                                          className="dropdown-item"
-                                          href="#"
-                                          onClick={() => {
-                                             setRender((prev) => prev + 1);
-                                             setEmployee(item);
-                                             setModalShow(true);
-                                          }}
-                                       >
-                                          <i className="fa fa-pencil m-r-5" /> Sửa
-                                       </a>
-                                       <a
-                                          className="dropdown-item"
-                                          href="#"
-                                          onClick={() => {
-                                             setEmployee(item);
-                                             setModalDelete(true);
-                                          }}
-                                       >
-                                          <i className="fa fa-trash-o m-r-5" /> Xóa
-                                       </a>
-                                    </div>
+                                    <a
+                                       className="dropdown-item"
+                                       href="#"
+                                       onClick={() => {
+                                          setEmployee(item);
+                                          setModalDelete(true);
+                                       }}
+                                    >
+                                       <i className="fa fa-trash-o m-r-5" /> Xóa
+                                    </a>
                                  </div>
-                              ))}
+                              </div>
+                           )}
                            <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                               <Link to={`/app/profile/employee-profile/${item._id}`}>
                                  {item?.name}

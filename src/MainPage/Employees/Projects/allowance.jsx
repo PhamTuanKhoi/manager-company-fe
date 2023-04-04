@@ -101,8 +101,9 @@ const Allowance = () => {
       {
          title: "Action",
          render: (text, record) =>
-            user?.role === UserRoleType.ADMIN ||
-            (user?.role === UserRoleType.EMPLOYEE && (
+            (user.role === UserRoleType.ADMIN ||
+               user.role === UserRoleType.EMPLOYEE ||
+               user?.role === UserRoleType.LEADER) && (
                <div className="dropdown dropdown-action text-end">
                   <a
                      href="#"
@@ -136,7 +137,7 @@ const Allowance = () => {
                      </a>
                   </div>
                </div>
-            )),
+            ),
       },
    ];
 
@@ -154,7 +155,9 @@ const Allowance = () => {
                   <div className="col">
                      <h3 className="page-title">Lương và phụ cấp</h3>
                   </div>
-                  {(user.role === UserRoleType.ADMIN || user.role === UserRoleType.EMPLOYEE) && (
+                  {(user.role === UserRoleType.ADMIN ||
+                     user.role === UserRoleType.EMPLOYEE ||
+                     user?.role === UserRoleType.LEADER) && (
                      <div className="col-auto float-end ml-auto">
                         <a href="#" className="btn add-btn" onClick={handleShow}>
                            <i className="fa fa-plus" /> Thêm nhóm thụ hưởng

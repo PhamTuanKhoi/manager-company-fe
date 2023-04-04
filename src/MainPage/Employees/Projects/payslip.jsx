@@ -121,7 +121,9 @@ const Payslip = () => {
       {
          title: "Thuộc dự án",
          render: (text, record) =>
-            user?.role === UserRoleType.ADMIN || user.role === UserRoleType.EMPLOYEE ? (
+            user?.role === UserRoleType.ADMIN ||
+            user?.role === UserRoleType.EMPLOYEE ||
+            user?.role === UserRoleType.LEADER ? (
                <div className="dropdown ">
                   <a
                      href="#"
@@ -154,7 +156,9 @@ const Payslip = () => {
       {
          title: "Action",
          render: (text, record) =>
-            (user.role === UserRoleType.ADMIN || user.role === UserRoleType.EMPLOYEE) && (
+            (user.role === UserRoleType.ADMIN ||
+               user.role === UserRoleType.EMPLOYEE ||
+               user?.role === UserRoleType.LEADER) && (
                <div className="dropdown dropdown-action text-end">
                   <a
                      href="#"
@@ -201,7 +205,9 @@ const Payslip = () => {
                      <h3 className="page-title">Phúc lợi và bảo hiểm</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                     {(user.role === UserRoleType.ADMIN || user.role === UserRoleType.EMPLOYEE) && (
+                     {(user.role === UserRoleType.ADMIN ||
+                        user.role === UserRoleType.EMPLOYEE ||
+                        user?.role === UserRoleType.LEADER) && (
                         <Link to={"/app/projects/them-phieu-luong"} className="btn add-btn">
                            <i className="fa fa-plus" /> Thêm phúc lợi và bảo hiểm
                         </Link>

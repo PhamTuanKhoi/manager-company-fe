@@ -22,7 +22,10 @@ export const login = createAsyncThunk(
             props.history.push("/app/main/client-dashboard");
          }
 
-         if (data?.user?.role === UserRoleType.EMPLOYEE) {
+         if (
+            data?.user?.role === UserRoleType.EMPLOYEE ||
+            data?.user?.role === UserRoleType.LEADER
+         ) {
             props.history.push("/app/main/employee-dashboard");
          }
 

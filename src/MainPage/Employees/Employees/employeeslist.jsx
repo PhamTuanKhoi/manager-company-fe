@@ -120,8 +120,9 @@ const Employeeslist = () => {
       {
          title: "Action",
          render: (text, record) =>
-            user?.role === UserRoleType.ADMIN ||
-            (user?.role === UserRoleType.EMPLOYEE && (
+            (user?.role === UserRoleType.ADMIN ||
+               user?.role === UserRoleType.EMPLOYEE ||
+               user?.role === UserRoleType.LEADER) && (
                <div className="dropdown dropdown-action text-end">
                   <a
                      href="#"
@@ -155,7 +156,7 @@ const Employeeslist = () => {
                      </a>
                   </div>
                </div>
-            )),
+            ),
       },
    ];
    return (
@@ -177,7 +178,8 @@ const Employeeslist = () => {
                      </div>
                      <div className="col-auto float-end ml-auto">
                         {(user?.role === UserRoleType.ADMIN ||
-                           user?.role === UserRoleType.EMPLOYEE) && (
+                           user?.role === UserRoleType.EMPLOYEE ||
+                           user?.role === UserRoleType.LEADER) && (
                            <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
                               <i className="fa fa-plus" /> Thêm nhân viên
                            </a>

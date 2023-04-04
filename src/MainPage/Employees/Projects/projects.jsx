@@ -78,7 +78,7 @@ const Projects = () => {
                   <div className="col-auto float-end ml-auto">
                      {(user.role === UserRoleType.ADMIN ||
                         user.role === UserRoleType.EMPLOYEE ||
-                        user.role === UserRoleType.CLIENT) && (
+                        user?.role === UserRoleType.LEADER) && (
                         <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
                            <i className="fa fa-plus" /> Thêm dự án
                         </a>

@@ -165,6 +165,7 @@ const Sidebar = (props) => {
                               </li>
                               {(user?.role === UserRoleType.ADMIN ||
                                  user?.role === UserRoleType.EMPLOYEE ||
+                                 user?.role === UserRoleType.LEADER ||
                                  user?.role === UserRoleType.CLIENT) && (
                                  <li>
                                     <Link
@@ -239,7 +240,8 @@ const Sidebar = (props) => {
                         </Link>
                      </li> */}
                      {(user?.role === UserRoleType.ADMIN ||
-                        user?.role === UserRoleType.EMPLOYEE) && (
+                        user?.role === UserRoleType.EMPLOYEE ||
+                        user?.role === UserRoleType.LEADER) && (
                         <li className={pathname.includes("clients") ? "active" : ""}>
                            <Link to="/app/employees/clients">
                               <i className="la la-users" /> <span>Khách hàng</span>
