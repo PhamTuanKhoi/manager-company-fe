@@ -76,7 +76,9 @@ const Projects = () => {
                      <h3 className="page-title">Dự án</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                     {(user.role === UserRoleType.ADMIN || user.role === UserRoleType.EMPLOYEE) && (
+                     {(user.role === UserRoleType.ADMIN ||
+                        user.role === UserRoleType.EMPLOYEE ||
+                        user.role === UserRoleType.CLIENT) && (
                         <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
                            <i className="fa fa-plus" /> Thêm dự án
                         </a>
@@ -135,8 +137,7 @@ const Projects = () => {
                      <div className="card">
                         <div className="card-body">
                            {(user.role === UserRoleType.ADMIN ||
-                              user.role === UserRoleType.EMPLOYEE ||
-                              user.role === UserRoleType.CLIENT) && (
+                              user.role === UserRoleType.EMPLOYEE) && (
                               <div className="dropdown dropdown-action profile-action">
                                  <a
                                     href="#"
