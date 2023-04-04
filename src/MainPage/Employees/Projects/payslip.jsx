@@ -120,66 +120,71 @@ const Payslip = () => {
       },
       {
          title: "Thuộc dự án",
-         render: (text, record) => (
-            <div className="dropdown ">
-               <a
-                  href="#"
-                  className={`btn btn-white btn-sm btn-rounded dropdown-toggle ${
-                     record?.projectEX?.name
-                        ? `bg-success text-light fw-bold`
-                        : `text-danger bg-warning`
-                  }`}
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-               >
-                  {record?.projectEX?.name || "Chọn dự án"}
-               </a>
-               <div className="dropdown-menu">
-                  {projects.map((item) => (
-                     <button
-                        key={item?._id}
-                        className="dropdown-item"
-                        onClick={() => handleSelect(item._id, record)}
-                     >
-                        {item?.name}
-                     </button>
-                  ))}
+         render: (text, record) =>
+            user?.role === UserRoleType.ADMIN || user.role === UserRoleType.EMPLOYEE ? (
+               <div className="dropdown ">
+                  <a
+                     href="#"
+                     className={`btn btn-white btn-sm btn-rounded dropdown-toggle ${
+                        record?.projectEX?.name
+                           ? `bg-success text-light fw-bold`
+                           : `text-danger bg-warning`
+                     }`}
+                     data-bs-toggle="dropdown"
+                     aria-expanded="false"
+                  >
+                     {record?.projectEX?.name || "Chọn dự án"}
+                  </a>
+                  <div className="dropdown-menu">
+                     {projects.map((item) => (
+                        <button
+                           key={item?._id}
+                           className="dropdown-item"
+                           onClick={() => handleSelect(item._id, record)}
+                        >
+                           {item?.name}
+                        </button>
+                     ))}
+                  </div>
                </div>
-            </div>
-         ),
+            ) : (
+               record?.projectEX?.name
+            ),
       },
       {
          title: "Action",
-         render: (text, record) => (
-            <div className="dropdown dropdown-action text-end">
-               <a
-                  href="#"
-                  className="action-icon dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-               >
-                  <i className="material-icons">more_vert</i>
-               </a>
-               <div className="dropdown-menu dropdown-menu-right">
-                  <Link
-                     className="dropdown-item"
-                     to={`/app/projects/them-phieu-luong/${record?._id}`}
-                  >
-                     <i className="fa fa-pencil m-r-5" /> Sửa
-                  </Link>
+         render: (text, record) =>
+            user.role === UserRoleType.ADMIN ||
+            (user.role === UserRoleType.EMPLOYEE && (
+               <div className="dropdown dropdown-action text-end">
                   <a
-                     className="dropdown-item"
                      href="#"
-                     onClick={() => {
-                        setPayslip(record);
-                        setModalDelete(true);
-                     }}
+                     className="action-icon dropdown-toggle"
+                     data-bs-toggle="dropdown"
+                     aria-expanded="false"
                   >
-                     <i className="fa fa-trash-o m-r-5" /> Xóa
+                     <i className="material-icons">more_vert</i>
                   </a>
+                  <div className="dropdown-menu dropdown-menu-right">
+                     <Link
+                        className="dropdown-item"
+                        to={`/app/projects/them-phieu-luong/${record?._id}`}
+                     >
+                        <i className="fa fa-pencil m-r-5" /> Sửa
+                     </Link>
+                     <a
+                        className="dropdown-item"
+                        href="#"
+                        onClick={() => {
+                           setPayslip(record);
+                           setModalDelete(true);
+                        }}
+                     >
+                        <i className="fa fa-trash-o m-r-5" /> Xóa
+                     </a>
+                  </div>
                </div>
-            </div>
-         ),
+            )),
       },
    ];
    return (
@@ -197,9 +202,12 @@ const Payslip = () => {
                      <h3 className="page-title">Phúc lợi và bảo hiểm</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                     <Link to={"/app/projects/them-phieu-luong"} className="btn add-btn">
-                        <i className="fa fa-plus" /> Thêm phúc lợi và bảo hiểm
-                     </Link>
+                     {user.role === UserRoleType.ADMIN ||
+                        (user.role === UserRoleType.EMPLOYEE && (
+                           <Link to={"/app/projects/them-phieu-luong"} className="btn add-btn">
+                              <i className="fa fa-plus" /> Thêm phúc lợi và bảo hiểm
+                           </Link>
+                        ))}
                   </div>
                </div>
             </div>
