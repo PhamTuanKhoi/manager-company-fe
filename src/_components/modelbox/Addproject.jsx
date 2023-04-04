@@ -112,7 +112,6 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
 
    const changeLeader = (e) => {
       setProject({ ...project, leader: e.target.value });
-      setOptionTeam(options.filter((item) => item.value !== e.target.value));
    };
 
    const changeTeam = (e) => {
