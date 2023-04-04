@@ -158,8 +158,7 @@ const ProjectList = () => {
       {
          title: "Action",
          render: (text, record) =>
-            user.role === UserRoleType.ADMIN ||
-            (user.role === UserRoleType.EMPLOYEE && (
+            (user.role === UserRoleType.ADMIN || user.role === UserRoleType.EMPLOYEE) && (
                <div className="dropdown dropdown-action text-end">
                   <a
                      href="#"
@@ -193,7 +192,7 @@ const ProjectList = () => {
                      </a>
                   </div>
                </div>
-            )),
+            ),
       },
    ];
 
@@ -212,12 +211,11 @@ const ProjectList = () => {
                      <h3 className="page-title">Dự án</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                     {user.role === UserRoleType.ADMIN ||
-                        (user.role === UserRoleType.EMPLOYEE && (
-                           <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
-                              <i className="fa fa-plus" /> Thêm dự án
-                           </a>
-                        ))}
+                     {(user.role === UserRoleType.ADMIN || user.role === UserRoleType.EMPLOYEE) && (
+                        <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
+                           <i className="fa fa-plus" /> Thêm dự án
+                        </a>
+                     )}
                      {/* list project */}
                      <div className="view-icons">
                         <Link

@@ -154,14 +154,13 @@ const Allowance = () => {
                   <div className="col">
                      <h3 className="page-title">Lương và phụ cấp</h3>
                   </div>
-                  {user?.role === UserRoleType.ADMIN ||
-                     (user?.role === UserRoleType.EMPLOYEE && (
-                        <div className="col-auto float-end ml-auto">
-                           <a href="#" className="btn add-btn" onClick={handleShow}>
-                              <i className="fa fa-plus" /> Thêm nhóm thụ hưởng
-                           </a>
-                        </div>
-                     ))}
+                  {(user.role === UserRoleType.ADMIN || user.role === UserRoleType.EMPLOYEE) && (
+                     <div className="col-auto float-end ml-auto">
+                        <a href="#" className="btn add-btn" onClick={handleShow}>
+                           <i className="fa fa-plus" /> Thêm nhóm thụ hưởng
+                        </a>
+                     </div>
+                  )}
                </div>
             </div>
             {/* /Page Header */}
