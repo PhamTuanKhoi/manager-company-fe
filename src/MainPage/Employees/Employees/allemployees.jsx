@@ -69,7 +69,7 @@ const AllEmployees = () => {
          <Sidebar />
          <div className="page-wrapper">
             <Helmet>
-               <title>Employee - HRMS Admin Template</title>
+               <title>Nhân viên</title>
                <meta name="description" content="Login page" />
             </Helmet>
             {/* Page Content */}
@@ -149,39 +149,42 @@ const AllEmployees = () => {
                                  <img src={item?.avartar || avartarFAKE} alt={item?.name} />
                               </Link>
                            </div>
-                           <div className="dropdown profile-action">
-                              <a
-                                 href="#"
-                                 className="action-icon dropdown-toggle"
-                                 data-bs-toggle="dropdown"
-                                 aria-expanded="false"
-                              >
-                                 <i className="material-icons">more_vert</i>
-                              </a>
-                              <div className="dropdown-menu dropdown-menu-right">
-                                 <a
-                                    className="dropdown-item"
-                                    href="#"
-                                    onClick={() => {
-                                       setRender((prev) => prev + 1);
-                                       setEmployee(item);
-                                       setModalShow(true);
-                                    }}
-                                 >
-                                    <i className="fa fa-pencil m-r-5" /> Sửa
-                                 </a>
-                                 <a
-                                    className="dropdown-item"
-                                    href="#"
-                                    onClick={() => {
-                                       setEmployee(item);
-                                       setModalDelete(true);
-                                    }}
-                                 >
-                                    <i className="fa fa-trash-o m-r-5" /> Xóa
-                                 </a>
-                              </div>
-                           </div>
+                           {user?.role === UserRoleType.EMPLOYEE ||
+                              (user?.role === UserRoleType.ADMIN && (
+                                 <div className="dropdown profile-action">
+                                    <a
+                                       href="#"
+                                       className="action-icon dropdown-toggle"
+                                       data-bs-toggle="dropdown"
+                                       aria-expanded="false"
+                                    >
+                                       <i className="material-icons">more_vert</i>
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-right">
+                                       <a
+                                          className="dropdown-item"
+                                          href="#"
+                                          onClick={() => {
+                                             setRender((prev) => prev + 1);
+                                             setEmployee(item);
+                                             setModalShow(true);
+                                          }}
+                                       >
+                                          <i className="fa fa-pencil m-r-5" /> Sửa
+                                       </a>
+                                       <a
+                                          className="dropdown-item"
+                                          href="#"
+                                          onClick={() => {
+                                             setEmployee(item);
+                                             setModalDelete(true);
+                                          }}
+                                       >
+                                          <i className="fa fa-trash-o m-r-5" /> Xóa
+                                       </a>
+                                    </div>
+                                 </div>
+                              ))}
                            <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                               <Link to={`/app/profile/employee-profile/${item._id}`}>
                                  {item?.name}

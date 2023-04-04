@@ -119,41 +119,43 @@ const Employeeslist = () => {
 
       {
          title: "Action",
-         render: (text, record) => (
-            <div className="dropdown dropdown-action text-end">
-               <a
-                  href="#"
-                  className="action-icon dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-               >
-                  <i className="material-icons">more_vert</i>
-               </a>
-               <div className="dropdown-menu dropdown-menu-right">
+         render: (text, record) =>
+            user?.role === UserRoleType.ADMIN ||
+            (user?.role === UserRoleType.EMPLOYEE && (
+               <div className="dropdown dropdown-action text-end">
                   <a
-                     className="dropdown-item"
                      href="#"
-                     onClick={() => {
-                        setRender((prev) => prev + 1);
-                        setEmployee(record);
-                        setModalShow(true);
-                     }}
+                     className="action-icon dropdown-toggle"
+                     data-bs-toggle="dropdown"
+                     aria-expanded="false"
                   >
-                     <i className="fa fa-pencil m-r-5" /> Sửa
+                     <i className="material-icons">more_vert</i>
                   </a>
-                  <a
-                     className="dropdown-item"
-                     href="#"
-                     onClick={() => {
-                        setEmployee(record);
-                        setModalDelete(true);
-                     }}
-                  >
-                     <i className="fa fa-trash-o m-r-5" /> Xóa
-                  </a>
+                  <div className="dropdown-menu dropdown-menu-right">
+                     <a
+                        className="dropdown-item"
+                        href="#"
+                        onClick={() => {
+                           setRender((prev) => prev + 1);
+                           setEmployee(record);
+                           setModalShow(true);
+                        }}
+                     >
+                        <i className="fa fa-pencil m-r-5" /> Sửa
+                     </a>
+                     <a
+                        className="dropdown-item"
+                        href="#"
+                        onClick={() => {
+                           setEmployee(record);
+                           setModalDelete(true);
+                        }}
+                     >
+                        <i className="fa fa-trash-o m-r-5" /> Xóa
+                     </a>
+                  </div>
                </div>
-            </div>
-         ),
+            )),
       },
    ];
    return (
