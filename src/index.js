@@ -5,11 +5,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import configAxios from "./api";
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import store, { persistor } from "./redux/store";
 //bootrap
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Websocket } from "./context/useSocket";
 import Spinner from "../src/_components/spinner";
+import { PersistGate } from "redux-persist/integration/react";
 
 window.Popper = require("popper.js").default;
 
@@ -19,7 +20,9 @@ ReactDOM.render(
       <Provider store={store}>
          <Spinner>
             <ToastContainer />
-            <Main />
+            <PersistGate loading={null} persistor={persistor}>
+               <Main />
+            </PersistGate>
          </Spinner>
       </Provider>
    </Websocket>,
