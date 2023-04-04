@@ -157,41 +157,43 @@ const ProjectList = () => {
 
       {
          title: "Action",
-         render: (text, record) => (
-            <div className="dropdown dropdown-action text-end">
-               <a
-                  href="#"
-                  className="action-icon dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-               >
-                  <i className="material-icons">more_vert</i>
-               </a>
-               <div className="dropdown-menu dropdown-menu-right">
+         render: (text, record) =>
+            user.role === UserRoleType.ADMIN ||
+            (user.role === UserRoleType.EMPLOYEE && (
+               <div className="dropdown dropdown-action text-end">
                   <a
-                     className="dropdown-item"
                      href="#"
-                     onClick={() => {
-                        setRender((prev) => prev + 1);
-                        setProjectData(record);
-                        setModalShow(true);
-                     }}
+                     className="action-icon dropdown-toggle"
+                     data-bs-toggle="dropdown"
+                     aria-expanded="false"
                   >
-                     <i className="fa fa-pencil m-r-5" /> Sửa
+                     <i className="material-icons">more_vert</i>
                   </a>
-                  <a
-                     className="dropdown-item"
-                     href="#"
-                     onClick={() => {
-                        setProjectData(record);
-                        setModalDelete(true);
-                     }}
-                  >
-                     <i className="fa fa-trash-o m-r-5" /> Xóa
-                  </a>
+                  <div className="dropdown-menu dropdown-menu-right">
+                     <a
+                        className="dropdown-item"
+                        href="#"
+                        onClick={() => {
+                           setRender((prev) => prev + 1);
+                           setProjectData(record);
+                           setModalShow(true);
+                        }}
+                     >
+                        <i className="fa fa-pencil m-r-5" /> Sửa
+                     </a>
+                     <a
+                        className="dropdown-item"
+                        href="#"
+                        onClick={() => {
+                           setProjectData(record);
+                           setModalDelete(true);
+                        }}
+                     >
+                        <i className="fa fa-trash-o m-r-5" /> Xóa
+                     </a>
+                  </div>
                </div>
-            </div>
-         ),
+            )),
       },
    ];
 
@@ -210,9 +212,12 @@ const ProjectList = () => {
                      <h3 className="page-title">Dự án</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                     <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
-                        <i className="fa fa-plus" /> Thêm dự án
-                     </a>
+                     {user.role === UserRoleType.ADMIN ||
+                        (user.role === UserRoleType.EMPLOYEE && (
+                           <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
+                              <i className="fa fa-plus" /> Thêm dự án
+                           </a>
+                        ))}
                      {/* list project */}
                      <div className="view-icons">
                         <Link
@@ -268,8 +273,6 @@ const ProjectList = () => {
                         className="table-striped"
                         pagination={{
                            total: projects?.length,
-                           showTotal: (total, range) =>
-                              `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                            showSizeChanger: true,
                            onShowSizeChange: onShowSizeChange,
                            itemRender: itemRender,

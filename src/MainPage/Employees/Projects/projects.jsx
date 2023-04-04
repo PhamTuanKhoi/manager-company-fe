@@ -63,7 +63,7 @@ const Projects = () => {
    return (
       <div className="page-wrapper">
          <Helmet>
-            <title>Projects - HRMS Admin Template</title>
+            <title>Dự án</title>
             <meta name="description" content="Login page" />
          </Helmet>
 
@@ -76,9 +76,12 @@ const Projects = () => {
                      <h3 className="page-title">Dự án</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                     <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
-                        <i className="fa fa-plus" /> Thêm dự án
-                     </a>
+                     {user.role === UserRoleType.ADMIN ||
+                        (user.role === UserRoleType.EMPLOYEE && (
+                           <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
+                              <i className="fa fa-plus" /> Thêm dự án
+                           </a>
+                        ))}
                      {/* list project */}
                      <div className="view-icons">
                         <Link
@@ -132,39 +135,42 @@ const Projects = () => {
                   <div key={item?._id} className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
                      <div className="card">
                         <div className="card-body">
-                           <div className="dropdown dropdown-action profile-action">
-                              <a
-                                 href="#"
-                                 className="action-icon dropdown-toggle"
-                                 data-bs-toggle="dropdown"
-                                 aria-expanded="false"
-                              >
-                                 <i className="material-icons">more_vert</i>
-                              </a>
-                              <div className="dropdown-menu dropdown-menu-right">
-                                 <a
-                                    className="dropdown-item"
-                                    href="#"
-                                    onClick={() => {
-                                       setRender((prev) => prev + 1);
-                                       setProjectData(item);
-                                       setModalShow(true);
-                                    }}
-                                 >
-                                    <i className="fa fa-pencil m-r-5" /> Sửa
-                                 </a>
-                                 <a
-                                    className="dropdown-item"
-                                    href="#"
-                                    onClick={() => {
-                                       setProjectData(item);
-                                       setModalDelete(true);
-                                    }}
-                                 >
-                                    <i className="fa fa-trash-o m-r-5" /> Xóa
-                                 </a>
-                              </div>
-                           </div>
+                           {user.role === UserRoleType.ADMIN ||
+                              (user.role === UserRoleType.EMPLOYEE && (
+                                 <div className="dropdown dropdown-action profile-action">
+                                    <a
+                                       href="#"
+                                       className="action-icon dropdown-toggle"
+                                       data-bs-toggle="dropdown"
+                                       aria-expanded="false"
+                                    >
+                                       <i className="material-icons">more_vert</i>
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-right">
+                                       <a
+                                          className="dropdown-item"
+                                          href="#"
+                                          onClick={() => {
+                                             setRender((prev) => prev + 1);
+                                             setProjectData(item);
+                                             setModalShow(true);
+                                          }}
+                                       >
+                                          <i className="fa fa-pencil m-r-5" /> Sửa
+                                       </a>
+                                       <a
+                                          className="dropdown-item"
+                                          href="#"
+                                          onClick={() => {
+                                             setProjectData(item);
+                                             setModalDelete(true);
+                                          }}
+                                       >
+                                          <i className="fa fa-trash-o m-r-5" /> Xóa
+                                       </a>
+                                    </div>
+                                 </div>
+                              ))}
                            <h4 className="project-title">
                               <Link to={"/app/projects/projects-view/" + item?._id}>
                                  {item?.name}
