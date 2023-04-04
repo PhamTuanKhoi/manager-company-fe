@@ -9,7 +9,7 @@ import AddAllowance from "../../../_components/modelbox/AddAllowance";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoading } from "../../../hook/useLoading";
 import { listSalary, removeSalary } from "../../../redux/feature/salarySclice";
-import { formatMoney } from "../../../constant";
+import { formatMoney, UserRoleType } from "../../../constant";
 import Delete from "../../../_components/modelbox/DeleteAllowance";
 import { toast } from "react-toastify";
 
@@ -42,6 +42,7 @@ const Allowance = () => {
    }, []);
 
    const { salarys } = useSelector((state) => state.salary);
+   const { user } = useSelector((state) => state.auth);
 
    const handleRemove = () => {
       dispatch(removeSalary({ id: item?._id, toast, onHide: setHide, setLoading }));
@@ -99,48 +100,50 @@ const Allowance = () => {
       },
       {
          title: "Action",
-         render: (text, record) => (
-            <div className="dropdown dropdown-action text-end">
-               <a
-                  href="#"
-                  className="action-icon dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-               >
-                  <i className="material-icons">more_vert</i>
-               </a>
-               <div className="dropdown-menu dropdown-menu-right">
+         render: (text, record) =>
+            user?.role === UserRoleType.ADMIN ||
+            (user?.role === UserRoleType.EMPLOYEE && (
+               <div className="dropdown dropdown-action text-end">
                   <a
-                     className="dropdown-item"
                      href="#"
-                     onClick={() => {
-                        handleShow();
-                        setIsSalary(record);
-                        setLoad((prev) => prev + 1);
-                     }}
+                     className="action-icon dropdown-toggle"
+                     data-bs-toggle="dropdown"
+                     aria-expanded="false"
                   >
-                     <i className="fa fa-pencil m-r-5" /> Chỉnh sửa
+                     <i className="material-icons">more_vert</i>
                   </a>
-                  <a
-                     className="dropdown-item"
-                     href="#"
-                     onClick={() => {
-                        setHide(true);
-                        setItem(record);
-                     }}
-                  >
-                     <i className="fa fa-trash-o m-r-5" /> Xóa
-                  </a>
+                  <div className="dropdown-menu dropdown-menu-right">
+                     <a
+                        className="dropdown-item"
+                        href="#"
+                        onClick={() => {
+                           handleShow();
+                           setIsSalary(record);
+                           setLoad((prev) => prev + 1);
+                        }}
+                     >
+                        <i className="fa fa-pencil m-r-5" /> Chỉnh sửa
+                     </a>
+                     <a
+                        className="dropdown-item"
+                        href="#"
+                        onClick={() => {
+                           setHide(true);
+                           setItem(record);
+                        }}
+                     >
+                        <i className="fa fa-trash-o m-r-5" /> Xóa
+                     </a>
+                  </div>
                </div>
-            </div>
-         ),
+            )),
       },
    ];
 
    return (
       <div className="page-wrapper">
          <Helmet>
-            <title>Salary - HRMS Admin Template</title>
+            <title>Lương và phụ cấp</title>
             <meta name="description" content="Login page" />
          </Helmet>
          {/* Page Content */}
@@ -151,11 +154,14 @@ const Allowance = () => {
                   <div className="col">
                      <h3 className="page-title">Lương và phụ cấp</h3>
                   </div>
-                  <div className="col-auto float-end ml-auto">
-                     <a href="#" className="btn add-btn" onClick={handleShow}>
-                        <i className="fa fa-plus" /> Thêm nhóm thụ hưởng
-                     </a>
-                  </div>
+                  {user?.role === UserRoleType.ADMIN ||
+                     (user?.role === UserRoleType.EMPLOYEE && (
+                        <div className="col-auto float-end ml-auto">
+                           <a href="#" className="btn add-btn" onClick={handleShow}>
+                              <i className="fa fa-plus" /> Thêm nhóm thụ hưởng
+                           </a>
+                        </div>
+                     ))}
                </div>
             </div>
             {/* /Page Header */}
@@ -165,16 +171,6 @@ const Allowance = () => {
                   <div className="form-group form-focus">
                      <input type="text" className="form-control floating" />
                      <label className="focus-label">Tên</label>
-                  </div>
-               </div>
-               <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-                  <div className="form-group form-focus select-focus">
-                     <select className="select floating">
-                        <option value> -- Select -- </option>
-                        <option value>Employee</option>
-                        <option value={1}>Manager</option>
-                     </select>
-                     <label className="focus-label">Role</label>
                   </div>
                </div>
             </div>

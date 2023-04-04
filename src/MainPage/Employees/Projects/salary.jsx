@@ -184,7 +184,7 @@ const Salary = () => {
    return (
       <div className="page-wrapper">
          <Helmet>
-            <title>Salary - HRMS Admin Template</title>
+            <title>Lương người lao động</title>
             <meta name="description" content="Login page" />
          </Helmet>
          {/* Page Content */}
@@ -204,16 +204,6 @@ const Salary = () => {
                   <div className="form-group form-focus">
                      <input type="text" className="form-control floating" />
                      <label className="focus-label">Tên</label>
-                  </div>
-               </div>
-               <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-                  <div className="form-group form-focus select-focus">
-                     <select className="select floating">
-                        <option value> -- Select -- </option>
-                        <option value>Employee</option>
-                        <option value={1}>Manager</option>
-                     </select>
-                     <label className="focus-label">Role</label>
                   </div>
                </div>
             </div>
