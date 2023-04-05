@@ -137,7 +137,8 @@ const Projects = () => {
                      <div className="card">
                         <div className="card-body">
                            {(user.role === UserRoleType.ADMIN ||
-                              user.role === UserRoleType.EMPLOYEE) && (
+                              user.role === UserRoleType.EMPLOYEE ||
+                              user.role === UserRoleType.LEADER) && (
                               <div className="dropdown dropdown-action profile-action">
                                  <a
                                     href="#"
@@ -177,12 +178,12 @@ const Projects = () => {
                                  {item?.name}
                               </Link>
                            </h4>
-                           <small className="block text-ellipsis m-b-15">
+                           {/* <small className="block text-ellipsis m-b-15">
                               <span className="text-xs">1</span>{" "}
                               <span className="text-muted">open tasks, </span>
                               <span className="text-xs">9</span>{" "}
                               <span className="text-muted">tasks completed</span>
-                           </small>
+                           </small> */}
                            {/* <p className="text-muted">{item?.content}</p> */}
                            <div className="pro-deadline m-b-15 d-flex">
                               <div className="sub-title">Tổng số:</div>

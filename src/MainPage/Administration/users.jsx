@@ -12,7 +12,7 @@ import { itemRender, onShowSizeChange } from "../paginationfunction";
 import "../antdstyle.css";
 import Adduser from "../../_components/modelbox/Adduser";
 import { useDispatch } from "react-redux";
-import workerSclice, { listWorker, listWorkerByClient } from "../../redux/feature/workerSclice";
+import workerSclice, { listWorker, listWorkerById } from "../../redux/feature/workerSclice";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { useLoading } from "../../hook/useLoading";
@@ -44,12 +44,8 @@ const Users = () => {
       }
 
       if (user.role !== UserRoleType.ADMIN && user._id) {
-         dispatch(listWorkerByClient({ id: user._id, setLoading }));
+         dispatch(listWorkerById({ id: user._id, setLoading }));
       }
-
-      // if (user.role === UserRoleType.EMPLOYEE) {
-      //    dispatch(listWorkerByEmployees({ id: user._id, setLoading }));
-      // }
    }, [user._id, user.role]);
 
    const workers = useSelector(workerRemainingSelector);
