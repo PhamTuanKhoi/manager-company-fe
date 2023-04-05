@@ -245,7 +245,9 @@ const Header = (props) => {
                   <span>{user?.name || "Admin"}</span>
                </a>
                <div className="dropdown-menu">
-                  {(user?.role === UserRoleType.EMPLOYEE || user?.role === UserRoleType.ADMIN) && (
+                  {(user?.role === UserRoleType.EMPLOYEE ||
+                     user?.role === UserRoleType.ADMIN ||
+                     user?.role === UserRoleType.LEADER) && (
                      <Link
                         className="dropdown-item"
                         to={`/app/profile/employee-profile/${user?._id}`}
