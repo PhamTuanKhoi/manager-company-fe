@@ -245,14 +245,38 @@ const Header = (props) => {
                   <span>{user?.name || "Admin"}</span>
                </a>
                <div className="dropdown-menu">
-                  <Link className="dropdown-item" to="/app/profile/employee-profile">
-                     My Profile
-                  </Link>
-                  <Link className="dropdown-item" to="/settings/companysetting">
+                  {(user?.role === UserRoleType.EMPLOYEE || user?.role === UserRoleType.ADMIN) && (
+                     <Link
+                        className="dropdown-item"
+                        to={`/app/profile/employee-profile/${user?._id}`}
+                     >
+                        Trang cá nhân
+                     </Link>
+                  )}
+                  {user?.role === UserRoleType.CLIENT && (
+                     <Link
+                        className="dropdown-item"
+                        to={`/app/profile/client-profile/${user?._id}`}
+                     >
+                        Trang cá nhân
+                     </Link>
+                  )}
+                  {user?.role === UserRoleType.WORKER && (
+                     <Link
+                        className="dropdown-item"
+                        to={`/app/profile/worker-profile/${user?._id}`}
+                     >
+                        Trang cá nhân
+                     </Link>
+                  )}
+                  {/* <Link className="dropdown-item" to="/settings/companysetting">
                      Settings
+                  </Link> */}
+                  <Link className="dropdown-item" to="/settings/change-password">
+                     Cài đặt mật khẩu
                   </Link>
                   <Link className="dropdown-item" to="/login" onClick={handleLogout}>
-                     Logout
+                     Đăng xuất
                   </Link>
                </div>
             </li>

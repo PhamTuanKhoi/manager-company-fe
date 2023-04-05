@@ -1,19 +1,19 @@
 /**
  * App Header
  */
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const SettingsSidebar = (props) => {
-  let pathname = props.location.pathname
+   let pathname = props.location.pathname;
 
-    return (
-        <div className="sidebar" id="sidebar">
-        <div className="sidebar-inner slimscroll">
-          <div className="sidebar-menu">
-            <ul>
-              <li> 
+   return (
+      <div className="sidebar" id="sidebar">
+         <div className="sidebar-inner slimscroll">
+            <div className="sidebar-menu">
+               <ul>
+                  {/* <li> 
                 <Link onClick={()=>localStorage.setItem("firstload","true")} to="/app/main/dashboard"><i className="la la-home" /> <span>Back to Home</span></Link>
               </li>
               <li className="menu-title">Settings</li>
@@ -46,11 +46,13 @@ const SettingsSidebar = (props) => {
               </li>
               <li className={pathname.includes('notifications') ?"active" :""}> 
                 <Link to="/settings/notifications"><i className="la la-globe" /> <span>Notifications</span></Link>
-              </li>
-              <li className={pathname.includes('-password') ?"active" :""}> 
-                <Link to="/settings/change-password"><i className="la la-lock" /> <span>Change Password</span></Link>
-              </li>
-              <li className={pathname.includes('-type') ?"active" :""}> 
+              </li> */}
+                  <li className={pathname.includes("-password") ? "active" : ""}>
+                     <Link to="/settings/change-password">
+                        <i className="la la-lock" /> <span>Đặt lại mật khẩu</span>
+                     </Link>
+                  </li>
+                  {/* <li className={pathname.includes('-type') ?"active" :""}> 
                 <Link to="/settings/leave-type"><i className="la la-cogs" /> <span>Leave Type</span></Link>
               </li>
               <li className={pathname.includes('toxbox-') ?"active" :""}> 
@@ -58,14 +60,12 @@ const SettingsSidebar = (props) => {
               </li>
               <li className={pathname.includes('cron') ?"active" :""}> 
                 <Link to="/settings/cron-setting"><i className="la la-rocket" /> <span>Cron Settings</span></Link>
-              </li>
-            </ul>
-          </div>
-        </div>
+              </li> */}
+               </ul>
+            </div>
+         </div>
       </div>
-       
-      );
-   
-}
+   );
+};
 
 export default withRouter(SettingsSidebar);
