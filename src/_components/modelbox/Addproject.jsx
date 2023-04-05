@@ -45,7 +45,7 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
       setProject({
          name: "",
          priority: "",
-         price: "",
+         // price: "",
          start: "",
          end: "",
          status: "",
@@ -196,15 +196,15 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
          return false;
       }
 
-      if (!project.start || !project.end) {
-         toast.warn("Vui lòng chọn ngày bắt đầu và kết thúc");
-         return false;
-      }
+      // if (!project.start || !project.end) {
+      //    toast.warn("Vui lòng chọn ngày bắt đầu và kết thúc");
+      //    return false;
+      // }
 
-      if (new Date(project.end).getTime() <= new Date(project.start).getTime()) {
-         toast.warn("Ngày kết thúc phải lớn hơn ngày bắt đầu");
-         return false;
-      }
+      // if (new Date(project.end).getTime() <= new Date(project.start).getTime()) {
+      //    toast.warn("Ngày kết thúc phải lớn hơn ngày bắt đầu");
+      //    return false;
+      // }
 
       if (!project.status) {
          toast.warn("Vui lòng chọn trạng thái của dự án");
@@ -237,7 +237,7 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
             aria-labelledby="contained-modal-title-vcenter"
             centered
             show={show}
-            onHide={handleClose}
+            // onHide={handleClose}
             className="modal custom-modal fade"
             role="dialog"
          >
@@ -294,7 +294,11 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
                            <input
                               className="form-control"
                               type="datetime-local"
-                              value={moment(project.start).format("YYYY-MM-DD HH:mm")}
+                              value={
+                                 project.start
+                                    ? moment(project.start).format("YYYY-MM-DD HH:mm")
+                                    : ""
+                              }
                               onChange={(e) => setProject({ ...project, start: e.target.value })}
                            />
                         </div>
@@ -309,7 +313,9 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
                            <input
                               className="form-control"
                               type="datetime-local"
-                              value={moment(project?.end).format("YYYY-MM-DD HH:mm")}
+                              value={
+                                 project.end ? moment(project?.end).format("YYYY-MM-DD HH:mm") : ""
+                              }
                               onChange={(e) => setProject({ ...project, end: e.target.value })}
                            />
                         </div>
@@ -335,7 +341,7 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
                            </select>
                         </div>
                      </div>
-                     <div className="col-sm-6">
+                     {/* <div className="col-sm-6">
                         <div className="form-group">
                            <label className="col-form-label">
                               Cost <span className="text-danger">*</span>
@@ -347,9 +353,9 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
                               onChange={(e) => setProject({ ...project, price: e.target.value })}
                            />
                         </div>
-                     </div>
+                     </div> */}
 
-                     <div className="col-md-12">
+                     <div className="col-md-6">
                         <div className="form-group">
                            <label className="col-form-label">
                               Leader<span className="text-danger">*</span>

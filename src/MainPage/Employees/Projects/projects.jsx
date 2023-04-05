@@ -23,7 +23,7 @@ const Projects = () => {
    const [modalDelete, setModalDelete] = useState(false);
    const [render, setRender] = useState(0);
    const [projectData, setProjectData] = useState({});
-   const [priority, setPriority] = useState("all");
+   const [priority, setPriority] = useState("");
    const [text, setText] = useState("");
    const [load, setLoad] = useState(0);
 
@@ -38,7 +38,9 @@ const Projects = () => {
       if (user._id) {
          fetchProject();
       }
+   }, [user._id, user.role, load, text, priority]);
 
+   useEffect(() => {
       // fetch employees
       dispatch(listEmployees({ setLoading }));
       dispatch(listClient({ setLoading }));
@@ -46,19 +48,15 @@ const Projects = () => {
 
    const fetchProject = () => {
       if (user.role === UserRoleType.ADMIN) {
-         dispatch(listProjectByAllLevel({ setLoading }));
+         dispatch(listProjectByAllLevel({ query: { text, priority }, setLoading }));
       }
 
       if (user.role !== UserRoleType.ADMIN) {
-         dispatch(listProjectByAllLevel({ query: { userId: user._id }, setLoading }));
+         dispatch(
+            listProjectByAllLevel({ query: { userId: user._id, text, priority }, setLoading })
+         );
       }
    };
-
-   // filter search
-   useEffect(() => {
-      dispatch(projectSclice.actions.searchNameProject(text));
-      dispatch(projectSclice.actions.filterPriority(priority));
-   }, [priority, text]);
 
    return (
       <div className="page-wrapper">
@@ -119,7 +117,7 @@ const Projects = () => {
                         className="form-control"
                         onChange={(e) => setPriority(e.target.value)}
                      >
-                        <option value={"all"}>Tất cả</option>
+                        <option value={""}>Tất cả</option>
                         {prioritys.map((item) => (
                            <option key={item.value} value={item.value}>
                               {item.label}
