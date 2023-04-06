@@ -12,7 +12,7 @@ import { listUserSalary } from "../../../redux/feature/workerSclice";
 import { useSelector } from "react-redux";
 import { createOrUpdateContract } from "../../../redux/feature/contractSclice";
 import { toast } from "react-toastify";
-import { formatMoney } from "../../../constant/index";
+import { formatMoney, UserRoleType } from "../../../constant/index";
 
 const Salary = () => {
    useEffect(() => {
@@ -25,15 +25,22 @@ const Salary = () => {
    });
 
    // --------------------------- handle --------------------------
-
+   const [name, setName] = useState("");
+   const [search, setSearch] = useState(0);
    const [render, setRender] = useState(0);
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
    const { user } = useSelector((state) => state.auth);
 
    useEffect(() => {
-      dispatch(listUserSalary({ setLoading }));
-   }, [render]);
+      if (user.role !== UserRoleType.CLIENT) {
+         dispatch(listUserSalary({ query: { name }, setLoading }));
+      }
+
+      if (user.role === UserRoleType.CLIENT) {
+         dispatch(listUserSalary({ query: { userId: user?._id, name }, setLoading }));
+      }
+   }, [render, search]);
 
    const { workers } = useSelector((state) => state.worker);
 
@@ -202,8 +209,23 @@ const Salary = () => {
             <div className="row filter-row">
                <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
                   <div className="form-group form-focus">
-                     <input type="text" className="form-control floating" />
+                     <input
+                        type="text"
+                        className="form-control floating"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                     />
                      <label className="focus-label">Tên</label>
+                  </div>
+               </div>
+               <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                  <div className="form-group form-focus">
+                     <button
+                        className="btn btn-primary"
+                        onClick={() => setSearch((prev) => prev + 1)}
+                     >
+                        Tìm kiếm
+                     </button>
                   </div>
                </div>
             </div>

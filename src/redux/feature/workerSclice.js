@@ -175,10 +175,10 @@ export const listHeador = createAsyncThunk(
 
 export const listUserSalary = createAsyncThunk(
    "worker/listUserSalary",
-   async ({ setLoading }, { rejectWithValue }) => {
+   async ({ query, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await userAPI.listUserSalary();
+         const { data } = await userAPI.listUserSalary(query);
          setLoading(false);
          return data;
       } catch (error) {

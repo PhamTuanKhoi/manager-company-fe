@@ -34,8 +34,8 @@ export const userAPI = {
       return axios.get(path + "worker-by-role/" + id);
    },
 
-   listUserSalary() {
-      return axios.get(path + "salary");
+   listUserSalary(filter = {}) {
+      return axios.get(path + "salary", { params: filter });
    },
 
    listTodayAttendance(query) {
