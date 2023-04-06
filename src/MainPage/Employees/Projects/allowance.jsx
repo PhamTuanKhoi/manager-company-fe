@@ -37,10 +37,11 @@ const Allowance = () => {
    const [hide, setHide] = useState(false);
    const [item, setItem] = useState({});
    const [text, setText] = useState("");
+   const [search, setSearch] = useState(0);
 
    useEffect(() => {
       dispatch(listSalary({ query: { name: text }, setLoading }));
-   }, [text]);
+   }, [search]);
 
    const { salarys } = useSelector((state) => state.salary);
    const { user } = useSelector((state) => state.auth);
@@ -179,6 +180,16 @@ const Allowance = () => {
                         onChange={(e) => setText(e.target.value)}
                      />
                      <label className="focus-label">Tên</label>
+                  </div>
+               </div>
+               <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                  <div className="form-group form-focus">
+                     <button
+                        className="btn btn-primary"
+                        onClick={() => setSearch((prev) => prev + 1)}
+                     >
+                        Tìm kiếm
+                     </button>
                   </div>
                </div>
             </div>
