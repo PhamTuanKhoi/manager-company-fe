@@ -23,6 +23,13 @@ import {
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import "../../index.css";
+import { useDispatch } from "react-redux";
+import { useLoading } from "../../../hook/useLoading.js";
+import { listProjectByAllLevel } from "../../../redux/feature/projectSclice";
+import { listClient } from "../../../redux/feature/clientSclice";
+import { listEmployees } from "../../../redux/feature/employeesSclice";
+import { listWorker } from "../../../redux/feature/workerSclice";
+import { useSelector } from "react-redux";
 
 const barchartdata = [
    { y: "2006", "Total Income": 100, "Total Outcome": 90 },
@@ -59,6 +66,21 @@ const AdminDashboard = () => {
       }
    });
 
+   const dispatch = useDispatch();
+   const { setLoading } = useLoading();
+
+   useEffect(() => {
+      dispatch(listProjectByAllLevel({ setLoading }));
+      dispatch(listClient({ setLoading }));
+      dispatch(listEmployees({ setLoading }));
+      dispatch(listWorker({ setLoading }));
+   }, []);
+
+   const { projects } = useSelector((state) => state.project);
+   const { clients } = useSelector((state) => state.client);
+   const { employees } = useSelector((state) => state.employees);
+   const { workers } = useSelector((state) => state.worker);
+
    return (
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
          <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -81,7 +103,7 @@ const AdminDashboard = () => {
                               <i className="fa fa-cubes" />
                            </span>
                            <div className="dash-widget-info">
-                              <h3>112</h3>
+                              <h3>{projects?.length}</h3>
                               <span>Dự án</span>
                            </div>
                         </div>
@@ -94,7 +116,7 @@ const AdminDashboard = () => {
                               <i className="fa fa-usd" />
                            </span>
                            <div className="dash-widget-info">
-                              <h3>44</h3>
+                              <h3>{clients?.length}</h3>
                               <span>Khách hàng</span>
                            </div>
                         </div>
@@ -120,7 +142,7 @@ const AdminDashboard = () => {
                               <i className="fa fa-user" />
                            </span>
                            <div className="dash-widget-info">
-                              <h3>218</h3>
+                              <h3>{employees?.length}</h3>
                               <span>Nhân viên</span>
                            </div>
                         </div>
@@ -133,7 +155,7 @@ const AdminDashboard = () => {
                               <i className="fa fa-diamond" />
                            </span>
                            <div className="dash-widget-info">
-                              <h3>37</h3>
+                              <h3>{workers?.length}</h3>
                               <span>Người lao động</span>
                            </div>
                         </div>

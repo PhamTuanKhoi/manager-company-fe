@@ -5,7 +5,7 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import Admindashboard from "./admindashboard";
-import ClientDashboard from "./clientdashboard";
+import clientdashboard from "./clientdashboard";
 import Employeedashboard from "./employeedashboard";
 
 const DashboardRoute = ({ match }) => (
@@ -13,7 +13,7 @@ const DashboardRoute = ({ match }) => (
       <Redirect exact from={`${match.url}/`} to={`${match.url}/dashboard`} />
       <Route path={`${match.url}/dashboard`} component={Admindashboard} />
       <Route path={`${match.url}/employee-dashboard`} component={Employeedashboard} />
-      <Route path={`${match.url}/client-dashboard`} component={ClientDashboard} />
+      <Route path={`${match.url}/client-dashboard`} component={clientdashboard} />
    </Switch>
 );
 
