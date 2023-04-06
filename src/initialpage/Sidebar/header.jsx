@@ -8,7 +8,6 @@ import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Avatar_02, Avatar_09 } from "../../Entryfile/imagepath";
 import authSclice from "../../redux/feature/authSclice";
-import { workerProjectClient } from "../../redux/feature/initSclice";
 import { useLoading } from "../../hook/useLoading";
 import moment from "moment";
 import { avartarFAKE, logoFAKE, UserRoleType } from "../../constant";
@@ -42,9 +41,9 @@ const Header = (props) => {
    const { messageNotification } = useSelector((state) => state.message);
 
    useEffect(() => {
-      if (user.role === UserRoleType.CLIENT) {
-         dispatch(workerProjectClient({ query: { id: user._id }, setLoading }));
-      }
+      // if (user.role === UserRoleType.CLIENT) {
+      //    dispatch(workerProjectClient({ query: { id: user._id }, setLoading }));
+      // }
 
       if (user._id) dispatch(notificationMessage({ query: { id: user._id }, setLoading }));
    }, [user]);

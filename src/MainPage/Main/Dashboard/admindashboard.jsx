@@ -100,7 +100,7 @@ const AdminDashboard = () => {
                         </div>
                      </div>
                   </div>
-                  <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                  {/* <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                      <div className="card dash-widget">
                         <div className="card-body">
                            <span className="dash-widget-icon">
@@ -112,7 +112,7 @@ const AdminDashboard = () => {
                            </div>
                         </div>
                      </div>
-                  </div>
+                  </div> */}
                   <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                      <div className="card dash-widget">
                         <div className="card-body">
@@ -122,6 +122,19 @@ const AdminDashboard = () => {
                            <div className="dash-widget-info">
                               <h3>218</h3>
                               <span>Nhân viên</span>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                     <div className="card dash-widget">
+                        <div className="card-body">
+                           <span className="dash-widget-icon">
+                              <i className="fa fa-diamond" />
+                           </span>
+                           <div className="dash-widget-info">
+                              <h3>37</h3>
+                              <span>Người lao động</span>
                            </div>
                         </div>
                      </div>
@@ -197,7 +210,7 @@ const AdminDashboard = () => {
                      </div>
                   </div>
                </div>
-               <div className="row">
+               {/* <div className="row">
                   <div className="col-md-12">
                      <div className="card-group m-b-30">
                         <div className="card">
@@ -304,9 +317,9 @@ const AdminDashboard = () => {
                         </div>
                      </div>
                   </div>
-               </div>
+               </div> */}
                {/* Statistics Widget */}
-               <div className="row">
+               {/* <div className="row">
                   <div className="col-md-12 col-lg-12 col-xl-4 d-flex">
                      <div className="card flex-fill dash-statistics">
                         <div className="card-body">
@@ -555,9 +568,9 @@ const AdminDashboard = () => {
                         </div>
                      </div>
                   </div>
-               </div>
+               </div> */}
                {/* /Statistics Widget */}
-               <div className="row">
+               {/* <div className="row">
                   <div className="col-md-6 d-flex">
                      <div className="card card-table flex-fill">
                         <div className="card-header">
@@ -698,8 +711,8 @@ const AdminDashboard = () => {
                         </div>
                      </div>
                   </div>
-               </div>
-               <div className="row">
+               </div> */}
+               {/* <div className="row">
                   <div className="col-md-6 d-flex">
                      <div className="card card-table flex-fill">
                         <div className="card-header">
@@ -1272,7 +1285,7 @@ const AdminDashboard = () => {
                         </div>
                      </div>
                   </div>
-               </div>
+               </div> */}
             </div>
             {/* /Page Content */}
          </div>

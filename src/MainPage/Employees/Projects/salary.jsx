@@ -42,7 +42,7 @@ const Salary = () => {
       }
    }, [render, search]);
 
-   const { workers } = useSelector((state) => state.worker);
+   const { salaries } = useSelector((state) => state.worker);
 
    const handleSelect = (record, salary, userId) => {
       if (!user._id) {
@@ -236,7 +236,7 @@ const Salary = () => {
                      <Table
                         className="table-striped"
                         pagination={{
-                           total: workers.length,
+                           total: salaries?.length,
                            showSizeChanger: true,
                            onShowSizeChange: onShowSizeChange,
                            itemRender: itemRender,
@@ -244,7 +244,7 @@ const Salary = () => {
                         style={{ overflowX: "auto" }}
                         columns={columns}
                         // bordered
-                        dataSource={workers}
+                        dataSource={salaries}
                         rowKey={(record) => record._id}
                         // onChange={this.handleTableChange}
                      />

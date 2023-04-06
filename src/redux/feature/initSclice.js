@@ -17,20 +17,20 @@ export const initUser = createAsyncThunk(
    }
 );
 
-export const workerProjectClient = createAsyncThunk(
-   "init/workerProjectClient",
-   async ({ query, setLoading }, { rejectWithValue }) => {
-      try {
-         setLoading(true);
-         const { data } = await userAPI.workerProjectClient(query);
-         setLoading(false);
-         return data;
-      } catch (error) {
-         setLoading(false);
-         return rejectWithValue(error.response.data);
-      }
-   }
-);
+// export const workerProjectClient = createAsyncThunk(
+//    "init/workerProjectClient",
+//    async ({ query, setLoading }, { rejectWithValue }) => {
+//       try {
+//          setLoading(true);
+//          const { data } = await userAPI.workerProjectClient(query);
+//          setLoading(false);
+//          return data;
+//       } catch (error) {
+//          setLoading(false);
+//          return rejectWithValue(error.response.data);
+//       }
+//    }
+// );
 
 export const changePassword = createAsyncThunk(
    "init/changePassword",
@@ -84,17 +84,17 @@ const initSclice = createSlice({
       },
 
       //list
-      [workerProjectClient.pending]: (state, action) => {
-         state.loading = true;
-      },
-      [workerProjectClient.fulfilled]: (state, action) => {
-         state.loading = false;
-         state.notificationWorker = action.payload;
-      },
-      [workerProjectClient.rejected]: (state, action) => {
-         state.loading = false;
-         state.error = action.payload.message;
-      },
+      // [workerProjectClient.pending]: (state, action) => {
+      //    state.loading = true;
+      // },
+      // [workerProjectClient.fulfilled]: (state, action) => {
+      //    state.loading = false;
+      //    state.notificationWorker = action.payload;
+      // },
+      // [workerProjectClient.rejected]: (state, action) => {
+      //    state.loading = false;
+      //    state.error = action.payload.message;
+      // },
 
       // change password
       [changePassword.pending]: (state, action) => {

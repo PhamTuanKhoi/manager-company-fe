@@ -50,11 +50,11 @@ export const userAPI = {
       return axios.get(path + "worker-no-assign");
    },
 
-   workerProjectClient(filter = {}) {
-      return axios.get(path + "worker-project-by-client?", {
-         params: filter,
-      });
-   },
+   // workerProjectClient(filter = {}) {
+   //    return axios.get(path + "worker-project-by-client?", {
+   //       params: filter,
+   //    });
+   // },
 
    sumWorkHourInMonthOfWorker(query = {}) {
       return axios.get(path + "sum-workhour-in-month?", {

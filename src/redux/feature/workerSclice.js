@@ -256,6 +256,7 @@ const workerSclice = createSlice({
       worker: {},
       workers: [],
       headors: [],
+      salaries: [],
       payroll: {},
       sumWorkHourInMonth: [],
       error: "",
@@ -417,7 +418,7 @@ const workerSclice = createSlice({
       },
       [listUserSalary.fulfilled]: (state, action) => {
          state.loading = false;
-         state.workers = action.payload;
+         state.salaries = action.payload;
       },
       [listUserSalary.rejected]: (state, action) => {
          state.loading = false;
