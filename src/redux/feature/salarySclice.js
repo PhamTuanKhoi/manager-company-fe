@@ -28,10 +28,10 @@ export const createSalary = createAsyncThunk(
 
 export const listSalary = createAsyncThunk(
    "salary/listSalary",
-   async ({ setLoading }, { rejectWithValue }) => {
+   async ({ query, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await salaryAPI.list();
+         const { data } = await salaryAPI.list(query);
          setLoading(false);
          return data;
       } catch (error) {

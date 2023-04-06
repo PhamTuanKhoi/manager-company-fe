@@ -36,10 +36,11 @@ const Allowance = () => {
    const { setLoading } = useLoading();
    const [hide, setHide] = useState(false);
    const [item, setItem] = useState({});
+   const [text, setText] = useState("");
 
    useEffect(() => {
-      dispatch(listSalary({ setLoading }));
-   }, []);
+      dispatch(listSalary({ query: { name: text }, setLoading }));
+   }, [text]);
 
    const { salarys } = useSelector((state) => state.salary);
    const { user } = useSelector((state) => state.auth);
@@ -171,7 +172,12 @@ const Allowance = () => {
             <div className="row filter-row">
                <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
                   <div className="form-group form-focus">
-                     <input type="text" className="form-control floating" />
+                     <input
+                        type="text"
+                        className="form-control floating"
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                     />
                      <label className="focus-label">Tên</label>
                   </div>
                </div>

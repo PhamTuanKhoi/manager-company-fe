@@ -2,8 +2,8 @@ import axios from "axios";
 const path = "salary/";
 
 export const salaryAPI = {
-   async list() {
-      return await axios.get(path);
+   async list(query = {}) {
+      return await axios.get(path, { params: query });
    },
 
    async create(payload) {
