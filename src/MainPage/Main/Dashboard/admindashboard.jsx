@@ -87,7 +87,7 @@ const AdminDashboard = () => {
          <Sidebar />
          <div className="page-wrapper">
             <Helmet>
-               <title>Dashboard - HRMS Admin Template</title>
+               <title>Trang chủ - Quản trị</title>
                <meta name="description" content="Dashboard" />
             </Helmet>
             {/* Page Content */}
