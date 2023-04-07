@@ -52,8 +52,6 @@ const Payroll = () => {
       setMonths(array);
    }, []);
 
-   console.log(payroll);
-
    return (
       <div className="page-wrapper">
          <Helmet>
