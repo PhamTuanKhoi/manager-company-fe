@@ -18,7 +18,7 @@ import { useLoading } from "../hook/useLoading";
 import { toast } from "react-toastify";
 
 const schema = yup.object({
-   email: yup.string().matches(emailrgx, "Email is required").required("Email is required").trim(),
+   email: yup.string().required("Email is required").trim(),
    password: yup.string().required("Password is required").trim(),
    //  password: yup.string().min(6).max(6).required("Password is required").trim(),
 });
@@ -90,7 +90,7 @@ const Loginpage = (props) => {
                      <div>
                         <form onSubmit={handleSubmit(onSubmit)}>
                            <div className="form-group">
-                              <label>Nhập email:</label>
+                              <label>Nhập email hoặc số điện thoại:</label>
                               <Controller
                                  name="email"
                                  control={control}
