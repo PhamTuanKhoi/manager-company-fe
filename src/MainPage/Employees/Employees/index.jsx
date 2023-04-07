@@ -2,23 +2,23 @@
  * Crm Routes
  */
 /* eslint-disable */
-import React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import React from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
 
-import AllEmployees from './allemployees';
-import AllEmployeesList from './employeeslist';
-import Holidays from './holidays';
-import LeaveAdmin from './leave_admin';
-import LeaveEmployee from './leaveemployee';
-import Leavesetting from './leavesettings';
-import AttendanceAdmin from './attendanceadmin';
-import AttendanceEmployee from './attendanceemployee';
-import Department from './department';
-import Designation from './designation';
-import Timesheet from './timesheet';
-import Overtime from './overtime';
-import ShiftScheduling from './shiftscheduling';
-import ShiftList from './shiftlist';
+import AllEmployees from "./allemployees";
+import AllEmployeesList from "./employeeslist";
+import Holidays from "./holidays";
+import LeaveAdmin from "./leave_admin";
+import LeaveEmployee from "./leaveemployee";
+import Leavesetting from "./leavesettings";
+import AttendanceAdmin from "./attendanceadmin";
+import AttendanceEmployee from "./attendanceemployee";
+import Department from "./department";
+import Designation from "./designation";
+import Timesheet from "./timesheet";
+import Overtime from "./overtime";
+import ShiftScheduling from "./shiftscheduling";
+import ShiftList from "./shiftlist";
 
 const EmployeesRoute = ({ match }) => (
    <Switch>

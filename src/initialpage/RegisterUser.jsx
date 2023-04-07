@@ -7,6 +7,7 @@ import { Applogo } from "../Entryfile/imagepath";
 import { registerUser } from "../redux/feature/authSclice";
 import { useLoading } from "../hook/useLoading";
 import TextArea from "antd/lib/input/TextArea";
+import { logoFAKE } from "../constant";
 
 const RegisterUser = () => {
    const [register, setRegister] = useState({
@@ -40,18 +41,18 @@ const RegisterUser = () => {
    return (
       <>
          <Helmet>
-            <title>Register - HRMS Admin Template</title>
+            <title>Đăng ký</title>
             <meta name="description" content="Login page" />
          </Helmet>
          <div className="account-content">
-            <Link to="/applyjob/joblist" className="btn btn-primary apply-btn">
+            {/* <Link to="/applyjob/joblist" className="btn btn-primary apply-btn">
                Apply Job
-            </Link>
+            </Link> */}
 
             <Link to="/app/main/dashboard">
                <img
                   style={{ width: "100px", marginLeft: "50px" }}
-                  src="https://fce.com.vn/wp-content/uploads/2022/08/logo_fce_trong_suot-1024x614.png"
+                  src={logoFAKE}
                   alt="Dreamguy's Technologies"
                />
             </Link>
@@ -59,7 +60,7 @@ const RegisterUser = () => {
             <div className="container">
                <div className="account-box-12">
                   <div className="account-wrapper">
-                     <h3 className="account-title">Đăng ký tài khoản</h3>
+                     <h3 className="account-title">Đăng ký tài khoản người lao động</h3>
                      <p className="account-subtitle"></p>
                      <div className="row">
                         <div className="col-sm-6">
@@ -218,7 +219,7 @@ const RegisterUser = () => {
                      </div>
                      <div className="account-footer">
                         <p>
-                           Already have an account? <Link to="/login">Login</Link>
+                           Bạn đã có tài khoản? <Link to="/login">Đăng nhập</Link>
                         </p>
                      </div>
                   </div>

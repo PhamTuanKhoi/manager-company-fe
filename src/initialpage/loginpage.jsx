@@ -71,9 +71,9 @@ const Loginpage = (props) => {
             <meta name="description" content="Login page" />
          </Helmet>
          <div className="account-content">
-            <Link to="/applyjob/joblist" className="btn btn-primary apply-btn">
+            {/* <Link to="/applyjob/joblist" className="btn btn-primary apply-btn">
                Apply Job
-            </Link>
+            </Link> */}
             <Link to="/app/main/dashboard">
                <img
                   style={{ width: "100px", marginLeft: "50px" }}
@@ -84,13 +84,13 @@ const Loginpage = (props) => {
             <div className="container">
                <div className="account-box">
                   <div className="account-wrapper">
-                     <h3 className="account-title">Login</h3>
+                     <h3 className="account-title">Đăng nhập</h3>
                      <p className="account-subtitle"></p>
 
                      <div>
                         <form onSubmit={handleSubmit(onSubmit)}>
                            <div className="form-group">
-                              <label>Email Address</label>
+                              <label>Nhập email:</label>
                               <Controller
                                  name="email"
                                  control={control}
@@ -112,13 +112,13 @@ const Loginpage = (props) => {
                            <div className="form-group">
                               <div className="row">
                                  <div className="col">
-                                    <label>Password</label>
+                                    <label>Nhập mật khẩu:</label>
                                  </div>
-                                 <div className="col-auto">
+                                 {/* <div className="col-auto">
                                     <Link className="text-muted" to="/forgotpassword">
                                        Forgot password?
                                     </Link>
-                                 </div>
+                                 </div> */}
                               </div>
                               <Controller
                                  name="password"
@@ -148,17 +148,17 @@ const Loginpage = (props) => {
                            </div>
                            <div className="form-group text-center">
                               <button className="btn btn-primary account-btn" type="submit">
-                                 Login
+                                 Xác nhận
                               </button>
                            </div>
                         </form>
                         <div className="account-footer">
-                           <p>
+                           {/* <p>
                               Don't have an account yet? <Link to="/register">Register</Link>
-                           </p>
+                           </p> */}
                            <p>
-                              Don't have an account yet?{" "}
-                              <Link to="/register-user">Register user</Link>
+                              Bạn là người lao động?{" "}
+                              <Link to="/register-user">Đăng ký tài khoản</Link>
                            </p>
                         </div>
                      </div>
