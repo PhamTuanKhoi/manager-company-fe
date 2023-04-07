@@ -149,7 +149,7 @@ const Users = () => {
    return (
       <div className="page-wrapper">
          <Helmet>
-            <title>Users - HRMS Admin Template</title>
+            <title>Người lao động</title>
             <meta name="description" content="Login page" />
          </Helmet>
          {/* Page Content */}

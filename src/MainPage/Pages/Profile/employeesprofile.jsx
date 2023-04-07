@@ -55,7 +55,7 @@ const EmployeesProfile = () => {
    return (
       <div className="page-wrapper">
          <Helmet>
-            <title>Employee Profile - HRMS admin Template</title>
+            <title>Trang cá nhân</title>
             <meta name="description" content="Reactify Blank Page" />
          </Helmet>
          {/* Page Content */}

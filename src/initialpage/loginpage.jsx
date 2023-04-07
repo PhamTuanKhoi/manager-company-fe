@@ -67,7 +67,7 @@ const Loginpage = (props) => {
    return (
       <>
          <Helmet>
-            <title>Login - HRMS Admin Template</title>
+            <title>Đăng nhập</title>
             <meta name="description" content="Login page" />
          </Helmet>
          <div className="account-content">

@@ -71,7 +71,7 @@ const AttendanceEmployee = () => {
 
          <div className="page-wrapper">
             <Helmet>
-               <title>Attendance - HRMS Admin Template</title>
+               <title>Chấm công</title>
                <meta name="description" content="Login page" />
             </Helmet>
             <div className="content container-fluid">

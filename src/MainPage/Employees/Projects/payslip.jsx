@@ -193,7 +193,7 @@ const Payslip = () => {
    return (
       <div className="page-wrapper">
          <Helmet>
-            <title>Leads - HRMS Admin Template</title>
+            <title>Bảo hiểm</title>
             <meta name="description" content="Login page" />
          </Helmet>
          {/* Page Content */}

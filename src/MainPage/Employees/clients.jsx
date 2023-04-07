@@ -70,7 +70,7 @@ const Clients = () => {
    return (
       <div className="page-wrapper">
          <Helmet>
-            <title>Clients - HRMS Admin Template</title>
+            <title>Khách hàng</title>
             <meta name="description" content="Login page" />
          </Helmet>
          {/* Page Content */}

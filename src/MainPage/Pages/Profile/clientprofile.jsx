@@ -9,14 +9,6 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { avartarFAKE } from "../../../constant";
-import {
-   Avatar_01,
-   Avatar_02,
-   Avatar_11,
-   Avatar_12,
-   Avatar_13,
-   Avatar_16,
-} from "../../../Entryfile/imagepath";
 import { useLoading } from "../../../hook/useLoading";
 import { clientProfile } from "../../../redux/feature/clientSclice";
 import { listProjectByAllLevel } from "../../../redux/feature/projectSclice";
@@ -55,7 +47,7 @@ const ClientProfile = () => {
    return (
       <div className="page-wrapper">
          <Helmet>
-            <title>Client Profile - HRMS admin Template</title>
+            <title>Trang cá nhân</title>
             <meta name="description" content="Reactify Blank Page" />
          </Helmet>
          {/* Page Content */}
