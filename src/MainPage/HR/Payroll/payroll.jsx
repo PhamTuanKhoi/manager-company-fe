@@ -52,6 +52,8 @@ const Payroll = () => {
       setMonths(array);
    }, []);
 
+   console.log(payroll);
+
    return (
       <div className="page-wrapper">
          <Helmet>
@@ -68,12 +70,12 @@ const Payroll = () => {
                   </div>
                   <div className="col-auto float-end ml-auto">
                      <div className="btn-group btn-group-sm">
-                        <button className="btn btn-white">Cập nhật phiếu lương</button>
-                        <button className="btn btn-white">CSV</button>
+                        {/* <button className="btn btn-white">Cập nhật phiếu lương</button> */}
+                        {/* <button className="btn btn-white">CSV</button>
                         <button className="btn btn-white">PDF</button>
                         <button className="btn btn-white">
                            <i className="fa fa-print fa-lg" /> Print
-                        </button>
+                        </button> */}
                      </div>
                   </div>
                </div>
@@ -103,7 +105,11 @@ const Payroll = () => {
                <div className="col-md-12">
                   <div className="card">
                      <div className="card-body">
-                        {payroll?.workMain ? (
+                        {payroll?.workMain === null ? (
+                           <p className="text-center fs-3 fw-bold text-danger">
+                              Bạn không có đi làm !
+                           </p>
+                        ) : (
                            <>
                               <h4 className="payslip-title">Phiếu lương</h4>
                               <div className="row">
@@ -290,10 +296,6 @@ const Payroll = () => {
                                  </div>
                               </div>
                            </>
-                        ) : (
-                           <p className="text-center fs-3 fw-bold text-danger">
-                              Bạn không có đi làm !
-                           </p>
                         )}
                      </div>
                   </div>
