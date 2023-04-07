@@ -293,14 +293,28 @@ const Header = (props) => {
                <i className="fa fa-ellipsis-v" />
             </a>
             <div className="dropdown-menu dropdown-menu-right">
-               <Link className="dropdown-item" to="/app/profile/employee-profile">
-                  My Profile
-               </Link>
-               <Link className="dropdown-item" to="/settings/companysetting">
-                  Settings
+               {(user?.role === UserRoleType.EMPLOYEE ||
+                  user?.role === UserRoleType.ADMIN ||
+                  user?.role === UserRoleType.LEADER) && (
+                  <Link className="dropdown-item" to={`/app/profile/employee-profile/${user?._id}`}>
+                     Trang cá nhân
+                  </Link>
+               )}
+               {user?.role === UserRoleType.CLIENT && (
+                  <Link className="dropdown-item" to={`/app/profile/client-profile/${user?._id}`}>
+                     Trang cá nhân
+                  </Link>
+               )}
+               {user?.role === UserRoleType.WORKER && (
+                  <Link className="dropdown-item" to={`/app/profile/worker-profile/${user?._id}`}>
+                     Trang cá nhân
+                  </Link>
+               )}
+               <Link className="dropdown-item" to="/settings/change-password">
+                  Cài đặt mật khẩu
                </Link>
                <Link className="dropdown-item" to="/login" onClick={handleLogout}>
-                  Logout
+                  Đăng xuất
                </Link>
             </div>
          </div>
