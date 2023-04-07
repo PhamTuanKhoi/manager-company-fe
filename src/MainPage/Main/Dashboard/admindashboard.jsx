@@ -50,11 +50,11 @@ const linechartdata = [
    { y: "2012", "Total Sales": 100, "Total Revenue": 50 },
 ];
 const AdminDashboard = () => {
-   const [menu, setMenu] = useState(false);
+   // const [menu, setMenu] = useState(false);
 
-   const toggleMobileMenu = () => {
-      setMenu(!menu);
-   };
+   // const toggleMobileMenu = () => {
+   //    setMenu(!menu);
+   // };
 
    useEffect(() => {
       let firstload = localStorage.getItem("firstload");
@@ -82,47 +82,46 @@ const AdminDashboard = () => {
    const { workers } = useSelector((state) => state.worker);
 
    return (
-      <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
-         <Header onMenuClick={(value) => toggleMobileMenu()} />
-         <Sidebar />
-         <div className="page-wrapper">
-            <Helmet>
-               <title>Trang chủ - Quản trị</title>
-               <meta name="description" content="Dashboard" />
-            </Helmet>
-            {/* Page Content */}
-            <div className="content container-fluid">
-               {/* Page Header */}
+      <div className={`page-wrapper`}>
+         {/* <Header onMenuClick={(value) => toggleMobileMenu()} />
+         <Sidebar /> */}
+         <Helmet>
+            <title>Trang chủ - Quản trị</title>
+            <meta name="description" content="Dashboard" />
+         </Helmet>
+         {/* Page Content */}
+         <div className="content container-fluid">
+            {/* Page Header */}
 
-               {/* /Page Header */}
-               <div className="row">
-                  <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                     <div className="card dash-widget">
-                        <div className="card-body">
-                           <span className="dash-widget-icon">
-                              <i className="fa fa-cubes" />
-                           </span>
-                           <div className="dash-widget-info">
-                              <h3>{projects?.length}</h3>
-                              <span>Dự án</span>
-                           </div>
+            {/* /Page Header */}
+            <div className="row">
+               <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                  <div className="card dash-widget">
+                     <div className="card-body">
+                        <span className="dash-widget-icon">
+                           <i className="fa fa-cubes" />
+                        </span>
+                        <div className="dash-widget-info">
+                           <h3>{projects?.length}</h3>
+                           <span>Dự án</span>
                         </div>
                      </div>
                   </div>
-                  <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                     <div className="card dash-widget">
-                        <div className="card-body">
-                           <span className="dash-widget-icon">
-                              <i className="fa fa-usd" />
-                           </span>
-                           <div className="dash-widget-info">
-                              <h3>{clients?.length}</h3>
-                              <span>Khách hàng</span>
-                           </div>
+               </div>
+               <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                  <div className="card dash-widget">
+                     <div className="card-body">
+                        <span className="dash-widget-icon">
+                           <i className="fa fa-usd" />
+                        </span>
+                        <div className="dash-widget-info">
+                           <h3>{clients?.length}</h3>
+                           <span>Khách hàng</span>
                         </div>
                      </div>
                   </div>
-                  {/* <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+               </div>
+               {/* <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                      <div className="card dash-widget">
                         <div className="card-body">
                            <span className="dash-widget-icon">
@@ -135,104 +134,104 @@ const AdminDashboard = () => {
                         </div>
                      </div>
                   </div> */}
-                  <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                     <div className="card dash-widget">
-                        <div className="card-body">
-                           <span className="dash-widget-icon">
-                              <i className="fa fa-user" />
-                           </span>
-                           <div className="dash-widget-info">
-                              <h3>{employees?.length}</h3>
-                              <span>Nhân viên</span>
-                           </div>
+               <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                  <div className="card dash-widget">
+                     <div className="card-body">
+                        <span className="dash-widget-icon">
+                           <i className="fa fa-user" />
+                        </span>
+                        <div className="dash-widget-info">
+                           <h3>{employees?.length}</h3>
+                           <span>Nhân viên</span>
                         </div>
                      </div>
                   </div>
-                  <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                     <div className="card dash-widget">
-                        <div className="card-body">
-                           <span className="dash-widget-icon">
-                              <i className="fa fa-diamond" />
-                           </span>
-                           <div className="dash-widget-info">
-                              <h3>{workers?.length}</h3>
-                              <span>Người lao động</span>
+               </div>
+               <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                  <div className="card dash-widget">
+                     <div className="card-body">
+                        <span className="dash-widget-icon">
+                           <i className="fa fa-diamond" />
+                        </span>
+                        <div className="dash-widget-info">
+                           <h3>{workers?.length}</h3>
+                           <span>Người lao động</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div className="row">
+               <div className="col-md-12">
+                  <div className="row">
+                     <div className="col-md-6 text-center">
+                        <div className="card">
+                           <div className="card-body">
+                              <h3 className="card-title">Tổng doanh thu</h3>
+
+                              <ResponsiveContainer width="100%" height={300}>
+                                 <BarChart
+                                    data={barchartdata}
+                                    margin={{
+                                       top: 5,
+                                       right: 5,
+                                       left: 5,
+                                       bottom: 5,
+                                    }}
+                                 >
+                                    <CartesianGrid />
+                                    <XAxis dataKey="y" />
+                                    <YAxis />
+
+                                    <Legend />
+                                    <Bar dataKey="Total Income" fill="#00c5fb" />
+                                    <Bar dataKey="Total Outcome" fill="#0253cc" />
+                                 </BarChart>
+                              </ResponsiveContainer>
+                           </div>
+                        </div>
+                     </div>
+                     <div className="col-md-6 text-center">
+                        <div className="card">
+                           <div className="card-body">
+                              <h3 className="card-title">Tổng quan</h3>
+                              <ResponsiveContainer width="100%" height={300}>
+                                 <LineChart
+                                    data={linechartdata}
+                                    margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
+                                 >
+                                    <CartesianGrid />
+                                    <XAxis dataKey="y" />
+                                    <YAxis />
+
+                                    <Legend />
+                                    <Line
+                                       type="monotone"
+                                       dataKey="Total Sales"
+                                       stroke="#00c5fb"
+                                       fill="#00c5fb"
+                                       strokeWidth={3}
+                                       dot={{ r: 3 }}
+                                       activeDot={{ r: 7 }}
+                                    />
+                                    <Line
+                                       type="monotone"
+                                       dataKey="Total Revenue"
+                                       stroke="#0253cc"
+                                       fill="#0253cc"
+                                       strokeWidth={3}
+                                       dot={{ r: 3 }}
+                                       activeDot={{ r: 7 }}
+                                    />
+                                 </LineChart>
+                              </ResponsiveContainer>
                            </div>
                         </div>
                      </div>
                   </div>
                </div>
-               <div className="row">
-                  <div className="col-md-12">
-                     <div className="row">
-                        <div className="col-md-6 text-center">
-                           <div className="card">
-                              <div className="card-body">
-                                 <h3 className="card-title">Tổng doanh thu</h3>
-
-                                 <ResponsiveContainer width="100%" height={300}>
-                                    <BarChart
-                                       data={barchartdata}
-                                       margin={{
-                                          top: 5,
-                                          right: 5,
-                                          left: 5,
-                                          bottom: 5,
-                                       }}
-                                    >
-                                       <CartesianGrid />
-                                       <XAxis dataKey="y" />
-                                       <YAxis />
-
-                                       <Legend />
-                                       <Bar dataKey="Total Income" fill="#00c5fb" />
-                                       <Bar dataKey="Total Outcome" fill="#0253cc" />
-                                    </BarChart>
-                                 </ResponsiveContainer>
-                              </div>
-                           </div>
-                        </div>
-                        <div className="col-md-6 text-center">
-                           <div className="card">
-                              <div className="card-body">
-                                 <h3 className="card-title">Tổng quan</h3>
-                                 <ResponsiveContainer width="100%" height={300}>
-                                    <LineChart
-                                       data={linechartdata}
-                                       margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
-                                    >
-                                       <CartesianGrid />
-                                       <XAxis dataKey="y" />
-                                       <YAxis />
-
-                                       <Legend />
-                                       <Line
-                                          type="monotone"
-                                          dataKey="Total Sales"
-                                          stroke="#00c5fb"
-                                          fill="#00c5fb"
-                                          strokeWidth={3}
-                                          dot={{ r: 3 }}
-                                          activeDot={{ r: 7 }}
-                                       />
-                                       <Line
-                                          type="monotone"
-                                          dataKey="Total Revenue"
-                                          stroke="#0253cc"
-                                          fill="#0253cc"
-                                          strokeWidth={3}
-                                          dot={{ r: 3 }}
-                                          activeDot={{ r: 7 }}
-                                       />
-                                    </LineChart>
-                                 </ResponsiveContainer>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               {/* <div className="row">
+            </div>
+            {/* <div className="row">
                   <div className="col-md-12">
                      <div className="card-group m-b-30">
                         <div className="card">
@@ -340,8 +339,8 @@ const AdminDashboard = () => {
                      </div>
                   </div>
                </div> */}
-               {/* Statistics Widget */}
-               {/* <div className="row">
+            {/* Statistics Widget */}
+            {/* <div className="row">
                   <div className="col-md-12 col-lg-12 col-xl-4 d-flex">
                      <div className="card flex-fill dash-statistics">
                         <div className="card-body">
@@ -591,8 +590,8 @@ const AdminDashboard = () => {
                      </div>
                   </div>
                </div> */}
-               {/* /Statistics Widget */}
-               {/* <div className="row">
+            {/* /Statistics Widget */}
+            {/* <div className="row">
                   <div className="col-md-6 d-flex">
                      <div className="card card-table flex-fill">
                         <div className="card-header">
@@ -734,7 +733,7 @@ const AdminDashboard = () => {
                      </div>
                   </div>
                </div> */}
-               {/* <div className="row">
+            {/* <div className="row">
                   <div className="col-md-6 d-flex">
                      <div className="card card-table flex-fill">
                         <div className="card-header">
@@ -1308,9 +1307,8 @@ const AdminDashboard = () => {
                      </div>
                   </div>
                </div> */}
-            </div>
-            {/* /Page Content */}
          </div>
+         {/* /Page Content */}
       </div>
    );
 };
