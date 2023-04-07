@@ -62,18 +62,18 @@ export default function App(props) {
       dispatch(currentUser({ setLoading, history }));
    };
 
-   // if (
-   //    !token &&
-   //    location.pathname !== "/login" &&
-   //    location.pathname !== "/register-user" &&
-   //    location.pathname !== "/register"
-   // ) {
-   //    history.push("/login");
-   // }
+   if (
+      !token &&
+      location.pathname !== "/login" &&
+      location.pathname !== "/register-user" &&
+      location.pathname !== "/register"
+   ) {
+      history.push("/login");
+   }
 
-   // if (location.pathname === "/") {
-   //    return <Redirect to={"/app/main/dashboard"} />;
-   // }
+   if (location.pathname === "/") {
+      return <Redirect to={"/app/main/dashboard"} />;
+   }
 
    return (
       <Switch>
