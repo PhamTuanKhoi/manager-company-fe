@@ -18,16 +18,16 @@ import DeleteUser from "../../../_components/modelbox/DeleteUser";
 import { employeesRemainingSelector } from "../../../redux/selectors/employeesSelector";
 
 const AllEmployees = () => {
-   const [menu, setMenu] = useState(false);
+   // const [menu, setMenu] = useState(false);
    const [modalShow, setModalShow] = useState(false);
    const [modalDelete, setModalDelete] = useState(false);
    const [employee, setEmployee] = useState({});
    const [render, setRender] = useState(0);
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
-   const toggleMobileMenu = () => {
-      setMenu(!menu);
-   };
+   // const toggleMobileMenu = () => {
+   //    setMenu(!menu);
+   // };
 
    useEffect(() => {
       if ($(".select").length > 0) {
@@ -64,9 +64,9 @@ const AllEmployees = () => {
    }, [text, department]);
 
    return (
-      <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
-         <Header onMenuClick={() => toggleMobileMenu()} />
-         <Sidebar />
+      <div className="page-wrapper">
+         {/* <Header />
+         <Sidebar /> */}
          <div className="page-wrapper">
             <Helmet>
                <title>Nhân viên</title>

@@ -253,11 +253,6 @@ const Sidebar = (props) => {
                            <i className="la la-users" /> <span>Nhân viên</span>
                         </Link>
                      </li>
-                     {/* <li className={pathname.includes("clients") ? "active" : ""}>
-                        <Link to="/app/employees/clients">
-                           <i className="la la-users" /> <span>Nhân viên</span>
-                        </Link>
-                     </li> */}
                      {user?.role !== UserRoleType.WORKER && (
                         <li className={pathname.includes("users") ? "active" : ""}>
                            <Link to="/app/administrator/users">
