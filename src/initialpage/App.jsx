@@ -68,12 +68,27 @@ export default function App(props) {
       location.pathname !== "/register-user" &&
       location.pathname !== "/register"
    ) {
-      history.push("/login");
+      console.log(0);
+      return <Redirect to={"/login"} />;
    }
 
    if (location.pathname === "/") {
+      console.log(1);
       return <Redirect to={"/app/main/dashboard"} />;
    }
+
+   if (
+      token &&
+      location.pathname !== "/login" &&
+      location.pathname !== "/register-user" &&
+      location.pathname !== "/register"
+   ) {
+      console.log(2, location.pathname);
+      // history.push(location.pathname);
+      return <Redirect to={location.pathname} />;
+   }
+   // http://localhost:8001/app/main/dashboard
+   // http://localhost:8001/app/main/dashboard
 
    return (
       <Switch>
