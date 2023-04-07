@@ -26,6 +26,7 @@ import { currentUser } from "../redux/feature/authSclice";
 import RegisterUser from "./RegisterUser";
 import { jwtManager } from "../helpers/jwtManager";
 import { useLoading } from "../hook/useLoading";
+import { useState } from "react";
 
 export default function App(props) {
    //  componentDidMount() {
@@ -77,21 +78,8 @@ export default function App(props) {
       return <Redirect to={"/app/main/dashboard"} />;
    }
 
-   // if (
-   //    token &&
-   //    location.pathname !== "/login" &&
-   //    location.pathname !== "/register-user" &&
-   //    location.pathname !== "/register"
-   // ) {
-   //    console.log(2, location.pathname);
-   //    history.push("/app/main/dashboard");
-   //    return <Redirect to={location.pathname} />;
-   // }
-   // http://localhost:8001/app/main/dashboard
-   // http://localhost:8001/app/main/dashboard
-
    return (
-      <>
+      <Switch>
          <Route path="/login" component={LoginPage} />
          <Route path="/register-user" component={RegisterUser} />
          <Route path="/forgotpassword" component={ForgotPassword} />
@@ -109,6 +97,6 @@ export default function App(props) {
          <Route path="/ui-components" component={uicomponents} />
          <Route path="/error-404" component={Error404} />
          <Route path="/error-500" component={Error500} />
-      </>
+      </Switch>
    );
 }

@@ -7,7 +7,8 @@ import { Applogo } from "../Entryfile/imagepath";
 import { registerUser } from "../redux/feature/authSclice";
 import { useLoading } from "../hook/useLoading";
 import TextArea from "antd/lib/input/TextArea";
-import { logoFAKE } from "../constant";
+import { emailrgx, logoFAKE, phonergx } from "../constant";
+import { validate } from "schema-utils";
 
 const RegisterUser = () => {
    const [register, setRegister] = useState({
@@ -28,15 +29,91 @@ const RegisterUser = () => {
    const dispatch = useDispatch();
 
    function handleSave() {
-      dispatch(
-         registerUser({
-            payload: { ...register, date: new Date(register.date).getTime() },
-            toast,
-            history,
-            setLoading,
-         })
-      );
+      if (validatetion()) {
+         dispatch(
+            registerUser({
+               payload: { ...register, date: new Date(register.date).getTime() },
+               toast,
+               history,
+               setLoading,
+            })
+         );
+      }
    }
+
+   const validatetion = () => {
+      if (!register.name) {
+         toast.warn("Vui lòng nhập họ tên");
+         return false;
+      }
+
+      if (register.email) {
+         const isValidEmail = emailrgx.test(register.email);
+         if (!isValidEmail) {
+            toast.warn("Vui lòng nhập đúng email");
+            return false;
+         }
+      }
+
+      if (!register.cccd) {
+         toast.warn("Vui lòng nhập căn cước hoặc chứng minh nhân dân");
+         return false;
+      }
+
+      if (register.cccd) {
+         if (!(register.cccd.toString().length === 9 || register.cccd.toString().length === 12)) {
+            toast.warn("Vui lòng nhập đúng căn cước hoặc chứng minh nhân dân");
+            return false;
+         }
+      }
+
+      if (!register.mobile) {
+         toast.warn("Vui lòng nhập số điện thoại");
+         return false;
+      }
+
+      if (register.mobile) {
+         const isValidPhone = phonergx.test(register.mobile);
+         if (!isValidPhone) {
+            toast.warn("Vui lòng nhập đúng số điện thoại");
+            return false;
+         }
+      }
+
+      if (!register.date) {
+         toast.warn("Vui lòng chọn ngày sinh");
+         return false;
+      }
+
+      if (!register.address) {
+         toast.warn("Vui lòng nhập địa chỉ");
+         return false;
+      }
+
+      if (!register.password) {
+         toast.warn("Vui lòng nhập mật khẩu");
+         return false;
+      }
+
+      if (!register.confirmPasword) {
+         toast.warn("Vui lòng nhập lại mật khẩu");
+         return false;
+      }
+
+      if (register.password) {
+         if (register.password !== register.confirmPasword) {
+            toast.warn("Mật khẩu không chính xác");
+            return false;
+         }
+      }
+
+      if (!register.field) {
+         toast.warn("Vui lòng nhập ngành nghề chuyên môn");
+         return false;
+      }
+
+      return true;
+   };
 
    return (
       <>

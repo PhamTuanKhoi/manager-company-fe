@@ -33,7 +33,9 @@ window.Popper = require("popper.js").default;
 
 const MainApp = () => (
    <Router>
-      <Route path="/" component={App} />
+      <Switch>
+         <Route path="/" component={App} />
+      </Switch>
    </Router>
 );
 
