@@ -110,7 +110,7 @@ const Header = (props) => {
          {/* Header Menu */}
          <ul className="nav user-menu">
             {/* Search */}
-            <li className="nav-item">
+            {/* <li className="nav-item">
                <div className="top-nav-search">
                   <a href="" className="responsive-search">
                      <i className="fa fa-search" />
@@ -122,16 +122,15 @@ const Header = (props) => {
                      </button>
                   </form>
                </div>
-            </li>
+            </li> */}
             {/* /Search */}
             {/* Flag */}
 
             {/* /Flag */}
             {/* Notifications */}
-            <li className="nav-item dropdown">
+            {/* <li className="nav-item dropdown">
                <a href="#" className="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-                  <i className="fa fa-bell-o" />
-                  {/* <span className="badge badge-pill">3</span> */}
+                  <i className="fa fa-bell-o" /> 
                </a>
                <div className="dropdown-menu notifications">
                   <div className="topnav-dropdown-header">
@@ -180,10 +179,10 @@ const Header = (props) => {
                      </Link>
                   </div>
                </div>
-            </li>
+            </li> */}
             {/* /Notifications */}
             {/* Message Notifications */}
-            <li className="nav-item dropdown">
+            {/* <li className="nav-item dropdown">
                <a href="#" className="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                   <i className="fa fa-comment-o" />
                   {messQty !== 0 && <span className="badge badge-pill">{messQty}</span>}
@@ -233,7 +232,7 @@ const Header = (props) => {
                      </Link>
                   </div>
                </div>
-            </li>
+            </li> */}
             {/* /Message Notifications */}
             <li className="nav-item dropdown has-arrow main-drop">
                <a href="#" className="dropdown-toggle nav-link" data-bs-toggle="dropdown">
