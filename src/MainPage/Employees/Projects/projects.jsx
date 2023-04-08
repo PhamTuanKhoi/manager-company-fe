@@ -26,6 +26,7 @@ const Projects = () => {
    const [priority, setPriority] = useState("");
    const [text, setText] = useState("");
    const [load, setLoad] = useState(0);
+   const [search, setSearch] = useState(0);
 
    const { setLoading } = useLoading();
    const dispatch = useDispatch();
@@ -38,7 +39,7 @@ const Projects = () => {
       if (user._id) {
          fetchProject();
       }
-   }, [user._id, user.role, load, text, priority]);
+   }, [user._id, user.role, load, search, priority]);
 
    useEffect(() => {
       // fetch employees
@@ -125,6 +126,17 @@ const Projects = () => {
                         ))}
                      </select>
                      <label className="focus-label">Độ ưu tiên</label>
+                  </div>
+               </div>
+
+               <div className="col-sm-6 col-md-3">
+                  <div className="form-group form-focus">
+                     <button
+                        className="btn btn-primary"
+                        onClick={() => setSearch((prev) => prev + 1)}
+                     >
+                        Tìm kiếm
+                     </button>
                   </div>
                </div>
             </div>
