@@ -126,25 +126,26 @@ const Payslip = () => {
             user?.role === UserRoleType.LEADER ? (
                <div className="dropdown ">
                   <a
-                     href="#"
-                     className={`btn btn-white btn-sm btn-rounded dropdown-toggle ${
-                        record?.projectEX?.name
-                           ? `bg-success text-light fw-bold`
-                           : `text-danger bg-warning`
-                     }`}
+                     href=""
+                     style={{ minWidth: "200px" }}
+                     className={`btn btn-white dropdown-toggle fw-bold text-blue`}
                      data-bs-toggle="dropdown"
                      aria-expanded="false"
                   >
                      {record?.projectEX?.name || "Chọn dự án"}
                   </a>
-                  <div className="dropdown-menu">
+                  <div className="dropdown-menu text-center " style={{ minWidth: "200px" }}>
                      {projects.map((item) => (
                         <button
                            key={item?._id}
-                           className="dropdown-item"
+                           className="dropdown-item fw-bold"
                            onClick={() => handleSelect(item._id, record)}
                         >
-                           {item?.name}
+                           {record?.projectEX?._id === item?._id ? (
+                              <span className="text-danger">{item?.name}</span>
+                           ) : (
+                              item?.name
+                           )}
                         </button>
                      ))}
                   </div>
