@@ -21,7 +21,7 @@ const DeleteUser = ({ show, onHide, userRemove }) => {
       // gobal payload delete
       let payload = { id: userRemove._id, onHide, setLoading, toast };
 
-      if (userRemove.role === UserRoleType.EMPLOYEE || UserRoleType.LEADER) {
+      if (userRemove.role === UserRoleType.EMPLOYEE || userRemove.role === UserRoleType.LEADER) {
          dispatch(removeEmployees(payload));
       }
       if (userRemove.role === UserRoleType.CLIENT) {
