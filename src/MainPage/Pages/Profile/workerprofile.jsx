@@ -190,7 +190,7 @@ const WorkerProfile = () => {
                {/* Profile Info Tab */}
                <div id="emp_profile" className="pro-overview tab-pane fade show active">
                   <div className="row">
-                     <div className="col-md-6 d-flex">
+                     {/* <div className="col-md-6 d-flex">
                         <div className="card profile-box flex-fill">
                            <div className="card-body">
                               <h3 className="card-title">Học vấn </h3>
@@ -202,14 +202,14 @@ const WorkerProfile = () => {
                                        </div>
                                        <div className="experience-content">
                                           <div className="timeline-content">
-                                             {/* truong hoc */}
-                                             {/* <a href="/" className="name">
+                                             truong hoc
+                                             <a href="/" className="name">
                                                 International College of Arts and Science (UG)
-                                             </a> */}
-                                             {/* chuyen nganh */}
-                                             {/* <div>Bsc Computer Science</div> */}
-                                             {/* thoi gian hoc */}
-                                             {/* <span className="time">2000 - 2003</span> */}
+                                             </a>
+                                             chuyen nganh
+                                             <div>Bsc Computer Science</div>
+                                             thoi gian hoc
+                                             <span className="time">2000 - 2003</span>
                                           </div>
                                        </div>
                                     </li>
@@ -217,7 +217,7 @@ const WorkerProfile = () => {
                               </div>
                            </div>
                         </div>
-                     </div>
+                     </div> */}
                      <div className="col-md-6 d-flex">
                         <div className="card profile-box  ">
                            <div className="card-body">

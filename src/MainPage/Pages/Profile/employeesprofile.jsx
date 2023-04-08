@@ -193,12 +193,12 @@ const EmployeesProfile = () => {
                               Dự án
                            </a>
                         </li>
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                            <a href="#bank_statutory" data-bs-toggle="tab" className="nav-link">
                               Bank &amp; Statutory{" "}
                               <small className="text-danger">(Admin Only)</small>
                            </a>
-                        </li>
+                        </li> */}
                      </ul>
                   </div>
                </div>
@@ -394,7 +394,7 @@ const EmployeesProfile = () => {
                         </div>
                      </div>
                   </div> */}
-                  <div className="row">
+                  {/* <div className="row">
                      <div className="col-md-6 d-flex">
                         <div className="card profile-box flex-fill">
                            <div className="card-body">
@@ -510,7 +510,7 @@ const EmployeesProfile = () => {
                            </div>
                         </div>
                      </div>
-                  </div>
+                  </div> */}
                </div>
                {/* /Profile Info Tab */}
                {/* Projects Tab */}
