@@ -251,7 +251,7 @@ const Projects = () => {
                                  </span> */}
                               </div>
                            </div>
-                           <p className="m-b-5">
+                           {/* <p className="m-b-5">
                               Progress <span className="text-success float-end">40%</span>
                            </p>
                            <div className="progress progress-xs mb-0">
@@ -262,7 +262,7 @@ const Projects = () => {
                                  title="40%"
                                  style={{ width: "40%" }}
                               />
-                           </div>
+                           </div> */}
                         </div>
                      </div>
                   </div>

@@ -162,15 +162,15 @@ const ProjectView = () => {
                      >
                         Chỉnh sửa
                      </a>
-
-                     <Link
+                     {/* process detail to project */}
+                     {/* <Link
                         to={`/app/projects/task-board/${id}`}
                         className="btn btn-white float-end m-r-10"
                         data-bs-toggle="tooltip"
                         title="Task Board"
                      >
                         <i className="fa fa-bars" />
-                     </Link>
+                     </Link> */}
                   </div>
                </div>
             </div>
@@ -355,12 +355,12 @@ const ProjectView = () => {
                               <tr>
                                  <td>Phiếu lương:</td>
                                  <td className="text-end">
-                                    {project?.payslip?.length > 0 && (
-                                       <a
-                                          href={`/app/payroll/salary-view/${project?.payslip[0]?._id}`}
+                                    {project?.payslipEX?.length > 0 && (
+                                       <Link
+                                          to={`/app/payroll/salary-view?payslip=${project?.payslipEX[0]?._id}`}
                                        >
-                                          {project?.payslip[0]?.name}
-                                       </a>
+                                          {project?.payslipEX[0]?.name}
+                                       </Link>
                                     )}
                                  </td>
                               </tr>
@@ -380,18 +380,17 @@ const ProjectView = () => {
                                  <td>Ưu tiên:</td>
                                  <td className="text-end">
                                     <div className="btn-group">
-                                       <a
+                                       <p
                                           href="#"
                                           className={
                                              project?.priority === ProjectPriorityEnum.HIGH
-                                                ? "badge badge-danger dropdown-toggle"
+                                                ? "badge badge-danger"
                                                 : project?.priority === ProjectPriorityEnum.LOW
-                                                ? "badge badge-primary dropdown-toggle"
+                                                ? "badge badge-primary"
                                                 : project?.priority === ProjectPriorityEnum.MEDIUM
-                                                ? "badge badge-warning dropdown-toggle"
+                                                ? "badge badge-warning"
                                                 : ""
                                           }
-                                          data-bs-toggle="dropdown"
                                        >
                                           {project?.priority === ProjectPriorityEnum.HIGH
                                              ? "Cao"
@@ -400,8 +399,8 @@ const ProjectView = () => {
                                              : project?.priority === ProjectPriorityEnum.MEDIUM
                                              ? "Trung bình"
                                              : ""}
-                                       </a>
-                                       <div className="dropdown-menu dropdown-menu-right">
+                                       </p>
+                                       {/* <div className="dropdown-menu dropdown-menu-right">
                                           <a className="dropdown-item" href="#">
                                              <i className="fa fa-dot-circle-o text-danger" />{" "}
                                              Highest priority
@@ -418,7 +417,7 @@ const ProjectView = () => {
                                              <i className="fa fa-dot-circle-o text-success" /> Low
                                              priority
                                           </a>
-                                       </div>
+                                       </div> */}
                                     </div>
                                  </td>
                               </tr>
@@ -448,7 +447,7 @@ const ProjectView = () => {
                               </tr>
                            </tbody>
                         </table>
-                        <p className="m-b-5">
+                        {/* <p className="m-b-5">
                            Tiến độ <span className="text-success float-end">40%</span>
                         </p>
                         <div className="progress progress-xs mb-0">
@@ -459,7 +458,7 @@ const ProjectView = () => {
                               title="40%"
                               style={{ width: "40%" }}
                            />
-                        </div>
+                        </div> */}
                      </div>
                   </div>
                   {user?.role === UserRoleType.CLIENT && (
