@@ -50,6 +50,8 @@ const Users = () => {
 
    const workers = useSelector(workerRemainingSelector);
 
+   console.log(workers, 9999);
+
    const [textName, setTextName] = useState("");
    const [textField, setTextField] = useState("");
 

@@ -13,8 +13,8 @@ export const employeesRemainingSelector = createSelector(
    (clientList, nameText, department) => {
       return clientList?.employees?.filter((item) =>
          department === "all"
-            ? customText(item?.name).includes(customText(nameText))
-            : customText(item?.name).includes(customText(nameText)) &&
+            ? customText(item?.name)?.includes(customText(nameText))
+            : customText(item?.name)?.includes(customText(nameText)) &&
               item.department === department
       );
    }

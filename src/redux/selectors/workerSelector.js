@@ -13,8 +13,8 @@ export const workerRemainingSelector = createSelector(
    (workerList, nameText, fieldText) =>
       workerList?.workers?.filter((item) => {
          return (
-            customText(item.name).includes(customText(nameText)) &&
-            customText(item.field).includes(customText(fieldText))
+            customText(item?.name)?.includes(customText(nameText)) &&
+            customText(item?.field)?.includes(customText(fieldText))
          );
       })
 );

@@ -13,8 +13,8 @@ export const clientRemainingSelector = createSelector(
    (clientList, nameText, company) => {
       return clientList?.clients?.filter((item) =>
          company === "all"
-            ? customText(item?.name).includes(customText(nameText))
-            : customText(item?.name).includes(customText(nameText)) && item._id === company
+            ? customText(item?.name)?.includes(customText(nameText))
+            : customText(item?.name)?.includes(customText(nameText)) && item._id === company
       );
    }
 );

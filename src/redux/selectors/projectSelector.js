@@ -14,8 +14,8 @@ export const projectsRemainingSelector = createSelector(
    (projectList, nameText, priority) => {
       return projectList?.projects?.filter((item) =>
          priority !== "all"
-            ? customText(item?.name).includes(customText(nameText)) && item.priority === +priority
-            : customText(item?.name).includes(customText(nameText))
+            ? customText(item?.name)?.includes(customText(nameText)) && item.priority === +priority
+            : customText(item?.name)?.includes(customText(nameText))
       );
    }
 );
