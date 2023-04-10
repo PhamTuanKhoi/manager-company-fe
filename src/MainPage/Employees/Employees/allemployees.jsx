@@ -51,7 +51,7 @@ const AllEmployees = () => {
       }
 
       if (user?.role === UserRoleType.CLIENT || user?.role === UserRoleType.WORKER) {
-         dispatch(listEmployeesByUserId({ id: user._id, setLoading }));
+         dispatch(listEmployeesByUserId({ query: { userId: user._id }, setLoading }));
       }
    }
    const [text, setText] = useState("");

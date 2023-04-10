@@ -28,10 +28,10 @@ export const createEmployees = createAsyncThunk(
 
 export const listEmployees = createAsyncThunk(
    "employees/listEmployees",
-   async ({ setLoading }, { rejectWithValue }) => {
+   async ({ query, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await userAPI.listEmployees();
+         const { data } = await userAPI.listEmployees(query);
          setLoading(false);
          return data;
       } catch (error) {
@@ -85,10 +85,10 @@ export const removeEmployees = createAsyncThunk(
 
 export const listEmployeesByUserId = createAsyncThunk(
    "employees/listEmployeesByUserId",
-   async ({ id, setLoading }, { rejectWithValue }) => {
+   async ({ query, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         const { data } = await userAPI.listEmployeesByUserId(id);
+         const { data } = await userAPI.listEmployeesByUserId(query);
          setLoading(false);
          return data;
       } catch (error) {

@@ -10,16 +10,16 @@ export const userAPI = {
       return axios.get(path + "client-role-employees/" + id);
    },
 
-   listEmployees() {
-      return axios.get(path + "employees");
+   listEmployees(filter = {}) {
+      return axios.get(path + "employees", { params: filter });
    },
 
    listWorkerExcellent() {
       return axios.get(path + "worker/excellent");
    },
 
-   listEmployeesByUserId(id) {
-      return axios.get(path + "employees-by-user/" + id);
+   listEmployeesByUserId(query = {}) {
+      return axios.get(path + "employees-by-user", { params: query });
    },
 
    // listEmployeesByWorker(id) {

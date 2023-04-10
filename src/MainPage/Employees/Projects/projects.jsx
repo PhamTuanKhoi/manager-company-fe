@@ -249,15 +249,24 @@ const Projects = () => {
                            </div>
                            <div className="project-members m-b-15">
                               <div className="sub-title">
-                                 Leader :<span className="round-span background-info ms-2">1</span>
+                                 Leader: <br />
+                                 <Link
+                                    to={`/app/employee/employees-list?project=${item?._id}&role=${UserRoleType.LEADER}`}
+                                    className="fw-bold"
+                                 >
+                                    {item?.leader?.name}
+                                 </Link>
                               </div>
                            </div>
                            <div className="pro-deadline m-b-15">
                               <div className="sub-title">
                                  Team:
-                                 <span className="round-span background-info ms-2">
+                                 <Link
+                                    to={`/app/employee/employees-list?project=${item?._id}&role=${UserRoleType.EMPLOYEE}`}
+                                    className="round-span background-info ms-2"
+                                 >
                                     +{item?.employees?.length}
-                                 </span>
+                                 </Link>
                                  {/* <span className="round-span ms-2 btn btn-outline-warning text-danger">
                                     <LoginOutlined />
                                  </span> */}

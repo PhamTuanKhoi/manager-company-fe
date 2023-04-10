@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Table } from "antd";
 import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
@@ -14,9 +14,13 @@ import { useSelector } from "react-redux";
 import { EmployeeDepartmentOpition, EmployeeDepartmentType, UserRoleType } from "../../../constant";
 import moment from "moment";
 import DeleteUser from "../../../_components/modelbox/DeleteUser";
-import employeesSclice from "../../../redux/feature/employeesSclice";
+import employeesSclice, {
+   listEmployees,
+   listEmployeesByUserId,
+} from "../../../redux/feature/employeesSclice";
 import { employeesRemainingSelector } from "../../../redux/selectors/employeesSelector";
 import { useDispatch } from "react-redux";
+import { useLoading } from "../../../hook/useLoading";
 
 const Employeeslist = () => {
    const [menu, setMenu] = useState(false);
@@ -27,6 +31,27 @@ const Employeeslist = () => {
    const [text, setText] = useState("");
    const [department, setDepartment] = useState("all");
    const dispatch = useDispatch();
+   const { setLoading } = useLoading();
+
+   const search = useLocation().search;
+   const project = new URLSearchParams(search).get("project");
+   const role = new URLSearchParams(search).get("role");
+
+   useEffect(() => {
+      fetchEmployees();
+   }, [user, project, role]);
+
+   function fetchEmployees() {
+      if (user.role === UserRoleType.ADMIN || user.role === UserRoleType.EMPLOYEE) {
+         dispatch(listEmployees({ query: { project, role }, setLoading }));
+      }
+
+      if (user?.role === UserRoleType.CLIENT || user?.role === UserRoleType.WORKER) {
+         dispatch(
+            listEmployeesByUserId({ query: { userId: user._id, project, role }, setLoading })
+         );
+      }
+   }
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -48,6 +73,8 @@ const Employeeslist = () => {
       dispatch(employeesSclice.actions.searchNameEmployees(text));
       dispatch(employeesSclice.actions.filterDepartment(department));
    }, [text, department]);
+
+   console.log(employees, 999);
 
    const columns = [
       {
@@ -240,7 +267,7 @@ const Employeeslist = () => {
                         <Table
                            className="table-striped"
                            pagination={{
-                              total: employees.length,
+                              total: employees?.length,
                               showSizeChanger: true,
                               onShowSizeChange: onShowSizeChange,
                               itemRender: itemRender,
