@@ -56,35 +56,34 @@ function AssignUser({ show, onHide }) {
                   </button>
                </div>
                <div className="modal-body">
-                  <div className="input-group m-b-30">
-                     <input
-                        placeholder="Search a user to assign"
-                        className="form-control search-input"
-                        type="text"
-                     />
-                  </div>
                   <div className="body-dialog">
                      <ul className="chat-user-list">
-                        {workers?.map((item, index) => (
-                           <li key={index}>
-                              <a href="#">
-                                 <div className="media import-content">
-                                    <div className="content-media">
-                                       <span className="avatar">
-                                          {/* <img alt="" src={Avatar_09} /> */}
-                                       </span>
-                                       <div className="media-body align-self-center text-nowrap">
-                                          <div className="user-name">{item?.name}</div>
-                                          {/* <span className="designation">{item?.department}</span> */}
+                        {workers?.length > 0 ? (
+                           workers?.map((item, index) => (
+                              <li key={index}>
+                                 <a href="#">
+                                    <div className="media import-content">
+                                       <div className="content-media">
+                                          <span className="avatar">
+                                             {/* <img alt="" src={Avatar_09} /> */}
+                                          </span>
+                                          <div className="media-body align-self-center text-nowrap">
+                                             <div className="user-name">{item?.name}</div>
+                                             {/* <span className="designation">{item?.department}</span> */}
+                                          </div>
+                                       </div>
+                                       <div className="import" onClick={() => handleAdd(item)}>
+                                          Thêm
                                        </div>
                                     </div>
-                                    <div className="import" onClick={() => handleAdd(item)}>
-                                       Thêm
-                                    </div>
-                                 </div>
-                              </a>
+                                 </a>
+                              </li>
+                           ))
+                        ) : (
+                           <li className="text-danger fw-bold text-center">
+                              Không có người lao động nào !
                            </li>
-                        ))}
+                        )}
                      </ul>
                   </div>
                </div>

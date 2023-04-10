@@ -39,7 +39,7 @@ const ProjectView = () => {
          });
       }
    });
-   const [modalShow, setModalShow] = useState(false);
+   // const [modalShow, setModalShow] = useState(false);
    const [addWorker, setAddWorker] = useState(false);
    const [modalAssign, setModalAssign] = useState(false);
    const [render, setRender] = useState(0);
@@ -133,7 +133,9 @@ const ProjectView = () => {
                      <h3 className="page-title">Dự Án</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                     {user.role === UserRoleType.ADMIN && (
+                     {(user?.role === UserRoleType.EMPLOYEE ||
+                        user?.role === UserRoleType.ADMIN ||
+                        user?.role === UserRoleType.CLIENT) && (
                         <Link
                            to={`/app/projects/attendance/${id}`}
                            className="btn btn-primary me-3 boreder border-primary background-blue text-light"
@@ -141,15 +143,14 @@ const ProjectView = () => {
                            Chấm công
                         </Link>
                      )}
-                     {user.role === UserRoleType.EMPLOYEE ||
-                        (user.role === UserRoleType.WORKER && (
-                           <Link
-                              to={`/app/projects/attendance-employee/${id}`}
-                              className="btn btn-primary me-3 boreder border-primary background-blue text-light"
-                           >
-                              Chấm công
-                           </Link>
-                        ))}
+                     {user?.role === UserRoleType.WORKER && (
+                        <Link
+                           to={`/app/projects/attendance-employee/${id}`}
+                           className="btn btn-primary me-3 boreder border-primary background-blue text-light"
+                        >
+                           Chấm công
+                        </Link>
+                     )}
 
                      <a
                         href="#"
@@ -349,10 +350,6 @@ const ProjectView = () => {
                         <table className="table table-striped table-border">
                            <tbody>
                               <tr>
-                                 <td>Cost:</td>
-                                 <td className="text-end">${project?.price}</td>
-                              </tr>
-                              <tr>
                                  <td>Phiếu lương:</td>
                                  <td className="text-end">
                                     {project?.payslipEX?.length > 0 && (
@@ -461,7 +458,7 @@ const ProjectView = () => {
                         </div> */}
                      </div>
                   </div>
-                  {user?.role === UserRoleType.CLIENT && (
+                  {/* {user?.role === UserRoleType.CLIENT && (
                      <div className="card project-user">
                         <div className="card-body content-center">
                            <button
@@ -483,7 +480,7 @@ const ProjectView = () => {
                            </a>
                         )}
                      </div>
-                  )}
+                  )} */}
                   <div className="card project-user">
                      <div className="card-body">
                         <h6 className="card-title m-b-5 worker-name text-center text-primary">
@@ -641,7 +638,7 @@ const ProjectView = () => {
          </div>
          {/* /Page Content */}
          {/* Assign Leader Modal */}
-         <LinkProject show={modalShow} onHide={() => setModalShow(false)} />
+         {/* <LinkProject show={modalShow} onHide={() => setModalShow(false)} /> */}
          {/* /Assign Leader Modal */}
          {/* Assign User Modal */}
          <AssignUser show={addWorker} onHide={() => setAddWorker(false)} />
