@@ -42,7 +42,11 @@ const Employeeslist = () => {
    }, [user, project, role]);
 
    function fetchEmployees() {
-      if (user.role === UserRoleType.ADMIN || user.role === UserRoleType.EMPLOYEE) {
+      if (
+         user.role === UserRoleType.ADMIN ||
+         user.role === UserRoleType.EMPLOYEE ||
+         user.role === UserRoleType.LEADER
+      ) {
          dispatch(listEmployees({ query: { project, role }, setLoading }));
       }
 

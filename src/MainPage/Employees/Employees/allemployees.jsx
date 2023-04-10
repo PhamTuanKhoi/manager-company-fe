@@ -46,7 +46,11 @@ const AllEmployees = () => {
    }, [user]);
 
    function fetchEmployees() {
-      if (user.role === UserRoleType.ADMIN || user.role === UserRoleType.EMPLOYEE) {
+      if (
+         user.role === UserRoleType.ADMIN ||
+         user.role === UserRoleType.EMPLOYEE ||
+         user.role === UserRoleType.LEADER
+      ) {
          dispatch(listEmployees({ setLoading }));
       }
 
