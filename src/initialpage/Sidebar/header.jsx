@@ -6,10 +6,8 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Avatar_02, Avatar_09 } from "../../Entryfile/imagepath";
 import authSclice from "../../redux/feature/authSclice";
 import { useLoading } from "../../hook/useLoading";
-import moment from "moment";
 import { avartarFAKE, logoFAKE, UserRoleType } from "../../constant";
 import { useSocket } from "../../context/useSocket";
 import { notificationMessage } from "../../redux/feature/messageSclice";
@@ -75,10 +73,24 @@ const Header = (props) => {
       <div className="header" style={{ right: "0px" }}>
          {/* Logo */}
          <div className="header-left">
-            <Link to="/app/main/dashboard" className="logo">
-               {/* <img src={headerlogo} width={40} height={40} alt="" /> */}
-               <img width={40} height={30} src={logoFAKE} alt="Dreamguy's Technologies" />
-            </Link>
+            {(user?.role === UserRoleType.ADMIN ||
+               user?.role === UserRoleType.LEADER ||
+               user?.role === UserRoleType.EMPLOYEE) && (
+               <Link to="/app/main/dashboard" className="logo">
+                  {/* <img src={headerlogo} width={40} height={40} alt="" /> */}
+                  <img width={40} height={30} src={logoFAKE} alt="Dreamguy's Technologies" />
+               </Link>
+            )}
+            {user?.role === UserRoleType.CLIENT && (
+               <Link to="/app/main/client-dashboard" className="logo">
+                  <img width={40} height={30} src={logoFAKE} alt="Dreamguy's Technologies" />
+               </Link>
+            )}
+            {user?.role === UserRoleType.WORKER && (
+               <Link to="/app/main/app/projects/project_dashboard" className="logo">
+                  <img width={40} height={30} src={logoFAKE} alt="Dreamguy's Technologies" />
+               </Link>
+            )}
          </div>
          {/* /Logo */}
          <a
