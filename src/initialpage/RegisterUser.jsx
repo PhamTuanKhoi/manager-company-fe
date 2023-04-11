@@ -22,6 +22,7 @@ const RegisterUser = () => {
       field: "",
       address: "",
       fieldContent: "",
+      tax: "",
    });
 
    const { setLoading } = useLoading();
@@ -254,6 +255,20 @@ const RegisterUser = () => {
                                  onChange={(e) =>
                                     setRegister({ ...register, confirmPasword: e.target.value })
                                  }
+                              />
+                           </div>
+                        </div>
+
+                        <div className="col-sm-6">
+                           <div className="form-group">
+                              <label className="col-form-label">
+                                 Mã số thuế
+                                 <span className="text-danger">*</span>
+                              </label>
+                              <input
+                                 className="form-control"
+                                 type="text"
+                                 onChange={(e) => setRegister({ ...register, tax: e.target.value })}
                               />
                            </div>
                         </div>

@@ -21,6 +21,7 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
       address: "",
       fieldContent: "",
       excellent: "",
+      tax: "",
    });
 
    const validatetion = () => {
@@ -337,28 +338,11 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
                            <div className="col-sm-6">
                               <div className="form-group">
                                  <label className="col-form-label">
-                                    Lĩnh vực/ ngành nghề chuyên môn{" "}
-                                    <span className="text-danger">*</span>
-                                 </label>
-                                 <input
-                                    className="form-control"
-                                    type="text"
-                                    defaultValue={worker.field}
-                                    onChange={(e) =>
-                                       setWorker({ ...worker, field: e.target.value })
-                                    }
-                                 />
-                              </div>
-                           </div>
-
-                           <div className="col-sm-6">
-                              <div className="form-group">
-                                 <label className="col-form-label">
                                     Vai trò <span className="text-danger">*</span>
                                  </label>
                                  <select
                                     className="form-control"
-                                    value={worker.excellent}
+                                    value={worker?.excellent}
                                     onChange={(e) =>
                                        setWorker({ ...worker, excellent: e.target.value })
                                     }
@@ -370,6 +354,37 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
                                        </option>
                                     ))}
                                  </select>
+                              </div>
+                           </div>
+
+                           <div className="col-sm-6">
+                              <div className="form-group">
+                                 <label className="col-form-label">
+                                    Mã số thuế <span className="text-danger">*</span>
+                                 </label>
+                                 <input
+                                    className="form-control"
+                                    type="text"
+                                    defaultValue={worker.tax}
+                                    onChange={(e) => setWorker({ ...worker, tax: e.target.value })}
+                                 />
+                              </div>
+                           </div>
+
+                           <div className="col-sm-6">
+                              <div className="form-group">
+                                 <label className="col-form-label">
+                                    Lĩnh vực/ ngành nghề chuyên môn{" "}
+                                    <span className="text-danger">*</span>
+                                 </label>
+                                 <input
+                                    className="form-control"
+                                    type="text"
+                                    defaultValue={worker.field}
+                                    onChange={(e) =>
+                                       setWorker({ ...worker, field: e.target.value })
+                                    }
+                                 />
                               </div>
                            </div>
 

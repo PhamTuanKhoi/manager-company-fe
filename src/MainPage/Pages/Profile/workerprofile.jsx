@@ -91,7 +91,7 @@ const WorkerProfile = () => {
                                        <h6 className="text-muted">{worker?.field}</h6>
                                        <small className="text-muted">Người lao động</small>
                                        {/* <small className="text-muted">Web Designer</small> */}
-                                       <div className="staff-id">Employee ID : FT-0001</div>
+                                       {/* <div className="staff-id">Employee ID : FT-0001</div> */}
                                        <div className="small doj text-muted">
                                           Ngày tham gia :{" "}
                                           {moment(worker?.createdAt).format("DD/MM/YYYY")}
@@ -136,9 +136,9 @@ const WorkerProfile = () => {
                                           </div>
                                        </li>
                                        <li>
-                                          <div className="title">Giới tính:</div>
+                                          <div className="title">Mã số thuế:</div>
                                           <div className="text">
-                                             {worker?.gender || "chưa có thông tin"}
+                                             {worker?.tax || "chưa có thông tin"}
                                           </div>
                                        </li>
                                        <li>
