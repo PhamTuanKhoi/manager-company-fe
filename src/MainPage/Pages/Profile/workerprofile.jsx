@@ -96,7 +96,7 @@ const WorkerProfile = () => {
                                           Ngày tham gia :{" "}
                                           {moment(worker?.createdAt).format("DD/MM/YYYY")}
                                        </div>
-                                       <div className="staff-msg">
+                                       {/* <div className="staff-msg">
                                           <Link
                                              onClick={() =>
                                                 localStorage.setItem("minheight", "true")
@@ -106,7 +106,7 @@ const WorkerProfile = () => {
                                           >
                                              Gửi tin nhắn
                                           </Link>
-                                       </div>
+                                       </div> */}
                                     </div>
                                  </div>
                                  <div className="col-md-7">

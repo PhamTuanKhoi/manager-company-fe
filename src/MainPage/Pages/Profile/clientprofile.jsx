@@ -83,7 +83,7 @@ const ClientProfile = () => {
                                        </h5>
                                        {/* <small className="text-muted">CEO</small> */}
                                        <div className="staff-id">Lĩnh vực : {client?.field}</div>
-                                       <div className="staff-msg">
+                                       {/* <div className="staff-msg">
                                           <Link
                                              onClick={() =>
                                                 localStorage.setItem("minheight", "true")
@@ -93,7 +93,7 @@ const ClientProfile = () => {
                                           >
                                              Gửi tin nhắn
                                           </Link>
-                                       </div>
+                                       </div> */}
                                     </div>
                                  </div>
                                  <div className="col-md-7">
