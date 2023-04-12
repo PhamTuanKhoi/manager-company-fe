@@ -14,12 +14,12 @@ const AddAllowance = ({ show, handleClose, isSalary, load }) => {
 
    const [salary, setSalary] = useState({
       beneficiary: "",
-      salary: "0",
-      go: "0",
-      home: "0",
-      toxic: "0",
-      diligence: "0",
-      eat: "0",
+      salary: "",
+      go: "",
+      home: "",
+      toxic: "",
+      diligence: "",
+      eat: "",
       project: "",
    });
 
@@ -59,6 +59,10 @@ const AddAllowance = ({ show, handleClose, isSalary, load }) => {
 
    const handleSave = () => {
       if (validate()) {
+         Object.keys(salary).forEach((key) =>
+            salary[key] === "" ? delete salary[key] : salary[key]
+         );
+
          dispatch(
             createSalary({
                payload: {
