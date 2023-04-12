@@ -10,7 +10,7 @@ import { useState } from "react";
 import workerSclice, { workerNoAssign } from "../../redux/feature/workerSclice";
 import { createJoinProject } from "../../redux/feature/joinProjectSclice";
 import { UserRoleType } from "../../constant";
-function AssignUser({ show, onHide }) {
+function AssignUser({ show, onHide, setLoad }) {
    const { workers } = useSelector((state) => state.worker);
    const dispatch = useDispatch();
    const { id } = useParams();
@@ -24,6 +24,7 @@ function AssignUser({ show, onHide }) {
             setLoading,
             worker,
             dispatch,
+            setLoad,
          })
       );
    }

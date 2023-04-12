@@ -641,7 +641,7 @@ const ProjectView = () => {
          {/* <LinkProject show={modalShow} onHide={() => setModalShow(false)} /> */}
          {/* /Assign Leader Modal */}
          {/* Assign User Modal */}
-         <AssignUser show={addWorker} onHide={() => setAddWorker(false)} />
+         <AssignUser show={addWorker} onHide={() => setAddWorker(false)} setLoad={setLoad} />
          {/* /Assign User Modal */}
          <CreateTask show={modalAssign} onHide={() => setModalAssign(false)} />
          {/* Edit Project Modal */}

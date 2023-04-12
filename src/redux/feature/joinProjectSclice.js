@@ -5,7 +5,7 @@ import workerSclice from "./workerSclice";
 
 export const createJoinProject = createAsyncThunk(
    "joinProject/createJoinProject",
-   async ({ payload, toast, dispatch, setLoading, worker }, { rejectWithValue }) => {
+   async ({ payload, toast, dispatch, setLoading, worker, setLoad }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await joinProjectAPI.create(payload);
@@ -17,6 +17,7 @@ export const createJoinProject = createAsyncThunk(
          // success
          toast.success("Thêm người lao động thành công");
          setLoading(false);
+         setLoad((prev) => prev + 1);
          return { ...data, user: worker };
       } catch (error) {
          setLoading(false);
