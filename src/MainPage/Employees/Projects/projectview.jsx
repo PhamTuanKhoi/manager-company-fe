@@ -182,7 +182,7 @@ const ProjectView = () => {
                      <div className="card-body">
                         <div className="project-title">
                            <h5 className="card-title">{project?.name}</h5>
-                           <small className="block text-ellipsis m-b-15">
+                           {/* <small className="block text-ellipsis m-b-15">
                               <span className="text-xs">
                                  {
                                     tasks?.filter((item) => item?.status === TaskStatusType.START)
@@ -198,7 +198,7 @@ const ProjectView = () => {
                                  }
                               </span>{" "}
                               <span className="text-muted">hoàn thành</span>
-                           </small>
+                           </small> */}
                         </div>
                         <p>{project?.content}</p>
                      </div>

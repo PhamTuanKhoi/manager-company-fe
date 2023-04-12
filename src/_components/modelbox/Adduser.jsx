@@ -364,7 +364,7 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
                                  </label>
                                  <input
                                     className="form-control"
-                                    type="text"
+                                    type="number"
                                     defaultValue={worker.tax}
                                     onChange={(e) => setWorker({ ...worker, tax: e.target.value })}
                                  />
