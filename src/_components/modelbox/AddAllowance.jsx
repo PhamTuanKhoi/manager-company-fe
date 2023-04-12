@@ -59,10 +59,6 @@ const AddAllowance = ({ show, handleClose, isSalary, load }) => {
 
    const handleSave = () => {
       if (validate()) {
-         Object.keys(salary).forEach((key) =>
-            salary[key] === "" ? delete salary[key] : salary[key]
-         );
-
          dispatch(
             createSalary({
                payload: {
@@ -107,34 +103,18 @@ const AddAllowance = ({ show, handleClose, isSalary, load }) => {
          toast.warn("Làm ơn nhập tên nhóm thụ hưởng");
          return false;
       }
-      if (salary.salary === undefined) {
+      if (!salary.salary) {
          toast.warn("Làm ơn nhập mức lương");
          return false;
       }
-      if (salary.go === undefined) {
-         toast.warn("Làm ơn nhập mức phụ cấp đi lại");
-         return false;
-      }
-      if (salary.home === undefined) {
-         toast.warn("Làm ơn nhập mức phụ cấp nhà ở");
-         return false;
-      }
-      if (salary.toxic === undefined) {
-         toast.warn("Làm ơn nhập mức phụ cấp nặng nhọc/ độc hai");
-         return false;
-      }
-      if (salary.eat === undefined) {
-         toast.warn("Làm ơn nhập mức phụ cấp ăn uống");
-         return false;
-      }
-      if (salary.diligence === undefined) {
-         toast.warn("Làm ơn nhập mức phụ cấp chuyên cần");
-         return false;
-      }
+
       if (!salary.project) {
          toast.warn("Làm ơn chọn dự án");
          return false;
       }
+
+      Object.keys(salary).forEach((key) => (salary[key] === "" ? delete salary[key] : salary[key]));
+
       return true;
    };
 

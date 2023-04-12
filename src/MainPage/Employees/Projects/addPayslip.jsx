@@ -100,53 +100,16 @@ const AddPayslip = () => {
          toast.warn("Vui lòng nhập tên phiếu lương");
          return false;
       }
-      if (!paysplip.leave) {
-         delete paysplip.leave;
-      }
-      if (!paysplip.reward) {
-         delete paysplip.reward;
-      }
-      if (!paysplip.rice) {
-         delete paysplip.rice;
-      }
-      if (!paysplip.bonus) {
-         delete paysplip.bonus;
-      }
-      if (!paysplip.overtime) {
-         delete paysplip.overtime;
-      }
-      if (!paysplip.sunday) {
-         delete paysplip.sunday;
-      }
-      if (!paysplip.holiday) {
-         delete paysplip.holiday;
-      }
-      if (!paysplip.service) {
-         delete paysplip.service;
-      }
+
       //
       if (!paysplip.salary_paid_social) {
          toast.warn(`Làm ơn nhập lương đóng bảo hiểm xã hội`);
          return false;
       }
-      if (!paysplip.medican) {
-         delete paysplip.medican;
-      }
-      if (!paysplip.society) {
-         delete paysplip.society;
-      }
-      if (!paysplip.unemployment) {
-         delete paysplip.unemployment;
-      }
-      if (!paysplip.union) {
-         delete paysplip.union;
-      }
-      if (!paysplip.accident) {
-         delete paysplip.accident;
-      }
-      if (!paysplip.health) {
-         delete paysplip.health;
-      }
+
+      Object.keys(paysplip).forEach((key) =>
+         paysplip[key] === "" ? delete paysplip[key] : paysplip[key]
+      );
 
       return true;
    };
