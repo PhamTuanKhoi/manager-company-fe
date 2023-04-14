@@ -244,7 +244,9 @@ const Projects = () => {
                            <div className="pro-deadline m-b-15 d-flex">
                               <div className="sub-title">Deadline:</div>
                               <span className="text-muted ms-2">
-                                 {moment(item?.end).format("DD-MM-YYYY")}
+                                 {item?.end
+                                    ? moment(item?.end).format("DD-MM-YYYY")
+                                    : "Vô thời hạn"}
                               </span>
                            </div>
                            <div className="project-members m-b-15">

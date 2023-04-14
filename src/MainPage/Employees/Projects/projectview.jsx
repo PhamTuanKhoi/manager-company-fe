@@ -363,14 +363,18 @@ const ProjectView = () => {
                               </tr>
                               <tr>
                                  <td>Bắt đầu:</td>
-                                 <td className="text-end">
-                                    {moment(project?.start).format("DD/MM/YYYY")}
+                                 <td className="text-end text-secondary">
+                                    {project?.start
+                                       ? moment(project?.start).format("DD/MM/YYYY")
+                                       : "không có"}
                                  </td>
                               </tr>
                               <tr>
                                  <td>Kết thúc:</td>
-                                 <td className="text-end">
-                                    {moment(project?.end).format("DD/MM/YYYY")}
+                                 <td className="text-end text-secondary">
+                                    {project?.start
+                                       ? moment(project?.end).format("DD/MM/YYYY")
+                                       : "không có"}
                                  </td>
                               </tr>
                               <tr>

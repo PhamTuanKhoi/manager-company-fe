@@ -288,9 +288,7 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
                      </div>
                      <div className="col-sm-6">
                         <div className="form-group">
-                           <label className="col-form-label">
-                              Ngày bắt đầu <span className="text-danger">*</span>
-                           </label>
+                           <label className="col-form-label">Ngày bắt đầu</label>
                            <input
                               className="form-control"
                               type="datetime-local"
@@ -306,10 +304,7 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
 
                      <div className="col-md-6">
                         <div className="form-group">
-                           <label className="col-form-label">
-                              Ngày kết thúc <span className="text-danger">*</span>
-                           </label>{" "}
-                           <br />
+                           <label className="col-form-label">Ngày kết thúc</label>
                            <input
                               className="form-control"
                               type="datetime-local"
