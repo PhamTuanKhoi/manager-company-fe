@@ -43,10 +43,8 @@ const AddAttendance = ({ show, onHide }) => {
       <Modal show={show} onHide={onHide}>
          <div className="modal-header">
             <h5 className="modal-title">Wiffi chấm công</h5>
-            <button type="button" className="close-x">
-               <span aria-hidden="true" onClick={onHide}>
-                  ×
-               </span>
+            <button type="button" className="close-x" onClick={onHide}>
+               <span aria-hidden="true">×</span>
             </button>
          </div>
          <Modal.Body style={{ height: "520px" }}>

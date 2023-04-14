@@ -202,10 +202,8 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
                <div className="modal-content">
                   <div className="modal-header">
                      <h5 className="modal-title">Thêm người lao động</h5>
-                     <button type="button" className="close-x">
-                        <span aria-hidden="true" onClick={handleClose}>
-                           ×
-                        </span>
+                     <button type="button" className="close-x" onClick={handleClose}>
+                        <span aria-hidden="true">×</span>
                      </button>
                   </div>
                   <div className="modal-body">

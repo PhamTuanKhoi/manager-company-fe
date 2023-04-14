@@ -131,10 +131,8 @@ const AddClient = ({ show, handleClose, editClient, render }) => {
          <div className="modal-content">
             <div className="modal-header">
                <h5 className="modal-title">{isEdit ? "Sửa khách hàng" : "Khách hàng mới"}</h5>
-               <button type="button" className="close-x">
-                  <span aria-hidden="true" onClick={handleClosed}>
-                     ×
-                  </span>
+               <button type="button" className="close-x" onClick={handleClosed}>
+                  <span aria-hidden="true">×</span>
                </button>
             </div>
             <div className="modal-body">

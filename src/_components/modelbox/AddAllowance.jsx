@@ -121,7 +121,7 @@ const AddAllowance = ({ show, handleClose, isSalary, load }) => {
    return (
       <Modal
          show={show}
-         onHide={handleClosed}
+         // onHide={handleClosed}
          size="lg"
          aria-labelledby="contained-modal-title-vcenter"
          centered
@@ -131,10 +131,8 @@ const AddAllowance = ({ show, handleClose, isSalary, load }) => {
                <h5 className="modal-title">
                   {salary?._id ? "Chỉnh sửa nhóm thụ hưởng" : "Thêm nhóm thụ hưởng"}
                </h5>
-               <button type="button" className="close-x">
-                  <span aria-hidden="true" onClick={handleClosed}>
-                     ×
-                  </span>
+               <button type="button" className="close-x" onClick={handleClosed}>
+                  <span aria-hidden="true">×</span>
                </button>
             </div>
             <div className="modal-body">

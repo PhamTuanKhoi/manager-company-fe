@@ -244,10 +244,8 @@ const Addproject = ({ show, onHide, projectData, render, setLoad }) => {
             <div className="modal-content">
                <div className="modal-header">
                   <h5 className="modal-title">{isEdit ? "Chỉnh sửa dự án" : "Thêm dự án"}</h5>
-                  <button type="button" className="close-x">
-                     <span aria-hidden="true" onClick={handleClose}>
-                        ×
-                     </span>
+                  <button type="button" className="close-x" onClick={handleClose}>
+                     <span aria-hidden="true">×</span>
                   </button>
                </div>
                <div className="modal-body">
