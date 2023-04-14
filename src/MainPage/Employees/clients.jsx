@@ -3,10 +3,8 @@ import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Avatar_19 } from "../../Entryfile/imagepath";
 import clientSclice, { listClient, listClientByEmployees } from "../../redux/feature/clientSclice";
 import Editclient from "../../_components/modelbox/Editclient";
-import Modal from "react-bootstrap/Modal";
 import { useLoading } from "../../hook/useLoading";
 import { avartarFAKE, UserRoleType } from "../../constant";
 import AddClient from "../../_components/modelbox/AddClient";
@@ -37,17 +35,17 @@ const Clients = () => {
    const { user } = useSelector((state) => state.auth);
 
    const dispatch = useDispatch();
-
+   console.log(9999, state);
    useEffect(() => {
       fetchClient();
    }, [user]);
 
    async function fetchClient() {
-      if (user.role === UserRoleType.ADMIN) {
+      if (user?.role === UserRoleType.ADMIN) {
          dispatch(listClient({ setLoading }));
       }
 
-      if (user.role === UserRoleType.EMPLOYEE) {
+      if (user?.role === UserRoleType.EMPLOYEE || user?.role === UserRoleType.LEADER) {
          dispatch(listClientByEmployees({ id: user._id, setLoading }));
       }
    }
