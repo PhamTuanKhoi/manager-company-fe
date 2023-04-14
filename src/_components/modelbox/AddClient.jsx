@@ -123,7 +123,7 @@ const AddClient = ({ show, handleClose, editClient, render }) => {
    return (
       <Modal
          show={show}
-         onHide={handleClosed}
+         // onHide={handleClosed}
          size="lg"
          aria-labelledby="contained-modal-title-vcenter"
          centered

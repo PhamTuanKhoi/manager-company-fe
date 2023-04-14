@@ -182,7 +182,7 @@ const Addemployee = ({ show, onHide, employee, render }) => {
             aria-labelledby="contained-modal-title-vcenter"
             centered
             show={show}
-            onHide={handleClose}
+            // onHide={handleClose}
          >
             <div className="modal-content">
                <div className="modal-header">
