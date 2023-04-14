@@ -34,10 +34,10 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
          return false;
       }
 
-      if (!worker.email) {
-         toast.warn("Vui lòng nhập email");
-         return false;
-      }
+      // if (!worker.email) {
+      //    toast.warn("Vui lòng nhập email");
+      //    return false;
+      // }
 
       if (worker.email) {
          const isValidEmail = emailrgx.test(worker.email);
@@ -102,10 +102,10 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
          }
       }
 
-      if (!worker.field) {
-         toast.warn("Vui lòng nhập ngành nghề chuyên môn");
-         return false;
-      }
+      // if (!worker.field) {
+      //    toast.warn("Vui lòng nhập ngành nghề chuyên môn");
+      //    return false;
+      // }
 
       return true;
    };
@@ -196,7 +196,7 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
             aria-labelledby="contained-modal-title-vcenter"
             centered
             show={show}
-            onHide={handleClose}
+            // onHide={handleClose}
          >
             <div role="document">
                <div className="modal-content">
@@ -226,9 +226,7 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
                            </div>
                            <div className="col-sm-6">
                               <div className="form-group">
-                                 <label className="col-form-label">
-                                    Email <span className="text-danger">*</span>
-                                 </label>
+                                 <label className="col-form-label">Email</label>
                                  <input
                                     className="form-control"
                                     type="email"
@@ -359,9 +357,7 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
 
                            <div className="col-sm-6">
                               <div className="form-group">
-                                 <label className="col-form-label">
-                                    Mã số thuế <span className="text-danger">*</span>
-                                 </label>
+                                 <label className="col-form-label">Mã số thuế</label>
                                  <input
                                     className="form-control"
                                     type="number"
@@ -374,8 +370,7 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
                            <div className="col-sm-6">
                               <div className="form-group">
                                  <label className="col-form-label">
-                                    Lĩnh vực/ ngành nghề chuyên môn{" "}
-                                    <span className="text-danger">*</span>
+                                    Lĩnh vực/ ngành nghề chuyên môn
                                  </label>
                                  <input
                                     className="form-control"
@@ -391,8 +386,7 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
                            <div className="col-sm-6">
                               <div className="form-group">
                                  <label className="col-form-label">
-                                    Mô tả chi tiết kinh nghiệm{" "}
-                                    <span className="text-danger">*</span> <br />
+                                    Mô tả chi tiết kinh nghiệm
                                  </label>
                                  <TextArea
                                     value={worker.fieldContent}

@@ -73,8 +73,7 @@
     border: none;
     border-radius: 50%;
     color: rgb(200, 42, 42);
-    font-size: 20px;
-    height: 20px;
+    font-size: 25px;
     line-height: 20px;
     margin: 0;
     opacity: 1;
@@ -82,7 +81,8 @@
     position: absolute;
     right: 10px;
     top: 10px;
-    width: 20px;
+    width: 40px;
+    height: 40px;
     z-index: 99;
   }
 
