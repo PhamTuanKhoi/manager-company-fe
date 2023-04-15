@@ -9,7 +9,7 @@ import { Applogo } from "../Entryfile/imagepath.jsx";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { alphaNumericPattern, emailrgx, logoFAKE } from "../constant";
+import { alphaNumericPattern, emailrgx, logoFAKE, UserRoleType } from "../constant";
 import { authAPI } from "../api/auth.js";
 import { jwtManager } from "../helpers/jwtManager.js";
 import { login } from "../redux/feature/authSclice";
@@ -74,13 +74,15 @@ const Loginpage = (props) => {
             {/* <Link to="/applyjob/joblist" className="btn btn-primary apply-btn">
                Apply Job
             </Link> */}
-            <Link to="/login">
+
+            <div>
                <img
                   style={{ width: "100px", marginLeft: "50px" }}
                   src={logoFAKE}
                   alt="Dreamguy's Technologies"
                />
-            </Link>
+            </div>
+
             <div className="container">
                <div className="account-box">
                   <div className="account-wrapper">
