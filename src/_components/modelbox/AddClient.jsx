@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { emailrgx, phonergx } from "../../constant";
+import { uploadCloudinary } from "../../helpers/cloudinary";
 import { useLoading } from "../../hook/useLoading";
 import { createClient, updateClient } from "../../redux/feature/clientSclice";
 
@@ -20,6 +21,8 @@ const AddClient = ({ show, handleClose, editClient, render }) => {
    const { setLoading } = useLoading();
    const { user } = useSelector((state) => state.auth);
    const dispatch = useDispatch();
+   const [file, setFile] = useState("");
+   const [avatar, setAvatar] = useState("");
 
    const empty = () => {
       setClient({
@@ -37,6 +40,7 @@ const AddClient = ({ show, handleClose, editClient, render }) => {
    const handleClosed = () => {
       empty();
       handleClose();
+      setAvatar(employee?.avatar);
    };
 
    // set data
@@ -45,11 +49,24 @@ const AddClient = ({ show, handleClose, editClient, render }) => {
       setIsEdit(editClient._id);
    }, [render]);
 
-   const handleSave = () => {
+   const handleSave = async () => {
       if (validatetion()) {
+         let payload = {
+            ...client,
+            creator: user._id,
+         };
+
+         if (file) {
+            const image = await uploadCloudinary(file, setLoading);
+            payload = {
+               ...payload,
+               avatar: image,
+            };
+         }
+
          dispatch(
             createClient({
-               payload: { ...client, creator: user._id },
+               payload,
                toast,
                handleClose,
                setLoading,
@@ -59,13 +76,27 @@ const AddClient = ({ show, handleClose, editClient, render }) => {
       }
    };
 
-   const handleUpdate = () => {
+   const handleUpdate = async () => {
       // api
       if (validatetion()) {
+         let payload = {
+            ...client,
+            creator: user._id,
+            oldEmail: editClient.email,
+         };
+
+         if (file) {
+            const image = await uploadCloudinary(file, setLoading);
+            payload = {
+               ...payload,
+               avatar: image,
+            };
+         }
+
          dispatch(
             updateClient({
                id: editClient._id,
-               payload: { ...client, creator: user._id, oldEmail: editClient.email },
+               payload,
                toast,
                handleClose,
                setLoading,
@@ -120,6 +151,14 @@ const AddClient = ({ show, handleClose, editClient, render }) => {
       return true;
    };
 
+   const handleChangeFile = (e) => {
+      const file = e.target.files[0];
+      if (e.target.files[0]) {
+         setFile(file);
+         setAvatar(URL.createObjectURL(file));
+      }
+   };
+
    return (
       <Modal
          show={show}
@@ -138,6 +177,27 @@ const AddClient = ({ show, handleClose, editClient, render }) => {
             <div className="modal-body">
                <div>
                   <div className="row">
+                     <div className="col-sm-12">
+                        <div className="personal-image">
+                           <label className="label">
+                              <input type="file" onChange={handleChangeFile} />
+                              <figure className="personal-figure">
+                                 <img
+                                    src={
+                                       avatar ||
+                                       "https://avatars1.githubusercontent.com/u/11435231?s=460&v=4"
+                                    }
+                                    className="personal-avatar"
+                                    alt="avatar"
+                                 />
+                                 <figcaption className="personal-figcaption">
+                                    <img src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png" />
+                                 </figcaption>
+                              </figure>
+                           </label>
+                        </div>
+                     </div>
+
                      <div className="col-md-6">
                         <div className="form-group">
                            <label className="col-form-label">

@@ -13,6 +13,7 @@ import DeleteUser from "../../_components/modelbox/DeleteUser";
 import { clientRemainingSelector } from "../../redux/selectors/clientSelector";
 import clientSclice from "../../redux/feature/clientSclice";
 import { useDispatch } from "react-redux";
+import { avartarFAKE } from "../../constant";
 
 const Clients = () => {
    const [show, setShow] = useState(false);
@@ -57,7 +58,7 @@ const Clients = () => {
          render: (text, record) => (
             <h2 className="table-avatar">
                <Link to={`/app/profile/client-profile/${record?._id}`} className="avatar">
-                  <img alt="" src={record.image} />
+                  <img alt={record?.name} src={record?.avatar || avartarFAKE} />
                </Link>
                <Link to={`/app/profile/client-profile/${record?._id}`}>{text}</Link>
             </h2>

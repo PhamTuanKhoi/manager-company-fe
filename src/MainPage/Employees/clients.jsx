@@ -133,7 +133,7 @@ const Clients = () => {
                      <div className="profile-widget">
                         <div className="profile-img">
                            <Link to={`/app/profile/client-profile/${item?._id}`} className="avatar">
-                              <img alt={item?.avartar} src={avartarFAKE} />
+                              <img alt={item?.name} src={item?.avatar || avartarFAKE} />
                            </Link>
                         </div>
                         <div className="dropdown profile-action">

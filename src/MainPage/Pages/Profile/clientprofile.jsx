@@ -69,7 +69,7 @@ const ClientProfile = () => {
                            <div className="profile-img-wrap">
                               <div className="profile-img">
                                  <a href="">
-                                    <img src={client?.avartar || avartarFAKE} alt={client?.name} />
+                                    <img src={client?.avatar || avartarFAKE} alt={client?.name} />
                                  </a>
                               </div>
                            </div>
