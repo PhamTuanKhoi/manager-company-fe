@@ -35,7 +35,7 @@ const Clients = () => {
    const { user } = useSelector((state) => state.auth);
 
    const dispatch = useDispatch();
-   console.log(9999, state);
+
    useEffect(() => {
       fetchClient();
    }, [user]);

@@ -3,7 +3,7 @@ import { userAPI } from "../../api/user";
 
 export const createWorker = createAsyncThunk(
    "worker/createWorker",
-   async ({ payload, toast, onHide, setLoading, empty }, { rejectWithValue }) => {
+   async ({ payload, toast, onHide, setLoading, empty, setAvatar }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await userAPI.createWorker(payload);
@@ -103,7 +103,7 @@ export const profileWorker = createAsyncThunk(
 
 export const updateWorker = createAsyncThunk(
    "worker/updateWorker",
-   async ({ id, payload, toast, onHide, setLoading, empty }, { rejectWithValue }) => {
+   async ({ id, payload, toast, onHide, setLoading, empty, setAvatar }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await userAPI.updateWorker(id, payload);

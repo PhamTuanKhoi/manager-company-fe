@@ -50,6 +50,8 @@ const Users = () => {
 
    const workers = useSelector(workerRemainingSelector);
 
+   const state = useSelector((state) => state.worker);
+
    const [textName, setTextName] = useState("");
    const [textField, setTextField] = useState("");
 
@@ -65,7 +67,7 @@ const Users = () => {
          render: (text, record) => (
             <h2 className="table-avatar">
                <Link to={`/app/profile/worker-profile/${record?._id}`} className="avatar">
-                  <img alt={record?.name} src={record?.image || avartarFAKE} />
+                  <img alt={record?.name} src={record?.avatar || avartarFAKE} />
                </Link>
                <Link to={`/app/profile/worker-profile/${record?._id}`}>
                   {text} <span>{record?.field}</span>
@@ -198,7 +200,7 @@ const Users = () => {
                      <Table
                         className="table-striped"
                         pagination={{
-                           total: workers.length,
+                           total: workers?.length,
                            showSizeChanger: true,
                            onShowSizeChange: onShowSizeChange,
                            itemRender: itemRender,
@@ -207,7 +209,7 @@ const Users = () => {
                         columns={columns}
                         // bordered
                         dataSource={workers}
-                        rowKey={(record) => record._id}
+                        rowKey={(record) => record?._id}
                         // onChange={this.handleTableChange}
                      />
                   </div>

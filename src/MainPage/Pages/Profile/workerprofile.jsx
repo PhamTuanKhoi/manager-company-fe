@@ -79,7 +79,7 @@ const WorkerProfile = () => {
                            <div className="profile-img-wrap">
                               <div className="profile-img">
                                  <a href="#">
-                                    <img alt="" src={Avatar_02} />
+                                    <img alt={worker?.name || "name"} src={worker?.avatar} />
                                  </a>
                               </div>
                            </div>

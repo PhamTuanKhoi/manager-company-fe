@@ -7,6 +7,8 @@ import { useLoading } from "../../hook/useLoading";
 import TextArea from "antd/lib/input/TextArea";
 import moment from "moment";
 import { emailrgx, ExcellentOpition, phonergx } from "../../constant";
+import axios from "axios";
+import { uploadCloudinary } from "../../helpers/cloudinary";
 
 const Adduser = ({ show, onHide, editWorker, render }) => {
    const [worker, setWorker] = useState({
@@ -33,11 +35,6 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
          toast.warn("Vui lòng nhập họ tên");
          return false;
       }
-
-      // if (!worker.email) {
-      //    toast.warn("Vui lòng nhập email");
-      //    return false;
-      // }
 
       if (worker.email) {
          const isValidEmail = emailrgx.test(worker.email);
@@ -102,15 +99,14 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
          }
       }
 
-      // if (!worker.field) {
-      //    toast.warn("Vui lòng nhập ngành nghề chuyên môn");
-      //    return false;
-      // }
+      Object.keys(worker).forEach((key) => (worker[key] === "" ? delete worker[key] : worker[key]));
 
       return true;
    };
 
    const [isEdit, setIsEdit] = useState("");
+   const [file, setFile] = useState("");
+   const [avatar, setAvatar] = useState("");
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
    const { user } = useSelector((state) => state.auth);
@@ -136,23 +132,36 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
    const handleClose = () => {
       empty();
       onHide();
+      setAvatar("");
    };
 
    // set data
    useEffect(() => {
       setWorker(editWorker);
       setIsEdit(editWorker._id);
+      setAvatar(editWorker?.avatar);
    }, [render]);
 
-   const handleSave = () => {
+   const handleSave = async () => {
       if (validatetion()) {
+         let payload = {
+            ...worker,
+            date: new Date(worker.date).getTime(),
+            creator: user._id,
+            file: file,
+         };
+
+         if (file) {
+            const image = await uploadCloudinary(file, setLoading);
+            payload = {
+               ...payload,
+               avatar: image,
+            };
+         }
+
          dispatch(
             createWorker({
-               payload: {
-                  ...worker,
-                  date: new Date(worker.date).getTime(),
-                  creator: user._id,
-               },
+               payload,
                toast,
                onHide,
                setLoading,
@@ -162,29 +171,47 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
       }
    };
 
-   const handleUpdate = () => {
+   const handleUpdate = async () => {
       if (!editWorker._id) {
          toast.warn(`Người lao động không tồn tại`);
          return;
       }
 
       if (validatetion()) {
+         let payload = {
+            ...worker,
+            cccd: worker.cccd.toString(),
+            oldEmail: editWorker.email,
+            date: new Date(worker.date).getTime(),
+            creator: user._id,
+         };
+
+         if (file) {
+            const image = await uploadCloudinary(file, setLoading);
+            payload = {
+               ...payload,
+               avatar: image,
+            };
+         }
+
          dispatch(
             updateWorker({
                id: editWorker._id,
-               payload: {
-                  ...worker,
-                  cccd: worker.cccd.toString(),
-                  oldEmail: editWorker.email,
-                  date: new Date(worker.date).getTime(),
-                  creator: user._id,
-               },
+               payload,
                toast,
                onHide,
                setLoading,
                empty,
             })
          );
+      }
+   };
+
+   const handleChangeFile = (e) => {
+      const file = e.target.files[0];
+      if (e.target.files[0]) {
+         setFile(file);
+         setAvatar(URL.createObjectURL(file));
       }
    };
 
@@ -209,6 +236,27 @@ const Adduser = ({ show, onHide, editWorker, render }) => {
                   <div className="modal-body">
                      <div>
                         <div className="row">
+                           <div className="col-sm-12">
+                              <div className="personal-image">
+                                 <label className="label">
+                                    <input type="file" onChange={handleChangeFile} />
+                                    <figure className="personal-figure">
+                                       <img
+                                          src={
+                                             avatar ||
+                                             "https://avatars1.githubusercontent.com/u/11435231?s=460&v=4"
+                                          }
+                                          className="personal-avatar"
+                                          alt="avatar"
+                                       />
+                                       <figcaption className="personal-figcaption">
+                                          <img src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png" />
+                                       </figcaption>
+                                    </figure>
+                                 </label>
+                              </div>
+                           </div>
+
                            <div className="col-sm-6">
                               <div className="form-group">
                                  <label className="col-form-label">
