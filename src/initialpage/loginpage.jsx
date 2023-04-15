@@ -74,7 +74,7 @@ const Loginpage = (props) => {
             {/* <Link to="/applyjob/joblist" className="btn btn-primary apply-btn">
                Apply Job
             </Link> */}
-            <Link to="/app/main/dashboard">
+            <Link to="/login">
                <img
                   style={{ width: "100px", marginLeft: "50px" }}
                   src={logoFAKE}
