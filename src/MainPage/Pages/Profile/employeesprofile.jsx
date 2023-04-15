@@ -77,7 +77,10 @@ const EmployeesProfile = () => {
                            <div className="profile-img-wrap">
                               <div className="profile-img">
                                  <a href="#">
-                                    <img alt={employee?.avartar} src={avartarFAKE} />
+                                    <img
+                                       alt={employee?.avatar}
+                                       src={employee?.avatar || avartarFAKE}
+                                    />
                                  </a>
                               </div>
                            </div>

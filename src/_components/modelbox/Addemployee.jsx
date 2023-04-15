@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { useLoading } from "../../hook/useLoading";
 import { useEffect } from "react";
 import moment from "moment";
+import { uploadCloudinary } from "../../helpers/cloudinary";
 
 const Addemployee = ({ show, onHide, employee, render }) => {
    const [isEdit, setIsEdit] = useState("");
@@ -50,26 +51,40 @@ const Addemployee = ({ show, onHide, employee, render }) => {
    const handleClose = () => {
       empty();
       onHide();
+      setFile("");
    };
 
    const { setLoading } = useLoading();
    const dispatch = useDispatch();
    const { user } = useSelector((state) => state.auth);
+   const [file, setFile] = useState("");
+   const [avatar, setAvatar] = useState("");
 
    useEffect(() => {
       setEmployees(employee);
-      setIsEdit(employee._id);
+      setIsEdit(employee?._id);
+      setAvatar(employee?.avatar);
    }, [render]);
 
-   const handleSave = () => {
+   const handleSave = async () => {
       if (validatetion()) {
+         let payload = {
+            ...employees,
+            date: new Date(employees.date).getTime(),
+            creator: user._id,
+         };
+
+         if (file) {
+            const image = await uploadCloudinary(file, setLoading);
+            payload = {
+               ...payload,
+               avatar: image,
+            };
+         }
+
          dispatch(
             createEmployees({
-               payload: {
-                  ...employees,
-                  date: new Date(employees.date).getTime(),
-                  creator: user._id,
-               },
+               payload,
                toast,
                onHide,
                empty,
@@ -79,22 +94,32 @@ const Addemployee = ({ show, onHide, employee, render }) => {
       }
    };
 
-   const handleUpdate = () => {
+   const handleUpdate = async () => {
       if (!employee._id) {
          toast.warn(`Nhân viên không tồn tại`);
          return;
       }
 
       if (validatetion()) {
+         let payload = {
+            ...employees,
+            oldEmail: employee?.email,
+            date: new Date(employees.date).getTime(),
+            creator: user._id,
+         };
+
+         if (file) {
+            const image = await uploadCloudinary(file, setLoading);
+            payload = {
+               ...payload,
+               avatar: image,
+            };
+         }
+
          dispatch(
             updateEmployees({
                id: employee._id,
-               payload: {
-                  ...employees,
-                  oldEmail: employee?.email,
-                  date: new Date(employees.date).getTime(),
-                  creator: user._id,
-               },
+               payload,
                toast,
                onHide,
                empty,
@@ -174,6 +199,14 @@ const Addemployee = ({ show, onHide, employee, render }) => {
       return true;
    };
 
+   const handleChangeFile = (e) => {
+      const file = e.target.files[0];
+      if (e.target.files[0]) {
+         setFile(file);
+         setAvatar(URL.createObjectURL(file));
+      }
+   };
+
    return (
       <>
          {/* Add Employee Modal */}
@@ -194,6 +227,27 @@ const Addemployee = ({ show, onHide, employee, render }) => {
                <div className="modal-body">
                   <div>
                      <div className="row">
+                        <div className="col-sm-12">
+                           <div className="personal-image">
+                              <label className="label">
+                                 <input type="file" onChange={handleChangeFile} />
+                                 <figure className="personal-figure">
+                                    <img
+                                       src={
+                                          avatar ||
+                                          "https://avatars1.githubusercontent.com/u/11435231?s=460&v=4"
+                                       }
+                                       className="personal-avatar"
+                                       alt="avatar"
+                                    />
+                                    <figcaption className="personal-figcaption">
+                                       <img src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png" />
+                                    </figcaption>
+                                 </figure>
+                              </label>
+                           </div>
+                        </div>
+
                         <div className="col-sm-6">
                            <div className="form-group">
                               <label className="col-form-label">

@@ -78,8 +78,6 @@ const Employeeslist = () => {
       dispatch(employeesSclice.actions.filterDepartment(department));
    }, [text, department]);
 
-   console.log(employees, 999);
-
    const columns = [
       {
          title: "Họ và tên",
@@ -87,7 +85,7 @@ const Employeeslist = () => {
          render: (text, record) => (
             <h2 className="table-avatar">
                <Link to={`/app/profile/employee-profile/${record?._id}`} className="avatar">
-                  <img alt="" src={record.avartar || record.image} />
+                  <img alt="" src={record?.avatar || record?.image} />
                </Link>
                <Link to={`/app/profile/employee-profile/${record?._id}`}>
                   {text}{" "}
