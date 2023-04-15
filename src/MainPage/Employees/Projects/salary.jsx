@@ -12,7 +12,7 @@ import { listUserSalary } from "../../../redux/feature/workerSclice";
 import { useSelector } from "react-redux";
 import { createOrUpdateContract } from "../../../redux/feature/contractSclice";
 import { toast } from "react-toastify";
-import { formatMoney, UserRoleType } from "../../../constant/index";
+import { avartarFAKE, formatMoney, UserRoleType } from "../../../constant/index";
 
 const Salary = () => {
    useEffect(() => {
@@ -77,7 +77,7 @@ const Salary = () => {
                   to={`/app/payroll/export?payslip=${record?.payslip?._id}&project=${record?.projectId}&salary=${record?.salary?._id}&user=${record?._id}&contract=${record?.contract}`}
                   className="avatar"
                >
-                  <img alt="" src={record?.image} />
+                  <img alt={record?.name} src={record?.avatar || avartarFAKE} />
                </Link>
                <Link
                   to={`/app/payroll/export?payslip=${record?.payslip?._id}&project=${record?.projectId}&salary=${record?.salary?._id}&user=${record?._id}&contract=${record?.contract}`}

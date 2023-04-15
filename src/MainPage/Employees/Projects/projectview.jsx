@@ -88,7 +88,7 @@ const ProjectView = () => {
          render: (text, record) => (
             <h2 className="table-avatar">
                <Link to={`/app/profile/worker-profile/${record?._id}`} className="avatar">
-                  <img alt={record?.name} src={record?.image || avartarFAKE} />
+                  <img alt={record?.name} src={record?.avatar || avartarFAKE} />
                </Link>
                <Link to={`/app/profile/worker-profile/${record?._id}`}>
                   {text} <span>{record?.field}</span>
@@ -499,7 +499,7 @@ const ProjectView = () => {
                                           <span className="avatar">
                                              <img
                                                 alt={item?.name}
-                                                src={item?.avartar || avartarFAKE}
+                                                src={item?.avatar || avartarFAKE}
                                              />
                                           </span>
                                        </div>
@@ -526,7 +526,7 @@ const ProjectView = () => {
                                        <span className="avatar">
                                           <img
                                              alt={project?.leader?.name}
-                                             src={project?.leader?.avartar || avartarFAKE}
+                                             src={project?.leader?.avatar || avartarFAKE}
                                           />
                                        </span>
                                     </div>
@@ -570,7 +570,7 @@ const ProjectView = () => {
                                           <span className="avatar">
                                              <img
                                                 alt={item?.name}
-                                                src={item?.avartar || avartarFAKE}
+                                                src={item?.avatar || avartarFAKE}
                                              />
                                           </span>
                                        </div>
