@@ -68,9 +68,7 @@ const ClientProfile = () => {
                         <div className="profile-view">
                            <div className="profile-img-wrap">
                               <div className="profile-img">
-                                 <a href="">
-                                    <img src={client?.avatar || avartarFAKE} alt={client?.name} />
-                                 </a>
+                                 <img src={client?.avatar || avartarFAKE} alt={client?.name} />
                               </div>
                            </div>
                            <div className="profile-basic">
