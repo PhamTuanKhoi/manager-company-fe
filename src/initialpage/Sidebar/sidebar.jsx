@@ -260,6 +260,11 @@ const Sidebar = (props) => {
                            </Link>
                         </li>
                      )}
+                     <li className={pathname.includes("departments") ? "active" : ""}>
+                        <Link to="/app/employee/departments">
+                           <i className="la la-cube" /> <span>Phòng ban</span>
+                        </Link>
+                     </li>
                      {/* <li className="submenu">
                         <a
                            href="#"
