@@ -2,27 +2,35 @@
  * Signin Firebase
  */
 
-import React, { Component } from "react";
+import React, { Component, useMemo } from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-import { emailrgx, logoFAKE } from "../constant/index.js";
+import { logoFAKE } from "../constant/index.js";
 import { useLoading } from "../hook/useLoading";
-import { forgotPassword } from "../redux/feature/initSclice.js";
+import { forgotPassword, resetPassword } from "../redux/feature/initSclice.js";
 
-const ForgotPassword = () => {
-   const [email, setEmail] = useState("");
+const ResetPassword = () => {
+   const [payload, setPayload] = useState({
+      password: "",
+      confirmPassword: "",
+   });
+
+   const { search } = useLocation();
+   const query = useMemo(() => new URLSearchParams(search), [search]);
+   const token = query.get("e");
+
    const { setLoading } = useLoading();
    const dispatch = useDispatch();
    const history = useHistory();
 
-   const handleSend = () => {
+   const handleSave = () => {
       if (validatetion())
          dispatch(
-            forgotPassword({
-               payload: { email },
+            resetPassword({
+               payload: { ...payload, token },
                setLoading,
                toast,
                redirect: () => history.push("/login"),
@@ -31,15 +39,19 @@ const ForgotPassword = () => {
    };
 
    const validatetion = () => {
-      if (!email) {
-         toast.warn(`Vui lòng nhập email!`);
+      if (!payload.password) {
+         toast.warn("Vui lòng nhập mật khẩu");
          return false;
       }
 
-      if (email) {
-         const isValidEmail = emailrgx.test(email);
-         if (!isValidEmail) {
-            toast.warn("Vui lòng nhập đúng email");
+      if (!payload.confirmPassword) {
+         toast.warn("Vui lòng nhập lại mật khẩu");
+         return false;
+      }
+
+      if (payload.password) {
+         if (payload.password !== payload.confirmPassword) {
+            toast.warn("Mật khẩu không chính xác");
             return false;
          }
       }
@@ -50,7 +62,7 @@ const ForgotPassword = () => {
    return (
       <>
          <Helmet>
-            <title>Quên mật khẩu</title>
+            <title>Đặt lại mật khẩu</title>
             <meta name="description" content="Login page" />
          </Helmet>
          <div className="account-content">
@@ -67,22 +79,30 @@ const ForgotPassword = () => {
                {/* /Account Logo */}
                <div className="account-box">
                   <div className="account-wrapper">
-                     <h3 className="account-title">Quên mật khẩu?</h3>
-                     <p className="account-subtitle">Nhập email nhận lại mật khẩu của bạn</p>
-
+                     <h3 className="account-title">Đặt lại mật khẩu</h3> <br />
                      <div className="form-group">
-                        <label>Địa chỉ email</label>
+                        <label>Nhập mật khẩu</label>
                         <input
                            className="form-control"
-                           type="text"
-                           onChange={(e) => setEmail(e.target.value)}
+                           type="password"
+                           onChange={(e) => setPayload({ ...payload, password: e.target.value })}
+                        />
+                     </div>
+                     <div className="form-group">
+                        <label>Nhập lại mật khẩu</label>
+                        <input
+                           className="form-control"
+                           type="password"
+                           onChange={(e) =>
+                              setPayload({ ...payload, confirmPassword: e.target.value })
+                           }
                         />
                      </div>
                      <div className="form-group text-center">
                         <button
                            className="btn btn-primary account-btn"
                            type="submit"
-                           onClick={handleSend}
+                           onClick={handleSave}
                         >
                            Xác nhận
                         </button>
@@ -100,4 +120,4 @@ const ForgotPassword = () => {
    );
 };
 
-export default ForgotPassword;
+export default ResetPassword;

@@ -92,6 +92,14 @@ export const userAPI = {
       return await axios.patch(path + "employees/" + id, payload);
    },
 
+   async forgotPassword(payload) {
+      return await axios.post(path + "forgot-password/", payload);
+   },
+
+   async resetPassword(payload) {
+      return await axios.post(path + "reset-password/", payload);
+   },
+
    async updateClient(id, payload) {
       return await axios.patch(path + "client/" + id, payload);
    },

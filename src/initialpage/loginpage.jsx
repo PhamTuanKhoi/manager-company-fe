@@ -116,11 +116,11 @@ const Loginpage = (props) => {
                                  <div className="col">
                                     <label>Nhập mật khẩu:</label>
                                  </div>
-                                 {/* <div className="col-auto">
+                                 <div className="col-auto">
                                     <Link className="text-muted" to="/forgotpassword">
-                                       Forgot password?
+                                       Quên mật khẩu?
                                     </Link>
-                                 </div> */}
+                                 </div>
                               </div>
                               <Controller
                                  name="password"

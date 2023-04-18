@@ -27,6 +27,7 @@ import RegisterUser from "./RegisterUser";
 import { jwtManager } from "../helpers/jwtManager";
 import { useLoading } from "../hook/useLoading";
 import { useState } from "react";
+import ResetPassword from "./resetpassword";
 
 export default function App(props) {
    //  componentDidMount() {
@@ -69,7 +70,9 @@ export default function App(props) {
       !token &&
       location.pathname !== "/login" &&
       location.pathname !== "/register-user" &&
-      location.pathname !== "/register"
+      location.pathname !== "/register" &&
+      location.pathname !== "/forgotpassword" &&
+      location.pathname !== "/resetpassword"
    ) {
       return <Redirect to={"/login"} />;
    }
@@ -83,6 +86,7 @@ export default function App(props) {
          <Route path="/login" component={LoginPage} />
          <Route path="/register-user" component={RegisterUser} />
          <Route path="/forgotpassword" component={ForgotPassword} />
+         <Route path="/resetpassword" component={ResetPassword} />
          <Route path="/register" component={RegistrationPage} />
          <Route path="/otp" component={OTP} />
          <Route path="/lockscreen" component={LockScreen} />

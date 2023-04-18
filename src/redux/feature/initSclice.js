@@ -55,6 +55,54 @@ export const changePassword = createAsyncThunk(
    }
 );
 
+export const forgotPassword = createAsyncThunk(
+   "init/forgotPassword",
+   async ({ payload, setLoading, toast, redirect }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.forgotPassword(payload);
+         toast.success(`Đã gửi liên kết qua email ${payload?.email}`);
+         setLoading(false);
+         redirect();
+         return data;
+      } catch (error) {
+         setLoading(false);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const resetPassword = createAsyncThunk(
+   "init/resetPassword",
+   async ({ payload, setLoading, toast, redirect }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.resetPassword(payload);
+         toast.success(`Cập nhật mật khẩu thành công`);
+         setLoading(false);
+         redirect();
+         return data;
+      } catch (error) {
+         setLoading(false);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const initSclice = createSlice({
    name: "init",
    initialState: {
@@ -83,19 +131,6 @@ const initSclice = createSlice({
          state.error = action.payload.message;
       },
 
-      //list
-      // [workerProjectClient.pending]: (state, action) => {
-      //    state.loading = true;
-      // },
-      // [workerProjectClient.fulfilled]: (state, action) => {
-      //    state.loading = false;
-      //    state.notificationWorker = action.payload;
-      // },
-      // [workerProjectClient.rejected]: (state, action) => {
-      //    state.loading = false;
-      //    state.error = action.payload.message;
-      // },
-
       // change password
       [changePassword.pending]: (state, action) => {
          state.loading = true;
@@ -104,6 +139,30 @@ const initSclice = createSlice({
          state.loading = false;
       },
       [changePassword.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // forgot password
+      [forgotPassword.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [forgotPassword.fulfilled]: (state, action) => {
+         state.loading = false;
+      },
+      [forgotPassword.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // reset password
+      [resetPassword.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [resetPassword.fulfilled]: (state, action) => {
+         state.loading = false;
+      },
+      [resetPassword.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
