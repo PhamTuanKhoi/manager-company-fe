@@ -20,6 +20,7 @@ import rulesSclice from "./feature/rulesSclice";
 import salarySclice from "./feature/salarySclice";
 import contractSclice from "./feature/contractSclice";
 import overtimeSclice from "./feature/overtimeSclice";
+import departmentSclice from "./feature/departmentSclice";
 
 const persistConfig = {
    key: "root",
@@ -46,6 +47,7 @@ const reducer = combineReducers({
    salary: salarySclice.reducer,
    contract: contractSclice.reducer,
    overtime: overtimeSclice.reducer,
+   department: departmentSclice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);
