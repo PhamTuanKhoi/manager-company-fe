@@ -42,13 +42,12 @@ export const listDepartment = createAsyncThunk(
 
 export const updateDepartment = createAsyncThunk(
    "department/updateDepartment",
-   async ({ id, payload, toast, setLoading, empty }, { rejectWithValue }) => {
+   async ({ id, payload, toast, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await departmentAPI.update(id, payload);
          toast.success("Cập nhật khách hàng thành công");
          setLoading(false);
-         empty();
          return data;
       } catch (error) {
          setLoading(false);
@@ -66,11 +65,12 @@ export const updateDepartment = createAsyncThunk(
 
 export const removeDepartment = createAsyncThunk(
    "department/removeDepartment",
-   async ({ id, setLoading, toast }, { rejectWithValue }) => {
+   async ({ id, setLoading, toast, close }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await departmentAPI.delete(id);
          setLoading(false);
+         close();
          toast.success(`Xóa khách hàng thành công`);
          return data;
       } catch (error) {

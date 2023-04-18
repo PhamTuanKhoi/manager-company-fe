@@ -7,6 +7,17 @@ import { Table } from "antd";
 import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
+import { useDispatch } from "react-redux";
+import { useLoading } from "../../../hook/useLoading";
+import {
+   createDepartment,
+   removeDepartment,
+   updateDepartment,
+} from "../../../redux/feature/departmentSclice";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { Modal } from "react-bootstrap";
 
 const Department = () => {
    const [menu, setMenu] = useState(false);
@@ -15,21 +26,15 @@ const Department = () => {
       setMenu(!menu);
    };
 
-   const [data, setData] = useState([
-      { id: 1, department: "Web Development" },
-      { id: 2, department: "Application Development" },
-   ]);
-
    const columns = [
       {
          title: "#",
-         dataIndex: "id",
-         sorter: (a, b) => a.id.length - b.id.length,
+         render: (text, record, i) => i + 1,
       },
       {
          title: "Phòng ban",
-         dataIndex: "department",
-         sorter: (a, b) => a.department.length - b.department.length,
+         dataIndex: "name",
+         sorter: (a, b) => a.name.length - b.name.length,
       },
       {
          title: "Tùy chỉnh",
@@ -47,16 +52,20 @@ const Department = () => {
                   <a
                      className="dropdown-item"
                      href="#"
-                     data-bs-toggle="modal"
-                     data-bs-target="#edit_department"
+                     onClick={() => {
+                        setItem(record);
+                        handleShow();
+                     }}
                   >
                      <i className="fa fa-pencil m-r-5" /> Sửa
                   </a>
                   <a
                      className="dropdown-item"
                      href="#"
-                     data-bs-toggle="modal"
-                     data-bs-target="#delete_department"
+                     onClick={() => {
+                        setItem(record);
+                        setShowDlt(true);
+                     }}
                   >
                      <i className="fa fa-trash-o m-r-5" /> Xóa
                   </a>
@@ -65,6 +74,45 @@ const Department = () => {
          ),
       },
    ];
+
+   const [name, setName] = useState("");
+   const [item, setItem] = useState({});
+   const dispatch = useDispatch();
+   const { setLoading } = useLoading();
+   const [show, setShow] = useState(false);
+   const [showDlt, setShowDlt] = useState(false);
+
+   const handleClose = () => setShow(false);
+   const handleShow = () => setShow(true);
+
+   const { departments } = useSelector((state) => state.department);
+
+   const empty = () => {
+      setName("");
+      setItem({});
+   };
+
+   useEffect(() => {
+      if (item.name) setName(item?.name);
+   }, [item]);
+
+   const handleSave = () => {
+      dispatch(createDepartment({ payload: { name }, setLoading, toast, empty }));
+   };
+
+   const handleUpdate = () => {
+      if (item._id)
+         dispatch(updateDepartment({ id: item?._id, payload: { name }, setLoading, toast }));
+   };
+
+   const handleDelete = () => {
+      if (item?._id)
+         dispatch(
+            removeDepartment({ id: item?._id, setLoading, toast, close: () => setShowDlt(false) })
+         );
+   };
+
+   // const handleUpdate
    return (
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
          <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -83,12 +131,7 @@ const Department = () => {
                         <h3 className="page-title">Phòng ban</h3>
                      </div>
                      <div className="col-auto float-end ml-auto">
-                        <a
-                           href="#"
-                           className="btn add-btn"
-                           data-bs-toggle="modal"
-                           data-bs-target="#add_department"
-                        >
+                        <a href="#" className="btn add-btn" onClick={handleShow}>
                            <i className="fa fa-plus" /> Thêm phòng ban
                         </a>
                      </div>
@@ -101,7 +144,7 @@ const Department = () => {
                         <Table
                            className="table-striped"
                            pagination={{
-                              total: data.length,
+                              total: departments?.length,
                               showSizeChanger: true,
                               onShowSizeChange: onShowSizeChange,
                               itemRender: itemRender,
@@ -109,9 +152,9 @@ const Department = () => {
                            style={{ overflowX: "auto" }}
                            columns={columns}
                            // bordered
-                           dataSource={data}
-                           rowKey={(record) => record.id}
-                           onChange={console.log("change")}
+                           dataSource={departments}
+                           rowKey={(record) => record?._id}
+                           // onChange={console.log("change")}
                         />
                      </div>
                   </div>
@@ -119,104 +162,83 @@ const Department = () => {
             </div>
             {/* /Page Content */}
             {/* Add Department Modal */}
-            <div id="add_department" className="modal custom-modal fade" role="dialog">
-               <div className="modal-dialog modal-dialog-centered" role="document">
-                  <div className="modal-content">
-                     <div className="modal-header">
-                        <h5 className="modal-title">Phòng ban mới</h5>
-                        <button
-                           type="button"
-                           className="close-x"
-                           data-bs-dismiss="modal"
-                           aria-label="Close"
-                        >
-                           <span aria-hidden="true">×</span>
+            <Modal show={show} centered>
+               <div className="modal-header">
+                  <h5 className="modal-title">
+                     {item?._id ? "Cập nhật phòng ban" : "Phòng ban mới"}{" "}
+                  </h5>
+                  <button
+                     type="button"
+                     className="close-x"
+                     onClick={() => {
+                        handleClose();
+                        empty();
+                     }}
+                  >
+                     <span aria-hidden="true">×</span>
+                  </button>
+               </div>
+               <div className="modal-body">
+                  <div className="form-group">
+                     <label>
+                        Tên phòng ban<span className="text-danger">*</span>
+                     </label>
+                     <input
+                        className="form-control"
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                     />
+                  </div>
+                  <div className="submit-section">
+                     {!item?._id ? (
+                        <button className="btn btn-primary submit-btn" onClick={handleSave}>
+                           Lưu
                         </button>
-                     </div>
-                     <div className="modal-body">
-                        <form>
-                           <div className="form-group">
-                              <label>
-                                 Tên phòng ban<span className="text-danger">*</span>
-                              </label>
-                              <input className="form-control" type="text" />
-                           </div>
-                           <div className="submit-section">
-                              <button className="btn btn-primary submit-btn">Lưu</button>
-                           </div>
-                        </form>
-                     </div>
+                     ) : (
+                        <button className="btn btn-primary submit-btn" onClick={handleUpdate}>
+                           Cập nhật
+                        </button>
+                     )}
                   </div>
                </div>
-            </div>
+            </Modal>
             {/* /Add Department Modal */}
-            {/* Edit Department Modal */}
-            <div id="edit_department" className="modal custom-modal fade" role="dialog">
-               <div className="modal-dialog modal-dialog-centered" role="document">
-                  <div className="modal-content">
-                     <div className="modal-header">
-                        <h5 className="modal-title">Edit Department</h5>
-                        <button
-                           type="button"
-                           className="close"
-                           data-bs-dismiss="modal"
-                           aria-label="Close"
-                        >
-                           <span aria-hidden="true">×</span>
-                        </button>
-                     </div>
-                     <div className="modal-body">
-                        <form>
-                           <div className="form-group">
-                              <label>
-                                 Department Name <span className="text-danger">*</span>
-                              </label>
-                              <input
-                                 className="form-control"
-                                 defaultValue="IT Management"
-                                 type="text"
-                              />
-                           </div>
-                           <div className="submit-section">
-                              <button className="btn btn-primary submit-btn">Save</button>
-                           </div>
-                        </form>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            {/* /Edit Department Modal */}
+
             {/* Delete Department Modal */}
-            <div className="modal custom-modal fade" id="delete_department" role="dialog">
-               <div className="modal-dialog modal-dialog-centered">
-                  <div className="modal-content">
-                     <div className="modal-body">
-                        <div className="form-header">
-                           <h3>Delete Department</h3>
-                           <p>Are you sure want to delete?</p>
+            <Modal show={showDlt} centered>
+               <div className="modal-body">
+                  <div className="form-header">
+                     <h3>Xóa phòng ban {name}</h3>
+                     <p>Bạn có chắc muốn xóa phòng ban {name}</p>
+                  </div>
+                  <div className="modal-btn delete-action">
+                     <div className="row">
+                        <div className="col-6">
+                           <a
+                              href="#"
+                              className="btn btn-primary continue-btn"
+                              onClick={handleDelete}
+                           >
+                              Xóa
+                           </a>
                         </div>
-                        <div className="modal-btn delete-action">
-                           <div className="row">
-                              <div className="col-6">
-                                 <a href="" className="btn btn-primary continue-btn">
-                                    Delete
-                                 </a>
-                              </div>
-                              <div className="col-6">
-                                 <a
-                                    href=""
-                                    data-bs-dismiss="modal"
-                                    className="btn btn-primary cancel-btn"
-                                 >
-                                    Cancel
-                                 </a>
-                              </div>
-                           </div>
+                        <div className="col-6">
+                           <a
+                              href="#"
+                              className="btn btn-primary cancel-btn"
+                              onClick={() => {
+                                 setShowDlt(false);
+                                 empty();
+                              }}
+                           >
+                              Cancel
+                           </a>
                         </div>
                      </div>
                   </div>
                </div>
-            </div>
+            </Modal>
             {/* /Delete Department Modal */}
          </div>
       </div>
