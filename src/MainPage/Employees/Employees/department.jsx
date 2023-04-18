@@ -97,12 +97,14 @@ const Department = () => {
    }, [item]);
 
    const handleSave = () => {
-      dispatch(createDepartment({ payload: { name }, setLoading, toast, empty }));
+      if (validatetion())
+         dispatch(createDepartment({ payload: { name }, setLoading, toast, empty }));
    };
 
    const handleUpdate = () => {
       if (item._id)
-         dispatch(updateDepartment({ id: item?._id, payload: { name }, setLoading, toast }));
+         if (validatetion())
+            dispatch(updateDepartment({ id: item?._id, payload: { name }, setLoading, toast }));
    };
 
    const handleDelete = () => {
@@ -110,6 +112,20 @@ const Department = () => {
          dispatch(
             removeDepartment({ id: item?._id, setLoading, toast, close: () => setShowDlt(false) })
          );
+   };
+
+   const validatetion = () => {
+      if (!name) {
+         toast.warn("vui lòng nhập tên phòng ban!");
+         return false;
+      }
+
+      if (name && name.length < 4) {
+         toast.warn("tên phòng ban phải lớn hơn 3 kí tự!");
+         return false;
+      }
+
+      return true;
    };
 
    // const handleUpdate
