@@ -12,7 +12,7 @@ import employeesSclice, {
    listEmployeesByUserId,
 } from "../../../redux/feature/employeesSclice";
 import { useSelector } from "react-redux";
-import { EmployeeDepartmentType, UserRoleType } from "../../../constant";
+import { UserRoleType } from "../../../constant";
 import { useLoading } from "../../../hook/useLoading";
 import DeleteUser from "../../../_components/modelbox/DeleteUser";
 import { employeesRemainingSelector } from "../../../redux/selectors/employeesSelector";
@@ -139,7 +139,7 @@ const AllEmployees = () => {
             </div>
             {/* Search Filter */}
             <div className="row staff-grid-row">
-               {employees.map((item) => (
+               {employees?.map((item) => (
                   <div key={item?._id} className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
                      <div className="profile-widget">
                         <div className="profile-img">
@@ -192,17 +192,8 @@ const AllEmployees = () => {
                               {item?.name}
                            </Link>
                         </h4>
-                        <div className="small text-muted">
-                           {item?.department === EmployeeDepartmentType.BUSSINESS
-                              ? "Kinh doanh"
-                              : item.department === EmployeeDepartmentType.ACCOUNTANT
-                              ? "Kế toán"
-                              : item.department === EmployeeDepartmentType.RECRUIT
-                              ? "Tuyen Dung"
-                              : item.department === EmployeeDepartmentType.MARKETING
-                              ? "Maketing"
-                              : ""}
-                        </div>
+
+                        <div className="small text-muted">{item?.departmentName}</div>
                      </div>
                   </div>
                ))}

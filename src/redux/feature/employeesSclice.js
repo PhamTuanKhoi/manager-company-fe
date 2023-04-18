@@ -11,7 +11,7 @@ export const createEmployees = createAsyncThunk(
          empty();
          onHide();
          setLoading(false);
-         return data;
+         return { ...data, departmentName: payload.departmentName };
       } catch (error) {
          setLoading(false);
          if (typeof error?.response?.data?.message === "string") {
@@ -51,7 +51,8 @@ export const updateEmployees = createAsyncThunk(
          empty();
          onHide();
          setLoading(false);
-         return data;
+         return { ...data, departmentName: payload?.departmentName };
+         // return { ...data, department: payload?.department_name };
       } catch (error) {
          setLoading(false);
          if (typeof error?.response?.data?.message === "string") {

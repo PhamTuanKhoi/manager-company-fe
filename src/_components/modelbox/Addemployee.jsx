@@ -72,6 +72,7 @@ const Addemployee = ({ show, onHide, employee, render }) => {
       if (validatetion()) {
          let payload = {
             ...employees,
+            departmentName: departments?.find((i) => i._id === employees.department).name,
             date: new Date(employees.date).getTime(),
             creator: user._id,
          };
@@ -105,6 +106,7 @@ const Addemployee = ({ show, onHide, employee, render }) => {
       if (validatetion()) {
          let payload = {
             ...employees,
+            departmentName: departments?.find((i) => i._id === employees.department).name,
             oldEmail: employee?.email,
             date: new Date(employees.date).getTime(),
             creator: user._id,
@@ -311,7 +313,7 @@ const Addemployee = ({ show, onHide, employee, render }) => {
                               <select
                                  className="form-control"
                                  // className="select"   class tam linh
-                                 value={employees.department}
+                                 value={employees?.department}
                                  onChange={(e) =>
                                     setEmployees({ ...employees, department: e.target.value })
                                  }
