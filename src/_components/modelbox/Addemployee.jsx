@@ -19,6 +19,7 @@ import { useLoading } from "../../hook/useLoading";
 import { useEffect } from "react";
 import moment from "moment";
 import { uploadCloudinary } from "../../helpers/cloudinary";
+import { listDepartment } from "../../redux/feature/departmentSclice";
 
 const Addemployee = ({ show, onHide, employee, render }) => {
    const [isEdit, setIsEdit] = useState("");
@@ -52,6 +53,7 @@ const Addemployee = ({ show, onHide, employee, render }) => {
       empty();
       onHide();
       setFile("");
+      setAvatar("");
    };
 
    const { setLoading } = useLoading();
@@ -128,6 +130,12 @@ const Addemployee = ({ show, onHide, employee, render }) => {
          );
       }
    };
+
+   useEffect(() => {
+      dispatch(listDepartment({ setLoading }));
+   }, []);
+
+   const { departments } = useSelector((state) => state.department);
 
    const validatetion = () => {
       if (!user._id) {
@@ -309,12 +317,11 @@ const Addemployee = ({ show, onHide, employee, render }) => {
                                  }
                               >
                                  <option>Chọn vị trí</option>
-                                 <option value={EmployeeDepartmentType.ACCOUNTANT}>Kế toán</option>
-                                 <option value={EmployeeDepartmentType.BUSSINESS}>
-                                    Kinh doanh
-                                 </option>
-                                 <option value={EmployeeDepartmentType.MARKETING}>Marketing</option>
-                                 <option value={EmployeeDepartmentType.RECRUIT}>Tuyển dụng</option>
+                                 {departments?.map((item, index) => (
+                                    <option key={index} value={item?._id}>
+                                       {item?.name}
+                                    </option>
+                                 ))}
                               </select>
                            </div>
                         </div>

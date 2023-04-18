@@ -82,7 +82,10 @@ const Department = () => {
    const [show, setShow] = useState(false);
    const [showDlt, setShowDlt] = useState(false);
 
-   const handleClose = () => setShow(false);
+   const handleClose = () => {
+      setShow(false);
+      empty();
+   };
    const handleShow = () => setShow(true);
 
    const { departments } = useSelector((state) => state.department);
@@ -98,13 +101,21 @@ const Department = () => {
 
    const handleSave = () => {
       if (validatetion())
-         dispatch(createDepartment({ payload: { name }, setLoading, toast, empty }));
+         dispatch(createDepartment({ payload: { name }, setLoading, toast, empty, handleClose }));
    };
 
    const handleUpdate = () => {
       if (item._id)
          if (validatetion())
-            dispatch(updateDepartment({ id: item?._id, payload: { name }, setLoading, toast }));
+            dispatch(
+               updateDepartment({
+                  id: item?._id,
+                  payload: { name },
+                  setLoading,
+                  toast,
+                  handleClose,
+               })
+            );
    };
 
    const handleDelete = () => {

@@ -3,12 +3,13 @@ import { departmentAPI } from "../../api/department";
 
 export const createDepartment = createAsyncThunk(
    "department/createDepartment",
-   async ({ payload, toast, setLoading, empty }, { rejectWithValue }) => {
+   async ({ payload, toast, setLoading, empty, handleClose }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await departmentAPI.create(payload);
          toast.success("Thêm khách hàng thành công");
          setLoading(false);
+         handleClose();
          empty();
          return data;
       } catch (error) {
@@ -42,12 +43,13 @@ export const listDepartment = createAsyncThunk(
 
 export const updateDepartment = createAsyncThunk(
    "department/updateDepartment",
-   async ({ id, payload, toast, setLoading }, { rejectWithValue }) => {
+   async ({ id, payload, toast, setLoading, handleClose }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await departmentAPI.update(id, payload);
          toast.success("Cập nhật khách hàng thành công");
          setLoading(false);
+         handleClose();
          return data;
       } catch (error) {
          setLoading(false);
