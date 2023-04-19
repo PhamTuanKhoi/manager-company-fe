@@ -262,3 +262,22 @@
     height: 50px;
   }
   /*  css inout image avartar */
+
+  .display-flex {
+    display: flex;
+  }
+
+  .toggle-mobile {
+    position: fixed;
+    margin-left: 230px;
+    margin-top: 50%;
+    height: 100%; 
+  }
+
+  .toggle-icon {  
+    /* border: 7px solid #fefefe;  
+    border-radius: 5px;
+    color: #890f0d; */
+    /* color: #34444c; */
+    font-size: 30px; 
+  }

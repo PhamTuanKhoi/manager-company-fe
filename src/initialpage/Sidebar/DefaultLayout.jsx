@@ -32,7 +32,7 @@ const DefaultLayout = (props) => {
                      />
                   ))}
             </div>
-            <SidebarContent />
+            <SidebarContent onMenuClick={(value) => toggleMobileMenu()} menu={menu} />
             {/* </div> */}
             {/* Delete Employee Modal */}
             <div className="modal custom-modal fade" id="delete_employee" role="dialog">

@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
-import Header from "../../../initialpage/Sidebar/header";
-import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import { Table } from "antd";
 import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
@@ -141,133 +138,125 @@ const Department = () => {
 
    // const handleUpdate
    return (
-      <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
-         <Header onMenuClick={(value) => toggleMobileMenu()} />
-         <Sidebar />
-         <div className="page-wrapper">
-            <Helmet>
-               <title>Phòng ban - Nhân viên</title>
-               <meta name="description" content="Login page" />
-            </Helmet>
-            {/* Page Content */}
-            <div className="content container-fluid">
-               {/* Page Header */}
-               <div className="page-header">
-                  <div className="row align-items-center">
-                     <div className="col">
-                        <h3 className="page-title">Phòng ban</h3>
+      <div className="page-wrapper">
+         <Helmet>
+            <title>Phòng ban - Nhân viên</title>
+            <meta name="description" content="Login page" />
+         </Helmet>
+         {/* Page Content */}
+         <div className="content container-fluid">
+            {/* Page Header */}
+            <div className="page-header">
+               <div className="row align-items-center">
+                  <div className="col">
+                     <h3 className="page-title">Phòng ban</h3>
+                  </div>
+                  <div className="col-auto float-end ml-auto">
+                     <a href="#" className="btn add-btn" onClick={handleShow}>
+                        <i className="fa fa-plus" /> Thêm phòng ban
+                     </a>
+                  </div>
+               </div>
+            </div>
+            {/* /Page Header */}
+            <div className="row">
+               <div className="col-md-12">
+                  <div className="table-responsive">
+                     <Table
+                        className="table-striped"
+                        pagination={{
+                           total: departments?.length,
+                           showSizeChanger: true,
+                           onShowSizeChange: onShowSizeChange,
+                           itemRender: itemRender,
+                        }}
+                        style={{ overflowX: "auto" }}
+                        columns={columns}
+                        // bordered
+                        dataSource={departments}
+                        rowKey={(record) => record?._id}
+                        // onChange={console.log("change")}
+                     />
+                  </div>
+               </div>
+            </div>
+         </div>
+         {/* /Page Content */}
+         {/* Add Department Modal */}
+         <Modal show={show} centered>
+            <div className="modal-header">
+               <h5 className="modal-title">
+                  {item?._id ? "Cập nhật phòng ban" : "Phòng ban mới"}{" "}
+               </h5>
+               <button
+                  type="button"
+                  className="close-x"
+                  onClick={() => {
+                     handleClose();
+                     empty();
+                  }}
+               >
+                  <span aria-hidden="true">×</span>
+               </button>
+            </div>
+            <div className="modal-body">
+               <div className="form-group">
+                  <label>
+                     Tên phòng ban<span className="text-danger">*</span>
+                  </label>
+                  <input
+                     className="form-control"
+                     type="text"
+                     value={name}
+                     onChange={(e) => setName(e.target.value)}
+                  />
+               </div>
+               <div className="submit-section">
+                  {!item?._id ? (
+                     <button className="btn btn-primary submit-btn" onClick={handleSave}>
+                        Lưu
+                     </button>
+                  ) : (
+                     <button className="btn btn-primary submit-btn" onClick={handleUpdate}>
+                        Cập nhật
+                     </button>
+                  )}
+               </div>
+            </div>
+         </Modal>
+         {/* /Add Department Modal */}
+
+         {/* Delete Department Modal */}
+         <Modal show={showDlt} centered>
+            <div className="modal-body">
+               <div className="form-header">
+                  <h3>Xóa phòng ban {name}</h3>
+                  <p>Bạn có chắc muốn xóa phòng ban {name}</p>
+               </div>
+               <div className="modal-btn delete-action">
+                  <div className="row">
+                     <div className="col-6">
+                        <a href="#" className="btn btn-primary continue-btn" onClick={handleDelete}>
+                           Xóa
+                        </a>
                      </div>
-                     <div className="col-auto float-end ml-auto">
-                        <a href="#" className="btn add-btn" onClick={handleShow}>
-                           <i className="fa fa-plus" /> Thêm phòng ban
+                     <div className="col-6">
+                        <a
+                           href="#"
+                           className="btn btn-primary cancel-btn"
+                           onClick={() => {
+                              setShowDlt(false);
+                              empty();
+                           }}
+                        >
+                           Cancel
                         </a>
                      </div>
                   </div>
                </div>
-               {/* /Page Header */}
-               <div className="row">
-                  <div className="col-md-12">
-                     <div className="table-responsive">
-                        <Table
-                           className="table-striped"
-                           pagination={{
-                              total: departments?.length,
-                              showSizeChanger: true,
-                              onShowSizeChange: onShowSizeChange,
-                              itemRender: itemRender,
-                           }}
-                           style={{ overflowX: "auto" }}
-                           columns={columns}
-                           // bordered
-                           dataSource={departments}
-                           rowKey={(record) => record?._id}
-                           // onChange={console.log("change")}
-                        />
-                     </div>
-                  </div>
-               </div>
             </div>
-            {/* /Page Content */}
-            {/* Add Department Modal */}
-            <Modal show={show} centered>
-               <div className="modal-header">
-                  <h5 className="modal-title">
-                     {item?._id ? "Cập nhật phòng ban" : "Phòng ban mới"}{" "}
-                  </h5>
-                  <button
-                     type="button"
-                     className="close-x"
-                     onClick={() => {
-                        handleClose();
-                        empty();
-                     }}
-                  >
-                     <span aria-hidden="true">×</span>
-                  </button>
-               </div>
-               <div className="modal-body">
-                  <div className="form-group">
-                     <label>
-                        Tên phòng ban<span className="text-danger">*</span>
-                     </label>
-                     <input
-                        className="form-control"
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                     />
-                  </div>
-                  <div className="submit-section">
-                     {!item?._id ? (
-                        <button className="btn btn-primary submit-btn" onClick={handleSave}>
-                           Lưu
-                        </button>
-                     ) : (
-                        <button className="btn btn-primary submit-btn" onClick={handleUpdate}>
-                           Cập nhật
-                        </button>
-                     )}
-                  </div>
-               </div>
-            </Modal>
-            {/* /Add Department Modal */}
-
-            {/* Delete Department Modal */}
-            <Modal show={showDlt} centered>
-               <div className="modal-body">
-                  <div className="form-header">
-                     <h3>Xóa phòng ban {name}</h3>
-                     <p>Bạn có chắc muốn xóa phòng ban {name}</p>
-                  </div>
-                  <div className="modal-btn delete-action">
-                     <div className="row">
-                        <div className="col-6">
-                           <a
-                              href="#"
-                              className="btn btn-primary continue-btn"
-                              onClick={handleDelete}
-                           >
-                              Xóa
-                           </a>
-                        </div>
-                        <div className="col-6">
-                           <a
-                              href="#"
-                              className="btn btn-primary cancel-btn"
-                              onClick={() => {
-                                 setShowDlt(false);
-                                 empty();
-                              }}
-                           >
-                              Cancel
-                           </a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </Modal>
-            {/* /Delete Department Modal */}
-         </div>
+         </Modal>
+         {/* /Delete Department Modal */}
       </div>
    );
 };

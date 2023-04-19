@@ -31,45 +31,51 @@ const Sidebar = (props) => {
 
    const { worker } = useSelector((state) => state.worker);
 
+   // toggle mobile
+   const onMenuClik = () => {
+      props.onMenuClick();
+   };
+
    return (
       <div className="sidebar" id="sidebar">
-         <Scrollbars
-            autoHide
-            autoHideTimeout={1000}
-            autoHideDuration={200}
-            autoHeight
-            autoHeightMin={0}
-            autoHeightMax="95vh"
-            thumbMinSize={30}
-            universal={false}
-            hideTracksWhenNotNeeded={true}
-         >
-            <div className="sidebar-inner slimscroll">
-               <div id="sidebar-menu" className="sidebar-menu">
-                  <ul>
-                     <li className="menu-title">{/* <span>Main</span> */}</li>
-                     {user?.role === UserRoleType.ADMIN && (
-                        <li className={pathname.includes("main/dashboard") ? "active" : ""}>
-                           <Link to="/app/main/dashboard">
-                              <i className="la la-user-secret" /> <span>Trang chủ</span>
-                           </Link>
-                        </li>
-                     )}
-                     {user?.role === UserRoleType.EMPLOYEE && (
-                        <li className={pathname.includes("employee-dashboard") ? "active" : ""}>
-                           <Link to="/app/main/employee-dashboard">
-                              <i className="la la-user-secret" /> <span>Trang chủ</span>
-                           </Link>
-                        </li>
-                     )}
-                     {user?.role === UserRoleType.CLIENT && (
-                        <li className={pathname.includes("client-dashboard") ? "active" : ""}>
-                           <Link to="/app/main/client-dashboard">
-                              <i className="la la-user-secret" /> <span>Trang chủ</span>
-                           </Link>
-                        </li>
-                     )}
-                     {/* <li className="submenu">
+         <div className="display-flex">
+            <Scrollbars
+               autoHide
+               autoHideTimeout={1000}
+               autoHideDuration={200}
+               autoHeight
+               autoHeightMin={0}
+               autoHeightMax="95vh"
+               thumbMinSize={30}
+               universal={false}
+               hideTracksWhenNotNeeded={true}
+            >
+               <div className="sidebar-inner slimscroll">
+                  <div id="sidebar-menu" className="sidebar-menu">
+                     <ul>
+                        <li className="menu-title">{/* <span>Main</span> */}</li>
+                        {user?.role === UserRoleType.ADMIN && (
+                           <li className={pathname.includes("main/dashboard") ? "active" : ""}>
+                              <Link to="/app/main/dashboard">
+                                 <i className="la la-user-secret" /> <span>Trang chủ</span>
+                              </Link>
+                           </li>
+                        )}
+                        {user?.role === UserRoleType.EMPLOYEE && (
+                           <li className={pathname.includes("employee-dashboard") ? "active" : ""}>
+                              <Link to="/app/main/employee-dashboard">
+                                 <i className="la la-user-secret" /> <span>Trang chủ</span>
+                              </Link>
+                           </li>
+                        )}
+                        {user?.role === UserRoleType.CLIENT && (
+                           <li className={pathname.includes("client-dashboard") ? "active" : ""}>
+                              <Link to="/app/main/client-dashboard">
+                                 <i className="la la-user-secret" /> <span>Trang chủ</span>
+                              </Link>
+                           </li>
+                        )}
+                        {/* <li className="submenu">
                         <a
                            href="#"
                            className={isSideMenu == "dashboard" ? "subdrop" : ""}
@@ -112,42 +118,44 @@ const Sidebar = (props) => {
                         )}
                      </li> */}
 
-                     <li className="submenu">
-                        <a
-                           href="#"
-                           className={isSideMenu == "projects" ? "subdrop" : ""}
-                           onClick={() => toggleSidebar(isSideMenu == "projects" ? "" : "projects")}
-                        >
-                           <i className="la la-rocket" /> <span>Dự án</span>{" "}
-                           <span className="menu-arrow" />
-                        </a>
-                        {isSideMenu == "projects" ? (
-                           <ul>
-                              <li>
-                                 <Link
-                                    className={
-                                       pathname.includes("t_dashboard")
-                                          ? "active"
-                                          : pathname.includes("projects-list")
-                                          ? "active"
-                                          : pathname.includes("cts-view")
-                                          ? "active"
-                                          : ""
-                                    }
-                                    to="/app/projects/project_dashboard"
-                                 >
-                                    Tất cả dự án
-                                 </Link>
-                              </li>
-                              <li>
-                                 <Link
-                                    className={pathname.includes("phieu-luong") ? "active" : ""}
-                                    to="/app/projects/phieu-luong"
-                                 >
-                                    Phúc lợi và bảo hiểm
-                                 </Link>
-                              </li>
-                              {/* <li>
+                        <li className="submenu">
+                           <a
+                              href="#"
+                              className={isSideMenu == "projects" ? "subdrop" : ""}
+                              onClick={() =>
+                                 toggleSidebar(isSideMenu == "projects" ? "" : "projects")
+                              }
+                           >
+                              <i className="la la-rocket" /> <span>Dự án</span>{" "}
+                              <span className="menu-arrow" />
+                           </a>
+                           {isSideMenu == "projects" ? (
+                              <ul>
+                                 <li>
+                                    <Link
+                                       className={
+                                          pathname.includes("t_dashboard")
+                                             ? "active"
+                                             : pathname.includes("projects-list")
+                                             ? "active"
+                                             : pathname.includes("cts-view")
+                                             ? "active"
+                                             : ""
+                                       }
+                                       to="/app/projects/project_dashboard"
+                                    >
+                                       Tất cả dự án
+                                    </Link>
+                                 </li>
+                                 <li>
+                                    <Link
+                                       className={pathname.includes("phieu-luong") ? "active" : ""}
+                                       to="/app/projects/phieu-luong"
+                                    >
+                                       Phúc lợi và bảo hiểm
+                                    </Link>
+                                 </li>
+                                 {/* <li>
                                  <Link
                                     onClick={() => localStorage.setItem("minheight", "true")}
                                     to="/tasks/tasks"
@@ -155,43 +163,45 @@ const Sidebar = (props) => {
                                     Nhiệm vụ
                                  </Link>
                               </li> */}
-                              <li>
-                                 <Link
-                                    className={pathname.includes("allowance") ? "active" : ""}
-                                    to="/app/projects/allowance"
-                                 >
-                                    Lương và phụ cấp
-                                 </Link>
-                              </li>
-                              {(user?.role === UserRoleType.ADMIN ||
-                                 user?.role === UserRoleType.EMPLOYEE ||
-                                 user?.role === UserRoleType.LEADER ||
-                                 user?.role === UserRoleType.CLIENT) && (
                                  <li>
                                     <Link
-                                       className={pathname.includes("user-salary") ? "active" : ""}
-                                       to="/app/projects/user-salary"
+                                       className={pathname.includes("allowance") ? "active" : ""}
+                                       to="/app/projects/allowance"
                                     >
-                                       Lương người lao động
+                                       Lương và phụ cấp
                                     </Link>
                                  </li>
-                              )}
-                              {user?.role === UserRoleType.WORKER && (
-                                 <li>
-                                    <Link
-                                       className={pathname.includes("export") ? "active" : ""}
-                                       to={`/app/payroll/export?payslip=${worker?.payslipId}&project=${worker?.projectId}&salary=${worker?.salaryId}&user=${user?._id}&contract=${worker?.contractId}`}
-                                    >
-                                       Phiếu lương
-                                    </Link>
-                                 </li>
-                              )}
-                           </ul>
-                        ) : (
-                           ""
-                        )}
-                     </li>
-                     {/* <li className="submenu">
+                                 {(user?.role === UserRoleType.ADMIN ||
+                                    user?.role === UserRoleType.EMPLOYEE ||
+                                    user?.role === UserRoleType.LEADER ||
+                                    user?.role === UserRoleType.CLIENT) && (
+                                    <li>
+                                       <Link
+                                          className={
+                                             pathname.includes("user-salary") ? "active" : ""
+                                          }
+                                          to="/app/projects/user-salary"
+                                       >
+                                          Lương người lao động
+                                       </Link>
+                                    </li>
+                                 )}
+                                 {user?.role === UserRoleType.WORKER && (
+                                    <li>
+                                       <Link
+                                          className={pathname.includes("export") ? "active" : ""}
+                                          to={`/app/payroll/export?payslip=${worker?.payslipId}&project=${worker?.projectId}&salary=${worker?.salaryId}&user=${user?._id}&contract=${worker?.contractId}`}
+                                       >
+                                          Phiếu lương
+                                       </Link>
+                                    </li>
+                                 )}
+                              </ul>
+                           ) : (
+                              ""
+                           )}
+                        </li>
+                        {/* <li className="submenu">
                         <a
                            href="#"
                            className={isSideMenu == "payroll" ? "subdrop" : ""}
@@ -234,39 +244,39 @@ const Sidebar = (props) => {
                            ""
                         )}
                      </li> */}
-                     {/* <li className={pathname.includes("leads") ? "active" : ""}>
+                        {/* <li className={pathname.includes("leads") ? "active" : ""}>
                         <Link to="/app/employees/leads">
                            <i className="la la-user-secret" /> <span>Leads</span>
                         </Link>
                      </li> */}
-                     {(user?.role === UserRoleType.ADMIN ||
-                        user?.role === UserRoleType.EMPLOYEE ||
-                        user?.role === UserRoleType.LEADER) && (
-                        <li className={pathname.includes("clients") ? "active" : ""}>
-                           <Link to="/app/employees/clients">
-                              <i className="la la-users" /> <span>Khách hàng</span>
+                        {(user?.role === UserRoleType.ADMIN ||
+                           user?.role === UserRoleType.EMPLOYEE ||
+                           user?.role === UserRoleType.LEADER) && (
+                           <li className={pathname.includes("clients") ? "active" : ""}>
+                              <Link to="/app/employees/clients">
+                                 <i className="la la-users" /> <span>Khách hàng</span>
+                              </Link>
+                           </li>
+                        )}
+                        <li className={pathname.includes("allemployees") ? "active" : ""}>
+                           <Link to="/app/employee/allemployees">
+                              <i className="la la-users" /> <span>Nhân viên</span>
                            </Link>
                         </li>
-                     )}
-                     <li className={pathname.includes("allemployees") ? "active" : ""}>
-                        <Link to="/app/employee/allemployees">
-                           <i className="la la-users" /> <span>Nhân viên</span>
-                        </Link>
-                     </li>
-                     <li className={pathname.includes("departments") ? "active" : ""}>
-                        <Link to="/app/employee/departments">
-                           <i className="la la-cube" /> <span>Phòng ban</span>
-                        </Link>
-                     </li>
-                     {user?.role !== UserRoleType.WORKER && (
-                        <li className={pathname.includes("users") ? "active" : ""}>
-                           <Link to="/app/administrator/users">
-                              <i className="la la-users" /> <span>Người lao động</span>
+                        <li className={pathname.includes("departments") ? "active" : ""}>
+                           <Link to="/app/employee/departments">
+                              <i className="la la-cube" /> <span>Phòng ban</span>
                            </Link>
                         </li>
-                     )}
+                        {user?.role !== UserRoleType.WORKER && (
+                           <li className={pathname.includes("users") ? "active" : ""}>
+                              <Link to="/app/administrator/users">
+                                 <i className="la la-users" /> <span>Người lao động</span>
+                              </Link>
+                           </li>
+                        )}
 
-                     {/* <li className="submenu">
+                        {/* <li className="submenu">
                         <a
                            href="#"
                            className={isSideMenu == "employee" ? "subdrop" : ""}
@@ -391,7 +401,7 @@ const Sidebar = (props) => {
                         )}
                      </li> */}
 
-                     {/* <li className="submenu">
+                        {/* <li className="submenu">
                         <a
                            href="#"
                            className={isSideMenu == "sales" ? "subdrop" : ""}
@@ -447,7 +457,7 @@ const Sidebar = (props) => {
                            ""
                         )}
                      </li> */}
-                     {/* <li
+                        {/* <li
                         className={
                            pathname.includes("tickets")
                               ? "active"
@@ -460,8 +470,8 @@ const Sidebar = (props) => {
                            <i className="la la-ticket" /> <span>Yêu cầu</span>
                         </Link>
                      </li> */}
-                     {/* <p>====================================</p> */}
-                     {/* <li className="submenu">
+                        {/* <p>====================================</p> */}
+                        {/* <li className="submenu">
                         <a
                            href="#"
                            className={isSideMenu == "apps" ? "subdrop" : ""}
@@ -1573,10 +1583,20 @@ const Sidebar = (props) => {
                            ""
                         )}
                      </li> */}
-                  </ul>
+                     </ul>
+                  </div>
                </div>
+            </Scrollbars>
+            <div className="toggle-mobile" onClick={() => onMenuClik()}>
+               {/* <span className="toggle-icon">
+                  {props.menu ? (
+                     <i class="fa fa-caret-left" aria-hidden="true"></i>
+                  ) : (
+                     <i class="fa fa-caret-right" aria-hidden="true"></i>
+                  )}
+               </span> */}
             </div>
-         </Scrollbars>
+         </div>
       </div>
    );
 };
