@@ -1,6 +1,17 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoading } from "../../hook/useLoading";
+import { listDepartment } from "../../redux/feature/departmentSclice";
 
-function ActionEmployees({ department, setDepartment, departments }) {
+function ActionEmployees({ department, setDepartment }) {
+   const dispatch = useDispatch();
+   const { setLoading } = useLoading();
+
+   const { departments } = useSelector((state) => state.department);
+
+   useEffect(() => {
+      dispatch(listDepartment({ setLoading }));
+   }, []);
    return (
       <div className="col-sm-6 col-md-3">
          <div className="form-group form-focus select-focus">

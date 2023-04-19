@@ -67,12 +67,6 @@ const AllEmployees = () => {
       dispatch(employeesSclice.actions.searchNameEmployees(text));
    }, [text]);
 
-   const { departments } = useSelector((state) => state.department);
-
-   useEffect(() => {
-      dispatch(listDepartment({ setLoading }));
-   }, []);
-
    return (
       <div className="page-wrapper">
          {/* <Header />
@@ -125,11 +119,7 @@ const AllEmployees = () => {
                      <label className="focus-label">Tên nhân viên</label>
                   </div>
                </div>
-               <ActionEmployees
-                  department={department}
-                  setDepartment={setDepartment}
-                  departments={departments}
-               />
+               <ActionEmployees department={department} setDepartment={setDepartment} />
             </div>
             {/* Search Filter */}
             <div className="row staff-grid-row">
