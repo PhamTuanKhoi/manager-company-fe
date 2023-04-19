@@ -55,7 +55,10 @@ const Employeeslist = () => {
 
       if (user?.role === UserRoleType.CLIENT || user?.role === UserRoleType.WORKER) {
          dispatch(
-            listEmployeesByUserId({ query: { userId: user._id, project, role }, setLoading })
+            listEmployeesByUserId({
+               query: { userId: user._id, project, role, departmentId: department },
+               setLoading,
+            })
          );
       }
    }
