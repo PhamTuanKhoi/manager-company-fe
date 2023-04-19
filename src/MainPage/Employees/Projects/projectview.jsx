@@ -536,19 +536,7 @@ const ProjectView = () => {
                                        </span>
                                        <div className="clearfix" />
                                        <span className="message-content">
-                                          {project?.leader?.department ===
-                                          EmployeeDepartmentType.BUSSINESS
-                                             ? "Kinh doanh"
-                                             : project?.leader?.department ===
-                                               EmployeeDepartmentType.MARKETING
-                                             ? "Marketing"
-                                             : project?.leader?.department ===
-                                               EmployeeDepartmentType.ACCOUNTANT
-                                             ? "Kế toán"
-                                             : project?.leader?.department ===
-                                               EmployeeDepartmentType.RECRUIT
-                                             ? "Tuyển dụng"
-                                             : ""}
+                                          {project?.leader?.departmentName}
                                        </span>
                                     </div>
                                  </div>
@@ -578,18 +566,7 @@ const ProjectView = () => {
                                           <span className="message-author">{item?.name}</span>
                                           <div className="clearfix" />
                                           <span className="message-content">
-                                             {item?.department === EmployeeDepartmentType.BUSSINESS
-                                                ? "Kinh doanh"
-                                                : item?.department ===
-                                                  EmployeeDepartmentType.MARKETING
-                                                ? "Marketing"
-                                                : item?.department ===
-                                                  EmployeeDepartmentType.ACCOUNTANT
-                                                ? "Kế toán"
-                                                : item?.department ===
-                                                  EmployeeDepartmentType.RECRUIT
-                                                ? "Tuyển dụng"
-                                                : ""}
+                                             {item?.departmentName}
                                           </span>
                                        </div>
                                     </div>
