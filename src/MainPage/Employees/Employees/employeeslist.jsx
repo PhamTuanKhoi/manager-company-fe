@@ -21,7 +21,7 @@ import employeesSclice, {
 import { employeesRemainingSelector } from "../../../redux/selectors/employeesSelector";
 import { useDispatch } from "react-redux";
 import { useLoading } from "../../../hook/useLoading";
-import ActionEmployees from "../../../components/action/actionEmployees";
+// import ActionEmployees from "../../../components/action/actionEmployees";
 
 const Employeeslist = () => {
    const [menu, setMenu] = useState(false);
@@ -229,7 +229,7 @@ const Employeeslist = () => {
                         <label className="focus-label">Tên nhân viên</label>
                      </div>
                   </div>
-                  <ActionEmployees department={department} setDepartment={setDepartment} />
+                  {/* <ActionEmployees department={department} setDepartment={setDepartment} /> */}
                </div>
                {/* /Search Filter */}
                <div className="row">
