@@ -16,6 +16,8 @@ import { UserRoleType } from "../../../constant";
 import { useLoading } from "../../../hook/useLoading";
 import DeleteUser from "../../../_components/modelbox/DeleteUser";
 import { employeesRemainingSelector } from "../../../redux/selectors/employeesSelector";
+import ActionEmployees from "../../../components/action/actionEmployees";
+import { listDepartment } from "../../../redux/feature/departmentSclice";
 
 const AllEmployees = () => {
    // const [menu, setMenu] = useState(false);
@@ -23,6 +25,8 @@ const AllEmployees = () => {
    const [modalDelete, setModalDelete] = useState(false);
    const [employee, setEmployee] = useState({});
    const [render, setRender] = useState(0);
+   const [text, setText] = useState("");
+   const [department, setDepartment] = useState("");
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
    // const toggleMobileMenu = () => {
@@ -43,7 +47,7 @@ const AllEmployees = () => {
 
    useEffect(() => {
       fetchEmployees();
-   }, [user]);
+   }, [user, department]);
 
    function fetchEmployees() {
       if (
@@ -51,21 +55,22 @@ const AllEmployees = () => {
          user.role === UserRoleType.EMPLOYEE ||
          user.role === UserRoleType.LEADER
       ) {
-         dispatch(listEmployees({ setLoading }));
+         dispatch(listEmployees({ query: { departmentId: department }, setLoading }));
       }
 
       if (user?.role === UserRoleType.CLIENT || user?.role === UserRoleType.WORKER) {
-         dispatch(listEmployeesByUserId({ query: { userId: user._id }, setLoading }));
+         dispatch(
+            listEmployeesByUserId({
+               query: { userId: user._id, departmentId: department },
+               setLoading,
+            })
+         );
       }
    }
-   const [text, setText] = useState("");
-
-   const [department, setDepartment] = useState("all");
 
    useEffect(() => {
       dispatch(employeesSclice.actions.searchNameEmployees(text));
-      dispatch(employeesSclice.actions.filterDepartment(department));
-   }, [text, department]);
+   }, [text]);
 
    return (
       <div className="page-wrapper">
@@ -119,23 +124,7 @@ const AllEmployees = () => {
                      <label className="focus-label">Tên nhân viên</label>
                   </div>
                </div>
-               <div className="col-sm-6 col-md-3">
-                  <div className="form-group form-focus select-focus">
-                     <select
-                        className="form-control floating"
-                        value={department}
-                        onChange={(e) => setDepartment(e.target.value)}
-                     >
-                        <option value={"all"}>Tất cả</option>
-                        {EmployeeDepartmentOpition?.map((item) => (
-                           <option key={item?.label} value={item?.value}>
-                              {item?.label}
-                           </option>
-                        ))}
-                     </select>
-                     <label className="focus-label">Vị trí</label>
-                  </div>
-               </div>
+               <ActionEmployees department={department} setDepartment={setDepartment} />
             </div>
             {/* Search Filter */}
             <div className="row staff-grid-row">

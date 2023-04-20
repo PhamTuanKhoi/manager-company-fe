@@ -21,6 +21,7 @@ import employeesSclice, {
 import { employeesRemainingSelector } from "../../../redux/selectors/employeesSelector";
 import { useDispatch } from "react-redux";
 import { useLoading } from "../../../hook/useLoading";
+import ActionEmployees from "../../../components/action/actionEmployees";
 
 const Employeeslist = () => {
    const [menu, setMenu] = useState(false);
@@ -29,7 +30,7 @@ const Employeeslist = () => {
    const [render, setRender] = useState(0);
    const [modalDelete, setModalDelete] = useState(false);
    const [text, setText] = useState("");
-   const [department, setDepartment] = useState("all");
+   const [department, setDepartment] = useState("");
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
 
@@ -39,7 +40,7 @@ const Employeeslist = () => {
 
    useEffect(() => {
       fetchEmployees();
-   }, [user, project, role]);
+   }, [user, project, role, department]);
 
    function fetchEmployees() {
       if (
@@ -47,12 +48,17 @@ const Employeeslist = () => {
          user.role === UserRoleType.EMPLOYEE ||
          user.role === UserRoleType.LEADER
       ) {
-         dispatch(listEmployees({ query: { project, role }, setLoading }));
+         dispatch(
+            listEmployees({ query: { project, role, departmentId: department }, setLoading })
+         );
       }
 
       if (user?.role === UserRoleType.CLIENT || user?.role === UserRoleType.WORKER) {
          dispatch(
-            listEmployeesByUserId({ query: { userId: user._id, project, role }, setLoading })
+            listEmployeesByUserId({
+               query: { userId: user._id, project, role, departmentId: department },
+               setLoading,
+            })
          );
       }
    }
@@ -75,8 +81,7 @@ const Employeeslist = () => {
 
    useEffect(() => {
       dispatch(employeesSclice.actions.searchNameEmployees(text));
-      dispatch(employeesSclice.actions.filterDepartment(department));
-   }, [text, department]);
+   }, [text]);
 
    const columns = [
       {
@@ -88,18 +93,7 @@ const Employeeslist = () => {
                   <img alt="" src={record?.avatar || record?.image} />
                </Link>
                <Link to={`/app/profile/employee-profile/${record?._id}`}>
-                  {text}{" "}
-                  <span>
-                     {record?.department === EmployeeDepartmentType.BUSSINESS
-                        ? "Kinh doanh"
-                        : record.department === EmployeeDepartmentType.ACCOUNTANT
-                        ? "Kế toán"
-                        : record.department === EmployeeDepartmentType.RECRUIT
-                        ? "Tuyen Dung"
-                        : record.department === EmployeeDepartmentType.MARKETING
-                        ? "Maketing"
-                        : ""}
-                  </span>
+                  {text} <span>{record?.departmentName}</span>
                </Link>
             </h2>
          ),
@@ -108,16 +102,7 @@ const Employeeslist = () => {
       {
          title: "Phòng ban",
          dataIndex: "department",
-         render: (text, record) =>
-            record?.department === EmployeeDepartmentType.BUSSINESS
-               ? "Kinh doanh"
-               : record.department === EmployeeDepartmentType.ACCOUNTANT
-               ? "Kế toán"
-               : record.department === EmployeeDepartmentType.RECRUIT
-               ? "Tuyen Dung"
-               : record.department === EmployeeDepartmentType.MARKETING
-               ? "Maketing"
-               : "",
+         render: (text, record) => record?.departmentName,
          sorter: (a, b) => a.department.length - b.department.length,
       },
 
@@ -198,7 +183,7 @@ const Employeeslist = () => {
                <meta name="description" content="Login page" />
             </Helmet>
             {/* Page Content */}
-            <div className="content container-fluid">
+            <div Name="content container-fluid">
                {/* Page Header */}
                <div className="page-header">
                   <div className="row align-items-center">
@@ -244,23 +229,7 @@ const Employeeslist = () => {
                         <label className="focus-label">Tên nhân viên</label>
                      </div>
                   </div>
-                  <div className="col-sm-6 col-md-3">
-                     <div className="form-group form-focus select-focus">
-                        <select
-                           className="form-control floating"
-                           value={department}
-                           onChange={(e) => setDepartment(e.target.value)}
-                        >
-                           <option value={"all"}>Tất cả</option>
-                           {EmployeeDepartmentOpition?.map((item) => (
-                              <option key={item?.label} value={item?.value}>
-                                 {item?.label}
-                              </option>
-                           ))}
-                        </select>
-                        <label className="focus-label">Vị trí</label>
-                     </div>
-                  </div>
+                  <ActionEmployees department={department} setDepartment={setDepartment} />
                </div>
                {/* /Search Filter */}
                <div className="row">
