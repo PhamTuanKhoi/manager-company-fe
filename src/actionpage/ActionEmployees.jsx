@@ -1,7 +1,7 @@
 import React, { memo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLoading } from "../../hook/useLoading";
-import { listDepartment } from "../../redux/feature/departmentSclice";
+import { useLoading } from "../hook/useLoading";
+import { listDepartment } from "../redux/feature/departmentSclice";
 
 function ActionEmployees({ department, setDepartment }) {
    const dispatch = useDispatch();
