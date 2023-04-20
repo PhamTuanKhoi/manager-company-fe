@@ -21,7 +21,7 @@ import employeesSclice, {
 import { employeesRemainingSelector } from "../../../redux/selectors/employeesSelector";
 import { useDispatch } from "react-redux";
 import { useLoading } from "../../../hook/useLoading";
-// import ActionEmployees from "../../../components/action/actionEmployees";
+import ActionEmployees from "../../../actionpage/ActionEmployees";
 
 const Employeeslist = () => {
    const [menu, setMenu] = useState(false);
@@ -174,106 +174,99 @@ const Employeeslist = () => {
       },
    ];
    return (
-      <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
-         <Header onMenuClick={(value) => toggleMobileMenu()} />
-         <Sidebar />
-         <div className="page-wrapper">
-            <Helmet>
-               <title>Nhân viên</title>
-               <meta name="description" content="Login page" />
-            </Helmet>
-            {/* Page Content */}
-            <div Name="content container-fluid">
-               {/* Page Header */}
-               <div className="page-header">
-                  <div className="row align-items-center">
-                     <div className="col">
-                        <h3 className="page-title"> Nhân viên</h3>
-                     </div>
-                     <div className="col-auto float-end ml-auto">
-                        {(user?.role === UserRoleType.ADMIN ||
-                           user?.role === UserRoleType.EMPLOYEE ||
-                           user?.role === UserRoleType.LEADER) && (
-                           <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
-                              <i className="fa fa-plus" /> Thêm nhân viên
-                           </a>
-                        )}
-                        <div className="view-icons">
-                           <Link
-                              to="/app/employee/allemployees"
-                              className="grid-view btn btn-link active"
-                           >
-                              <i className="fa fa-th" />
-                           </Link>
-                           <Link
-                              to="/app/employee/employees-list"
-                              className="list-view btn btn-link"
-                           >
-                              <i className="fa fa-bars" />
-                           </Link>
-                        </div>
-                     </div>
+      <div className="page-wrapper">
+         <Helmet>
+            <title>Nhân viên</title>
+            <meta name="description" content="Login page" />
+         </Helmet>
+         {/* Page Content */}
+         <div className="content container-fluid">
+            {/* Page Header */}
+            <div className="page-header">
+               <div className="row align-items-center">
+                  <div className="col">
+                     <h3 className="page-title"> Nhân viên</h3>
                   </div>
-               </div>
-               {/* /Page Header */}
-               {/* Search Filter */}
-               <div className="row filter-row">
-                  <div className="col-sm-6 col-md-3">
-                     <div className="form-group form-focus">
-                        <input
-                           type="text"
-                           className="form-control floating"
-                           value={text}
-                           onChange={(e) => setText(e.target.value)}
-                        />
-                        <label className="focus-label">Tên nhân viên</label>
-                     </div>
-                  </div>
-                  {/* <ActionEmployees department={department} setDepartment={setDepartment} /> */}
-               </div>
-               {/* /Search Filter */}
-               <div className="row">
-                  <div className="col-md-12">
-                     <div className="table-responsive">
-                        <Table
-                           className="table-striped"
-                           pagination={{
-                              total: employees?.length,
-                              showSizeChanger: true,
-                              onShowSizeChange: onShowSizeChange,
-                              itemRender: itemRender,
-                           }}
-                           style={{ overflowX: "auto" }}
-                           columns={columns}
-                           // bordered
-                           dataSource={employees}
-                           rowKey={(record) => record._id}
-                           // onChange={console.log("change")}
-                        />
+                  <div className="col-auto float-end ml-auto">
+                     {(user?.role === UserRoleType.ADMIN ||
+                        user?.role === UserRoleType.EMPLOYEE ||
+                        user?.role === UserRoleType.LEADER) && (
+                        <a href="#" className="btn add-btn" onClick={() => setModalShow(true)}>
+                           <i className="fa fa-plus" /> Thêm nhân viên
+                        </a>
+                     )}
+                     <div className="view-icons">
+                        <Link
+                           to="/app/employee/allemployees"
+                           className="grid-view btn btn-link active"
+                        >
+                           <i className="fa fa-th" />
+                        </Link>
+                        <Link to="/app/employee/employees-list" className="list-view btn btn-link">
+                           <i className="fa fa-bars" />
+                        </Link>
                      </div>
                   </div>
                </div>
             </div>
-            {/* /Page Content */}
-            {/* Add Employee Modal */}
-            <Addemployee
-               show={modalShow}
-               onHide={() => setModalShow(false)}
-               employee={employee}
-               render={render}
-            />
-            {/* /Add Employee Modal */}
-            {/* Edit Employee Modal */}
-            <Editemployee />
-            {/* /Edit Employee Modal */}
-            {/* Delete Employee Modal */}
-            <DeleteUser
-               show={modalDelete}
-               onHide={() => setModalDelete(false)}
-               userRemove={employee}
-            />
-            {/* /Delete Employee Modal */}
+            {/* /Page Header */}
+            {/* Search Filter */}
+            <div className="row filter-row">
+               <div className="col-sm-6 col-md-3">
+                  <div className="form-group form-focus">
+                     <input
+                        type="text"
+                        className="form-control floating"
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                     />
+                     <label className="focus-label">Tên nhân viên</label>
+                  </div>
+               </div>
+               <ActionEmployees department={department} setDepartment={setDepartment} />
+            </div>
+            {/* /Search Filter */}
+            <div className="row">
+               <div className="col-md-12">
+                  <div className="table-responsive">
+                     <Table
+                        className="table-striped"
+                        pagination={{
+                           total: employees?.length,
+                           showSizeChanger: true,
+                           onShowSizeChange: onShowSizeChange,
+                           itemRender: itemRender,
+                        }}
+                        style={{ overflowX: "auto" }}
+                        columns={columns}
+                        // bordered
+                        dataSource={employees}
+                        rowKey={(record) => record._id}
+                        // onChange={console.log("change")}
+                     />
+                  </div>
+               </div>
+            </div>
          </div>
+         {/* /Page Content */}
+         {/* Add Employee Modal */}
+         <Addemployee
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            employee={employee}
+            render={render}
+         />
+         {/* /Add Employee Modal */}
+         {/* Edit Employee Modal */}
+         <Editemployee />
+         {/* /Edit Employee Modal */}
+         {/* Delete Employee Modal */}
+         <DeleteUser
+            show={modalDelete}
+            onHide={() => setModalDelete(false)}
+            userRemove={employee}
+         />
+         {/* /Delete Employee Modal */}
       </div>
    );
 };
