@@ -266,8 +266,8 @@
   .display-flex {
     display: flex;
   }
-
-  .toggle-mobile {
+ 
+  .toggle-position {
     position: fixed;
     margin-left: 230px;
     margin-top: 50%;
