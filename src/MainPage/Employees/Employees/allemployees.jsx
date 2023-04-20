@@ -55,7 +55,9 @@ const AllEmployees = () => {
          user.role === UserRoleType.EMPLOYEE ||
          user.role === UserRoleType.LEADER
       ) {
-         dispatch(listEmployees({ query: { departmentId: department }, setLoading }));
+         dispatch(
+            listEmployees({ query: { departmentId: department, userId: user?._id }, setLoading })
+         );
       }
 
       if (user?.role === UserRoleType.CLIENT || user?.role === UserRoleType.WORKER) {
