@@ -16,7 +16,7 @@ import { UserRoleType } from "../../../constant";
 import { useLoading } from "../../../hook/useLoading";
 import DeleteUser from "../../../_components/modelbox/DeleteUser";
 import { employeesRemainingSelector } from "../../../redux/selectors/employeesSelector";
-import ActionEmployees from "../../../components/action/actionEmployees";
+// import ActionEmployees from "../../../components/action/actionEmployees";
 import { listDepartment } from "../../../redux/feature/departmentSclice";
 
 const AllEmployees = () => {
@@ -124,7 +124,7 @@ const AllEmployees = () => {
                      <label className="focus-label">Tên nhân viên</label>
                   </div>
                </div>
-               <ActionEmployees department={department} setDepartment={setDepartment} />
+               {/* <ActionEmployees department={department} setDepartment={setDepartment} /> */}
             </div>
             {/* Search Filter */}
             <div className="row staff-grid-row">
