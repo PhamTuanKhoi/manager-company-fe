@@ -16,7 +16,7 @@ import { UserRoleType } from "../../../constant";
 import { useLoading } from "../../../hook/useLoading";
 import DeleteUser from "../../../_components/modelbox/DeleteUser";
 import { employeesRemainingSelector } from "../../../redux/selectors/employeesSelector";
-import ActionEmployees from "../../../_components/action/actionEmployees";
+import ActionEmployees from "../../../components/action/actionEmployees";
 import { listDepartment } from "../../../redux/feature/departmentSclice";
 
 const AllEmployees = () => {

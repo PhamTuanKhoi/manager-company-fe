@@ -21,7 +21,7 @@ import employeesSclice, {
 import { employeesRemainingSelector } from "../../../redux/selectors/employeesSelector";
 import { useDispatch } from "react-redux";
 import { useLoading } from "../../../hook/useLoading";
-import ActionEmployees from "../../../_components/action/actionEmployees";
+import ActionEmployees from "../../../components/action/actionEmployees";
 
 const Employeeslist = () => {
    const [menu, setMenu] = useState(false);
