@@ -1588,13 +1588,13 @@ const Sidebar = (props) => {
                </div>
             </Scrollbars>
             <div className="toggle-mobile" onClick={() => onMenuClik()}>
-               {/* <span className="toggle-icon">
+               <span className="toggle-icon">
                   {props.menu ? (
-                     <i class="fa fa-caret-left" aria-hidden="true"></i>
+                     <i className="fa fa-caret-left" aria-hidden="true"></i>
                   ) : (
-                     <i class="fa fa-caret-right" aria-hidden="true"></i>
+                     <i className="fa fa-caret-right" aria-hidden="true"></i>
                   )}
-               </span> */}
+               </span>
             </div>
          </div>
       </div>
