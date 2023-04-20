@@ -267,11 +267,12 @@
     display: flex;
   }
  
-  .toggle-position {
+  .toggle-mobile {
     position: fixed;
     margin-left: 230px;
     margin-top: 50%;
     height: 100%; 
+    display: none;
   }
 
   .toggle-icon {  
@@ -280,4 +281,18 @@
     color: #890f0d; */
     /* color: #34444c; */
     font-size: 30px; 
+  }
+
+  @media screen and (max-width: 990px) {
+    .toggle-mobile {
+      display: block;
+      margin-top: 25%;
+    }
+  }
+
+  @media screen and (max-width: 550px) {
+    .toggle-mobile {
+      display: block;
+      margin-top: 60%;
+    }
   }
