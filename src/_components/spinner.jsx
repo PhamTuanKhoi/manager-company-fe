@@ -4,6 +4,16 @@ import { loadingContext } from "../context/loadingContext";
 import Modal from "react-bootstrap/Modal";
 export default function Spinner({ children }) {
    const [loading, setLoading] = useState(false);
+
+   const container = {
+      width: "100%",
+      height: "100%",
+      position: "fixed",
+      backgroundColor: "#34444c",
+      zIndex: "900",
+      // display: loading ? "" : "none",
+   };
+
    return (
       <loadingContext.Provider
          value={{
@@ -11,24 +21,38 @@ export default function Spinner({ children }) {
             setLoading,
          }}
       >
-         <Modal
+         {/* <Modal
             show={loading}
+            centered
             style={{
                width: "100%",
                display: "flex",
                justifyContent: "center",
                height: "100%",
-               zIndex: "99999999999",
+               backgroundColor: "#fff",
+               border: "0 none",
+               borderTop: "0 none",
             }}
          >
-            <Spin
-               tip="Loading"
-               size="large"
-               style={{ marginTop: "300px", zIndex: "9999999999", color: "fff" }}
-            >
+            <Spin tip="Loading" size="large" style={{}}>
                <div className="content" />
-            </Spin>
-         </Modal>
+            </Spin> 
+         </Modal> */}
+         <div className={`${loading ? "show-content" : "hiden-content"} `} style={{ ...container }}>
+            <div class="lds-hourglass-position text-center">
+               <div class="lds-grid">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+               </div>
+            </div>
+         </div>
          {children}
       </loadingContext.Provider>
    );
