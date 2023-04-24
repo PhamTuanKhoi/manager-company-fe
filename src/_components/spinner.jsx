@@ -32,11 +32,10 @@ export default function Spinner({ children }) {
                backgroundColor: "#fff",
                border: "0 none",
                borderTop: "0 none",
+               zIndex: "900",
             }}
          >
-            <Spin tip="Loading" size="large" style={{}}>
-               <div className="content" />
-            </Spin> 
+            <Spin tip="Loading" size="large"></Spin>
          </Modal> */}
          <div className={`${loading ? "show-content" : "hiden-content"} `} style={{ ...container }}>
             <div class="lds-hourglass-position text-center">
