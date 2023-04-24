@@ -222,7 +222,9 @@ const Users = () => {
                   </div>
                   <div className="col-auto float-end ml-auto">
                      <div className="btn-group btn-group-sm" onClick={exportToExcel}>
-                        <button className="btn btn-white">CSV</button>
+                        <button className="btn btn-white text-success fw-bold">
+                           <i class="fa fa-file-text" aria-hidden="true"></i> CSV
+                        </button>
                      </div>
                   </div>
                </div>
