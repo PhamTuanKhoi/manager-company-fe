@@ -38,8 +38,8 @@ export default function Spinner({ children }) {
             <Spin tip="Loading" size="large"></Spin>
          </Modal> */}
          <div className={`${loading ? "show-content" : "hiden-content"} `} style={{ ...container }}>
-            <div class="lds-hourglass-position text-center">
-               <div class="lds-grid">
+            <div className="lds-hourglass-position text-center">
+               <div className="lds-grid">
                   <div></div>
                   <div></div>
                   <div></div>
