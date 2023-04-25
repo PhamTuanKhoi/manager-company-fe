@@ -64,7 +64,7 @@ const ProjectView = () => {
 
    useEffect(() => {
       // worker-project by id project
-      dispatch(listWorkerProjectByProject({ id, setLoading }));
+      // dispatch(listWorkerProjectByProject({ id, setLoading }));
 
       // task by id project
       dispatch(listTaskByProject({ id, setLoading }));
@@ -76,8 +76,8 @@ const ProjectView = () => {
 
    const { project } = useSelector((state) => state.project);
 
-   const { listWPByProject } = useSelector((state) => state.workerProject);
-   const { tasks } = useSelector((state) => state.task);
+   // const { listWPByProject } = useSelector((state) => state.workerProject);
+   // const { tasks } = useSelector((state) => state.task);
 
    const Action = ({ item }) => <ActionTask item={item} />;
 
@@ -118,6 +118,15 @@ const ProjectView = () => {
       },
    ];
 
+   const permission_attendance = [
+      UserRoleType.EMPLOYEE,
+      UserRoleType.LEADER,
+      UserRoleType.ADMIN,
+      UserRoleType.CLIENT,
+   ];
+
+   const permission_edit = [UserRoleType.LEADER, UserRoleType.ADMIN];
+
    return (
       <div className="page-wrapper">
          <Helmet>
@@ -133,9 +142,7 @@ const ProjectView = () => {
                      <h3 className="page-title">Dự Án</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                     {(user?.role === UserRoleType.EMPLOYEE ||
-                        user?.role === UserRoleType.ADMIN ||
-                        user?.role === UserRoleType.CLIENT) && (
+                     {permission_attendance.includes(user?.role) && (
                         <Link
                            to={`/app/projects/attendance/${id}`}
                            className="btn btn-primary me-3 boreder border-primary background-blue text-light"
@@ -151,18 +158,19 @@ const ProjectView = () => {
                            Chấm công
                         </Link>
                      )}
-
-                     <a
-                        href="#"
-                        className="btn btn-warning me-3"
-                        onClick={() => {
-                           setRender((prev) => prev + 1);
-                           setProjectData(project);
-                           setModalProject(true);
-                        }}
-                     >
-                        Chỉnh sửa
-                     </a>
+                     {(permission_edit.includes(user?.role) || user?._id === project?.creator) && (
+                        <a
+                           href="#"
+                           className="btn btn-warning me-3"
+                           onClick={() => {
+                              setRender((prev) => prev + 1);
+                              setProjectData(project);
+                              setModalProject(true);
+                           }}
+                        >
+                           Chỉnh sửa
+                        </a>
+                     )}
                      {/* process detail to project */}
                      {/* <Link
                         to={`/app/projects/task-board/${id}`}
