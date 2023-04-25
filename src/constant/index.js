@@ -1,5 +1,5 @@
-// export const api = "http://localhost:3000/";
-export const api = "https://manager-company-be-production.up.railway.app/";
+export const api = "http://localhost:3000/";
+// export const api = "https://manager-company-be-production.up.railway.app/";
 export const alphaNumericPattern = /^[a-zA-Z0-9_ .-]*$/;
 export const emailrgx =
    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,6}))$/;
@@ -88,6 +88,16 @@ export const overtimeType = {
    EVERNINGS: "evernings",
    SHIFTS: "shifts",
 };
+
+export const workerStatus = {
+   DOING: "doing",
+   RETIRED: "retired",
+};
+
+export const workerStatusOpition = [
+   { value: workerStatus.DOING, label: "Đang làm" },
+   { value: workerStatus.RETIRED, label: "Đã nghỉ" },
+];
 
 export const overtimeOpition = [
    { value: overtimeType.MORNING, label: "Ca sáng" },

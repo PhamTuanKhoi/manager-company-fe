@@ -248,6 +248,29 @@ export const payrollByWorker = createAsyncThunk(
    }
 );
 
+export const updateWorkerStatus = createAsyncThunk(
+   "worker/updateWorkerStatus",
+   async ({ id, payload, toast, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.updateWorkerStatus(id, payload);
+         toast.success("Cập nhật trạng thái người lao động thành công");
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const workerSclice = createSlice({
    name: "worker",
    initialState: {
@@ -486,6 +509,27 @@ const workerSclice = createSlice({
          state.worker = action.payload;
       },
       [getIdLinkPayroll.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // update status
+      [updateWorkerStatus.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [updateWorkerStatus.fulfilled]: (state, action) => {
+         state.loading = false;
+         const {
+            arg: { id },
+         } = action.meta;
+
+         if (id) {
+            state.workers = state.workers.map((item) =>
+               item._id === id ? { ...item, status: action.payload.status } : item
+            );
+         }
+      },
+      [updateWorkerStatus.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

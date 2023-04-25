@@ -108,6 +108,10 @@ export const userAPI = {
       return await axios.patch(path + "worker/" + id, payload);
    },
 
+   async updateWorkerStatus(id, payload) {
+      return await axios.patch(path + "worker/status/" + id, payload);
+   },
+
    async updatePassword(id, payload) {
       return await axios.patch(path + "change-password/" + id, payload);
    },

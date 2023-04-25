@@ -12,14 +12,19 @@ import { itemRender, onShowSizeChange } from "../paginationfunction";
 import "../antdstyle.css";
 import Adduser from "../../_components/modelbox/Adduser";
 import { useDispatch } from "react-redux";
-import workerSclice, { listWorker, listWorkerById } from "../../redux/feature/workerSclice";
+import workerSclice, {
+   listWorker,
+   listWorkerById,
+   updateWorkerStatus,
+} from "../../redux/feature/workerSclice";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { useLoading } from "../../hook/useLoading";
-import { avartarFAKE, UserRoleType } from "../../constant/index";
+import { avartarFAKE, UserRoleType, workerStatus, workerStatusOpition } from "../../constant/index";
 import DeleteUser from "../../_components/modelbox/DeleteUser";
 import { workerRemainingSelector } from "../../redux/selectors/workerSelector";
 import * as ExcelJS from "exceljs";
+import { toast } from "react-toastify";
 
 const Users = () => {
    const dispatch = useDispatch();
@@ -50,8 +55,6 @@ const Users = () => {
    }, [user._id, user.role]);
 
    const workers = useSelector(workerRemainingSelector);
-
-   const state = useSelector((state) => state.worker);
 
    const [textName, setTextName] = useState("");
    const [textField, setTextField] = useState("");
@@ -109,6 +112,71 @@ const Users = () => {
       //    render: (text, record) => record?.workerprojectEX?.projectEX?.name,
       //    sorter: (a, b) => a?.workerprojectEX.length - b?.workerprojectEX.length,
       // },
+      {
+         title: "Status",
+         dataIndex: "status",
+         render: (text, record) => (
+            <div className="dropdown action-label ">
+               <a
+                  href="#"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  className={`badge ${
+                     workerStatus.DOING === record?.status
+                        ? "bg-inverse-success"
+                        : workerStatus.RETIRED === record?.status
+                        ? "bg-inverse-danger"
+                        : "bg-inverse-primary"
+                  }`}
+               >
+                  {workerStatus.DOING === record?.status ? (
+                     <>
+                        <span className="ms-2 text-uppercase fst-italic fw-bold me-2 text-success">
+                           đang làm
+                        </span>
+                        <i className={"fa fa-dot-circle-o text-success"} />
+                     </>
+                  ) : workerStatus.RETIRED === record?.status ? (
+                     <>
+                        <span className="ms-2 text-uppercase fst-italic fw-bold me-2 text-danger">
+                           đã nghỉ
+                        </span>
+                        <i className={"fa fa-dot-circle-o text-success"} />
+                     </>
+                  ) : (
+                     <span className="ms-2 text-uppercase fst-italic fw-bold text-primary">
+                        chọn trạng thái
+                     </span>
+                  )}
+               </a>
+               <div className="dropdown-menu" style={{ width: "50px" }}>
+                  {workerStatusOpition?.map((item, key) => (
+                     <a
+                        className="dropdown-item"
+                        href="#"
+                        onClick={() => handleUpdateStatus(record?._id, item.value)}
+                     >
+                        <i
+                           className={
+                              item?.value === workerStatus.DOING
+                                 ? "text-success fa fa-dot-circle-o"
+                                 : "text-danger fa fa-dot-circle-o"
+                           }
+                        />
+                        <span
+                           className={`ms-2 text-uppercase fst-italic fw-bold ${
+                              item?.value === workerStatus.DOING ? "text-success" : "text-danger"
+                           }`}
+                        >
+                           {item?.label}
+                        </span>
+                     </a>
+                  ))}
+               </div>
+            </div>
+         ),
+         sorter: (a, b) => a.status.length - b.status.length,
+      },
 
       {
          title: "Action",
@@ -200,6 +268,10 @@ const Users = () => {
       a.download = "data.xlsx";
       a.click();
       window.URL.revokeObjectURL(url);
+   };
+
+   const handleUpdateStatus = async (id, status) => {
+      dispatch(updateWorkerStatus({ id, payload: { status }, setLoading, toast }));
    };
    return (
       <div className="page-wrapper">
