@@ -34,6 +34,7 @@ const Users = () => {
    const [editWorker, setEditWorker] = useState({});
    const [modalDelete, setModalDelete] = useState(false);
    const { user } = useSelector((state) => state.auth);
+   const permission_status = [UserRoleType.ADMIN, UserRoleType.EMPLOYEE, UserRoleType.LEADER];
 
    useEffect(() => {
       if ($(".select").length > 0) {
@@ -149,30 +150,32 @@ const Users = () => {
                      </span>
                   )}
                </a>
-               <div className="dropdown-menu" style={{ width: "50px" }}>
-                  {workerStatusOpition?.map((item, key) => (
-                     <a
-                        className="dropdown-item"
-                        href="#"
-                        onClick={() => handleUpdateStatus(record?._id, item.value)}
-                     >
-                        <i
-                           className={
-                              item?.value === workerStatus.DOING
-                                 ? "text-success fa fa-dot-circle-o"
-                                 : "text-danger fa fa-dot-circle-o"
-                           }
-                        />
-                        <span
-                           className={`ms-2 text-uppercase fst-italic fw-bold ${
-                              item?.value === workerStatus.DOING ? "text-success" : "text-danger"
-                           }`}
+               {permission_status.includes(user?.role) && (
+                  <div className="dropdown-menu" style={{ width: "50px" }}>
+                     {workerStatusOpition?.map((item, key) => (
+                        <a
+                           className="dropdown-item"
+                           href="#"
+                           onClick={() => handleUpdateStatus(record?._id, item.value)}
                         >
-                           {item?.label}
-                        </span>
-                     </a>
-                  ))}
-               </div>
+                           <i
+                              className={
+                                 item?.value === workerStatus.DOING
+                                    ? "text-success fa fa-dot-circle-o"
+                                    : "text-danger fa fa-dot-circle-o"
+                              }
+                           />
+                           <span
+                              className={`ms-2 text-uppercase fst-italic fw-bold ${
+                                 item?.value === workerStatus.DOING ? "text-success" : "text-danger"
+                              }`}
+                           >
+                              {item?.label}
+                           </span>
+                        </a>
+                     ))}
+                  </div>
+               )}
             </div>
          ),
          sorter: (a, b) => a.status.length - b.status.length,
