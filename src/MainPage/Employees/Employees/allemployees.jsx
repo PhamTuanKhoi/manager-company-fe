@@ -138,7 +138,11 @@ const AllEmployees = () => {
                               to={`/app/profile/employee-profile/${item._id}`}
                               className="avatar"
                            >
-                              <img src={item?.avatar || avartarFAKE} alt={item?.name} />
+                              <img
+                                 className="size-avatar"
+                                 src={item?.avatar || avartarFAKE}
+                                 alt={item?.name}
+                              />
                            </Link>
                         </div>
                         {(user?.role === UserRoleType.EMPLOYEE ||

@@ -3,13 +3,12 @@ import { userAPI } from "../../api/user";
 
 export const createEmployees = createAsyncThunk(
    "employees/createEmployees",
-   async ({ payload, toast, onHide, setLoading, empty }, { rejectWithValue }) => {
+   async ({ payload, toast, handleClose, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await userAPI.createEmployees(payload);
          toast.success("Thêm nhân viên thành công");
-         empty();
-         onHide();
+         handleClose();
          setLoading(false);
          return { ...data, departmentName: payload.departmentName };
       } catch (error) {
@@ -43,16 +42,18 @@ export const listEmployees = createAsyncThunk(
 
 export const updateEmployees = createAsyncThunk(
    "employees/updateEmployees",
-   async ({ id, payload, toast, onHide, setLoading, empty }, { rejectWithValue }) => {
+   async ({ id, payload, toast, setLoading, handleClose }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await userAPI.updateEmployees(id, payload);
          toast.success("Cập nhật nhân viên thành công");
-         empty();
-         onHide();
+         handleClose();
          setLoading(false);
-         return { ...data, departmentName: payload?.departmentName };
-         // return { ...data, department: payload?.department_name };
+         return {
+            ...data,
+            departmentName: payload?.departmentName,
+            departmentId: payload?.departmentId,
+         };
       } catch (error) {
          setLoading(false);
          if (typeof error?.response?.data?.message === "string") {

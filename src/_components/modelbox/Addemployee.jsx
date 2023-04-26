@@ -63,7 +63,7 @@ const Addemployee = ({ show, onHide, employee, render }) => {
    const [avatar, setAvatar] = useState("");
 
    useEffect(() => {
-      setEmployees(employee);
+      setEmployees({ ...employee, department: employee?.departmentId });
       setIsEdit(employee?._id);
       setAvatar(employee?.avatar);
    }, [render]);
@@ -89,8 +89,7 @@ const Addemployee = ({ show, onHide, employee, render }) => {
             createEmployees({
                payload,
                toast,
-               onHide,
-               empty,
+               handleClose,
                setLoading,
             })
          );
@@ -107,6 +106,7 @@ const Addemployee = ({ show, onHide, employee, render }) => {
          let payload = {
             ...employees,
             departmentName: departments?.find((i) => i._id === employees.department).name,
+            departmentId: employees.department,
             oldEmail: employee?.email,
             date: new Date(employees.date).getTime(),
             creator: user._id,
@@ -125,8 +125,7 @@ const Addemployee = ({ show, onHide, employee, render }) => {
                id: employee._id,
                payload,
                toast,
-               onHide,
-               empty,
+               handleClose,
                setLoading,
             })
          );

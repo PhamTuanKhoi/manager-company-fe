@@ -2744,7 +2744,8 @@ span#close-task-panel {
     border-radius: 50%;
     display: block;
     overflow: hidden;
-    width: 100%;
+    width: 40px;
+	height: 40px;
 }
 .chat.chat-left .chat-bubble:first-child .chat-content {
 	border-top-left-radius: 20px;
