@@ -28,6 +28,7 @@ import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import PerfromTab from "../../../_components/tabs/perform";
 import FinishTab from "../../../_components/tabs/finish";
 import Part from "../../../_components/part/part";
+import { ExcelExport } from "../../../helpers/excelExport";
 const { Panel } = Collapse;
 
 const ProjectView = () => {
@@ -329,6 +330,16 @@ const ProjectView = () => {
                         >
                            Thêm
                         </button>
+                        <div className="col-auto float-end ml-auto">
+                           <div
+                              className="btn-group btn-group-sm"
+                              onClick={() => ExcelExport(project?.workers)}
+                           >
+                              <button className="btn btn-white text-success fw-bold">
+                                 <i className="fa fa-file-text" aria-hidden="true"></i> CSV
+                              </button>
+                           </div>
+                        </div>
                      </h6>
                      <Table
                         className="table-striped"
