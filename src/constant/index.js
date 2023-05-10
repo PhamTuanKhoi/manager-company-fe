@@ -45,8 +45,7 @@ export const formatHourToSecond = (time) => {
 };
 
 export const avartarFAKE = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-export const logoFAKE =
-   "https://fce.com.vn/wp-content/uploads/2022/12/logo_fce_trong_suot-2048x1229.png";
+export const logoFAKE = "https://coviec.vn/uploads/banner/2022_06/logo_1.png";
 
 export const EmployeeDepartmentType = {
    MARKETING: "marketing",
