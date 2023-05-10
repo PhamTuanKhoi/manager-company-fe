@@ -1,34 +1,30 @@
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import {
    avartarFAKE,
-   EmployeeDepartmentType,
    ProjectPriorityEnum,
    ProjectStatusEnum,
-   TaskStatusType,
    UserRoleType,
 } from "../../../constant";
 import { useLoading } from "../../../hook/useLoading";
 import { listPayslipByUser } from "../../../redux/feature/payslipSclice";
 import { projectDetail } from "../../../redux/feature/projectSclice";
-import { listWorkerProjectByProject } from "../../../redux/feature/workerProjectSclice";
 import AssignUser from "../../../_components/modelbox/assignUser";
 import Editproject from "../../../_components/modelbox/Editproject";
-import LinkProject from "../../../_components/modelbox/linkProject";
 import { Collapse, Table } from "antd";
 import { listTaskByProject } from "../../../redux/feature/taskSclice";
 import ActionTask from "../../../_components/modelbox/actionTask/ActionTask";
 import CreateTask from "../../../_components/modelbox/assignUserTask";
 import Addproject from "../../../_components/modelbox/Addproject";
+import EnterWorkingHours from "../../../_components/modelbox/EnterWorkingHours";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
-import PerfromTab from "../../../_components/tabs/perform";
-import FinishTab from "../../../_components/tabs/finish";
-import Part from "../../../_components/part/part";
 import { ExcelExport } from "../../../helpers/excelExport";
+import Checkbox from "antd/lib/checkbox/Checkbox";
+
 const { Panel } = Collapse;
 
 const ProjectView = () => {
@@ -82,7 +78,7 @@ const ProjectView = () => {
 
    const Action = ({ item }) => <ActionTask item={item} />;
 
-   const columns = [
+   let columns = [
       {
          title: "Họ và tên",
          dataIndex: "name",
@@ -127,6 +123,51 @@ const ProjectView = () => {
    ];
 
    const permission_edit = [UserRoleType.LEADER, UserRoleType.ADMIN];
+
+   const [choose, setChoose] = useState(false);
+   const [checked, setChecked] = useState([]);
+   const [checkedAll, setCheckedAll] = useState(false);
+   const [show, setShow] = useState(false);
+
+   if (choose) {
+      columns = [
+         {
+            title: () => <Checkbox onChange={handleChangeAll} checked={checkedAll} />,
+            render: (text, item) => (
+               <Checkbox
+                  checked={checked?.includes(item?._id)}
+                  onChange={(e) => handleChange(e, item)}
+               />
+            ),
+         },
+         ...columns,
+      ];
+   }
+
+   // ------------------------------- checked -----------------------------------
+
+   const handleChangeAll = (e) => {
+      setCheckedAll(!checkedAll);
+      setChecked(project?.workers?.map((i) => i._id));
+      if (checkedAll) {
+         setChecked([]);
+      }
+   };
+
+   useMemo(() => {
+      if (checked?.length === project?.workers.length && project?.workers.length > 0) {
+         setCheckedAll(true);
+      }
+   }, [checked, project?.workers]);
+
+   const handleChange = (e, item) => {
+      setChecked([...checked, item._id]);
+
+      if (!e.target.checked) {
+         setCheckedAll(false);
+         setChecked(checked.filter((i) => i !== item._id));
+      }
+   };
 
    return (
       <div className="page-wrapper">
@@ -325,7 +366,7 @@ const ProjectView = () => {
                         Người lao động
                         <button
                            type="button"
-                           className="float-end btn btn-primary btn-sm"
+                           className="float-end btn btn-secondary btn-sm"
                            onClick={() => setAddWorker(true)}
                         >
                            Thêm
@@ -340,6 +381,44 @@ const ProjectView = () => {
                               </button>
                            </div>
                         </div>
+                        {choose ? (
+                           <div className="col-auto float-end ml-auto">
+                              <div
+                                 className="btn-group btn-group-sm"
+                                 onClick={() => {
+                                    setChoose(!choose);
+                                    setChecked([]);
+                                 }}
+                              >
+                                 <button className="btn btn-white text-warning fw-bold">
+                                    <i className="fa fa-times" aria-hidden="true"></i>
+                                 </button>
+                              </div>
+                           </div>
+                        ) : (
+                           <div className="col-auto float-end ml-auto">
+                              <div
+                                 className="btn-group btn-group-sm"
+                                 onClick={() => setChoose(!choose)}
+                              >
+                                 <button className="btn btn-white text-warning fw-bold">
+                                    <i className="fa fa-check-square-o" aria-hidden="true"></i>
+                                 </button>
+                              </div>
+                           </div>
+                        )}
+                        {checked?.length > 0 && (
+                           <div
+                              className="col-auto float-end ml-auto me-1"
+                              onClick={() => setShow(true)}
+                           >
+                              <div className="btn-group btn-group-sm">
+                                 <button className="btn btn-white text-secondary fw-bold">
+                                    Điền giờ làm
+                                 </button>
+                              </div>
+                           </div>
+                        )}
                      </h6>
                      <Table
                         className="table-striped"
@@ -654,6 +733,8 @@ const ProjectView = () => {
             setLoad={setLoad}
          />
          {/* /Edit Project Modal */}
+
+         <EnterWorkingHours show={show} onHide={() => setShow(false)} checked={checked} />
       </div>
    );
 };

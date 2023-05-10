@@ -56,7 +56,7 @@ function AssignUser({ show, onHide, setLoad }) {
                      </span>
                   </button>
                </div>
-               <div className="modal-body">
+               <div className="modal-body overflow-setting ">
                   <div className="body-dialog">
                      <ul className="chat-user-list">
                         {workers?.length > 0 ? (
