@@ -388,6 +388,7 @@ const ProjectView = () => {
                                  onClick={() => {
                                     setChoose(!choose);
                                     setChecked([]);
+                                    setCheckedAll(false);
                                  }}
                               >
                                  <button className="btn btn-white text-warning fw-bold">
