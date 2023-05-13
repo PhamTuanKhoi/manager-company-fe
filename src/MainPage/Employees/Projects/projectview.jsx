@@ -155,7 +155,7 @@ const ProjectView = () => {
    };
 
    useMemo(() => {
-      if (checked?.length === project?.workers.length && project?.workers.length > 0) {
+      if (checked?.length === project?.workers?.length && project?.workers?.length > 0) {
          setCheckedAll(true);
       }
    }, [checked, project?.workers]);

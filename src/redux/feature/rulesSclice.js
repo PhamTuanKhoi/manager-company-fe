@@ -15,6 +15,8 @@ export const createRules = createAsyncThunk(
          setLoading(false);
          if (typeof error?.response?.data?.message === "string") {
             toast.error(error?.response?.data?.message);
+         } else if (typeof error?.response?.data?.msg === "string") {
+            toast.error(error?.response?.data?.message);
          } else {
             error?.response?.data?.message?.forEach((item) => {
                toast.error(item);

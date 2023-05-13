@@ -2,21 +2,48 @@ import React, { memo, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { formatHourToSecond, overtimeOpition, overtimeType } from "../../constant";
+import { formatHourToSecond, overtimeOpition, overtimeType, timeCustom } from "../../constant";
 import { useLoading } from "../../hook/useLoading";
-import { createOvertime } from "../../redux/feature/overtimeSclice";
+import { manually } from "../../redux/feature/attendanceSclice";
 import { Radio } from "antd";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
-function EnterWorkingHours({ show, onHide, checked, projectId }) {
+function EnterWorkingHours({ show, onHide, checked }) {
    const [state, setState] = useState({
       date: "",
-      start: "",
-      end: "",
+      workHour: "",
+      timein: "",
+      timeout: "",
       overtime: "",
    });
+
+   const dispatch = useDispatch();
+   const { setLoading } = useLoading();
+   const { id } = useParams();
+   const { user } = useSelector((state) => state.auth);
+
    const handleSave = () => {
-      console.log(state);
-      toast.error("unauthorized");
+      console.log(user);
+
+      if (!user?._id) return toast.error("please login!!");
+      dispatch(
+         manually({
+            payload: {
+               ...state,
+               datetime: new Date(state.date).getTime(),
+               year: new Date(state.date).getFullYear(),
+               month: new Date(state.date).getMonth() + 1,
+               date: new Date(state.date).getDate(),
+               user: JSON.stringify(checked),
+               project: id,
+               creator: user._id,
+            },
+            onHide,
+            toast,
+            setLoading,
+         })
+      );
    };
 
    // -------------------------------- radio ---------------------------------
@@ -24,6 +51,27 @@ function EnterWorkingHours({ show, onHide, checked, projectId }) {
    const onChange = (e) => {
       console.log("radio checked", e.target.value);
       setState({ ...state, overtime: e.target.value });
+   };
+
+   const handleChangeWorkHour = (e) => {
+      setState({
+         ...state,
+         workHour: e.target.value.slice(0, 2) * 3600 + e.target.value.slice(3, 5) * 60,
+      });
+   };
+
+   const handleChangeTimeIn = (e) => {
+      setState({
+         ...state,
+         timein: e.target.value.slice(0, 2) * 3600 + e.target.value.slice(3, 5) * 60,
+      });
+   };
+
+   const handleChangeTimeOut = (e) => {
+      setState({
+         ...state,
+         timeout: e.target.value.slice(0, 2) * 3600 + e.target.value.slice(3, 5) * 60,
+      });
    };
    return (
       <Modal show={show} onHide={onHide}>
@@ -33,7 +81,7 @@ function EnterWorkingHours({ show, onHide, checked, projectId }) {
                <span aria-hidden="true">×</span>
             </button>
          </div>
-         <Modal.Body>
+         <Modal.Body style={{ height: "580px" }}>
             <div className="body-dialog">
                <span>Ngày</span>
                <div className="input-group m-b-30">
@@ -44,13 +92,22 @@ function EnterWorkingHours({ show, onHide, checked, projectId }) {
                      onChange={(e) => setState({ ...state, date: e.target.value })}
                   />
                </div>
+               <span>Thời gian làm: /giờ</span>
+               <div className="input-group m-b-30">
+                  <input
+                     className="form-control search-input"
+                     type="time"
+                     value={timeCustom(state.workHour)}
+                     onChange={handleChangeWorkHour}
+                  />
+               </div>
                <span>Bắt đầu từ</span>
                <div className="input-group m-b-30">
                   <input
                      className="form-control search-input"
                      type="time"
-                     value={state.start}
-                     onChange={(e) => setState({ ...state, start: e.target.value })}
+                     value={timeCustom(state.timein)}
+                     onChange={handleChangeTimeIn}
                   />
                </div>
                <span>Đến</span>
@@ -58,8 +115,8 @@ function EnterWorkingHours({ show, onHide, checked, projectId }) {
                   <input
                      className="form-control search-input"
                      type="time"
-                     value={state.end}
-                     onChange={(e) => setState({ ...state, end: e.target.value })}
+                     value={timeCustom(state.timeout)}
+                     onChange={handleChangeTimeOut}
                   />
                </div>
                <span>Kiểu tăng ca:</span> <br />

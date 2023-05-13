@@ -85,6 +85,30 @@ export const createAttendance = createAsyncThunk(
    }
 );
 
+export const manually = createAsyncThunk(
+   "attendance/manually",
+   async ({ payload, toast, onHide, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await attendanceAPI.manually(payload);
+         toast.success(`Thêm giờ làm việc thành công!`);
+         onHide();
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 export const getAttendanceByUser = createAsyncThunk(
    "attendance/getAttendanceByUser",
    async ({ query, setLoading }, { rejectWithValue }) => {
@@ -189,6 +213,18 @@ const attendanceSclice = createSlice({
          state.attendance = action.payload;
       },
       [getAttendanceByUser.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // manually
+      [manually.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [manually.fulfilled]: (state, action) => {
+         state.loading = false;
+      },
+      [manually.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },
