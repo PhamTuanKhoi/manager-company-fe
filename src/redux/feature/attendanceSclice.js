@@ -51,9 +51,7 @@ export const userAttendance = createAsyncThunk(
    async ({ query, toast, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
-         console.log(1);
          const { data } = await attendanceAPI.userAttendance(query);
-         console.log(2);
          setLoading(false);
          return data;
       } catch (error) {
