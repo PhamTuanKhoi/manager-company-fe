@@ -48,15 +48,21 @@ export const todayAttendance = createAsyncThunk(
 
 export const userAttendance = createAsyncThunk(
    "attendance/userAttendance",
-   async ({ query, setLoading }, { rejectWithValue }) => {
+   async ({ query, toast, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
+         console.log(1);
          const { data } = await attendanceAPI.userAttendance(query);
+         console.log(2);
          setLoading(false);
          return data;
       } catch (error) {
          setLoading(false);
-         return rejectWithValue(error.response.data);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.info(error?.response?.data?.message);
+         }
+         rejectWithValue(error.response.data);
+         return [];
       }
    }
 );

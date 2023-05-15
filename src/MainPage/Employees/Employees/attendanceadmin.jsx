@@ -17,6 +17,7 @@ import { useLoading } from "../../../hook/useLoading";
 import { Pagination } from "antd";
 import moment from "moment";
 import { timeCustom } from "../../../constant";
+import { toast } from "react-toastify";
 
 const AttendanceAdmin = () => {
    const [menu, setMenu] = useState(false);
@@ -81,6 +82,7 @@ const AttendanceAdmin = () => {
                limit: limit,
                page: page,
             },
+            toast,
             setLoading,
          })
       );
@@ -114,8 +116,6 @@ const AttendanceAdmin = () => {
    }, [query]);
 
    const { attendance } = useSelector((state) => state.attendance);
-
-   console.log(query);
 
    return (
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
