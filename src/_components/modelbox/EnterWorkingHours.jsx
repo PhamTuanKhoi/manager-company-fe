@@ -24,26 +24,26 @@ function EnterWorkingHours({ show, onHide, checked }) {
    const { user } = useSelector((state) => state.auth);
 
    const handleSave = () => {
-      console.log(user);
-
       if (!user?._id) return toast.error("please login!!");
-      dispatch(
-         manually({
-            payload: {
-               ...state,
-               datetime: new Date(state.date).getTime(),
-               year: new Date(state.date).getFullYear(),
-               month: new Date(state.date).getMonth() + 1,
-               date: new Date(state.date).getDate(),
-               user: JSON.stringify(checked),
-               project: id,
-               creator: user._id,
-            },
-            onHide,
-            toast,
-            setLoading,
-         })
-      );
+      if (validate()) {
+         dispatch(
+            manually({
+               payload: {
+                  ...state,
+                  datetime: new Date(state.date).getTime(),
+                  year: new Date(state.date).getFullYear(),
+                  month: new Date(state.date).getMonth() + 1,
+                  date: new Date(state.date).getDate(),
+                  user: JSON.stringify(checked),
+                  project: id,
+                  creator: user._id,
+               },
+               onHide,
+               toast,
+               setLoading,
+            })
+         );
+      }
    };
 
    // -------------------------------- radio ---------------------------------
@@ -72,6 +72,30 @@ function EnterWorkingHours({ show, onHide, checked }) {
          ...state,
          timeout: e.target.value.slice(0, 2) * 3600 + e.target.value.slice(3, 5) * 60,
       });
+   };
+
+   const validate = () => {
+      if (!state.date) {
+         toast.warn(`Vui lòng chọn ngày!`);
+         return false;
+      }
+
+      if (!state.workHour) {
+         toast.warn("Vui lòng chọn thời gian làm việc!");
+         return false;
+      }
+
+      if (!state.timein) {
+         toast.warn("Vui lòng chọn giờ vào!");
+         return false;
+      }
+
+      if (!state.timeout) {
+         toast.warn("Vui lòng chọn giờ ra!");
+         return false;
+      }
+
+      return true;
    };
    return (
       <Modal show={show} onHide={onHide}>
