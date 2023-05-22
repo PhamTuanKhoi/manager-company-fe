@@ -8,11 +8,13 @@ import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
 import { useDispatch } from "react-redux";
 import { useLoading } from "../../../hook/useLoading";
-import { listUserSalary } from "../../../redux/feature/workerSclice";
+import workerSclice, { listUserSalary } from "../../../redux/feature/workerSclice";
 import { useSelector } from "react-redux";
 import { createOrUpdateContract } from "../../../redux/feature/contractSclice";
 import { toast } from "react-toastify";
 import { avartarFAKE, formatMoney, UserRoleType } from "../../../constant/index";
+import { Checkbox } from "antd";
+import { premiumsInsurance } from "../../../redux/feature/joinProjectSclice";
 
 const Salary = () => {
    useEffect(() => {
@@ -61,6 +63,21 @@ const Salary = () => {
             toast,
             setLoading,
             setRender,
+         })
+      );
+   };
+
+   // -------------------------- updated premiums insurace -----------------------------
+
+   const handleUpdatePremiumsInsurance = (item, e) => {
+      if (!user._id) return toast.warn(`please login!`);
+      dispatch(
+         premiumsInsurance({
+            id: item?.joinprojectId,
+            payload: { premiums: e.target.checked },
+            toast,
+            setLoading,
+            dispatch: (action) => dispatch(workerSclice.actions.updatePremiumInsurance(action)),
          })
       );
    };
@@ -122,6 +139,17 @@ const Salary = () => {
          title: "Lương",
          render: (text, record) =>
             record?.salary?.salary !== undefined ? formatMoney(+record?.salary?.salary) : "...",
+      },
+      {
+         title: "Đóng bảo hiểm",
+         render: (text, record) => (
+            <div className="text-center">
+               <Checkbox
+                  onChange={(e) => handleUpdatePremiumsInsurance(record, e)}
+                  checked={record.premiumsInsurance}
+               ></Checkbox>
+            </div>
+         ),
       },
       {
          title: "Dự án",

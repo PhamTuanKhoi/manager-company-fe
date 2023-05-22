@@ -8,8 +8,9 @@ export default function Spinner({ children }) {
    const container = {
       width: "100%",
       height: "100%",
-      position: "fixed",
+      // position: "fixed",
       backgroundColor: "#34444c",
+      // backgroundColor: "black",
       zIndex: "900",
       // display: loading ? "" : "none",
    };
@@ -37,21 +38,26 @@ export default function Spinner({ children }) {
          >
             <Spin tip="Loading" size="large"></Spin>
          </Modal> */}
-         <div className={`${loading ? "show-content" : "hiden-content"} `} style={{ ...container }}>
-            <div className="lds-hourglass-position text-center">
-               <div className="lds-grid">
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
+         <Modal show={loading} size={"xxl"} style={{ backgroundColor: "#34444c", zIndex: "900" }}>
+            <div
+               // className={`${loading ? "show-content" : "hiden-content"} `}
+               style={{ ...container }}
+            >
+               <div className="lds-hourglass-position text-center">
+                  <div className="lds-grid">
+                     <div></div>
+                     <div></div>
+                     <div></div>
+                     <div></div>
+                     <div></div>
+                     <div></div>
+                     <div></div>
+                     <div></div>
+                     <div></div>
+                  </div>
                </div>
             </div>
-         </div>
+         </Modal>
          {children}
       </loadingContext.Provider>
    );

@@ -9,6 +9,7 @@ import { useLoading } from "../../../hook/useLoading";
 import { formatMoneyVND } from "../../../constant";
 import { payrollByWorker } from "../../../redux/feature/workerSclice";
 import { useState } from "react";
+import { Checkbox } from "antd";
 
 const Payroll = () => {
    // get query
@@ -270,27 +271,26 @@ const Payroll = () => {
                                        </tbody>
                                     </table>
                                  </div>
-                              </div>{" "}
+                              </div>
+                              <div className="row mb-2">
+                                 <Checkbox>Trừ bảo hiểm</Checkbox>
+                              </div>
                               <div className="row">
                                  <div className="col-sm-12">
-                                    <div>
-                                       <table className="table table-bordered table-striped ">
-                                          <tbody>
-                                             <tr>
-                                                <td className="fw-bold text-primary">
-                                                   <span className="me-5">THỰC LÃNH</span>
-                                                   <span>
-                                                      {formatMoneyVND(payroll?.receive_real)}
-                                                   </span>
-                                                </td>
-                                             </tr>
-                                          </tbody>
-                                       </table>
-                                       <p>
-                                          Bằng chữ: Sáu triệu ba trăm năm mươi lăm ngàn ba trăm tám
-                                          mươi bốn đồng chẵn.
-                                       </p>
-                                    </div>
+                                    <table className="table table-bordered table-striped ">
+                                       <tbody>
+                                          <tr>
+                                             <td className="fw-bold text-primary">
+                                                <span className="me-5">THỰC LÃNH</span>
+                                                <span>{formatMoneyVND(payroll?.receive_real)}</span>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                    <p>
+                                       Bằng chữ: Sáu triệu ba trăm năm mươi lăm ngàn ba trăm tám
+                                       mươi bốn đồng chẵn.
+                                    </p>
                                  </div>
                               </div>
                            </>

@@ -303,6 +303,13 @@ const workerSclice = createSlice({
       lear: (state) => {
          state.workers = [];
       },
+
+      updatePremiumInsurance: (state, action) => {
+         const { premiumsInsurance, _id } = action.payload;
+         state.salaries = state.salaries.map((item) =>
+            item?.joinprojectId === _id ? { ...item, premiumsInsurance } : item
+         );
+      },
    },
    extraReducers: {
       [createWorker.pending]: (state, action) => {
