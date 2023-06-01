@@ -310,6 +310,13 @@ const workerSclice = createSlice({
             item?.joinprojectId === _id ? { ...item, premiumsInsurance } : item
          );
       },
+      updatePremiumInsurancePayroll: (state, action) => {
+         const { premiumsInsurance, _id } = action.payload;
+         state.payroll =
+            state.payroll?.joinprojectId === _id
+               ? { ...state.payroll, premiumsInsurance }
+               : state.payroll;
+      },
    },
    extraReducers: {
       [createWorker.pending]: (state, action) => {

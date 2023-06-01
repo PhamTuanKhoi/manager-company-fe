@@ -7,14 +7,17 @@ import { useLocation } from "react-router-dom";
 import { payslipDetail } from "../../../redux/feature/payslipSclice";
 import { useLoading } from "../../../hook/useLoading";
 import { formatMoneyVND } from "../../../constant";
-import { payrollByWorker } from "../../../redux/feature/workerSclice";
+import workerSclice, { payrollByWorker } from "../../../redux/feature/workerSclice";
 import { useState } from "react";
 import { Checkbox } from "antd";
+import { toast } from "react-toastify";
+import { premiumsInsurance } from "../../../redux/feature/joinProjectSclice";
 
 const Payroll = () => {
    // get query
    const [months, setMonths] = useState([]);
    const [month, setMonth] = useState(new Date().getMonth() + 1);
+   const [load, setLoad] = useState(0);
    const { search } = useLocation();
    const query = useMemo(() => new URLSearchParams(search), [search]);
    const payslipId = query.get("payslip");
@@ -40,7 +43,7 @@ const Payroll = () => {
             setLoading,
          })
       );
-   }, [payslipId, projectId, month]);
+   }, [payslipId, projectId, month, load]);
 
    const { payroll } = useSelector((state) => state.worker);
 
@@ -52,6 +55,23 @@ const Payroll = () => {
 
       setMonths(array);
    }, []);
+
+   // -------------------------- updated premiums insurace -----------------------------
+
+   const handleUpdatePremiumsInsurance = (item, e) => {
+      dispatch(
+         premiumsInsurance({
+            id: item?.joinprojectId,
+            payload: { premiums: e.target.checked },
+            toast,
+            setLoading,
+            dispatch: (action) =>
+               dispatch(workerSclice.actions.updatePremiumInsurancePayroll(action)),
+         })
+      );
+
+      setLoad((prev) => prev + 1);
+   };
 
    return (
       <div className="page-wrapper">
@@ -65,7 +85,7 @@ const Payroll = () => {
             <div className="page-header">
                <div className="row align-items-center">
                   <div className="col">
-                     <h3 className="page-title"> Phiếu lương</h3>
+                     <h3 className="page-title text-uppercase"> Phiếu lương</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
                      <div className="btn-group btn-group-sm">
@@ -110,67 +130,61 @@ const Payroll = () => {
                            </p>
                         ) : (
                            <>
-                              <h4 className="payslip-title">Phiếu lương</h4>
-                              <div className="row">
+                              <h4 className="text-center fs-5 text-uppercase">Phiếu lương</h4>
+                              <div className="row" style={{ paddingLeft: "0%" }}>
                                  <div className="col-sm-12">
-                                    <div>
-                                       <table className="table table-bordered table-striped ">
-                                          <tbody>
-                                             <tr>
-                                                <td>
-                                                   <span>Họ và tên</span>
-                                                   <span className="float-end">
-                                                      {payroll?.name}
-                                                   </span>
-                                                </td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <span>Chức vụ</span>
-                                                   <span className="float-end">
-                                                      {payroll?.field}
-                                                   </span>
-                                                </td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <span>Số Tài Khoản</span>
-                                                   <span className="float-end"></span>
-                                                </td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <span>Tên Ngân hàng</span>
-                                                   <span className="float-end"> </span>
-                                                </td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <span>Thu nhập thoả thuận</span>
-                                                   <span className="float-end">
-                                                      {formatMoneyVND(payroll?.salary)}
-                                                   </span>
-                                                </td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <span>Lương đóng BHXH</span>
-                                                   <span className="float-end">
-                                                      {formatMoneyVND(payroll?.salary_paid_social)}
-                                                   </span>
-                                                </td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <span>Ngày công tính lương</span>
-                                                   <span className="float-end">
-                                                      {payroll?.workMain} Ngày
-                                                   </span>
-                                                </td>
-                                             </tr>
-                                          </tbody>
-                                       </table>
-                                    </div>
+                                    <table className="table table-bordered table-striped ">
+                                       <tbody>
+                                          <tr>
+                                             <td>
+                                                <span>Họ và tên</span>
+                                                <span className="float-end">{payroll?.name}</span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>Chức vụ</span>
+                                                <span className="float-end">{payroll?.field}</span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>Số Tài Khoản</span>
+                                                <span className="float-end"></span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>Tên Ngân hàng</span>
+                                                <span className="float-end"> </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>Thu nhập thoả thuận</span>
+                                                <span className="float-end">
+                                                   {formatMoneyVND(payroll?.salary)}
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>Lương đóng BHXH</span>
+                                                <span className="float-end">
+                                                   {formatMoneyVND(payroll?.salary_paid_social)}
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>
+                                                <span>Ngày công tính lương</span>
+                                                <span className="float-end">
+                                                   {payroll?.workMain} Ngày
+                                                </span>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
                                  </div>
 
                                  <div className="col-sm-6">
@@ -271,11 +285,14 @@ const Payroll = () => {
                                        </tbody>
                                     </table>
                                  </div>
-                              </div>
-                              <div className="row mb-2">
-                                 <Checkbox>Trừ bảo hiểm</Checkbox>
-                              </div>
-                              <div className="row">
+                                 <div className="mb-2">
+                                    <Checkbox
+                                       onChange={(e) => handleUpdatePremiumsInsurance(payroll, e)}
+                                       checked={payroll?.premiumsInsurance}
+                                    >
+                                       Trừ bảo hiểm
+                                    </Checkbox>
+                                 </div>
                                  <div className="col-sm-12">
                                     <table className="table table-bordered table-striped ">
                                        <tbody>

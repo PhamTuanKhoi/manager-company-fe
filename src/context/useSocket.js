@@ -12,10 +12,33 @@ const WebsocketContext = React.createContext(defaultState);
 
 function Websocket(props) {
    const [socket, setSocket] = useState({});
+   const [user, setUser] = useState({});
+   const token = jwtManager.get();
+   async function getUser() {
+      const { data } = await authAPI.me();
+      setUser(data);
+   }
 
    useEffect(() => {
-      setSocket(io(api));
-   }, [setSocket]);
+      getUser();
+   }, []);
+   // console.log(user);
+
+   useEffect(() => {
+      if (user._id) {
+         const newSocket = io(`${api}?token=${token}`);
+
+         // Lấy socket ID khi kết nối thành công
+         newSocket.on("connect", () => {
+            setSocket(newSocket);
+         });
+
+         // Đóng kết nối socket khi component unmount
+         return () => {
+            newSocket.disconnect();
+         };
+      }
+   }, []);
 
    return (
       <WebsocketContext.Provider

@@ -67,13 +67,13 @@ const Chat = () => {
    const { socket } = useSocket();
 
    // send infor user
-   useEffect(() => {
-      if (socket.id) {
-         socket?.emit("inforUser", {
-            userid: user?._id,
-         });
-      }
-   }, [user, socket]);
+   // useEffect(() => {
+   //    if (socket.id) {
+   //       socket?.emit("inforUser", {
+   //          userid: user?._id,
+   //       });
+   //    }
+   // }, [user, socket]);
 
    // send message
    const sendMessage = () => {

@@ -2,14 +2,15 @@
  * Crm Routes
  */
 /* eslint-disable */
-import React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import React from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
+import Chat from "../Main/Apps/chat";
 
-import Clients from './clients';
-import ClientsList from './clientslist';
-import Leades from './leades';
-import Tickets from './tickets';
-import TicketView from './ticketview';
+import Clients from "./clients";
+import ClientsList from "./clientslist";
+import Leades from "./leades";
+import Tickets from "./tickets";
+import TicketView from "./ticketview";
 
 const EmployeeRoute = ({ match }) => (
    <Switch>

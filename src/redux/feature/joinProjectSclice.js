@@ -39,7 +39,7 @@ export const premiumsInsurance = createAsyncThunk(
       try {
          setLoading(true);
          const { data } = await joinProjectAPI.updatePremiumsInsurance(id, payload);
-         toast.success(`Cập nhật cột đóng bảo hiểm thành công!!`);
+         // toast.success(`Cập nhật cột đóng bảo hiểm thành công!!`);
          dispatch(data);
          setLoading(false);
          return data;

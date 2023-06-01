@@ -11,6 +11,7 @@ import { useLoading } from "../../hook/useLoading";
 import { avartarFAKE, logoFAKE, UserRoleType } from "../../constant";
 import { useSocket } from "../../context/useSocket";
 import { notificationMessage } from "../../redux/feature/messageSclice";
+import { Avatar_13 } from "../../Entryfile/imagepath";
 
 const Header = (props) => {
    const handlesidebar = () => {
@@ -28,6 +29,7 @@ const Header = (props) => {
    const dispatch = useDispatch();
 
    const handleLogout = () => {
+      socket?.emit("del-key", { userId: user?._id });
       dispatch(authSclice.actions.logout());
    };
 
@@ -194,7 +196,7 @@ const Header = (props) => {
             </li> */}
             {/* /Notifications */}
             {/* Message Notifications */}
-            {/* <li className="nav-item dropdown">
+            <li className="nav-item dropdown">
                <a href="#" className="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                   <i className="fa fa-comment-o" />
                   {messQty !== 0 && <span className="badge badge-pill">{messQty}</span>}
@@ -218,7 +220,7 @@ const Header = (props) => {
                                  <div className="list-item">
                                     <div className="list-left">
                                        <span className="avatar">
-                                          <img alt="" src={Avatar_09} />
+                                          <img alt="avatar" src={Avatar_13} />
                                        </span>
                                     </div>
                                     <div className="list-body">
@@ -244,7 +246,7 @@ const Header = (props) => {
                      </Link>
                   </div>
                </div>
-            </li> */}
+            </li>
             {/* /Message Notifications */}
             <li className="nav-item dropdown has-arrow main-drop">
                <a href="#" className="dropdown-toggle nav-link" data-bs-toggle="dropdown">
