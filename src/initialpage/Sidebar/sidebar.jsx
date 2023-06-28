@@ -279,6 +279,12 @@ const Sidebar = (props) => {
                            </li>
                         )}
 
+                        <li className={pathname.includes("contracts") ? "active" : ""}>
+                           <Link to="/app/administrator/contracts">
+                              <i className="la la-file-text" /> <span>Hợp đồng</span>
+                           </Link>
+                        </li>
+
                         {/* <li className="submenu">
                         <a
                            href="#"

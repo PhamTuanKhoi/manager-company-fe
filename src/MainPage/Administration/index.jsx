@@ -31,11 +31,15 @@ import Visitedjobs from "./Jobs/visited_jobs";
 import Archivedjobs from "./Jobs/archived_jobs";
 import Jobapptitude from "./Jobs/job_aptitude";
 import Questions from "./Jobs/questions";
+import Contracts from "./contracts";
+import ContractDetails from "./contractDetails";
 
 const Uiinterfaceroute = ({ match }) => (
    <Switch>
       <Redirect exact from={`${match.url}/`} to={`${match.url}/users`} />
       <Route path={`${match.url}/users`} component={Users} />
+      <Route path={`${match.url}/contracts`} component={Contracts} />
+      <Route path={`${match.url}/contract-details/:id`} component={ContractDetails} />
       <Route path={`${match.url}/activities`} component={Activities} />
       <Route path={`${match.url}/assets`} component={Assets} />
       <Route path={`${match.url}/knowledgebase`} component={knowledgebase} />
