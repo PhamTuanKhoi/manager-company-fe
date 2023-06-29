@@ -24,6 +24,7 @@
     "js/**/*.js"
   ],
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "github:ckeditor/ckeditor5-build-classic",
     "@ckeditor/ckeditor5-react": "^6.1.0",
     "@fontsource/roboto": "^4.5.8",
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
