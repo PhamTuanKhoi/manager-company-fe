@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
-import { Table } from "antd";
 import "antd/dist/antd.css";
 import "../antdstyle.css";
 import { useDispatch } from "react-redux";
@@ -9,8 +8,10 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Modal } from "react-bootstrap";
-import { itemRender, onShowSizeChange } from "../paginationfunction";
 import { Link } from "react-router-dom";
+import "../../assets/css/contract-details.css";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const ContractDetails = () => {
    const [menu, setMenu] = useState(false);
@@ -174,6 +175,10 @@ const ContractDetails = () => {
       return true;
    };
 
+   const handleEditorChange = (event, editor) => {
+      const data = editor.getData();
+      console.log(data);
+   };
    // const handleUpdate
    return (
       <div className="page-wrapper">
@@ -181,24 +186,112 @@ const ContractDetails = () => {
             <title>Hợp đồng</title>
             <meta name="description" content="Login page" />
          </Helmet>
+
          {/* Page Content */}
          <div className="content container-fluid">
             {/* Page Header */}
-            <div className="page-header">
-               <div className="row align-items-center">
-                  <div className="col">
-                     <h3 className="page-title">HỢP ĐỒNG</h3>
+            {/* Search Filter */}
+            <div className="row filter-row">
+               <div className="col-sm-6 col-md-3" style={{ width: "100px" }}>
+                  <div className="form-group form-focus select-focus">
+                     <select className="form-control floating" style={{ background: "#ffcc00" }}>
+                        <option value={""}>{""}</option>
+                        <option>FCE01</option>
+                     </select>
+                     <label className="focus-label">Mã NLD</label>
                   </div>
-                  <div className="col-auto float-end ml-auto">
-                     <a href="#" className="btn add-btn" onClick={handleShow}>
-                        <i className="fa fa-plus" /> Thêm phòng ban
-                     </a>
+               </div>
+               <div className="col-sm-6 col-md-3">
+                  <div className="form-group form-focus select-focus">
+                     <select className="form-control floating">
+                        <option className="focus-label" value={""}>
+                           chọn
+                        </option>
+                        <option>Nhà Máy Giấy Lee & Man Việt Nam</option>
+                     </select>
+                     <label className="focus-label">Dự án</label>
                   </div>
                </div>
             </div>
+            {/* Search Filter */}
             {/* /Page Header */}
             <div className="row">
-               <div className="col-md-12">ddd</div>
+               <div className="col-md-12">
+                  <div className="card padding">
+                     <div className="row align-items-center style-text">
+                        {/* header cart */}
+                        <div className="col">
+                           <div className="header--left">
+                              <span className="company">Công ty ………..</span>
+                              <p className="company">Số .…/….</p>
+                           </div>
+                        </div>
+                        <div className="col-auto float-end ml-auto">
+                           <div className="header--right">
+                              <span className="title-item">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</span>
+                              <p className="title-item text-center">Độc lập - Tự do - Hạnh phúc</p>
+                           </div>
+                        </div>
+                        {/* header cart */}
+                        <p className="contract-name color3 text-center">HỢP ĐỒNG LAO ĐỘNG</p>
+                        <p className="font-italic color3">- Căn cứ Bộ luật Lao động 2019</p>
+                        <p className="color3">
+                           Hôm nay, ngày... tháng... năm 2021, tại Công ty ………………, chúng tôi gồm:
+                        </p>
+                        <p className="fw-bold color3">Người sử dụng lao động:</p>
+                        <span>
+                           Công ty:
+                           .....................................................................................
+                        </span>
+                        <span>
+                           Địa chỉ:
+                           .......................................................................................
+                        </span>
+                        <span>Điện thoại:</span>
+                        <span>
+                           Đại diện: ……..................... Chức vụ: ………….................... Quốc
+                           tịch: Việt Nam
+                        </span>{" "}
+                        <p></p>
+                        <p className="fw-bold color3">Người lao động:</p>
+                        <table className="table">
+                           <tbody>
+                              <tr>
+                                 <td>ÔNG / BÀ :</td>
+                                 <td>Quốc tịch:</td>
+                              </tr>
+                              <tr>
+                                 <td>Ngày sinh:</td>
+                                 <td>Tại :</td>
+                                 <td>Nghề nghiệp :</td>
+                              </tr>
+                              <tr>
+                                 <td>Nghề nghiệp :</td>
+                                 <td>Giới tính:</td>
+                              </tr>
+                              <tr>
+                                 <td>Điạ chỉ thường trú :</td>
+                                 <td>Điạ chỉ cư trú :</td>
+                              </tr>
+                              <tr>
+                                 <td>Số CMND/CCCD :</td>
+                                 <td>Cấp ngày:</td>
+                                 <td>Tại :</td>
+                              </tr>
+                           </tbody>
+                        </table>
+                        <span className="font-italic">
+                           Cùng thoả thuận ký kết hợp đồng lao động và cam kết làm đúng những điều
+                           khoản sau đây: <span className="text-danger">setting</span>
+                        </span>
+                        {/* <CKEditor
+                           editor={ClassicEditor}
+                           data="<p>Hello CKEditor!</p>"
+                           onChange={handleEditorChange}
+                        /> */}
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
          {/* /Page Content */}

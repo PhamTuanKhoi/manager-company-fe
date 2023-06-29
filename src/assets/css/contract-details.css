@@ -1,0 +1,30 @@
+.style-text {
+    color: #222222;
+    font-family: 'Times New Roman';
+    font-size: 12pt;
+}
+
+.color3 {
+    color: #333333; 
+}
+
+.padding{
+    padding: 10px 20px 0 0;
+}
+
+.header--left{ 
+    /* display: grid; */
+}
+
+.company {
+    font-weight: bold;
+}
+
+.title-item {
+    font-weight: bold;
+}
+
+.contract-name{ 
+    font-weight: bold;
+}
+ 
