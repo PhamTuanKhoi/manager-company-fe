@@ -239,7 +239,51 @@ const ContractDetails = () => {
                            Hôm nay, ngày... tháng... năm 2021, tại Công ty ………………, chúng tôi gồm:
                         </p>
                         <p className="fw-bold color3">Người sử dụng lao động:</p>
-
+                        <span>
+                           Công ty:
+                           .....................................................................................
+                        </span>
+                        <span>
+                           Địa chỉ:
+                           .......................................................................................
+                        </span>
+                        <span>Điện thoại:</span>
+                        <span>
+                           Đại diện: ……..................... Chức vụ: ………….................... Quốc
+                           tịch: Việt Nam
+                        </span>{" "}
+                        <p></p>
+                        <p className="fw-bold color3">Người lao động:</p>
+                        <table className="table">
+                           <tbody>
+                              <tr>
+                                 <td>ÔNG / BÀ :</td>
+                                 <td>Quốc tịch:</td>
+                              </tr>
+                              <tr>
+                                 <td>Ngày sinh:</td>
+                                 <td>Tại :</td>
+                                 <td>Nghề nghiệp :</td>
+                              </tr>
+                              <tr>
+                                 <td>Nghề nghiệp :</td>
+                                 <td>Giới tính:</td>
+                              </tr>
+                              <tr>
+                                 <td>Điạ chỉ thường trú :</td>
+                                 <td>Điạ chỉ cư trú :</td>
+                              </tr>
+                              <tr>
+                                 <td>Số CMND/CCCD :</td>
+                                 <td>Cấp ngày:</td>
+                                 <td>Tại :</td>
+                              </tr>
+                           </tbody>
+                        </table>
+                        <span className="font-italic">
+                           Cùng thoả thuận ký kết hợp đồng lao động và cam kết làm đúng những điều
+                           khoản sau đây: <span className="text-danger">setting</span>
+                        </span>
                         <CKEditor
                            editor={ClassicEditor}
                            data="<p>Hello CKEditor!</p>"

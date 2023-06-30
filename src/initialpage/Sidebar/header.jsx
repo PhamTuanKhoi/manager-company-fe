@@ -29,8 +29,8 @@ const Header = (props) => {
    const dispatch = useDispatch();
 
    const handleLogout = () => {
-      socket?.emit("del-key", { userId: user?._id });
       dispatch(authSclice.actions.logout());
+      // socket?.emit("del-key", { userId: user?._id });
    };
 
    const { user } = useSelector((state) => state.auth);
