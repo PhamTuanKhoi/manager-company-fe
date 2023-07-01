@@ -68,6 +68,17 @@ const Users = () => {
 
    const columns = [
       {
+         title: "Mã NLD",
+         dataIndex: "code",
+         render: (text) =>
+            text && text < 10 ? (
+               <span className="text-primary fw-bold">FCE-0{text}</span>
+            ) : (
+               <span className="text-primary fw-bold">FCE-{text}</span>
+            ),
+         sorter: (a, b) => a.code - b.code,
+      },
+      {
          title: "Họ và tên",
          dataIndex: "name",
          render: (text, record) => (
