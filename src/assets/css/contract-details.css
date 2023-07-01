@@ -29,7 +29,54 @@
 }
 
 .ck-editor__editable_inline {
-    min-height: 300px;
-    width: 800px;
+    min-height: 300px; 
 }
+
  
+
+.setting-contract { 
+    /* margin-left: 50%; */
+}
+
+.contract-btn{ 
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 35px;
+}
+
+.contract-rules { 
+    cursor: pointer;
+}
+
+.input-hidden {
+    /* border: none; */
+}
+
+.width-350{
+    width: 350px;
+}
+
+.width-300{
+    width: 300px;
+}
+
+.width-250{
+    width: 250px;
+}
+
+
+.width-170{
+    width: 170px;
+}
+
+.width-100{
+    width: 100px;
+}
+
+.width-25{
+    width: 25px;
+}
+
+.width-50{
+    width: 45px;
+}
