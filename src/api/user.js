@@ -18,6 +18,10 @@ export const userAPI = {
       return axios.get(path + "worker/excellent");
    },
 
+   listWorkerByProject(query = {}) {
+      return axios.get(path + "by-project", { params: query });
+   },
+
    listEmployeesByUserId(query = {}) {
       return axios.get(path + "employees-by-user", { params: query });
    },

@@ -6,6 +6,10 @@ export const projectAPI = {
       return await axios.get(path);
    },
 
+   async findAll() {
+      return await axios.get(path + "list");
+   },
+
    async listByAllLever(query = {}) {
       return await axios.get(path + "all", { params: query });
    },

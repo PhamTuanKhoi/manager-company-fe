@@ -1,20 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import "antd/dist/antd.css";
 import "../antdstyle.css";
-import { useDispatch } from "react-redux";
-import { useLoading } from "../../hook/useLoading";
-import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import { Modal } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import "../../assets/css/contract-details.css";
 
 import AddContractRules from "../../_components/modelbox/AddContractRules";
+import { projectAPI } from "../../api/project";
+import { userAPI } from "../../api/user";
+import { useMemo } from "react";
+import { dots } from "../../constant/index";
+import moment from "moment";
 
 const ContractDetails = () => {
    const [menu, setMenu] = useState(false);
+   const [projects, setProjects] = useState([]);
+   const [projectId, setProjectId] = useState("");
+   const [users, setUsers] = useState([]);
+   const [userId, setUserId] = useState("");
+   const [worker, setWorker] = useState({
+      name: dots,
+      date: dots,
+      address: dots,
+      cccd: dots,
+      field: dots,
+   });
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -29,7 +38,31 @@ const ContractDetails = () => {
       const data = editor.getData();
       console.log(data);
    };
-   // const handleUpdate
+
+   const findAllProject = async () => {
+      const { data } = await projectAPI.findAll();
+      setProjects(data);
+   };
+
+   useEffect(() => {
+      findAllProject();
+   }, []);
+
+   const findWorkerByProject = async () => {
+      const { data } = await userAPI.listWorkerByProject({ projectId });
+      setUsers(data);
+   };
+
+   useEffect(() => {
+      findWorkerByProject();
+   }, [projectId]);
+
+   useEffect(() => {
+      const user = users?.find((item) => item?._id === userId);
+      if (user?._id) setWorker(user);
+   }, [userId]);
+
+   console.log(worker);
    return (
       <div className="page-wrapper">
          <Helmet>
@@ -43,20 +76,37 @@ const ContractDetails = () => {
             <div className="row filter-row">
                <div className="col-sm-6 col-md-3" style={{ width: "100px" }}>
                   <div className="form-group form-focus select-focus">
-                     <select className="form-control floating" style={{ background: "#ffcc00" }}>
-                        <option value={""}>{""}</option>
-                        <option>FCE01</option>
+                     <select
+                        className="form-control floating"
+                        style={{ background: "#ffcc00" }}
+                        onChange={(e) => setUserId(e.target.value)}
+                     >
+                        <option className="focus-label" value={""}>
+                           chọn
+                        </option>
+                        {users?.map((i, index) => (
+                           <option key={index} value={i._id}>
+                              {i?.name}
+                           </option>
+                        ))}
                      </select>
                      <label className="focus-label">Mã NLD</label>
                   </div>
                </div>
                <div className="col-sm-6 col-md-3">
-                  <div className="form-group form-focus select-focus">
+                  <div
+                     className="form-group form-focus select-focus"
+                     onChange={(e) => setProjectId(e.target.value)}
+                  >
                      <select className="form-control floating">
                         <option className="focus-label" value={""}>
                            chọn
                         </option>
-                        <option>Nhà Máy Giấy Lee & Man Việt Nam</option>
+                        {projects?.map((i, index) => (
+                           <option key={index} value={i._id}>
+                              {i?.name}
+                           </option>
+                        ))}
                      </select>
                      <label className="focus-label">Dự án</label>
                   </div>
@@ -107,7 +157,14 @@ const ContractDetails = () => {
                               defaultValue={"HỢP ĐỒNG LAO ĐỘNG"}
                            />
                         </p>
-                        <p className="font-italic color3">- Căn cứ Bộ luật Lao động 2019</p>
+                        <p className="font-italic color3">
+                           - Căn cứ{" "}
+                           <input
+                              className="input-hidden width-350"
+                              type="text"
+                              defaultValue={"………………"}
+                           />
+                        </p>
                         <p className="color3">
                            Hôm nay, ngày{" "}
                            <input
@@ -189,7 +246,7 @@ const ContractDetails = () => {
                                     <input
                                        className="input-hidden width-170"
                                        type="text"
-                                       defaultValue={"……............................"}
+                                       value={worker?.name}
                                     />{" "}
                                  </td>
                                  <td>
@@ -207,7 +264,11 @@ const ContractDetails = () => {
                                     <input
                                        className="input-hidden width-170"
                                        type="text"
-                                       defaultValue={"……............................"}
+                                       value={
+                                          worker?.date !== dots
+                                             ? moment(worker?.date).format("DD/mm/yyyy")
+                                             : dots
+                                       }
                                     />{" "}
                                  </td>
                                  <td>
@@ -233,7 +294,7 @@ const ContractDetails = () => {
                                     <input
                                        className="input-hidden width-170"
                                        type="text"
-                                       defaultValue={"……............................"}
+                                       value={worker.field}
                                     />
                                  </td>
                               </tr>
@@ -243,7 +304,7 @@ const ContractDetails = () => {
                                     <input
                                        className="input-hidden width-350"
                                        type="text"
-                                       defaultValue={"……............................"}
+                                       value={worker.address}
                                     />
                                  </td>
                               </tr>
@@ -258,12 +319,12 @@ const ContractDetails = () => {
                                  </td>
                               </tr>
                               <tr>
-                                 <td colSpan={2}>
+                                 <td>
                                     Số CMND/CCCD :{" "}
                                     <input
-                                       className="input-hidden width-100"
+                                       className="input-hidden width-170"
                                        type="text"
-                                       defaultValue={"……............................"}
+                                       value={worker.cccd}
                                     />
                                  </td>
                                  <td>
@@ -271,15 +332,15 @@ const ContractDetails = () => {
                                     <input
                                        className="input-hidden width-100"
                                        type="text"
-                                       defaultValue={"……............................"}
+                                       defaultValue={"……..........."}
                                     />
                                  </td>
-                                 <td>
+                                 <td colSpan={2}>
                                     Tại :{" "}
                                     <input
-                                       className="input-hidden width-100"
+                                       className="input-hidden width-350"
                                        type="text"
-                                       defaultValue={"……............................"}
+                                       defaultValue={"……..........."}
                                     />
                                  </td>
                               </tr>

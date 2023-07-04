@@ -49,7 +49,10 @@
 }
 
 .input-hidden {
-    /* border: none; */
+    /* border-left: none;
+    border-top: none;
+    border-right: none;
+    border-bottom: 0.5px solid black; */
 }
 
 .width-350{
