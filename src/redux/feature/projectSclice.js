@@ -78,6 +78,21 @@ export const listProjectByAllLevel = createAsyncThunk(
    }
 );
 
+export const findAllProject = createAsyncThunk(
+   "project/findAll",
+   async ({ setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await projectAPI.findAll();
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 export const projectDetail = createAsyncThunk(
    "project/projectDetail",
    async ({ id, setLoading }, { rejectWithValue }) => {
@@ -217,19 +232,6 @@ const projectSclice = createSlice({
          state.error = action.payload.message;
       },
 
-      // list by client
-      // [listProjectByClient.pending]: (state, action) => {
-      //    state.loading = true;
-      // },
-      // [listProjectByClient.fulfilled]: (state, action) => {
-      //    state.loading = false;
-      //    state.projects = action.payload;
-      // },
-      // [listProjectByClient.rejected]: (state, action) => {
-      //    state.loading = false;
-      //    state.error = action.payload.message;
-      // },
-
       // list by admin
       [listProjectByAllLevel.pending]: (state, action) => {
          state.loading = true;
@@ -281,6 +283,19 @@ const projectSclice = createSlice({
          }
       },
       [deleteProject.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // find all
+      [findAllProject.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [findAllProject.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.projects = action.payload;
+      },
+      [findAllProject.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

@@ -56,27 +56,27 @@ export const listWorkerById = createAsyncThunk(
    }
 );
 
-// export const listWorkerByEmployees = createAsyncThunk(
-//    "worker/listWorkerByEmployees",
-//    async ({ id, setLoading }, { rejectWithValue }) => {
-//       try {
-//          setLoading(true);
-//          const { data } = await userAPI.listWorkerByEmployees(id);
-//          setLoading(false);
-//          return data;
-//       } catch (error) {
-//          setLoading(false);
-//          return rejectWithValue(error.response.data);
-//       }
-//    }
-// );
-
 export const listWorkerAttendanceToday = createAsyncThunk(
    "worker/listWorkerAttendanceToday",
    async ({ query, setLoading }, { rejectWithValue }) => {
       try {
          setLoading(true);
          const { data } = await userAPI.listTodayAttendance(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const listWorkerByProjectId = createAsyncThunk(
+   "worker/listWorkerByProjectId",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await userAPI.listWorkerByProject(query);
          setLoading(false);
          return data;
       } catch (error) {
@@ -544,6 +544,19 @@ const workerSclice = createSlice({
          }
       },
       [updateWorkerStatus.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+
+      // update status
+      [listWorkerByProjectId.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [listWorkerByProjectId.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.workers = action.payload;
+      },
+      [listWorkerByProjectId.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

@@ -10,6 +10,10 @@ export const userAPI = {
       return axios.get(path + "client-role-employees/" + id);
    },
 
+   listClientByProjectId(id) {
+      return axios.get(path + "client/project/" + id);
+   },
+
    listEmployees(filter = {}) {
       return axios.get(path + "employees", { params: filter });
    },

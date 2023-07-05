@@ -5,17 +5,17 @@ import "../antdstyle.css";
 import "../../assets/css/contract-details.css";
 
 import AddContractRules from "../../_components/modelbox/AddContractRules";
-import { projectAPI } from "../../api/project";
-import { userAPI } from "../../api/user";
-import { useMemo } from "react";
 import { dots } from "../../constant/index";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { findAllProject } from "../../redux/feature/projectSclice";
+import { useLoading } from "../../hook/useLoading";
+import workerSclice, { listWorkerByProjectId } from "../../redux/feature/workerSclice";
+import { listClientByProjectId } from "../../redux/feature/clientSclice";
 
 const ContractDetails = () => {
    const [menu, setMenu] = useState(false);
-   const [projects, setProjects] = useState([]);
    const [projectId, setProjectId] = useState("");
-   const [users, setUsers] = useState([]);
    const [userId, setUserId] = useState("");
    const [worker, setWorker] = useState({
       name: dots,
@@ -23,6 +23,13 @@ const ContractDetails = () => {
       address: dots,
       cccd: dots,
       field: dots,
+   });
+   const [client, setClient] = useState({
+      name: dots,
+      mobile: dots,
+      address: dots,
+      field: dots,
+      company: dots,
    });
 
    const toggleMobileMenu = () => {
@@ -33,36 +40,74 @@ const ContractDetails = () => {
 
    const handleShow = () => setShow(true);
    const handleClose = () => setShow(false);
+   const dispatch = useDispatch();
+   const { setLoading } = useLoading();
 
    const handleEditorChange = (event, editor) => {
       const data = editor.getData();
       console.log(data);
    };
 
-   const findAllProject = async () => {
-      const { data } = await projectAPI.findAll();
-      setProjects(data);
-   };
+   const { projects } = useSelector((state) => state.project);
+   const { workers } = useSelector((state) => state.worker);
+   const state = useSelector((state) => state.client);
 
    useEffect(() => {
-      findAllProject();
+      setClient({
+         name: dots,
+         mobile: dots,
+         address: dots,
+         field: dots,
+         company: dots,
+      });
+      dispatch(findAllProject({ setLoading }));
    }, []);
 
-   const findWorkerByProject = async () => {
-      const { data } = await userAPI.listWorkerByProject({ projectId });
-      setUsers(data);
-   };
-
    useEffect(() => {
-      findWorkerByProject();
+      dispatch(listWorkerByProjectId({ query: { projectId }, setLoading }));
+      if (projectId) {
+         dispatch(listClientByProjectId({ projectId, setLoading }));
+      }
    }, [projectId]);
 
    useEffect(() => {
-      const user = users?.find((item) => item?._id === userId);
+      if (state.client && projectId) setClient(state.client);
+   }, [projectId]);
+
+   useEffect(() => {
+      const user = workers?.find((item) => item?._id === userId);
       if (user?._id) setWorker(user);
    }, [userId]);
 
-   console.log(worker);
+   const handleSelectProject = (e) => {
+      setWorker({
+         name: dots,
+         date: dots,
+         address: dots,
+         cccd: dots,
+         field: dots,
+      });
+      setProjectId(e);
+   };
+
+   const handleEraser = () => {
+      setWorker({
+         name: dots,
+         date: dots,
+         address: dots,
+         cccd: dots,
+         field: dots,
+      });
+
+      setClient({
+         name: dots,
+         mobile: dots,
+         address: dots,
+         field: dots,
+         company: dots,
+      });
+   };
+
    return (
       <div className="page-wrapper">
          <Helmet>
@@ -84,7 +129,7 @@ const ContractDetails = () => {
                         <option className="focus-label" value={""}>
                            chọn
                         </option>
-                        {users?.map((i, index) => (
+                        {workers?.map((i, index) => (
                            <option key={index} value={i._id}>
                               {i?.name}
                            </option>
@@ -96,7 +141,7 @@ const ContractDetails = () => {
                <div className="col-sm-6 col-md-3">
                   <div
                      className="form-group form-focus select-focus"
-                     onChange={(e) => setProjectId(e.target.value)}
+                     onChange={(e) => handleSelectProject(e.target.value)}
                   >
                      <select className="form-control floating">
                         <option className="focus-label" value={""}>
@@ -110,6 +155,15 @@ const ContractDetails = () => {
                      </select>
                      <label className="focus-label">Dự án</label>
                   </div>
+               </div>
+               <div className="col-auto setting-contract">
+                  <a
+                     href="#"
+                     className="contract-btn btn btn-outline-danger"
+                     onClick={handleEraser}
+                  >
+                     <i class="fa fa-eraser" aria-hidden="true" style={{ color: "#198754" }}></i>
+                  </a>
                </div>
                <div className="col-auto setting-contract">
                   <a href="#" className="contract-btn" onClick={handleShow}>
@@ -130,7 +184,10 @@ const ContractDetails = () => {
                                  <input
                                     className="input-hidden width-350"
                                     type="text"
-                                    defaultValue={"……….."}
+                                    value={client?.company}
+                                    onChange={(e) =>
+                                       setClient({ ...client, company: e.target.value })
+                                    }
                                  />
                               </span>
                               <p className="company">
@@ -198,19 +255,17 @@ const ContractDetails = () => {
                            <input
                               className="input-hidden width-350"
                               type="text"
-                              defaultValue={
-                                 "...................................................................................."
-                              }
+                              value={client?.company}
+                              onChange={(e) => setClient({ ...client, company: e.target.value })}
                            />
                         </span>
                         <span>
                            Địa chỉ:{" "}
                            <input
-                              className="input-hidden width-350"
+                              className="input-hidden width-500"
                               type="text"
-                              defaultValue={
-                                 "...................................................................................."
-                              }
+                              value={client?.address}
+                              onChange={(e) => setClient({ ...client, address: e.target.value })}
                            />
                         </span>
                         <span>
@@ -218,7 +273,8 @@ const ContractDetails = () => {
                            <input
                               className="input-hidden width-170"
                               type="text"
-                              defaultValue={"……............................"}
+                              value={client?.mobile}
+                              onChange={(e) => setClient({ ...client, mobile: e.target.value })}
                            />
                         </span>
                         <span>
@@ -226,7 +282,8 @@ const ContractDetails = () => {
                            <input
                               className="input-hidden width-170"
                               type="text"
-                              defaultValue={"……............................"}
+                              value={client?.name}
+                              onChange={(e) => setClient({ ...client, name: e.target.value })}
                            />{" "}
                            Chức vụ:{" "}
                            <input
@@ -247,6 +304,9 @@ const ContractDetails = () => {
                                        className="input-hidden width-170"
                                        type="text"
                                        value={worker?.name}
+                                       onChange={(e) =>
+                                          setWorker({ ...worker, name: e.target.value })
+                                       }
                                     />{" "}
                                  </td>
                                  <td>
@@ -268,6 +328,9 @@ const ContractDetails = () => {
                                           worker?.date !== dots
                                              ? moment(worker?.date).format("DD/mm/yyyy")
                                              : dots
+                                       }
+                                       onChange={(e) =>
+                                          setWorker({ ...worker, date: e.target.value })
                                        }
                                     />{" "}
                                  </td>
@@ -294,7 +357,10 @@ const ContractDetails = () => {
                                     <input
                                        className="input-hidden width-170"
                                        type="text"
-                                       value={worker.field}
+                                       onChange={(e) =>
+                                          setWorker({ ...worker, field: e.target.value })
+                                       }
+                                       value={worker?.field}
                                     />
                                  </td>
                               </tr>
@@ -302,9 +368,12 @@ const ContractDetails = () => {
                                  <td colSpan={3}>
                                     Điạ chỉ thường trú :{" "}
                                     <input
-                                       className="input-hidden width-350"
+                                       className="input-hidden width-500"
                                        type="text"
-                                       value={worker.address}
+                                       onChange={(e) =>
+                                          setWorker({ ...worker, address: e.target.value })
+                                       }
+                                       value={worker?.address}
                                     />
                                  </td>
                               </tr>
@@ -312,7 +381,7 @@ const ContractDetails = () => {
                                  <td colSpan={3}>
                                     Điạ chỉ cư trú :{" "}
                                     <input
-                                       className="input-hidden width-350"
+                                       className="input-hidden width-500"
                                        type="text"
                                        defaultValue={"……............................"}
                                     />
@@ -324,7 +393,10 @@ const ContractDetails = () => {
                                     <input
                                        className="input-hidden width-170"
                                        type="text"
-                                       value={worker.cccd}
+                                       onChange={(e) =>
+                                          setWorker({ ...worker, cccd: e.target.value })
+                                       }
+                                       value={worker?.cccd}
                                     />
                                  </td>
                                  <td>
