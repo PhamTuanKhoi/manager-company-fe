@@ -11,6 +11,12 @@ import { useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { itemRender, onShowSizeChange } from "../paginationfunction";
 import { Link } from "react-router-dom";
+import AddContract from "../../_components/modelbox/AddContract";
+import {
+   deleteContractCategory,
+   findAllContractCategory,
+} from "../../redux/feature/contractCategorySclice";
+import moment from "moment";
 
 const Contracts = () => {
    const [menu, setMenu] = useState(false);
@@ -19,30 +25,15 @@ const Contracts = () => {
       setMenu(!menu);
    };
 
-   const list = [
-      {
-         _id: 0,
-         name: "HỢP ĐỒNG VÔ THỜI HẠN",
-         start: "22/01/2023",
-         end: "22/09/2023",
-         project: "Var dung tau",
+   const [item, setItem] = useState({
+      _id: "",
+      name: "",
+      startDate: "",
+      endDate: "",
+      project: {
+         _id: "",
       },
-      {
-         _id: 1,
-         name: "HỢP ĐỒNG THỬ VIỆC",
-         start: "22/01/2023",
-         end: "22/09/2023",
-         project: "Coofides",
-      },
-      {
-         _id: 2,
-         name: "HỢP ĐỒNG CÓ THỜI HẠN",
-         start: "22/01/2023",
-         end: "22/09/2023",
-         project: "Leeandman",
-      },
-   ];
-
+   });
    const columns = [
       {
          title: "#",
@@ -52,24 +43,34 @@ const Contracts = () => {
          title: "Loại hợp đồng",
          dataIndex: "name",
          render: (text, record) => (
-            <Link to={`/app/administrator/contract-details/${record?._id}`}>{text}</Link>
+            <Link
+               className="text-uppercase"
+               to={`/app/administrator/contract-details/${record?._id}`}
+            >
+               {text}
+            </Link>
          ),
          sorter: (a, b) => a.name.length - b.name.length,
       },
       {
          title: "Ngày ký",
-         dataIndex: "start",
-         sorter: (a, b) => a.start.length - b.start.length,
+         dataIndex: "startDate",
+         render: (t, record) =>
+            record?.startDate ? moment(record?.startDate).format("DD/MM/YYYY") : "",
+         sorter: (a, b) => a.startDate - b.startDate,
       },
       {
          title: "Ngày kết thúc",
-         dataIndex: "end",
-         sorter: (a, b) => a.end.length - b.end.length,
+         dataIndex: "endDate",
+         render: (t, record) =>
+            record?.endDate ? moment(record?.endDate).format("DD/MM/YYYY") : "",
+         sorter: (a, b) => a.endDate - b.endDate,
       },
       {
          title: "Dự án",
          dataIndex: "project",
-         sorter: (a, b) => a.project.length - b.project.length,
+         render: (text, record) => record?.project?.name,
+         sorter: (a, b) => a.project?.name.length - b.project?.name.length,
       },
       {
          title: "Tùy chỉnh",
@@ -89,7 +90,7 @@ const Contracts = () => {
                      href="#"
                      onClick={() => {
                         setItem(record);
-                        handleShow();
+                        setShow(true);
                      }}
                   >
                      <i className="fa fa-pencil m-r-5" /> Sửa
@@ -98,8 +99,8 @@ const Contracts = () => {
                      className="dropdown-item"
                      href="#"
                      onClick={() => {
-                        setItem(record);
                         setShowDlt(true);
+                        setItem(record);
                      }}
                   >
                      <i className="fa fa-trash-o m-r-5" /> Xóa
@@ -111,70 +112,29 @@ const Contracts = () => {
    ];
 
    const [name, setName] = useState("");
-   const [item, setItem] = useState({});
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
    const [show, setShow] = useState(false);
    const [showDlt, setShowDlt] = useState(false);
 
-   const handleClose = () => {
-      setShow(false);
-      empty();
-   };
-   const handleShow = () => setShow(true);
-
-   const { departments } = useSelector((state) => state.department);
-
-   const empty = () => {
-      setName("");
-      setItem({});
-   };
-
-   useEffect(() => {
-      if (item.name) setName(item?.name);
-   }, [item]);
-
-   const handleSave = () => {
-      if (validatetion())
-         dispatch(createDepartment({ payload: { name }, setLoading, toast, empty, handleClose }));
-   };
-
-   const handleUpdate = () => {
-      if (item._id)
-         if (validatetion())
-            dispatch(
-               updateDepartment({
-                  id: item?._id,
-                  payload: { name },
-                  setLoading,
-                  toast,
-                  handleClose,
-               })
-            );
-   };
-
    const handleDelete = () => {
       if (item?._id)
          dispatch(
-            removeDepartment({ id: item?._id, setLoading, toast, close: () => setShowDlt(false) })
+            deleteContractCategory({
+               id: item?._id,
+               setLoading,
+               toast,
+               close: () => setShowDlt(false),
+            })
          );
    };
 
-   const validatetion = () => {
-      if (!name) {
-         toast.warn("vui lòng nhập tên phòng ban!");
-         return false;
-      }
+   const { contractCategorys } = useSelector((state) => state.contractCategory);
 
-      if (name && name.length < 4) {
-         toast.warn("tên phòng ban phải lớn hơn 3 kí tự!");
-         return false;
-      }
+   useEffect(() => {
+      dispatch(findAllContractCategory({ setLoading }));
+   }, []);
 
-      return true;
-   };
-
-   // const handleUpdate
    return (
       <div className="page-wrapper">
          <Helmet>
@@ -190,8 +150,8 @@ const Contracts = () => {
                      <h3 className="page-title">HỢP ĐỒNG</h3>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                     <a href="#" className="btn add-btn" onClick={handleShow}>
-                        <i className="fa fa-plus" /> Thêm phòng ban
+                     <a href="#" className="btn add-btn" onClick={() => setShow(true)}>
+                        <i className="fa fa-plus" /> Thêm hợp đồng
                      </a>
                   </div>
                </div>
@@ -203,7 +163,7 @@ const Contracts = () => {
                      <Table
                         className="table-striped"
                         pagination={{
-                           total: list?.length,
+                           total: contractCategorys?.length,
                            showSizeChanger: true,
                            onShowSizeChange: onShowSizeChange,
                            itemRender: itemRender,
@@ -211,7 +171,7 @@ const Contracts = () => {
                         style={{ overflowX: "auto" }}
                         columns={columns}
                         // bordered
-                        dataSource={list}
+                        dataSource={contractCategorys}
                         rowKey={(record) => record?._id}
                         // onChange={console.log("change")}
                      />
@@ -221,55 +181,20 @@ const Contracts = () => {
          </div>
          {/* /Page Content */}
          {/* Add Department Modal */}
-         <Modal show={show} centered>
-            <div className="modal-header">
-               <h5 className="modal-title">
-                  {item?._id ? "Cập nhật phòng ban" : "Phòng ban mới"}{" "}
-               </h5>
-               <button
-                  type="button"
-                  className="close-x"
-                  onClick={() => {
-                     handleClose();
-                     empty();
-                  }}
-               >
-                  <span aria-hidden="true">×</span>
-               </button>
-            </div>
-            <div className="modal-body">
-               <div className="form-group">
-                  <label>
-                     Tên phòng ban<span className="text-danger">*</span>
-                  </label>
-                  <input
-                     className="form-control"
-                     type="text"
-                     value={name}
-                     onChange={(e) => setName(e.target.value)}
-                  />
-               </div>
-               <div className="submit-section">
-                  {!item?._id ? (
-                     <button className="btn btn-primary submit-btn" onClick={handleSave}>
-                        Lưu
-                     </button>
-                  ) : (
-                     <button className="btn btn-primary submit-btn" onClick={handleUpdate}>
-                        Cập nhật
-                     </button>
-                  )}
-               </div>
-            </div>
-         </Modal>
+         <AddContract
+            show={show}
+            handleClose={() => setShow(false)}
+            item={item}
+            setItem={setItem}
+         />
          {/* /Add Department Modal */}
 
          {/* Delete Department Modal */}
          <Modal show={showDlt} centered>
             <div className="modal-body">
                <div className="form-header">
-                  <h3>Xóa phòng ban {name}</h3>
-                  <p>Bạn có chắc muốn xóa phòng ban {name}</p>
+                  <h3>Xóa {item?.name}</h3>
+                  <p>Bạn có chắc muốn xóa {item?.name}</p>
                </div>
                <div className="modal-btn delete-action">
                   <div className="row">

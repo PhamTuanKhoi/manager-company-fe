@@ -10,8 +10,10 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { findAllProject } from "../../redux/feature/projectSclice";
 import { useLoading } from "../../hook/useLoading";
-import workerSclice, { listWorkerByProjectId } from "../../redux/feature/workerSclice";
+import { listWorkerByProjectId } from "../../redux/feature/workerSclice";
 import { listClientByProjectId } from "../../redux/feature/clientSclice";
+import { useParams } from "react-router-dom";
+import { findByIdContractCategory } from "../../redux/feature/contractCategorySclice";
 
 const ContractDetails = () => {
    const [menu, setMenu] = useState(false);
@@ -30,6 +32,7 @@ const ContractDetails = () => {
       address: dots,
       field: dots,
       company: dots,
+      nameContract: dots,
    });
 
    const toggleMobileMenu = () => {
@@ -42,16 +45,18 @@ const ContractDetails = () => {
    const handleClose = () => setShow(false);
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
+   const { id } = useParams();
 
    const handleEditorChange = (event, editor) => {
       const data = editor.getData();
-      console.log(data);
    };
 
    const { projects } = useSelector((state) => state.project);
    const { workers } = useSelector((state) => state.worker);
    const state = useSelector((state) => state.client);
+   const { contractCategory } = useSelector((state) => state.contractCategory);
 
+   // fetch list projects
    useEffect(() => {
       setClient({
          name: dots,
@@ -63,12 +68,18 @@ const ContractDetails = () => {
       dispatch(findAllProject({ setLoading }));
    }, []);
 
+   // fetch worker by id project
    useEffect(() => {
       dispatch(listWorkerByProjectId({ query: { projectId }, setLoading }));
       if (projectId) {
          dispatch(listClientByProjectId({ projectId, setLoading }));
       }
    }, [projectId]);
+
+   // fetch contract category
+   useEffect(() => {
+      dispatch(findByIdContractCategory({ id, setLoading }));
+   }, [id]);
 
    useEffect(() => {
       if (state.client && projectId) setClient(state.client);
@@ -78,6 +89,10 @@ const ContractDetails = () => {
       const user = workers?.find((item) => item?._id === userId);
       if (user?._id) setWorker(user);
    }, [userId]);
+
+   useEffect(() => {
+      setClient({ ...client, nameContract: contractCategory?.name });
+   }, [contractCategory]);
 
    const handleSelectProject = (e) => {
       setWorker({
@@ -106,6 +121,9 @@ const ContractDetails = () => {
          field: dots,
          company: dots,
       });
+
+      setProjectId("");
+      setUserId("");
    };
 
    return (
@@ -124,6 +142,7 @@ const ContractDetails = () => {
                      <select
                         className="form-control floating"
                         style={{ background: "#ffcc00" }}
+                        value={userId}
                         onChange={(e) => setUserId(e.target.value)}
                      >
                         <option className="focus-label" value={""}>
@@ -139,14 +158,13 @@ const ContractDetails = () => {
                   </div>
                </div>
                <div className="col-sm-6 col-md-3">
-                  <div
-                     className="form-group form-focus select-focus"
-                     onChange={(e) => handleSelectProject(e.target.value)}
-                  >
-                     <select className="form-control floating">
-                        <option className="focus-label" value={""}>
-                           chọn
-                        </option>
+                  <div className="form-group form-focus select-focus">
+                     <select
+                        className="form-control floating"
+                        value={projectId}
+                        onChange={(e) => handleSelectProject(e.target.value)}
+                     >
+                        <option className="focus-label">chọn</option>
                         {projects?.map((i, index) => (
                            <option key={index} value={i._id}>
                               {i?.name}
@@ -162,7 +180,11 @@ const ContractDetails = () => {
                      className="contract-btn btn btn-outline-danger"
                      onClick={handleEraser}
                   >
-                     <i class="fa fa-eraser" aria-hidden="true" style={{ color: "#198754" }}></i>
+                     <i
+                        className="fa fa-eraser"
+                        aria-hidden="true"
+                        style={{ color: "#198754" }}
+                     ></i>
                   </a>
                </div>
                <div className="col-auto setting-contract">
@@ -209,9 +231,12 @@ const ContractDetails = () => {
                         {/* header cart */}
                         <p className="contract-name text-center">
                            <input
-                              className="input-hidden width-350 contract-name color3 text-center"
+                              className="input-hidden text-uppercase contract-name color3 text-center width-350"
                               type="text"
-                              defaultValue={"HỢP ĐỒNG LAO ĐỘNG"}
+                              value={client?.nameContract}
+                              onChange={(e) =>
+                                 setClient({ ...client, nameContract: e.target.value })
+                              }
                            />
                         </p>
                         <p className="font-italic color3">
