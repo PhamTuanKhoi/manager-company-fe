@@ -40,6 +40,7 @@ const ContractDetails = () => {
    };
 
    const [show, setShow] = useState(false);
+   const [rules, setRules] = useState("");
 
    const handleShow = () => setShow(true);
    const handleClose = () => setShow(false);
@@ -49,6 +50,7 @@ const ContractDetails = () => {
 
    const handleEditorChange = (event, editor) => {
       const data = editor.getData();
+      setRules(data);
    };
 
    const { projects } = useSelector((state) => state.project);
@@ -187,11 +189,11 @@ const ContractDetails = () => {
                      ></i>
                   </a>
                </div>
-               <div className="col-auto setting-contract">
+               {/* <div className="col-auto setting-contract">
                   <a href="#" className="contract-btn" onClick={handleShow}>
                      <i className="fa fa-cog" aria-hidden="true"></i>
                   </a>
-               </div>
+               </div> */}
             </div>
             {/* Search Filter */}
             <div className="row">
@@ -450,11 +452,24 @@ const ContractDetails = () => {
                               <i className="fa fa-pencil" aria-hidden="true"></i> ghi
                            </span>
                         </span>{" "}
+                        <div className="mt-3" dangerouslySetInnerHTML={{ __html: rules }}></div>
+                        <div className="sign-contract">
+                           <div className="sign-name">
+                              <span className="sign-title">NGƯỜI LAO ĐỘNG</span>
+                              <span className="color-333333">(Ký, ghi rõ họ tên)</span>
+                           </div>
+                           <div className="sign-name">
+                              <span className="sign-title">NGƯỜI SỬ DỤNG LAO ĐỘNG</span>
+                              <span className="color-333333">(Ký, ghi rõ họ tên)</span>
+                           </div>
+                        </div>
                         {/* AddContractRules */}
                         <AddContractRules
                            show={show}
                            handleClose={handleClose}
                            handleEditorChange={handleEditorChange}
+                           setRules={setRules}
+                           rules={rules}
                         />
                         <p style={{ height: "20px" }}></p>
                      </div>

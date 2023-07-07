@@ -111,7 +111,6 @@ const Contracts = () => {
       },
    ];
 
-   const [name, setName] = useState("");
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
    const [show, setShow] = useState(false);

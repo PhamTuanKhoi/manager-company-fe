@@ -3,7 +3,11 @@ import { Modal } from "react-bootstrap";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-const AddContractRules = ({ show, handleClose, handleEditorChange }) => {
+const AddContractRules = ({ show, handleClose, handleEditorChange, setRules, rules }) => {
+   const close = () => {
+      handleClose();
+      setRules("");
+   };
    return (
       <Modal
          show={show}
@@ -26,13 +30,21 @@ const AddContractRules = ({ show, handleClose, handleEditorChange }) => {
                         <CKEditor
                            className="ckeditor-size"
                            editor={ClassicEditor}
-                           data="<p>Hello CKEditor!</p>"
+                           data={rules}
                            onChange={handleEditorChange}
                         />
                      </div>
                   </div>
                   <div className="submit-section">
-                     <button className="btn btn-secondary submit-btn">Lưu</button>
+                     <button
+                        className="btn btn-danger submit-btn me-1"
+                        onClick={() => setRules("")}
+                     >
+                        Xóa sạch
+                     </button>
+                     <button className="btn btn-secondary submit-btn ms-1" onClick={handleClose}>
+                        Lưu
+                     </button>
                   </div>
                </div>
             </div>

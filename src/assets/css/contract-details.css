@@ -84,3 +84,26 @@
 .width-50{
     width: 45px;
 }
+
+
+.sign-contract{ 
+    margin-top: 40px !important;
+    display: flex;
+    width: 100%; 
+}
+
+.sign-name{
+    display: flex;
+    flex-direction: column;
+    width: 50%; 
+    text-align: center;
+}
+
+.sign-title{
+    color: #333333; 
+    font-weight: bold;
+}
+
+.color-333333{
+    color: #333333; 
+}
