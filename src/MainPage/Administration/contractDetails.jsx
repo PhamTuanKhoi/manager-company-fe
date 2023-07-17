@@ -14,6 +14,8 @@ import { listWorkerByProjectId } from "../../redux/feature/workerSclice";
 import { listClientByProjectId } from "../../redux/feature/clientSclice";
 import { useParams } from "react-router-dom";
 import { findByIdContractCategory } from "../../redux/feature/contractCategorySclice";
+import { createContractDetail } from "../../redux/feature/contractDetailSclice";
+import { toast } from "react-toastify";
 
 const ContractDetails = () => {
    const [menu, setMenu] = useState(false);
@@ -25,6 +27,12 @@ const ContractDetails = () => {
       address: dots,
       cccd: dots,
       field: dots,
+      nationality: dots,
+      bornAt: dots,
+      gender: dots,
+      resident: dots,
+      dateCccd: dots,
+      cccdAt: dots,
    });
    const [client, setClient] = useState({
       name: dots,
@@ -33,6 +41,16 @@ const ContractDetails = () => {
       field: dots,
       company: dots,
       nameContract: dots,
+      address: dots,
+      position: dots,
+      nationality: dots,
+   });
+
+   const [details, setDetails] = useState({
+      base: dots,
+      at: dots,
+      rules: dots,
+      date: dots,
    });
 
    const toggleMobileMenu = () => {
@@ -47,6 +65,7 @@ const ContractDetails = () => {
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
    const { id } = useParams();
+   const { user } = useSelector((state) => state.auth);
 
    const handleEditorChange = (event, editor) => {
       const data = editor.getData();
@@ -128,6 +147,47 @@ const ContractDetails = () => {
       setUserId("");
    };
 
+   const handleSave = async () => {
+      if (!user._id) return toast.warn("please login to system");
+
+      if (validattion({ details, worker, client })) {
+         const payload = {
+            ...details,
+            contractCategoryId: id,
+            date: new Date(details?.date).getTime(),
+            rules,
+            worker: { ...worker, dateCccd: new Date(worker?.dateCccd).getTime() },
+            client,
+            creator: user?._id,
+         };
+
+         console.log(payload);
+
+         dispatch(createContractDetail({ payload, toast, setLoading }));
+      }
+   };
+
+   const validattion = ({ details, worker, client }) => {
+      Object.keys(details).filter(
+         (key) => (details[key] === dots || details[key] === "") && delete details[key]
+      );
+
+      Object.keys(worker).filter(
+         (key) => (worker[key] === dots || worker[key] === "") && delete worker[key]
+      );
+
+      Object.keys(client).filter(
+         (key) => (client[key] === dots || client[key] === "") && delete client[key]
+      );
+
+      if (!rules) {
+         toast.warn("please enter your rules");
+         return false;
+      }
+
+      return true;
+   };
+
    return (
       <div className="page-wrapper">
          <Helmet>
@@ -152,7 +212,7 @@ const ContractDetails = () => {
                         </option>
                         {workers?.map((i, index) => (
                            <option key={index} value={i._id}>
-                              {i?.name}
+                              {i?.code && i?.code < 10 ? "FCE-0" + i?.code : "FCE-" + i?.code}
                            </option>
                         ))}
                      </select>
@@ -246,33 +306,28 @@ const ContractDetails = () => {
                            <input
                               className="input-hidden width-350"
                               type="text"
-                              defaultValue={"………………"}
+                              onChange={(e) => setDetails({ ...details, base: e.target.value })}
+                              value={details?.base}
                            />
                         </p>
                         <p className="color3">
                            Hôm nay, ngày{" "}
                            <input
-                              className="input-hidden width-25"
-                              type="text"
-                              defaultValue={"..."}
+                              className="input-hidden width-110"
+                              type="date"
+                              onChange={(e) => setDetails({ ...details, date: e.target.value })}
+                              value={
+                                 details.date !== dots
+                                    ? moment(details.date).format("yyyy-MM-DD")
+                                    : dots
+                              }
                            />{" "}
-                           tháng{" "}
-                           <input
-                              className="input-hidden width-25"
-                              type="text"
-                              defaultValue={"..."}
-                           />
-                           năm{" "}
-                           <input
-                              className="input-hidden width-50"
-                              type="text"
-                              defaultValue={"..."}
-                           />
                            , tại{" "}
                            <input
                               className="input-hidden width-350"
                               type="text"
-                              defaultValue={"………………"}
+                              onChange={(e) => setDetails({ ...details, at: e.target.value })}
+                              value={details?.at}
                            />
                            , chúng tôi gồm:
                         </p>
@@ -316,9 +371,18 @@ const ContractDetails = () => {
                            <input
                               className="input-hidden width-170"
                               type="text"
-                              defaultValue={"……............................"}
+                              value={client?.position}
+                              onChange={(e) => setClient({ ...client, position: e.target.value })}
                            />{" "}
-                           Quốc tịch: Việt Nam
+                           Quốc tịch:{" "}
+                           <input
+                              className="input-hidden width-170"
+                              type="text"
+                              value={client?.nationality}
+                              onChange={(e) =>
+                                 setClient({ ...client, nationality: e.target.value })
+                              }
+                           />{" "}
                         </span>{" "}
                         <p></p>
                         <p className="fw-bold color3">Người lao động:</p>
@@ -341,7 +405,10 @@ const ContractDetails = () => {
                                     <input
                                        className="input-hidden width-170"
                                        type="text"
-                                       defaultValue={"……............................"}
+                                       value={worker?.nationality}
+                                       onChange={(e) =>
+                                          setWorker({ ...worker, nationality: e.target.value })
+                                       }
                                     />{" "}
                                  </td>
                               </tr>
@@ -349,11 +416,11 @@ const ContractDetails = () => {
                                  <td colSpan={2}>
                                     Ngày sinh:{" "}
                                     <input
-                                       className="input-hidden width-170"
-                                       type="text"
+                                       className="input-hidden width-110"
+                                       type="date"
                                        value={
                                           worker?.date !== dots
-                                             ? moment(worker?.date).format("DD/mm/yyyy")
+                                             ? moment(worker?.date).format("yyyy-MM-DD")
                                              : dots
                                        }
                                        onChange={(e) =>
@@ -366,7 +433,10 @@ const ContractDetails = () => {
                                     <input
                                        className="input-hidden width-350"
                                        type="text"
-                                       defaultValue={"……............................"}
+                                       value={worker?.bornAt}
+                                       onChange={(e) =>
+                                          setWorker({ ...worker, bornAt: e.target.value })
+                                       }
                                     />{" "}
                                  </td>
                               </tr>
@@ -376,7 +446,10 @@ const ContractDetails = () => {
                                     <input
                                        className="input-hidden width-170"
                                        type="text"
-                                       defaultValue={"……............................"}
+                                       value={worker?.gender}
+                                       onChange={(e) =>
+                                          setWorker({ ...worker, gender: e.target.value })
+                                       }
                                     />
                                  </td>
                                  <td>
@@ -410,7 +483,10 @@ const ContractDetails = () => {
                                     <input
                                        className="input-hidden width-500"
                                        type="text"
-                                       defaultValue={"……............................"}
+                                       value={worker?.resident}
+                                       onChange={(e) =>
+                                          setWorker({ ...worker, resident: e.target.value })
+                                       }
                                     />
                                  </td>
                               </tr>
@@ -430,8 +506,15 @@ const ContractDetails = () => {
                                     Cấp ngày:{" "}
                                     <input
                                        className="input-hidden width-100"
-                                       type="text"
-                                       defaultValue={"……..........."}
+                                       type="date"
+                                       value={
+                                          worker?.dateCccd !== dots
+                                             ? moment(worker?.dateCccd).format("yyyy-MM-DD")
+                                             : dots
+                                       }
+                                       onChange={(e) =>
+                                          setWorker({ ...worker, dateCccd: e.target.value })
+                                       }
                                     />
                                  </td>
                                  <td colSpan={2}>
@@ -439,7 +522,10 @@ const ContractDetails = () => {
                                     <input
                                        className="input-hidden width-350"
                                        type="text"
-                                       defaultValue={"……..........."}
+                                       value={worker?.cccdAt}
+                                       onChange={(e) =>
+                                          setWorker({ ...worker, cccdAt: e.target.value })
+                                       }
                                     />
                                  </td>
                               </tr>
@@ -473,6 +559,11 @@ const ContractDetails = () => {
                         />
                         <p style={{ height: "20px" }}></p>
                      </div>
+                  </div>
+                  <div className="text-center mt-4">
+                     <span className="btn btn-secondary" onClick={handleSave}>
+                        Lưu
+                     </span>
                   </div>
                </div>
             </div>

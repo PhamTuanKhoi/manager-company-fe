@@ -6,7 +6,7 @@ export const emailrgx =
 // export const phonergx = /^[a-zA-Z0-9_ .-]*$/;
 export const phonergx = /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/;
 
-export const dots = "……...........";
+export const dots = "...";
 
 export const cloudinaryAPI = {
    upload_preset: "rwhxud72",
