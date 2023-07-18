@@ -49,6 +49,12 @@ export const formatHourToSecond = (time) => {
 export const avartarFAKE = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 export const logoFAKE = "https://coviec.vn/uploads/banner/2022_06/logo_1.png";
 
+export const UserGenderType = {
+   MALE: 1,
+   FEMALE: 0,
+   ORDER: 2,
+};
+
 export const EmployeeDepartmentType = {
    MARKETING: "marketing",
    RECRUIT: "recruit",

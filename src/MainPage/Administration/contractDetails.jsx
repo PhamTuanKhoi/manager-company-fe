@@ -5,7 +5,7 @@ import "../antdstyle.css";
 import "../../assets/css/contract-details.css";
 
 import AddContractRules from "../../_components/modelbox/AddContractRules";
-import { dots } from "../../constant/index";
+import { dots, UserGenderType } from "../../constant/index";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { findAllProject } from "../../redux/feature/projectSclice";
@@ -16,42 +16,60 @@ import { useParams } from "react-router-dom";
 import { findByIdContractCategory } from "../../redux/feature/contractCategorySclice";
 import { createContractDetail } from "../../redux/feature/contractDetailSclice";
 import { toast } from "react-toastify";
+import { Radio } from "antd";
+
+const initWorker = {
+   name: dots,
+   date: dots,
+   address: dots,
+   cccd: dots,
+   field: dots,
+   nationality: dots,
+   bornAt: dots,
+   gender: UserGenderType.MALE,
+   resident: dots,
+   dateCccd: dots,
+   cccdAt: dots,
+};
+
+const initClient = {
+   name: dots,
+   mobile: dots,
+   address: dots,
+   field: dots,
+   company: dots,
+   nameContract: dots,
+   address: dots,
+   position: dots,
+   nationality: dots,
+};
+
+const initDetails = {
+   base: dots,
+   at: dots,
+   rules: dots,
+   date: dots,
+};
 
 const ContractDetails = () => {
    const [menu, setMenu] = useState(false);
    const [projectId, setProjectId] = useState("");
    const [userId, setUserId] = useState("");
-   const [worker, setWorker] = useState({
-      name: dots,
-      date: dots,
-      address: dots,
-      cccd: dots,
-      field: dots,
-      nationality: dots,
-      bornAt: dots,
-      gender: dots,
-      resident: dots,
-      dateCccd: dots,
-      cccdAt: dots,
-   });
-   const [client, setClient] = useState({
-      name: dots,
-      mobile: dots,
-      address: dots,
-      field: dots,
-      company: dots,
-      nameContract: dots,
-      address: dots,
-      position: dots,
-      nationality: dots,
-   });
+   const [worker, setWorker] = useState(initWorker);
+   const [client, setClient] = useState(initClient);
+   const [details, setDetails] = useState(initDetails);
 
-   const [details, setDetails] = useState({
-      base: dots,
-      at: dots,
-      rules: dots,
-      date: dots,
-   });
+   const handleEraser = () => {
+      handleClearWorkerAndClient();
+      setDetails(initDetails);
+      setProjectId("");
+      setUserId("");
+   };
+
+   const handleClearWorkerAndClient = () => {
+      setWorker(initWorker);
+      setClient(initClient);
+   };
 
    const toggleMobileMenu = () => {
       setMenu(!menu);
@@ -59,7 +77,6 @@ const ContractDetails = () => {
 
    const [show, setShow] = useState(false);
    const [rules, setRules] = useState("");
-
    const handleShow = () => setShow(true);
    const handleClose = () => setShow(false);
    const dispatch = useDispatch();
@@ -79,13 +96,7 @@ const ContractDetails = () => {
 
    // fetch list projects
    useEffect(() => {
-      setClient({
-         name: dots,
-         mobile: dots,
-         address: dots,
-         field: dots,
-         company: dots,
-      });
+      setClient(initClient);
       dispatch(findAllProject({ setLoading }));
    }, []);
 
@@ -116,35 +127,8 @@ const ContractDetails = () => {
    }, [contractCategory]);
 
    const handleSelectProject = (e) => {
-      setWorker({
-         name: dots,
-         date: dots,
-         address: dots,
-         cccd: dots,
-         field: dots,
-      });
+      handleClearWorkerAndClient();
       setProjectId(e);
-   };
-
-   const handleEraser = () => {
-      setWorker({
-         name: dots,
-         date: dots,
-         address: dots,
-         cccd: dots,
-         field: dots,
-      });
-
-      setClient({
-         name: dots,
-         mobile: dots,
-         address: dots,
-         field: dots,
-         company: dots,
-      });
-
-      setProjectId("");
-      setUserId("");
    };
 
    const handleSave = async () => {
@@ -160,8 +144,6 @@ const ContractDetails = () => {
             client,
             creator: user?._id,
          };
-
-         console.log(payload);
 
          dispatch(createContractDetail({ payload, toast, setLoading }));
       }
@@ -443,14 +425,16 @@ const ContractDetails = () => {
                               <tr>
                                  <td colSpan={2}>
                                     Giới tính:{" "}
-                                    <input
-                                       className="input-hidden width-170"
-                                       type="text"
-                                       value={worker?.gender}
+                                    <Radio.Group
                                        onChange={(e) =>
                                           setWorker({ ...worker, gender: e.target.value })
                                        }
-                                    />
+                                       value={worker.gender}
+                                    >
+                                       <Radio value={UserGenderType.MALE}>Nam</Radio>
+                                       <Radio value={UserGenderType.FEMALE}>Nữ</Radio>
+                                       <Radio value={UserGenderType.ORDER}>Khác</Radio>
+                                    </Radio.Group>
                                  </td>
                                  <td>
                                     Nghề nghiệp :{" "}
