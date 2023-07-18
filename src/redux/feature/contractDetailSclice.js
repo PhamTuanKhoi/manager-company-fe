@@ -1,6 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { contractDetailAPI } from "../../api/contractDetail";
 
+export const findAllContractDetail = createAsyncThunk(
+   "contractDetail/findAllContractDetail",
+   async ({ query, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await contractDetailAPI.findAll(query);
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 export const createContractDetail = createAsyncThunk(
    "contractDetail/createContractDetail",
    async ({ payload, toast, setLoading }, { rejectWithValue }) => {
@@ -33,6 +48,18 @@ const contractDetailSclice = createSlice({
       loading: false,
    },
    extraReducers: {
+      // list
+      [findAllContractDetail.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [findAllContractDetail.fulfilled]: (state, action) => {
+         state.loading = false;
+         state.contractDetails = action.payload;
+      },
+      [findAllContractDetail.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
       // create
       [createContractDetail.pending]: (state, action) => {
          state.loading = true;

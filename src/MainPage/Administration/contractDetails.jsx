@@ -68,7 +68,7 @@ const ContractDetails = () => {
 
    const handleClearWorkerAndClient = () => {
       setWorker(initWorker);
-      setClient(initClient);
+      setClient({ ...initClient, nameContract: client.nameContract });
    };
 
    const toggleMobileMenu = () => {
@@ -169,7 +169,6 @@ const ContractDetails = () => {
 
       return true;
    };
-
    return (
       <div className="page-wrapper">
          <Helmet>

@@ -33,6 +33,7 @@ import Jobapptitude from "./Jobs/job_aptitude";
 import Questions from "./Jobs/questions";
 import Contracts from "./contracts";
 import ContractDetails from "./contractDetails";
+import ContractUser from "./contractUser";
 
 const Uiinterfaceroute = ({ match }) => (
    <Switch>
@@ -40,6 +41,7 @@ const Uiinterfaceroute = ({ match }) => (
       <Route path={`${match.url}/users`} component={Users} />
       <Route path={`${match.url}/contracts`} component={Contracts} />
       <Route path={`${match.url}/contract-details/:id`} component={ContractDetails} />
+      <Route path={`${match.url}/contract-user`} component={ContractUser} />
       <Route path={`${match.url}/activities`} component={Activities} />
       <Route path={`${match.url}/assets`} component={Assets} />
       <Route path={`${match.url}/knowledgebase`} component={knowledgebase} />
