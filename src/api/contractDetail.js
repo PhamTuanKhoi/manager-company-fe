@@ -6,7 +6,15 @@ export const contractDetailAPI = {
       return await axios.get(path + "query", { params: query });
    },
 
+   async findById(id) {
+      return await axios.get(path + id);
+   },
+
    async create(payload) {
       return await axios.post(path, payload);
+   },
+
+   async update(id, payload) {
+      return await axios.patch(path + id, payload);
    },
 };

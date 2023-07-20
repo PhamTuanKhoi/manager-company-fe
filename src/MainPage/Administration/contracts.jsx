@@ -45,7 +45,7 @@ const Contracts = () => {
          render: (text, record) => (
             <Link
                className="text-uppercase"
-               to={`/app/administrator/contract-details/${record?._id}`}
+               to={`/app/administrator/contract-details?contractId=${record?._id}`}
             >
                {text}
             </Link>

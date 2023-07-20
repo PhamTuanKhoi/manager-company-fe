@@ -43,7 +43,13 @@ const ContractUser = () => {
          render: (text, record) => (
             <Link
                className="text-uppercase"
-               to={`/app/administrator/contract-details/${record?.contractCategory?._id}`}
+               to={
+                  `/app/administrator/contract-details` +
+                  `?contractId=${record?.contractCategory?._id}` +
+                  `&contractDetail=${record?._id}` +
+                  `&userId=${record?.worker?._id}` +
+                  `&projectId=${record?.project}`
+               }
             >
                {text && text < 10 ? (
                   <span className="text-primary fw-bold">FCE-0{text}</span>
@@ -52,7 +58,7 @@ const ContractUser = () => {
                )}
             </Link>
          ),
-         sorter: (a, b) => a.code.length - b.code.length,
+         sorter: (a, b) => a.code - b.code,
       },
       {
          title: "Người lao động",
@@ -154,14 +160,25 @@ const ContractUser = () => {
                   <div className="col">
                      <h3 className="page-title text-uppercase">Hợp đồng người lao động</h3>
                   </div>
-                  <div className="col-auto float-end ml-auto">
-                     <a href="#" className="btn add-btn" onClick={() => setShow(true)}>
-                        <i className="fa fa-plus" /> Thêm hợp đồng
-                     </a>
-                  </div>
                </div>
             </div>
             {/* /Page Header */}
+            {/* Search Filter */}
+            {/* <div className="row filter-row">
+               <div className="col-sm-6 col-md-3">
+                  <div className="form-group form-focus">
+                     <input type="text" className="form-control floating" />
+                     <label className="focus-label"> Họ tên</label>
+                  </div>
+               </div>
+               <div className="col-sm-6 col-md-3">
+                  <div className="form-group form-focus">
+                     <input type="text" className="form-control floating" />
+                     <label className="focus-label">Lĩnh vực</label>
+                  </div>
+               </div>
+            </div> */}
+            {/* /Search Filter */}
             <div className="row">
                <div className="col-md-12">
                   <div className="table-responsive">

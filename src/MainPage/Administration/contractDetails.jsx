@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
 import "antd/dist/antd.css";
 import "../antdstyle.css";
@@ -12,9 +12,13 @@ import { findAllProject } from "../../redux/feature/projectSclice";
 import { useLoading } from "../../hook/useLoading";
 import { listWorkerByProjectId } from "../../redux/feature/workerSclice";
 import { listClientByProjectId } from "../../redux/feature/clientSclice";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { findByIdContractCategory } from "../../redux/feature/contractCategorySclice";
-import { createContractDetail } from "../../redux/feature/contractDetailSclice";
+import {
+   createContractDetail,
+   findContractDetailById,
+   updateContractDetail,
+} from "../../redux/feature/contractDetailSclice";
 import { toast } from "react-toastify";
 import { Radio } from "antd";
 
@@ -81,8 +85,14 @@ const ContractDetails = () => {
    const handleClose = () => setShow(false);
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
-   const { id } = useParams();
    const { user } = useSelector((state) => state.auth);
+
+   const { search } = useLocation();
+   const query = useMemo(() => new URLSearchParams(search), [search]);
+   const id = query.get("contractId");
+   const contractDetailId = query.get("contractDetail");
+   const workerId = query.get("userId");
+   const pjId = query.get("projectId");
 
    const handleEditorChange = (event, editor) => {
       const data = editor.getData();
@@ -93,6 +103,23 @@ const ContractDetails = () => {
    const { workers } = useSelector((state) => state.worker);
    const state = useSelector((state) => state.client);
    const { contractCategory } = useSelector((state) => state.contractCategory);
+   const { contractDetail } = useSelector((state) => state.contractDetail);
+
+   // fetch contract detail by id
+   useEffect(() => {
+      if (contractDetailId) {
+         dispatch(findContractDetailById({ id: contractDetailId, setLoading }));
+      }
+   }, [contractDetailId]);
+   // set projectId
+   useEffect(() => {
+      if (pjId) setProjectId(pjId);
+      if (workerId) setUserId(workerId);
+      if (contractDetailId) {
+         setRules(contractDetail?.rules);
+         setDetails(contractDetail);
+      }
+   }, [pjId, workerId, contractDetailId, contractDetail]);
 
    // fetch list projects
    useEffect(() => {
@@ -142,11 +169,29 @@ const ContractDetails = () => {
             rules,
             worker: { ...worker, dateCccd: new Date(worker?.dateCccd).getTime() },
             client,
+            projectId,
             creator: user?._id,
          };
 
          dispatch(createContractDetail({ payload, toast, setLoading }));
       }
+   };
+
+   const handleUpdate = () => {
+      if (!contractDetailId) return toast.warn(`error server`);
+
+      const payload = {
+         ...details,
+         contractCategoryId: id,
+         date: new Date(details?.date).getTime(),
+         rules,
+         worker: { ...worker, dateCccd: new Date(worker?.dateCccd).getTime() },
+         client,
+         projectId,
+         creator: user?._id,
+      };
+
+      dispatch(updateContractDetail({ id: contractDetailId, payload, toast, setLoading }));
    };
 
    const validattion = ({ details, worker, client }) => {
@@ -260,7 +305,11 @@ const ContractDetails = () => {
                                  <input
                                     className="input-hidden width-350"
                                     type="text"
-                                    defaultValue={".…/…."}
+                                    defaultValue={
+                                       contractDetail?.code && contractDetail?.code < 10
+                                          ? `FCE-0${contractDetail?.code}`
+                                          : `FCE-${contractDetail?.code}`
+                                    }
                                  />
                               </p>
                            </div>
@@ -544,9 +593,15 @@ const ContractDetails = () => {
                      </div>
                   </div>
                   <div className="text-center mt-4">
-                     <span className="btn btn-secondary" onClick={handleSave}>
-                        Lưu
-                     </span>
+                     {contractDetailId ? (
+                        <span className="btn btn-secondary" onClick={handleUpdate}>
+                           Cập nhật
+                        </span>
+                     ) : (
+                        <span className="btn btn-secondary" onClick={handleSave}>
+                           Lưu
+                        </span>
+                     )}
                   </div>
                </div>
             </div>
