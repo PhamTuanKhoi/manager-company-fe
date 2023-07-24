@@ -77,6 +77,29 @@ export const updateContractDetail = createAsyncThunk(
    }
 );
 
+export const deleteContractDetail = createAsyncThunk(
+   "contractDetail/deleteContractDetail",
+   async ({ id, toast, setLoading }, { rejectWithValue }) => {
+      try {
+         setLoading(true);
+         const { data } = await contractDetailAPI.delete(id);
+         toast.success("Xóa chi tiết hợp đồng thành công");
+         setLoading(false);
+         return data;
+      } catch (error) {
+         setLoading(false);
+         if (typeof error?.response?.data?.message === "string") {
+            toast.error(error?.response?.data?.message);
+         } else {
+            error?.response?.data?.message?.forEach((item) => {
+               toast.error(item);
+            });
+         }
+         return rejectWithValue(error.response.data);
+      }
+   }
+);
+
 const contractDetailSclice = createSlice({
    name: "contractDetail",
    initialState: {
@@ -129,6 +152,24 @@ const contractDetailSclice = createSlice({
          state.loading = false;
       },
       [updateContractDetail.rejected]: (state, action) => {
+         state.loading = false;
+         state.error = action.payload.message;
+      },
+      // delete
+      [deleteContractDetail.pending]: (state, action) => {
+         state.loading = true;
+      },
+      [deleteContractDetail.fulfilled]: (state, action) => {
+         state.loading = false;
+         const {
+            arg: { id },
+         } = action.meta;
+
+         if (id) {
+            state.contractDetails = state.contractDetails.filter((item) => item._id !== id);
+         }
+      },
+      [deleteContractDetail.rejected]: (state, action) => {
          state.loading = false;
          state.error = action.payload.message;
       },

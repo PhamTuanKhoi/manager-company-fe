@@ -14,7 +14,10 @@ import { Link } from "react-router-dom";
 import AddContract from "../../_components/modelbox/AddContract";
 import { deleteContractCategory } from "../../redux/feature/contractCategorySclice";
 import moment from "moment";
-import { findAllContractDetail } from "../../redux/feature/contractDetailSclice";
+import {
+   deleteContractDetail,
+   findAllContractDetail,
+} from "../../redux/feature/contractDetailSclice";
 
 const ContractUser = () => {
    const [menu, setMenu] = useState(false);
@@ -97,16 +100,18 @@ const ContractUser = () => {
                   <i className="material-icons">more_vert</i>
                </a>
                <div className="dropdown-menu dropdown-menu-right">
-                  <a
-                     className="dropdown-item"
-                     href="#"
-                     onClick={() => {
-                        setItem(record);
-                        setShow(true);
-                     }}
+                  <Link
+                     className="text-dark dropdown-item"
+                     to={
+                        `/app/administrator/contract-details` +
+                        `?contractId=${record?.contractCategory?._id}` +
+                        `&contractDetail=${record?._id}` +
+                        `&userId=${record?.worker?._id}` +
+                        `&projectId=${record?.project}`
+                     }
                   >
                      <i className="fa fa-pencil m-r-5" /> Sửa
-                  </a>
+                  </Link>
                   <a
                      className="dropdown-item"
                      href="#"
@@ -125,13 +130,12 @@ const ContractUser = () => {
 
    const dispatch = useDispatch();
    const { setLoading } = useLoading();
-   const [show, setShow] = useState(false);
    const [showDlt, setShowDlt] = useState(false);
 
    const handleDelete = () => {
       if (item?._id)
          dispatch(
-            deleteContractCategory({
+            deleteContractDetail({
                id: item?._id,
                setLoading,
                toast,
@@ -202,14 +206,6 @@ const ContractUser = () => {
             </div>
          </div>
          {/* /Page Content */}
-         {/* Add Department Modal */}
-         <AddContract
-            show={show}
-            handleClose={() => setShow(false)}
-            item={item}
-            setItem={setItem}
-         />
-         {/* /Add Department Modal */}
 
          {/* Delete Department Modal */}
          <Modal show={showDlt} centered>
@@ -231,7 +227,6 @@ const ContractUser = () => {
                            className="btn btn-primary cancel-btn"
                            onClick={() => {
                               setShowDlt(false);
-                              empty();
                            }}
                         >
                            Cancel

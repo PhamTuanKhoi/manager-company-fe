@@ -306,9 +306,10 @@ const ContractDetails = () => {
                                     className="input-hidden width-350"
                                     type="text"
                                     defaultValue={
-                                       contractDetail?.code && contractDetail?.code < 10
+                                       contractDetailId &&
+                                       (contractDetail?.code && contractDetail?.code < 10
                                           ? `FCE-0${contractDetail?.code}`
-                                          : `FCE-${contractDetail?.code}`
+                                          : `FCE-${contractDetail?.code}`)
                                     }
                                  />
                               </p>

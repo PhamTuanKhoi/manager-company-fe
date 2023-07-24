@@ -17,4 +17,8 @@ export const contractDetailAPI = {
    async update(id, payload) {
       return await axios.patch(path + id, payload);
    },
+
+   async delete(id) {
+      return await axios.delete(path + id);
+   },
 };
